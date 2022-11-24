@@ -1,0 +1,15 @@
+[Unit]
+Description=RTL 433 Receiver
+After=network-online.target
+Wants=network-online.target
+Before=
+
+[Service]
+User=jv
+Environment="PATH=/usr/bin:/sbin"
+ExecStart=/usr/bin/rtl_433 -c /home/jv/.config/rtl_433/rtl_433.conf
+Restart=always
+RestartSec=60s
+
+[Install]
+WantedBy=multi-user.target

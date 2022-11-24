@@ -1,0 +1,16 @@
+[Unit]
+Description=Home Assistant
+After=network-online.target
+Wants=network-online.target
+Before=
+
+[Service]
+User=jv
+Environment="PATH=/home/jv/wrk/hass/bin:/usr/bin:/sbin"
+ExecStart=/home/jv/wrk/hass/bin/hass -c /home/jv/.homeassistant
+RestartForceExitStatus=100
+Restart=on-failure
+RestartSec=5s
+
+[Install]
+WantedBy=multi-user.target
