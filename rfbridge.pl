@@ -92,6 +92,9 @@ script:
 
     mode: queued
     sequence:
+      - service: light.toggle
+        target:
+          entity_id: light.woonkamer_totem
       - service: telegram_bot.send_message
         data:
           message: Button A pressed
@@ -100,6 +103,12 @@ script:
 
     mode: queued
     sequence:
+      - service: light.toggle
+        target:
+          entity_id: light.woonkamer_heks
+        data:
+          brightness_pct: 100
+          rgb_color: [191,0,255]
       - service: telegram_bot.send_message
         data:
           message: Button B pressed
@@ -108,6 +117,11 @@ script:
 
     mode: queued
     sequence:
+      - service: light.toggle
+        target:
+          entity_id:
+            - light.woonkamer_wand_l
+            - light.woonkamer_wand_r
       - service: telegram_bot.send_message
         data:
           message: Button C pressed
