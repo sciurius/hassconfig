@@ -63,7 +63,7 @@ my $res = $d->generate;
 
 my $xp = Text::Template::Tiny->new( %$res );
 
-print $xp->expand($_) while <DATA>;
+print $d->detab( $xp->expand($_) ) while <DATA>;
 
 __DATA__
 # Bresser 5-in-1 / Bresser 6-in-1 / Bresser 7-in-1      -*-hass-*-
@@ -231,10 +231,17 @@ template:
 #         unit_of_measurement: mm
 
     - name: Bresser51 Rain
+      # Note: sensor.bresser51_rain_unadjusted often returns insane
+      # values. If so, do not update but just return the current
+      # value of this sensor.
       state: |
+        {% if states('sensor.bresser51_rain_unadjusted') | float > 66757 %}
+	{{ states('sensor.bresser51_rain') }}
+        {% else %}
         {{ ( states('sensor.bresser51_rain_unadjusted') | float )
            +
            ( states('sensor.bresser51_rain_offset') | float ) }}
+        {% endif %}
       unit_of_measurement: "mm"
       icon: mdi:weather-rainy
 
