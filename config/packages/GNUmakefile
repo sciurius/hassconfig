@@ -12,10 +12,7 @@ test :
 	echo ${PKGS_PL}
 	echo ${PKGS_YAML}
 
-pkgs : mount $(addprefix ${DST}/packages/,$(addsuffix .yaml,${PKGS}))
-
-mount ::
-	test -d ${HADIR}/config/.storage || mount ${HADIR}/config
+pkgs : $(addprefix ${DST}/packages/,$(addsuffix .yaml,${PKGS}))
 
 ${DST}/packages/%.yaml :: %.pl
 	perl $< > $(basename $<).yaml \

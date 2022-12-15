@@ -3,8 +3,7 @@
 default : all
 
 PKGS_PL   := $(basename $(shell find * -name '*.pl' -print))
-# dashboards.yaml is special.
-PKGS_YAML := $(basename $(shell find * -name '*.yaml' -a '!' -name 'dashboards.yaml' -print))
+PKGS_YAML := $(basename $(shell find * -name '*.yaml' -print))
 PKGS      := ${PKGS_PL} ${PKGS_YAML}
 HADIR     := /mnt/ha
 DST       := ${HADIR}/config
@@ -13,10 +12,7 @@ test :
 	echo ${PKGS_PL}
 	echo ${PKGS_YAML}
 
-all : mount $(addprefix ${DST}/dashboards/,$(addsuffix .yaml,${PKGS}))
-
-mount ::
-	test -d ${HADIR}/config/.storage || mount ${HADIR}/config
+all : $(addprefix ${DST}/dashboards/,$(addsuffix .yaml,${PKGS}))
 
 ${DST}/dashboards/%.yaml :: %.pl
 	perl $< > $(basename $<).yaml \
