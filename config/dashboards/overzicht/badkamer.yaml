@@ -19,10 +19,10 @@ entities:
 
   - type: conditional
     conditions:
-      - entity: sensor.boiler_dhw_current_tap_water_flow
+      - entity: sensor.boiler_wwcurflow
         state_not: '0'
     row:
-      entity: sensor.boiler_dhw_current_tap_water_flow
+      entity: sensor.boiler_wwcurflow
       name: Warm water
       icon: mdi:shower
 

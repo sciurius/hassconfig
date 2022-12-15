@@ -21,16 +21,16 @@ entities:
   - entity: sensor.boiler_status_text
     name: CV Status
 
-  - entity: sensor.boiler_system_pressure
+  - entity: sensor.boiler_syspress
     name: CV Waterdruk
 
-  - entity: sensor.boiler_current_flow_temperature
+  - entity: sensor.boiler_curflowtemp
     name: CV Watertemperatuur
 
-  - entity: sensor.boiler_heating_temperature
+  - entity: sensor.boiler_heatingtemp
     name: CV Instelling
 
-  - entity: binary_sensor.boiler_heating_active
+  - entity: binary_sensor.boiler_heatingactive
     name: Verwarming
 
   - type: weblink

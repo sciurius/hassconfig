@@ -16,8 +16,8 @@ template:
   - sensor:
 
       # This is mainly to show the current settings in a dashboard.
-      - name: Boiler Heating Temperature
-        state: "{{ states('number.boiler_heating_temperature')|round(1) }}"
+      - name: Boiler HeatingTemp
+        state: "{{ states('number.boiler_heatingtemp')|round(1) }}"
         unit_of_measurement: "⁰C"
         icon: mdi:car-cruise-control
 
@@ -31,28 +31,9 @@ template:
         unit_of_measurement: "⁰C"
         icon: mdi:thermometer
 
-  # Emergency changes for v4 firmware
-  #     - name: "Boiler System Pressure"
-  #       state: "{{ states('sensor.boiler_syspress') }}"
-  #       unit_of_measurement: bar
-
-  #     - name: "Boiler Current Flow Temperature"
-  #       state: "{{ states('sensor.boiler_curflowtemp') }}"
-  #       unit_of_measurement: "⁰C"
-  #       icon: mdi:thermometer
-
-  #     - name: "Boiler Dhw Current Tap Water Flow"
-  #       state: "{{ states('sensor.boiler_wwcurflow') }}"
-  #       unit_of_measurement: "l/m"
-        
-  # - binary_sensor:
-
-  #     - name: "Boiler Heating Active"
-  #       state: "{{ states('binary_sensor.boiler_heatingactive') }}"
-
       - name: 'Boiler Status Text'
         state: >
-          {% set sc = states('sensor.boiler_service_code_number') %}
+          {% set sc = states('sensor.boiler_servicecodenumber') %}
           {% if sc == '200' %} CH active
           {% elif sc == '201' %} HW active
           {% elif sc == '202' %} CH anti cycle
@@ -125,7 +106,7 @@ automation:
               {{     trigger.from_state.state|round(0) <= threshold
                  and trigger.to_state.state  |round(0) <= threshold
                  and
-                 states('sensor.boiler_heating_temperature')|round(0) < burner_high
+                 states('sensor.boiler_heatingtemperature')|round(0) < burner_high
               }}
 
             sequence:
@@ -145,7 +126,7 @@ automation:
               {{     trigger.from_state.state|round(0) > threshold
                  and trigger.to_state.state  |round(0) > threshold
                  and
-                 states('sensor.boiler_heating_temperature')|round(0) > burner_low
+                 states('sensor.boiler_heatingtemperature')|round(0) > burner_low
               }}
 
             sequence:
@@ -167,12 +148,12 @@ automation:
     trigger:
       - platform: numeric_state
         id: too_high
-        entity_id: sensor.boiler_return_temperature
+        entity_id: sensor.boiler_rettemp
         above: 55
         for: "00:05:00"
       - platform: numeric_state
         id: ok_again
-        entity_id: sensor.boiler_return_temperature
+        entity_id: sensor.boiler_rettemp
         below: 55
         for: "00:05:00"
 
