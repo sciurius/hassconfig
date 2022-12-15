@@ -1,0 +1,1047 @@
+#                       -*- hass -*-
+
+button_card_templates:
+
+  button:
+    variables:
+      device: xx
+      command: xx
+    styles:
+      name:
+       - color: black
+      card:
+        - height: 70px
+        - background: lightgrey
+        - font-weight: bold
+        - font-size: 160%
+      icon:
+        - color: red
+        - width: 50%
+    show_name: true
+    show_icon: false
+    tap_action:
+      action: call-service
+      service: pyscript.ircontrol
+      service_data:
+        device:  '[[[ return variables.device  ]]]'
+        command: '[[[ return variables.command ]]]'
+    hold_action:
+      action: []
+    icon: mdi:television
+
+title: Remote Devices
+views:
+  - title: philips_tv
+    type: custom:horizontal-layout
+    layout:
+      max_cols: 6
+      width: 150
+    cards:
+      - type: custom:button-card
+        name: KEY 0
+        template: button
+        variables:
+          device: philips_tv
+          command: key_0
+      - type: custom:button-card
+        name: KEY 1
+        template: button
+        variables:
+          device: philips_tv
+          command: key_1
+      - type: custom:button-card
+        name: KEY 2
+        template: button
+        variables:
+          device: philips_tv
+          command: key_2
+      - type: custom:button-card
+        name: KEY 3
+        template: button
+        variables:
+          device: philips_tv
+          command: key_3
+      - type: custom:button-card
+        name: KEY 4
+        template: button
+        variables:
+          device: philips_tv
+          command: key_4
+      - type: custom:button-card
+        name: KEY 5
+        template: button
+        variables:
+          device: philips_tv
+          command: key_5
+      - type: custom:button-card
+        name: KEY 6
+        template: button
+        variables:
+          device: philips_tv
+          command: key_6
+      - type: custom:button-card
+        name: KEY 7
+        template: button
+        variables:
+          device: philips_tv
+          command: key_7
+      - type: custom:button-card
+        name: KEY 8
+        template: button
+        variables:
+          device: philips_tv
+          command: key_8
+      - type: custom:button-card
+        name: KEY 9
+        template: button
+        variables:
+          device: philips_tv
+          command: key_9
+      - type: custom:button-card
+        name: PREVIOUS CHANNEL
+        template: button
+        variables:
+          device: philips_tv
+          command: previous_channel
+      - type: custom:button-card
+        name: POWER
+        template: button
+        variables:
+          device: philips_tv
+          command: power
+      - type: custom:button-card
+        name: MUTE
+        template: button
+        variables:
+          device: philips_tv
+          command: mute
+      - type: custom:button-card
+        name: INFO
+        template: button
+        variables:
+          device: philips_tv
+          command: info
+      - type: custom:button-card
+        name: VOLUME UP
+        template: button
+        variables:
+          device: philips_tv
+          command: volume_up
+      - type: custom:button-card
+        name: VOLUME DOWN
+        template: button
+        variables:
+          device: philips_tv
+          command: volume_down
+      - type: custom:button-card
+        name: CHANNEL UP
+        template: button
+        variables:
+          device: philips_tv
+          command: channel_up
+      - type: custom:button-card
+        name: CHANNEL DOWN
+        template: button
+        variables:
+          device: philips_tv
+          command: channel_down
+      - type: custom:button-card
+        name: FAST FORWARD
+        template: button
+        variables:
+          device: philips_tv
+          command: fast_forward
+      - type: custom:button-card
+        name: REWIND
+        template: button
+        variables:
+          device: philips_tv
+          command: rewind
+      - type: custom:button-card
+        name: PAUSE
+        template: button
+        variables:
+          device: philips_tv
+          command: pause
+      - type: custom:button-card
+        name: STOP
+        template: button
+        variables:
+          device: philips_tv
+          command: stop
+      - type: custom:button-card
+        name: PLAY
+        template: button
+        variables:
+          device: philips_tv
+          command: play
+      - type: custom:button-card
+        name: RECORD
+        template: button
+        variables:
+          device: philips_tv
+          command: record
+      - type: custom:button-card
+        name: NEXT SOURCE
+        template: button
+        variables:
+          device: philips_tv
+          command: next_source
+      - type: custom:button-card
+        name: TELETEXT
+        template: button
+        variables:
+          device: philips_tv
+          command: teletext
+      - type: custom:button-card
+        name: STANDBY
+        template: button
+        variables:
+          device: philips_tv
+          command: standby
+      - type: custom:button-card
+        name: OPTION
+        template: button
+        variables:
+          device: philips_tv
+          command: option
+      - type: custom:button-card
+        name: CLOSED CAPTIONS
+        template: button
+        variables:
+          device: philips_tv
+          command: closed_captions
+      - type: custom:button-card
+        name: SUBTITLES
+        template: button
+        variables:
+          device: philips_tv
+          command: subtitles
+      - type: custom:button-card
+        name: MENU
+        template: button
+        variables:
+          device: philips_tv
+          command: menu
+      - type: custom:button-card
+        name: CURSOR UP
+        template: button
+        variables:
+          device: philips_tv
+          command: cursor_up
+      - type: custom:button-card
+        name: CURSOR DOWN
+        template: button
+        variables:
+          device: philips_tv
+          command: cursor_down
+      - type: custom:button-card
+        name: CURSOR LEFT
+        template: button
+        variables:
+          device: philips_tv
+          command: cursor_left
+      - type: custom:button-card
+        name: CURSOR RIGHT
+        template: button
+        variables:
+          device: philips_tv
+          command: cursor_right
+      - type: custom:button-card
+        name: OK
+        template: button
+        variables:
+          device: philips_tv
+          command: ok
+      - type: custom:button-card
+        name: RED
+        template: button
+        variables:
+          device: philips_tv
+          command: red
+      - type: custom:button-card
+        name: GREEN
+        template: button
+        variables:
+          device: philips_tv
+          command: green
+      - type: custom:button-card
+        name: YELLOW
+        template: button
+        variables:
+          device: philips_tv
+          command: yellow
+      - type: custom:button-card
+        name: BLUE
+        template: button
+        variables:
+          device: philips_tv
+          command: blue
+      - type: custom:button-card
+        name: WHITE
+        template: button
+        variables:
+          device: philips_tv
+          command: white
+      - type: custom:button-card
+        name: EXIT
+        template: button
+        variables:
+          device: philips_tv
+          command: exit
+      - type: custom:button-card
+        name: SETTINGS
+        template: button
+        variables:
+          device: philips_tv
+          command: settings
+      - type: custom:button-card
+        name: GUIDE
+        template: button
+        variables:
+          device: philips_tv
+          command: guide
+      - type: custom:button-card
+        name: CHANNEL LIST
+        template: button
+        variables:
+          device: philips_tv
+          command: channel_list
+      - type: custom:button-card
+        name: TELETEXT
+        template: button
+        variables:
+          device: philips_tv
+          command: teletext
+  - title: hdmi_switch
+    type: custom:horizontal-layout
+    layout:
+      max_cols: 6
+      width: 150
+    cards:
+      - type: custom:button-card
+        name: INPUT1
+        template: button
+        variables:
+          device: hdmi_switch
+          command: input1
+      - type: custom:button-card
+        name: INPUT2
+        template: button
+        variables:
+          device: hdmi_switch
+          command: input2
+      - type: custom:button-card
+        name: INPUT3
+        template: button
+        variables:
+          device: hdmi_switch
+          command: input3
+      - type: custom:button-card
+        name: INPUT4
+        template: button
+        variables:
+          device: hdmi_switch
+          command: input4
+      - type: custom:button-card
+        name: IN AUTO
+        template: button
+        variables:
+          device: hdmi_switch
+          command: in_auto
+      - type: custom:button-card
+        name: CH 20
+        template: button
+        variables:
+          device: hdmi_switch
+          command: ch_20
+      - type: custom:button-card
+        name: CH 51
+        template: button
+        variables:
+          device: hdmi_switch
+          command: ch_51
+      - type: custom:button-card
+        name: CH 71
+        template: button
+        variables:
+          device: hdmi_switch
+          command: ch_71
+      - type: custom:button-card
+        name: CH AUTO
+        template: button
+        variables:
+          device: hdmi_switch
+          command: ch_auto
+      - type: custom:button-card
+        name: ARC
+        template: button
+        variables:
+          device: hdmi_switch
+          command: arc
+  - title: vip1853
+    type: custom:horizontal-layout
+    layout:
+      max_cols: 6
+      width: 150
+    cards:
+      - type: custom:button-card
+        name: KEY 1
+        template: button
+        variables:
+          device: vip1853
+          command: key_1
+      - type: custom:button-card
+        name: KEY 2
+        template: button
+        variables:
+          device: vip1853
+          command: key_2
+      - type: custom:button-card
+        name: KEY 3
+        template: button
+        variables:
+          device: vip1853
+          command: key_3
+      - type: custom:button-card
+        name: KEY 4
+        template: button
+        variables:
+          device: vip1853
+          command: key_4
+      - type: custom:button-card
+        name: KEY 5
+        template: button
+        variables:
+          device: vip1853
+          command: key_5
+      - type: custom:button-card
+        name: KEY 6
+        template: button
+        variables:
+          device: vip1853
+          command: key_6
+      - type: custom:button-card
+        name: KEY 7
+        template: button
+        variables:
+          device: vip1853
+          command: key_7
+      - type: custom:button-card
+        name: KEY 8
+        template: button
+        variables:
+          device: vip1853
+          command: key_8
+      - type: custom:button-card
+        name: KEY 9
+        template: button
+        variables:
+          device: vip1853
+          command: key_9
+      - type: custom:button-card
+        name: KEY 0
+        template: button
+        variables:
+          device: vip1853
+          command: key_0
+      - type: custom:button-card
+        name: POWER
+        template: button
+        variables:
+          device: vip1853
+          command: power
+      - type: custom:button-card
+        name: PLAY PAUSE
+        template: button
+        variables:
+          device: vip1853
+          command: play_pause
+      - type: custom:button-card
+        name: REWIND
+        template: button
+        variables:
+          device: vip1853
+          command: rewind
+      - type: custom:button-card
+        name: FAST FORWARD
+        template: button
+        variables:
+          device: vip1853
+          command: fast_forward
+      - type: custom:button-card
+        name: STOP
+        template: button
+        variables:
+          device: vip1853
+          command: stop
+      - type: custom:button-card
+        name: RECORD
+        template: button
+        variables:
+          device: vip1853
+          command: record
+      - type: custom:button-card
+        name: RED
+        template: button
+        variables:
+          device: vip1853
+          command: red
+      - type: custom:button-card
+        name: GREEN
+        template: button
+        variables:
+          device: vip1853
+          command: green
+      - type: custom:button-card
+        name: YELLOW
+        template: button
+        variables:
+          device: vip1853
+          command: yellow
+      - type: custom:button-card
+        name: BLUE
+        template: button
+        variables:
+          device: vip1853
+          command: blue
+      - type: custom:button-card
+        name: UP
+        template: button
+        variables:
+          device: vip1853
+          command: up
+      - type: custom:button-card
+        name: DOWN
+        template: button
+        variables:
+          device: vip1853
+          command: down
+      - type: custom:button-card
+        name: LEFT
+        template: button
+        variables:
+          device: vip1853
+          command: left
+      - type: custom:button-card
+        name: RIGHT
+        template: button
+        variables:
+          device: vip1853
+          command: right
+      - type: custom:button-card
+        name: OK
+        template: button
+        variables:
+          device: vip1853
+          command: ok
+      - type: custom:button-card
+        name: MENU
+        template: button
+        variables:
+          device: vip1853
+          command: menu
+      - type: custom:button-card
+        name: TV
+        template: button
+        variables:
+          device: vip1853
+          command: tv
+      - type: custom:button-card
+        name: GUIDE
+        template: button
+        variables:
+          device: vip1853
+          command: guide
+      - type: custom:button-card
+        name: RADIO
+        template: button
+        variables:
+          device: vip1853
+          command: radio
+      - type: custom:button-card
+        name: BACK
+        template: button
+        variables:
+          device: vip1853
+          command: back
+      - type: custom:button-card
+        name: CHANNEL UP
+        template: button
+        variables:
+          device: vip1853
+          command: channel_up
+      - type: custom:button-card
+        name: CHANNEL DOWN
+        template: button
+        variables:
+          device: vip1853
+          command: channel_down
+      - type: custom:button-card
+        name: VOLUME UP
+        template: button
+        variables:
+          device: vip1853
+          command: volume_up
+      - type: custom:button-card
+        name: VOLUME DOWN
+        template: button
+        variables:
+          device: vip1853
+          command: volume_down
+      - type: custom:button-card
+        name: MUTE
+        template: button
+        variables:
+          device: vip1853
+          command: mute
+      - type: custom:button-card
+        name: SOURCE
+        template: button
+        variables:
+          device: vip1853
+          command: source
+      - type: custom:button-card
+        name: TEXT
+        template: button
+        variables:
+          device: vip1853
+          command: text
+  - title: sony_mc
+    type: custom:horizontal-layout
+    layout:
+      max_cols: 6
+      width: 150
+    cards:
+      - type: custom:button-card
+        name: POWER
+        template: button
+        variables:
+          device: sony_mc
+          command: power
+      - type: custom:button-card
+        name: VOLUME UP
+        template: button
+        variables:
+          device: sony_mc
+          command: volume_up
+      - type: custom:button-card
+        name: VOLUME DOWN
+        template: button
+        variables:
+          device: sony_mc
+          command: volume_down
+      - type: custom:button-card
+        name: BASS DOWN
+        template: button
+        variables:
+          device: sony_mc
+          command: bass_down
+      - type: custom:button-card
+        name: BASS UP
+        template: button
+        variables:
+          device: sony_mc
+          command: bass_up
+      - type: custom:button-card
+        name: TREBLE DOWN
+        template: button
+        variables:
+          device: sony_mc
+          command: treble_down
+      - type: custom:button-card
+        name: TREBLE UP
+        template: button
+        variables:
+          device: sony_mc
+          command: treble_up
+      - type: custom:button-card
+        name: FORWARD
+        template: button
+        variables:
+          device: sony_mc
+          command: forward
+      - type: custom:button-card
+        name: REWIND
+        template: button
+        variables:
+          device: sony_mc
+          command: rewind
+      - type: custom:button-card
+        name: DBFB
+        template: button
+        variables:
+          device: sony_mc
+          command: dbfb
+      - type: custom:button-card
+        name: DISPLAY
+        template: button
+        variables:
+          device: sony_mc
+          command: display
+      - type: custom:button-card
+        name: ENTER
+        template: button
+        variables:
+          device: sony_mc
+          command: enter
+      - type: custom:button-card
+        name: CLEAR
+        template: button
+        variables:
+          device: sony_mc
+          command: clear
+      - type: custom:button-card
+        name: SLEEP
+        template: button
+        variables:
+          device: sony_mc
+          command: sleep
+      - type: custom:button-card
+        name: SELECT
+        template: button
+        variables:
+          device: sony_mc
+          command: select
+      - type: custom:button-card
+        name: SET
+        template: button
+        variables:
+          device: sony_mc
+          command: set
+      - type: custom:button-card
+        name: MD VIDEO
+        template: button
+        variables:
+          device: sony_mc
+          command: md_video
+      - type: custom:button-card
+        name: CD
+        template: button
+        variables:
+          device: sony_mc
+          command: cd
+      - type: custom:button-card
+        name: TUNER BAND
+        template: button
+        variables:
+          device: sony_mc
+          command: tuner_band
+      - type: custom:button-card
+        name: MODE
+        template: button
+        variables:
+          device: sony_mc
+          command: mode
+      - type: custom:button-card
+        name: STEREO MONO
+        template: button
+        variables:
+          device: sony_mc
+          command: stereo_mono
+      - type: custom:button-card
+        name: MEMORY
+        template: button
+        variables:
+          device: sony_mc
+          command: memory
+      - type: custom:button-card
+        name: PLAY
+        template: button
+        variables:
+          device: sony_mc
+          command: play
+      - type: custom:button-card
+        name: PAUSE
+        template: button
+        variables:
+          device: sony_mc
+          command: pause
+      - type: custom:button-card
+        name: STOP
+        template: button
+        variables:
+          device: sony_mc
+          command: stop
+      - type: custom:button-card
+        name: TUNING PREVIOUS
+        template: button
+        variables:
+          device: sony_mc
+          command: tuning_previous
+      - type: custom:button-card
+        name: TUNING NEXT
+        template: button
+        variables:
+          device: sony_mc
+          command: tuning_next
+      - type: custom:button-card
+        name: PLAY MODE
+        template: button
+        variables:
+          device: sony_mc
+          command: play_mode
+      - type: custom:button-card
+        name: REPEAT
+        template: button
+        variables:
+          device: sony_mc
+          command: repeat
+  - title: smsl_ad18
+    type: custom:horizontal-layout
+    layout:
+      max_cols: 6
+      width: 150
+    cards:
+      - type: custom:button-card
+        name: POWER
+        template: button
+        variables:
+          device: smsl_ad18
+          command: power
+      - type: custom:button-card
+        name: MUTE
+        template: button
+        variables:
+          device: smsl_ad18
+          command: mute
+      - type: custom:button-card
+        name: VOLUME UP
+        template: button
+        variables:
+          device: smsl_ad18
+          command: volume_up
+      - type: custom:button-card
+        name: A LEFT
+        template: button
+        variables:
+          device: smsl_ad18
+          command: a_left
+      - type: custom:button-card
+        name: SETTINGS
+        template: button
+        variables:
+          device: smsl_ad18
+          command: settings
+      - type: custom:button-card
+        name: A RIGHT
+        template: button
+        variables:
+          device: smsl_ad18
+          command: a_right
+      - type: custom:button-card
+        name: VOLUME DOWN
+        template: button
+        variables:
+          device: smsl_ad18
+          command: volume_down
+      - type: custom:button-card
+        name: INPUT
+        template: button
+        variables:
+          device: smsl_ad18
+          command: input
+      - type: custom:button-card
+        name: FN
+        template: button
+        variables:
+          device: smsl_ad18
+          command: fn
+      - type: custom:button-card
+        name: B POWER
+        template: button
+        variables:
+          device: smsl_ad18
+          command: b_power
+      - type: custom:button-card
+        name: B MUTE
+        template: button
+        variables:
+          device: smsl_ad18
+          command: b_mute
+      - type: custom:button-card
+        name: B UP
+        template: button
+        variables:
+          device: smsl_ad18
+          command: b_up
+      - type: custom:button-card
+        name: B LEFT
+        template: button
+        variables:
+          device: smsl_ad18
+          command: b_left
+      - type: custom:button-card
+        name: B ENTER
+        template: button
+        variables:
+          device: smsl_ad18
+          command: b_enter
+      - type: custom:button-card
+        name: B RIGHT
+        template: button
+        variables:
+          device: smsl_ad18
+          command: b_right
+      - type: custom:button-card
+        name: B DOWN
+        template: button
+        variables:
+          device: smsl_ad18
+          command: b_down
+      - type: custom:button-card
+        name: B INPUT
+        template: button
+        variables:
+          device: smsl_ad18
+          command: b_input
+      - type: custom:button-card
+        name: B FN
+        template: button
+        variables:
+          device: smsl_ad18
+          command: b_fn
+      - type: custom:button-card
+        name: C POWER
+        template: button
+        variables:
+          device: smsl_ad18
+          command: c_power
+      - type: custom:button-card
+        name: C MUTE
+        template: button
+        variables:
+          device: smsl_ad18
+          command: c_mute
+      - type: custom:button-card
+        name: C UP
+        template: button
+        variables:
+          device: smsl_ad18
+          command: c_up
+      - type: custom:button-card
+        name: C LEFT
+        template: button
+        variables:
+          device: smsl_ad18
+          command: c_left
+      - type: custom:button-card
+        name: C ENTER
+        template: button
+        variables:
+          device: smsl_ad18
+          command: c_enter
+      - type: custom:button-card
+        name: C RIGHT
+        template: button
+        variables:
+          device: smsl_ad18
+          command: c_right
+      - type: custom:button-card
+        name: C DOWN
+        template: button
+        variables:
+          device: smsl_ad18
+          command: c_down
+      - type: custom:button-card
+        name: C MODE
+        template: button
+        variables:
+          device: smsl_ad18
+          command: c_mode
+      - type: custom:button-card
+        name: C FN
+        template: button
+        variables:
+          device: smsl_ad18
+          command: c_fn
+  - title: squeezebox
+    type: custom:horizontal-layout
+    layout:
+      max_cols: 6
+      width: 150
+    cards:
+      - type: custom:button-card
+        name: HOME
+        template: button
+        variables:
+          device: squeezebox
+          command: home
+      - type: custom:button-card
+        name: LIGHT
+        template: button
+        variables:
+          device: squeezebox
+          command: light
+      - type: custom:button-card
+        name: POWER
+        template: button
+        variables:
+          device: squeezebox
+          command: power
+      - type: custom:button-card
+        name: PLUS
+        template: button
+        variables:
+          device: squeezebox
+          command: plus
+      - type: custom:button-card
+        name: PLAY
+        template: button
+        variables:
+          device: squeezebox
+          command: play
+      - type: custom:button-card
+        name: UP
+        template: button
+        variables:
+          device: squeezebox
+          command: up
+      - type: custom:button-card
+        name: LEFT
+        template: button
+        variables:
+          device: squeezebox
+          command: left
+      - type: custom:button-card
+        name: RIGHT
+        template: button
+        variables:
+          device: squeezebox
+          command: right
+      - type: custom:button-card
+        name: DOWN
+        template: button
+        variables:
+          device: squeezebox
+          command: down
+      - type: custom:button-card
+        name: VOLDOWN
+        template: button
+        variables:
+          device: squeezebox
+          command: voldown
+      - type: custom:button-card
+        name: VOLUP
+        template: button
+        variables:
+          device: squeezebox
+          command: volup
+      - type: custom:button-card
+        name: PREV
+        template: button
+        variables:
+          device: squeezebox
+          command: prev
+      - type: custom:button-card
+        name: PAUSE
+        template: button
+        variables:
+          device: squeezebox
+          command: pause
+      - type: custom:button-card
+        name: NEXT
+        template: button
+        variables:
+          device: squeezebox
+          command: next

@@ -1,0 +1,5 @@
+calendar:
+  - platform: caldav
+    username: !secret caldav_account
+    password: !secret caldav_password
+    url: !secret caldav_url

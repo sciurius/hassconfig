@@ -1,0 +1,99 @@
+# Dashboard: Overzicht                 -*- hass -*-
+
+title: Overzicht
+views:
+
+  - title: Home
+    cards:
+
+      - !include overzicht/buiten.yaml
+
+      - !include bresser51/compass.yaml
+      - !include overzicht/weerstation.yaml
+
+      - !include overzicht/hal.yaml
+
+      - type: energy-distribution
+        link_dashboard: false
+
+      - !include overzicht/energie.yaml
+
+      - !include overzicht/kantoor.yaml
+      - !include overzicht/woonkamer.yaml
+      - !include overzicht/keuken.yaml
+      - !include overzicht/bijkeuken.yaml
+      - !include overzicht/slaapkamer.yaml
+      - !include overzicht/badkamer.yaml
+
+      - !include overzicht/overig.yaml
+
+      - !include overzicht/computers.yaml
+      - !include overzicht/picky.yaml
+      - !include overzicht/osmc.yaml
+
+  - title: Woonkamer
+    cards:
+      - !include overzicht/woonkamer.yaml
+
+  - title: Slaapkamer
+    cards:
+      - !include overzicht/slaapkamer.yaml
+
+  - title: Badkamer
+    cards:
+      - !include overzicht/badkamer.yaml
+      - !include badkamerafzuiging/itho.yaml
+      - !include badkamerafzuiging/itho-graph.yaml
+
+  - title: Hal
+    cards:
+      - !include overzicht/hal.yaml
+
+  - title: Kantoor
+    cards:
+      - !include overzicht/kantoor.yaml
+
+  - title: Keuken
+    cards:
+      - !include overzicht/keuken.yaml
+
+  - title: Bijkeuken
+    cards:
+      - !include overzicht/bijkeuken.yaml
+
+  - title: Buiten
+    cards:
+
+      - !include overzicht/buiten.yaml
+      - !include overzicht/twilight.yaml
+
+      - type: custom:compass-card
+        header: false
+        language: nl
+        indicator_sensors:
+          - sensor: sensor.bresser51_wind_direction_sector_adjusted
+            indicator:
+              type: arrow_inward
+              show: false
+              dynamic_style:
+                sensor: sensor.bresser51_wind_speed
+                bands:
+                  - from_value: 0.1
+                    show: true
+        value_sensors:
+          - sensor: sensor.bresser51_wind_beaufort
+
+      - !include overzicht/weerstation.yaml
+
+  - title: Diversen
+    cards:
+      - type: energy-distribution
+        link_dashboard: false
+
+      - !include overzicht/energie.yaml
+
+      - !include overzicht/overig.yaml
+
+      - !include overzicht/computers.yaml
+      - !include overzicht/picky.yaml
+      - !include overzicht/osmc.yaml

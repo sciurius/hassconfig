@@ -1,0 +1,488 @@
+#                       -*- hass -*-
+
+button_card_templates:
+
+  activity:
+    variables:
+      device: xx
+    styles:
+      card:
+        - height: 70px
+        - background: yellow
+      icon:
+        - color: red
+        - width: 50%
+    show_name: false
+    tap_action:
+      action: call-service
+      service: '[[[ return "script.activity_" + variables.device ]]]'
+    hold_action:
+      action: call-service
+      service: '[[[ return "script.activity_" + variables.device ]]]'
+    icon: mdi:television
+    show_icon: true
+
+  power:
+    variables:
+      command: power
+      device: xx
+    styles:
+      card:
+        - height: 70px
+        - color: green
+        - background-color: lightyellow
+      icon:
+        - color: green
+        - width: 50%
+    show_name: true
+    tap_action:
+      action: call-service
+      service: pyscript.ircontrol
+      service_data:
+        command: '[[[ return variables.command ]]]'
+        device:  '[[[ return variables.device  ]]]'
+    hold_action:
+      action: call-service
+      service: pyscript.ircontrol
+      service_data:
+        command: '[[[ return variables.command ]]]'
+        device:  '[[[ return variables.device  ]]]'
+    icon: mdi:switch
+    show_icon: false
+    show_label: true
+    label: AAN/UIT
+    
+  general:
+    variables:
+      command: xx
+      device: xx
+    styles:
+      card:
+        - background: lightgreen
+      icon:
+        - color: black
+        - width: 50%
+    show_name: false
+    tap_action:
+      action: call-service
+      service: pyscript.ircontrol
+      service_data:
+        command: '[[[ return variables.command ]]]'
+        device:  '[[[ return variables.device  ]]]'
+    hold_action:
+      action: call-service
+      service: pyscript.ircontrol
+      service_data:
+        command: '[[[ return variables.command ]]]'
+        device:  '[[[ return variables.device  ]]]'
+    icon: mdi:television
+    show_icon: true
+
+  general_audio:
+    variables:
+      command: xx
+      device: audio
+    styles:
+      card:
+        - background: lightblue
+      icon:
+        - color: black
+        - width: 50%
+    show_name: false
+    tap_action:
+      action: call-service
+      service: pyscript.ircontrol
+      service_data:
+        command: '[[[ return variables.command ]]]'
+        device:  '[[[ return variables.device  ]]]'
+    hold_action:
+      action: call-service
+      service: pyscript.ircontrol
+      service_data:
+        command: '[[[ return variables.command ]]]'
+        device:  '[[[ return variables.device  ]]]'
+    icon: mdi:audio
+    show_icon: true
+
+  general_tv:
+    variables:
+      device: stb
+      command: xx
+    styles:
+      card:
+        - background: lightgreen
+      icon:
+        - width: 50%
+        - color: black
+    show_name: false
+    tap_action:
+      action: call-service
+      service: pyscript.ircontrol
+      service_data:
+        command: '[[[ return variables.command ]]]'
+        device:  '[[[ return variables.device  ]]]'
+    hold_action:
+      action: call-service
+      service: pyscript.ircontrol
+      service_data:
+        command: '[[[ return variables.command ]]]'
+        device:  '[[[ return variables.device  ]]]'
+    icon: mdi:video
+    show_icon: true
+
+  general_video:
+    variables:
+      command: xx
+    styles:
+      card:
+        - background: pink
+      icon:
+        - width: 50%
+        - color: black
+    show_name: false
+    tap_action:
+      action: call-service
+      service: '[[[ return "media_player.media_" + variables.command ]]]'
+      target:
+        entity_id: media_player.osmc
+      service_data:
+        entity_id: media_player.osmc
+    hold_action:
+      action: call-service
+      service: '[[[ return "media_player.media_" + variables.command ]]]'
+      target:
+        entity_id: media_player.osmc
+      service_data:
+        entity_id: media_player.osmc
+    icon: mdi:video
+    show_icon: true
+
+  channel:
+    variables:
+      channel: npo1
+    styles:
+      name:
+        - color: black
+      card:
+        - background-image: >
+            [[[
+            return 'url("/local/' + variables.channel + '.png")';
+            ]]]
+        - background-repeat: no-repeat
+        - background-position: center
+        - background-color: lightgrey
+        - height: 100px
+      icon:
+        - width: 25%
+    show_name: false
+    tap_action:
+      action: call-service
+      service: '[[[ return "script.channel_" + variables.channel ]]]'
+    hold_action:
+      action: call-service
+      service: '[[[ return "script.channel_" + variables.channel ]]]'
+    icon: mdi:television
+    show_icon: false
+
+title: Afstandsbediening
+kiosk_mode:
+  non_admin_settings:
+    kiosk: true
+    ignore_entity_settings: true
+  entity_settings:
+    - entity:
+        input_boolean.kiosk_mode: 'on'
+      hide_header: true
+      hide_sidebar: true
+    - entity:
+        input_boolean.kiosk_mode: 'off'
+      hide_header: false
+      hide_sidebar: false
+
+views:
+  - title: Afstandsbediening
+    type: custom:vertical-layout
+    cards:
+
+      #### Activities panel. Always present.
+
+      - type: vertical-stack
+        cards:
+
+        - type: horizontal-stack
+          cards:
+            - type: custom:state-switch
+              entity: group
+              states:
+                admin:
+                  type: horizontal-stack
+                  cards:
+                    - type: custom:button-card
+                      entity: input_boolean.kiosk_mode
+                      styles:
+                        card:
+                          - height: 70px
+                          - background: lightyellow
+                        icon:
+                          - color: red
+                          - width: 50%
+                      name: Kiosk mode
+                      show_icon: false
+            - type: custom:button-card
+              entity: switch.slaapkamer_media_center
+              icon: mdi:power
+              color_type: icon
+              show_state: false
+              show_icon: false
+              name: >-
+                [[[ if (entity.state==="on") return "Media center UIT"; else return "Media center AAN" ]]]
+              styles:
+                card:
+                  - height: 70px
+                  - background: lightyellow
+                icon:
+                  - color: red
+                  - width: 50%
+        - type: horizontal-stack
+          cards:
+            - type: custom:button-card
+              template: activity
+              variables:
+                device: "off"
+              icon: mdi:power
+            - type: custom:button-card
+              template: activity
+              variables:
+                device: tv
+              icon: mdi:television
+            - type: custom:button-card
+              template: activity
+              variables:
+                device: video
+              icon: mdi:movie-open-outline
+            - type: custom:button-card
+              template: activity
+              variables:
+                device: chromecast
+              icon: mdi:cast
+
+      #### Power panel. Always present.
+
+      - type: vertical-stack
+        cards:
+        - type: horizontal-stack
+          cards:
+            - type: custom:button-card
+              template: power
+              variables:
+                device: tv
+              name: TV
+            - type: custom:button-card
+              template: power
+              variables:
+                device: audio
+              name: AUDIO
+            - type: custom:button-card
+              template: power
+              variables:
+                device: stb
+              name: STB
+
+      #### Volume
+
+      - type: custom:state-switch
+        entity: >-
+          {% if is_state("select.slaapkamer_media_center","TV")
+                or
+                is_state("select.slaapkamer_media_center","Video")
+                or
+                is_state("select.slaapkamer_media_center","Chromecast")
+                or
+                is_state("input_boolean.kiosk_mode","off") %}
+          sound_card
+          {% else %} false {% endif %}
+        states:
+         sound_card:
+            type: vertical-stack
+            cards:
+              - type: horizontal-stack
+                cards:
+                  - type: custom:button-card
+                    template: general_audio
+                    variables:
+                      command: volume_down
+                    icon: mdi:volume-minus
+                  - type: custom:button-card
+                    template: general_audio
+                    variables:
+                      command: mute
+                    icon: mdi:volume-mute
+                  - type: custom:button-card
+                    template: general_audio
+                    variables:
+                      command: volume_up
+                    icon: mdi:volume-plus
+
+      #### TV: Volume/Play/Pause/Subtitles/Undo
+
+      - type: custom:state-switch
+        entity: >-
+          {% if is_state("select.slaapkamer_media_center","TV")
+                or
+                is_state("input_boolean.kiosk_mode","off") %}
+          tv_card
+          {% else %} false {% endif %}
+        states:
+         tv_card:
+          type: vertical-stack
+          cards:
+            - type: horizontal-stack
+              cards:
+                - type: custom:button-card
+                  template: general
+                  icon: mdi:subtitles-outline
+                  tap_action:
+                    action: call-service
+                    service: script.channel_subtitles
+                  long_tap_action:
+                    action: call-service
+                    service: script.channel_subtitles
+                - type: custom:button-card
+                  template: general
+                  variables:
+                    device: stb
+                    command: tv
+                  icon: mdi:undo
+                - type: custom:button-card
+                  template: general
+                  variables:
+                    device: stb
+                    command: ok
+                  icon: mdi:checkbox-marked-circle-outline
+
+      #### Video: Play/Pause/Stop/Back
+
+      - type: custom:state-switch
+        entity: >-
+          {% if is_state("select.slaapkamer_media_center","Video")
+                or
+                is_state("input_boolean.kiosk_mode","off") %}
+          tv_card
+          {% else %} false {% endif %}
+        states:
+         tv_card:
+          type: vertical-stack
+          cards:
+            - type: horizontal-stack
+              cards:
+                - type: custom:button-card
+                  template: general_video
+                  variables:
+                    command: pause
+                  icon: mdi:pause
+                - type: custom:button-card
+                  template: general_video
+                  variables:
+                    command: stop
+                  icon: mdi:stop
+                - type: custom:button-card
+                  template: general_video
+                  variables:
+                    command: play
+                  icon: mdi:play
+
+      - type: custom:layout-break
+
+      #### TV: Channels.
+
+      - type: custom:state-switch
+        entity: >-
+          {% if is_state("select.slaapkamer_media_center","TV")
+                or
+                is_state("input_boolean.kiosk_mode","off") %}
+          tv_card
+          {% else %} false {% endif %}
+        states:
+         tv_card:
+          type: vertical-stack
+          cards:
+            - type: horizontal-stack
+              cards:
+                - type: custom:button-card
+                  template: channel
+                  variables:
+                    channel: npo1
+                  name: NPO1
+                - type: custom:button-card
+                  template: channel
+                  variables:
+                    channel: npo2
+                  name: NPO2
+                - type: custom:button-card
+                  template: channel
+                  variables:
+                    channel: npo3
+                  name: NPO3
+
+            - type: horizontal-stack
+              cards:
+                - type: custom:button-card
+                  template: channel
+                  variables:
+                    channel: rtl4
+                  entity: sensor.dummy
+                  name: RTL4
+                - type: custom:button-card
+                  entity: sensor.dummy
+                  template: channel
+                  variables:
+                    channel: bbc1
+                  name: BBC1
+                - type: custom:button-card
+                  entity: sensor.dummy
+                  template: channel
+                  variables:
+                    channel: bbc2
+                  name: BBC2
+
+            - type: horizontal-stack
+              cards:
+                - type: custom:button-card
+                  template: channel
+                  variables:
+                    channel: een
+                  entity: sensor.dummy
+                  name: Eén
+                - type: custom:button-card
+                  entity: sensor.dummy
+                  template: channel
+                  variables:
+                    channel: canvas
+                  name: Canvas
+                - type: custom:button-card
+                  entity: sensor.dummy
+                  template: channel
+                  variables:
+                    channel: rtvdrenthe
+                  name: RTV Drenthe
+
+      #### Media Player
+
+      - type: conditional
+        conditions:
+          - entity: media_player.osmc
+            state_not: "off"
+          - entity: media_player.osmc
+            state_not: idle
+        card:
+          type: vertical-stack
+          cards:
+            - type: custom:mini-media-player
+              entity: media_player.osmc
+              background: /local/bg.png
+              hide:
+                controls: true
+                volume: true
+                power: true
+                runtime: false
+

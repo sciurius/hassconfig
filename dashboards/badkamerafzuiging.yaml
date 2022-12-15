@@ -1,0 +1,7 @@
+#                       -*- hass -*-
+
+views:
+  - title: Home
+    cards:
+      - !include badkamerafzuiging/itho.yaml
+      - !include badkamerafzuiging/itho-graph.yaml

@@ -17,9 +17,10 @@ pkgs : mount $(addprefix ${DST}/packages/,$(addsuffix .yaml,${PKGS}))
 mount ::
 	test -d ${HADIR}/config/.storage || mount ${HADIR}/config
 
-
 ${DST}/packages/%.yaml :: %.pl
-	perl $< > $@~ && mv $@~ $@
+	perl $< > $(basename $<).yaml \
+	&& install --preserve-timestamps --mode=0666 $(basename $<).yaml $@ \
+	&& rm $(basename $<).yaml
 
 ${DST}/packages/%.yaml :: %.yaml
-	cat $< > $@~ && mv $@~ $@
+	install --preserve-timestamps --mode=0666 $< $@

@@ -1,0 +1,152 @@
+# Sensors for Growatt inverter          -*- hass -*-
+
+title: Growatt
+views:
+  - title: Growayy
+    cards:
+      - type: entities
+        title: General
+        entities:
+        - entity: sensor.growatt_serial_number
+          name: Serial number
+        - entity: sensor.growatt_logtime
+          name: Timestamp
+          format: datetime
+        - entity: sensor.growatt_status
+          name: Status
+        - entity: sensor.growatt_warncode
+          name: Warncode
+        - type: divider
+        - type: custom:multiple-entity-row
+          entity: sensor.growatt_t_total
+          name: Total run time
+          format: precision0
+        - entity: sensor.growatt_temperature
+          name: Temperature
+        - entity: sensor.growatt_ipm_temperature
+          name: IPM Temperature
+        - type: custom:multiple-entity-row
+          entity: sensor.growatt_p_bus_voltage
+          name: Bus Voltage
+          show_state: false
+          entities:
+            - entity: sensor.growatt_n_bus_voltage
+              name: N
+            - entity: sensor.growatt_p_bus_voltage
+              name: P
+#        - entity: sensor.growatt_p_bus_voltage
+#          name: P-bus Voltage (V)
+#        - entity: sensor.growatt_n_bus_voltage
+#          name: N-bus Voltage (V)
+        - entity: sensor.growatt_power_factor
+          name: Power Factor
+        - type: divider
+        - entity: sensor.growatt_rac
+          name: Reactive Power
+          icon: mdi:flash-outline
+        - entity: sensor.growatt_e_rac_total
+          name: Reactive Energy Total
+          icon: mdi:flash-outline
+        - entity: sensor.growatt_e_rac_today
+          name: Reactive Energy Today
+          icon: mdi:flash-outline
+      - type: entities
+        title: Energy
+        entities:
+        - entity: sensor.growatt_eac_total
+          name: Eac Total (kWh)
+        - entity: sensor.growatt_epv_total
+          name: Epv Total (kWh)
+        - entity: sensor.growatt_epv1_total
+          name: Epv1 Total (kWh)
+        - entity: sensor.growatt_epv2_total
+          name: Epv2 Total (kWh)
+        - entity: sensor.growatt_eac_today
+          name: Eac Today (kWh)
+        - entity: sensor.growatt_epv1_today
+          name: Epv1 Today (kWh)
+        - entity: sensor.growatt_epv2_today
+          name: Epv2 Today (kWh)
+      - type: entities
+        title: PV Power
+        entities:
+#        - entity: sensor.growatt_ppv
+#          name: Ppv (W)
+#        - entity: sensor.growatt_ppv1
+#          name: Ppv1 (W)
+#        - entity: sensor.growatt_ppv2
+#          name: Ppv2 (W)
+#        - entity: sensor.growatt_vpv1
+#          name: Vpv1 (V)
+#        - entity: sensor.growatt_ipv1
+#          name: Ipv1 (A)
+#        - entity: sensor.growatt_vpv2
+#          name: Vpv2 (V)
+#        - entity: sensor.growatt_ipv2
+#          name: Ipv2 (A)
+        - type: custom:multiple-entity-row
+          entity: sensor.growatt_ppv1
+          name: PV1
+          entities:
+            - entity: sensor.growatt_vpv1
+              name: false
+            - entity: sensor.growatt_ipv1
+              name: false
+        - type: custom:multiple-entity-row
+          entity: sensor.growatt_ppv2
+          name: PV2
+          entities:
+            - entity: sensor.growatt_vpv2
+              name: false
+            - entity: sensor.growatt_ipv2
+              name: false
+      - type: entities
+        title: Grid
+        entities:
+        - entity: sensor.growatt_pac
+          name: Pac (W)
+        - type: custom:multiple-entity-row
+          entity: sensor.growatt_pacr
+          name: Phase L1
+          entities:
+            - entity: sensor.growatt_vacr
+              name: false
+            - entity: sensor.growatt_iacr
+              name: false
+        - type: custom:multiple-entity-row
+          entity: sensor.growatt_pacs
+          name: Phase L2
+          entities:
+            - entity: sensor.growatt_vacs
+              name: false
+            - entity: sensor.growatt_iacs
+              name: false
+        - type: custom:multiple-entity-row
+          entity: sensor.growatt_pact
+          name: Phase L3
+          entities:
+            - entity: sensor.growatt_vact
+              name: false
+            - entity: sensor.growatt_iact
+              name: false
+#        - entity: sensor.growatt_vacr
+#          name: Vac R (V)
+#        - entity: sensor.growatt_vacs
+#          name: Vac S (V)
+#        - entity: sensor.growatt_vact
+#          name: Vac T (V)
+#        - entity: sensor.growatt_iacr
+#          name: Iac R (A)
+#        - entity: sensor.growatt_iacs
+#          name: Iac S (A)
+#        - entity: sensor.growatt_iact
+#          name: Iac T (A)
+        - entity: sensor.growatt_fac
+          name: Fac (Hz)
+#        - entity: sensor.growatt_pacr
+#          name: Pac R (W)
+#        - entity: sensor.growatt_pacs
+#          name: Pac S (W)
+#        - entity: sensor.growatt_pact
+#          name: Pac T (W)
+                

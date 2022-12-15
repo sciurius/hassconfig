@@ -1,0 +1,188 @@
+# emsgw.yaml            EMS-ESP gateway         -*-hass-*-
+
+input_number:
+
+  # To store the wind chill factor once an hour.
+  emsgw_chill:
+    name: Chill Factor
+    min: -50
+    max: 50
+    step: 1
+    mode: box
+    unit_of_measurement: "⁰C"
+
+template:
+
+  - sensor:
+
+      # This is mainly to show the current settings in a dashboard.
+      - name: Boiler Heating Temperature
+        state: "{{ states('number.boiler_heating_temperature')|round(1) }}"
+        unit_of_measurement: "⁰C"
+        icon: mdi:car-cruise-control
+
+      - name: Thermostat Temperature
+        state: "{{ state_attr('climate.thermostat_hc1','current_temperature') }}"
+        unit_of_measurement: "⁰C"
+        icon: mdi:thermometer
+        
+      - name: Thermostat Setting
+        state: "{{ state_attr('climate.thermostat_hc1','temperature') }}"
+        unit_of_measurement: "⁰C"
+        icon: mdi:thermometer
+
+  # Emergency changes for v4 firmware
+  #     - name: "Boiler System Pressure"
+  #       state: "{{ states('sensor.boiler_syspress') }}"
+  #       unit_of_measurement: bar
+
+  #     - name: "Boiler Current Flow Temperature"
+  #       state: "{{ states('sensor.boiler_curflowtemp') }}"
+  #       unit_of_measurement: "⁰C"
+  #       icon: mdi:thermometer
+
+  #     - name: "Boiler Dhw Current Tap Water Flow"
+  #       state: "{{ states('sensor.boiler_wwcurflow') }}"
+  #       unit_of_measurement: "l/m"
+        
+  # - binary_sensor:
+
+  #     - name: "Boiler Heating Active"
+  #       state: "{{ states('binary_sensor.boiler_heatingactive') }}"
+
+      - name: 'Boiler Status Text'
+        state: >
+          {% set sc = states('sensor.boiler_service_code_number') %}
+          {% if sc == '200' %} CH active
+          {% elif sc == '201' %} HW active
+          {% elif sc == '202' %} CH anti cycle
+          {% elif sc == '203' %} Standby
+          {% elif sc == '204' %} CH cooling
+          {% elif sc == '208' %} Service test
+          {% elif sc == '265' %} Low CH load
+          {% elif sc == '268' %} Component test
+          {% elif sc == '270' %} Power up
+          {% elif sc == '283' %} Burner start
+          {% elif sc == '284' %} Ignition
+          {% elif sc == '305' %} HW anti cycle
+          {% elif sc == '357' %} Air purge
+          {% elif sc == '358' %} Valve kick
+          {% else %} {{ sc }}
+          {% endif %}
+  
+sensor:
+
+  # Average wind chill over the last hour.
+  - platform: statistics
+    name: EMSGW Average Wind Chill
+    entity_id: sensor.bresser51_wind_chill
+    state_characteristic: average_step
+    sampling_size: 300
+    max_age:
+      hours: 1
+
+automation:
+
+  - alias: EMSGW Save Wind Chill
+    description: "Copies the chill factor to the helper."
+    mode: single
+
+    # Trigger every hour, at 7 minutes past.
+    trigger:
+      - platform: time_pattern
+        minutes: 7
+
+    condition: |-
+      {{ states('sensor.emsgw_average_wind_chill')
+         not in ( 'unavailable', 'unknown' ) }}
+
+    action:
+      service: input_number.set_value
+      target:
+        entity_id: input_number.emsgw_chill
+      data:
+        value: "{{ states('sensor.emsgw_average_wind_chill') }}"
+
+  - alias: EMSGW Check Wind Chill
+    description: "Checks (change in) wind chill and adjusts the CV capacity."
+    mode: single
+
+    variables:
+      threshold: 10
+      burner_low: 45
+      burner_high: 70
+
+    trigger:
+      - platform: state
+        entity_id: input_number.emsgw_chill
+
+    action:
+
+      - choose:
+
+          # Low.
+          - conditions: >-
+              {{     trigger.from_state.state|round(0) <= threshold
+                 and trigger.to_state.state  |round(0) <= threshold
+                 and
+                 states('sensor.boiler_heating_temperature')|round(0) < burner_high
+              }}
+
+            sequence:
+              - service: mqtt.publish
+                data:
+                  topic: ems-esp/boiler/heatingtemp
+                  payload: "{{ burner_high }}"
+              - service: telegram_bot.send_message
+                data:
+                  message: >-
+                    CV: Chill {{ trigger.to_state.state|round(1) }},
+                    threshold {{ threshold }},
+                    heating set to {{ burner_high }}
+
+          # High.
+          - conditions: >-
+              {{     trigger.from_state.state|round(0) > threshold
+                 and trigger.to_state.state  |round(0) > threshold
+                 and
+                 states('sensor.boiler_heating_temperature')|round(0) > burner_low
+              }}
+
+            sequence:
+              - service: mqtt.publish
+                data:
+                  topic: ems-esp/boiler/heatingtemp
+                  payload: "{{ burner_low }}"
+              - service: telegram_bot.send_message
+                data:
+                  message: >-
+                    CV: Chill {{ trigger.to_state.state|round(1) }},
+                    threshold {{ threshold }},
+                    heating set to {{ burner_low }}
+
+  - alias: EMSGW Check Return Temperature
+    description: Check return temp. Must be below 55.
+    mode: single
+
+    trigger:
+      - platform: numeric_state
+        id: too_high
+        entity_id: sensor.boiler_return_temperature
+        above: 55
+        for: "00:05:00"
+      - platform: numeric_state
+        id: ok_again
+        entity_id: sensor.boiler_return_temperature
+        below: 55
+        for: "00:05:00"
+
+    action:
+      - service: telegram_bot.send_message
+        data:
+          message: >-
+            CV: Return temperature
+            {% if trigger.id == "too_high" %} too high:
+            {% else %} OK again:
+            {% endif %}
+            {{ trigger.to_state.state|round(1) }}
+            ⁰C

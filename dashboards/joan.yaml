@@ -1,0 +1,187 @@
+# dashboard: Joan                       -*-hass-*-
+
+button_card_templates:
+  standard:
+    variables:
+      image_on:  "bg_on.jpg"
+      image_off: ""
+    styles:
+      name:
+        - color: white
+      card:
+        - height: 200px
+        - width: 200px
+        - background-image: >
+            [[[
+            if ( entity.state === 'on' || variables.image_off === '' )
+            return 'url("/local/' + variables.image_on + '")';
+            else
+            return 'url("/local/' + variables.image_off + '")';
+            ]]]
+      icon:
+        - margin-top: -60%
+        - margin-left: -70%
+        - width: 25%
+    icon: mdi:lamp
+    show_name: true
+    tap_action:
+      action: toggle
+    hold_action:
+      action: toggle
+
+title: Home
+kiosk_mode:
+  non_admin_settings:
+    kiosk: true
+    ignore_entity_settings: true
+  entity_settings:
+    - entity:
+        input_boolean.kiosk_mode: 'on'
+      hide_header: true
+      hide_sidebar: true
+    - entity:
+        input_boolean.kiosk_mode: 'off'
+      hide_header: false
+      hide_sidebar: false
+views:
+  - theme: Backend-selected
+    path: default_view
+    title: Home
+    type: custom:masonry-layout
+    layout:
+      width: 688
+    badges: []
+    cards:
+      - type: vertical-stack
+        cards:
+          - type: horizontal-stack
+            cards:
+              - type: entities
+                show_header_toggle: false
+                title: Buiten
+                entities:
+                  - entity: weather.openweathermap
+                    name: Temperatuur
+              - type: custom:compass-card
+                header: false
+                language: nl
+                indicator_sensors:
+                  - sensor: sensor.bresser51_wind_direction
+                    indicator:
+                      type: arrow_inward
+                      show: false
+                      dynamic_style:
+                        sensor: sensor.bresser51_wind_speed
+                        bands:
+                          - from_value: 0.1
+                            show: true
+                value_sensors:
+                  - sensor: sensor.bresser51_wind_beaufort
+              - show_name: true
+                show_icon: true
+                show_state: true
+                type: glance
+                columns: 4
+                entities:
+                  - entity: sensor.tomorrow_io_home_tree_pollen_index
+                  - entity: sensor.tomorrow_io_home_grass_pollen_index
+                  - entity: sensor.tomorrow_io_home_weed_pollen_index
+                  - entity: binary_sensor.stookalert_drenthe
+                    name: Stookalarm
+                state_color: true
+              - type: custom:button-card
+                styles:
+                  name:
+                    - color: white
+                  card:
+                    - height: 200px
+                    - width: 200px
+                    - background-image: url("/local/rc2.png")
+                tap_action:
+                  action: navigate
+                  navigation_path: /lovelace-slaapkamerremote
+          - square: true
+            columns: 5
+            type: grid
+
+            cards:
+
+              - type: custom:button-card
+                template: standard
+                variables:
+                  image_on: "lr-tafel_200.png"
+                entity: light.woonkamer_tafel
+                name: Verlichting tafel
+                icon: mdi:ceiling-light
+
+              - type: custom:button-card
+                template: standard
+                variables:
+                  image_on: "lr-side_200.png"
+                entity: light.woonkamer_tafeltje
+                name: Verlichting tafeltje
+                icon: mdi:lamp
+
+              - type: custom:button-card
+                template: standard
+                variables:
+                  image_on: "lr-corner_200.png"
+                entity: light.woonkamer_hoek
+                name: Verlichting hoek
+                icon: mdi:floor-lamp-torchiere
+
+              - type: custom:button-card
+                template: standard
+                variables:
+                  image_on: "lr-totem_200.png"
+                entity: light.woonkamer_totem
+                name: Verlichting totem
+                icon: mdi:light-flood-down
+
+              - type: custom:button-card
+                template: standard
+                variables:
+                  image_on: "lr-heks_200.png"
+                entity: light.woonkamer_heks
+                name: Verlichting heks
+                icon: mdi:light-flood-down
+
+              - type: custom:button-card
+                template: standard
+                variables:
+                  image_on: "lr-wand_200.png"
+                entity: light.woonkamer_wand
+                name: Verlichting wand
+                icon: mdi:light-flood-down
+
+              - type: custom:button-card
+                template: standard
+                variables:
+                  image_on: "lr-sound_200.png"
+                entity: switch.woonkamer_sound_system
+                name: Sound System
+                icon: mdi:music-circle
+
+              - type: custom:button-card
+                template: standard
+                variables:
+                  image_on: "sr-media_200.png"
+                entity: switch.slaapkamer_media_center
+                name: Media Center
+                icon: mdi:television-box
+
+              - type: custom:button-card
+                template: standard
+                variables:
+                  image_on: "sr-nightlight.png"
+                entity: light.slaapkamer_avondlichtje
+                name: Avondlichtje
+                icon: mdi:lamp
+
+              - type: custom:button-card
+                template: standard
+                variables:
+                  image_on: "hall-corner_200.png"
+                entity: light.hal_hoek
+                name: Verlichting hoek
+                icon: mdi:floor-lamp-torchiere

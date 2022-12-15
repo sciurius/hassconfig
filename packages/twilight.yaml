@@ -1,0 +1,375 @@
+# Twilight                                  -*-hass-*-
+
+# This package controls switching on/off certain lights based on
+# darkness and day time.
+#
+# Basics: There is 'day time' when we are active. This is between
+# 07:30 and 23:15 (weekdays), 10:30 and 23:30 weekends.
+# There is a luminance sensor that indicates darkness when the level
+# has been low for some minutes.
+# When day time is on, and darkness is also on, switch on the lights.
+# Otherwise, the lights must be off.
+
+# For the light groups, see packages/devices.yaml.
+
+input_boolean:
+
+  # This indicates the light levels have been low for a reasonable
+  # amount of time.
+  # It is switched on/off by automation darkness_on/off.
+
+  darkness:
+    name: Darkness
+
+input_number:
+
+  # Luminance values for the lighting to switch off / on.
+  luminance_threshold_down:
+    name: Luminance Threshold (down)
+    min: 0
+    max: 10000
+    mode: box
+    unit_of_measurement: lx
+  luminance_threshold_up:
+    name: Luminance Threshold (up)
+    min: 0
+    max: 10000
+    mode: box
+    unit_of_measurement: lx
+    
+input_text:
+
+  daylight:
+    mode: text
+
+template:
+
+  - binary_sensor:
+
+    # Binary sensor to indicate that it is day time, i.e. the time
+    # we are performing daily activities.
+    # Weekday < 4:  mon(0) tue wed thu(3)
+    # Weekday <= 4: mon(0) tue wed thu fri(4)
+    # OBSOLETE -- Use schedule.daytime_schedule.
+    #- name: "Day Time"
+    #  state: >
+    #    {% set end = "23:15" if now().weekday() < 4 else "23:30" %}
+    #    {% set start = "07:30" if now().weekday() <= 4 else "10:30" %}
+    #    {{ ( today_at(start) < now() < today_at(end) )
+    #    }}
+
+    - name: "Day Time"
+      state: "{{ is_state('schedule.daytime_schedule', 'on') }}"
+
+    # Binary sensor to reflect the state of input_boolean.darkness.
+    # The input boolean is controlled by automations depending on the
+    # measured light level.
+    
+    - name: "Darkness"
+      state: "{{ states('input_boolean.darkness') }}"
+
+    # Binary sensor to indicate that the lights must be on.
+    
+    - name: "Lighting"
+      state: "{{ is_state('binary_sensor.darkness', 'on')
+                 and is_state('schedule.daytime_schedule', 'on') }}"
+
+schedule:
+
+  # Time when we are (supposed to be) active.
+  # This is between 07:30 and 23:15 (weekdays), 10:30 and 23:30 weekends.
+
+  daytime_schedule:
+    name: Daytime schedule
+    monday:
+      - from: "07:30:00"
+        to:   "23:15:00"
+    tuesday:
+      - from: "07:30:00"
+        to:   "23:15:00"
+    wednesday:
+      - from: "07:30:00"
+        to:   "23:15:00"
+    thursday:
+      - from: "07:30:00"
+        to:   "23:15:00"
+    friday:
+      - from: "07:30:00"
+        to:   "23:30:00"
+    saturday:
+      - from: "10:00:00"
+        to:   "23:30:00"
+    sunday:
+      - from: "10:00:00"
+        to:   "23:30:00"
+
+script:
+
+  # Turn on/off the lights from a group, with random pauses.
+
+  turn_on_off_some_lights:
+
+    alias: Turn On/Off Some Lights
+    icon: mdi:lightbulb-group-outline
+    mode: restart
+    variables:
+      switch: 'off'
+      target: light.evening_lights
+    sequence:
+      - repeat:
+          for_each: '{{ state_attr(target, "entity_id") | list }}'
+          sequence:
+          - service: '{{ "light.turn_" +  switch }}'
+            target:
+              entity_id: '{{ repeat.item }}'
+          - delay:
+              seconds: '{{ 0 if repeat.last else (range(10, 20)|random|int) }}'
+
+  # We have two groups: the morning lights and the evening lights.
+  # Morning lights should be switched on when it is dark in the morning,
+  # evening lights switch on when it is dark in the evening.
+
+  turn_on_morning_lights:
+
+    alias: Turn On Morning Lights
+    icon: mdi:lightbulb-group-outline
+    mode: restart
+    sequence:
+      - service: script.turn_on_off_some_lights
+        data:
+          target: light.morning_lights
+          switch: 'on'
+
+  turn_off_morning_lights:
+
+    alias: Turn Off Morning Lights
+    icon: mdi:lightbulb-group-outline
+    mode: restart
+    sequence:
+      - service: script.turn_on_off_some_lights
+        data:
+          target: light.morning_lights
+          switch: 'off'
+
+  turn_on_evening_lights:
+    
+    alias: Turn On Evening Lights
+    icon: mdi:lightbulb-group-outline
+    mode: restart
+    sequence:
+      - service: script.turn_on_off_some_lights
+        data:
+          target: light.evening_lights
+          switch: 'on'
+
+  turn_off_evening_lights:
+    
+    alias: Turn Off Evening Lights
+    icon: mdi:lightbulb-group-outline
+    mode: restart
+    sequence:
+      - service: script.turn_on_off_some_lights
+        data:
+          target: light.evening_lights
+          switch: 'off'
+
+  # Currently the evening lights are a superset of the morning lights,
+  # so we do not need to turn off/on the morning lights if we just
+  # turned on/off the evening lights.
+
+  turn_on_the_lights:
+    
+    alias: Turn On all lights
+    mode: restart
+    sequence:
+      - service: script.turn_on_evening_lights
+        
+  turn_off_the_lights:
+    
+    alias: Turn Off all lights
+    mode: restart
+    sequence:
+      - service: script.turn_off_evening_lights
+        
+ 
+automation:
+
+  # Switch input_boolean.darskness on/of depending on the measured
+  # light level.
+  
+  - alias: Darkness On
+    id: Automation__Darkness_On
+    mode: single
+    trigger:
+      - platform: numeric_state
+        entity_id: sensor.achterkamer_illuminance
+        for: "00:03:00"
+        below: input_number.luminance_threshold_down
+    action:
+      - service: input_boolean.turn_on
+        target:
+          entity_id: input_boolean.darkness
+        data: {}
+
+  # Currently, the light.woonkamer_totem interferes with the light
+  # sensor. So do not think darkness is over when this light is on.
+  
+  - alias: Darkness Off
+    id: Automation__Darkness_Off
+    mode: single
+    trigger:
+      - platform: numeric_state
+        entity_id: sensor.achterkamer_illuminance
+        for: "00:03:00"
+        above: input_number.luminance_threshold_up
+    condition:
+      - condition: state
+        entity_id: light.woonkamer_totem
+        state: "off"
+    action:
+      - service: input_boolean.turn_off
+        target:
+          entity_id: input_boolean.darkness
+        data: {}
+        
+  # Notification for darkness switching.
+
+  - alias: Darkness On/Off notification
+    id: Automation__Darkness_On/Off_notification
+    use_blueprint:
+      path: device_onoff_notification.yaml
+      input:
+        dev_ent: binary_sensor.darkness
+
+  # Notification for day_time switching.
+
+  - alias: Day time On/Off notification
+    id: Automation__Day_time_On/Off_notification
+    use_blueprint:
+      path: device_onoff_notification.yaml
+      input:
+        dev_ent: schedule.daytime_schedule
+
+  - alias: Turn Evening Lights Off at Night
+    id: Automation_Turn_Evening_Lights_Off_at_Night
+    description: 'Turn evening lights off at night.'
+    mode: single
+
+    trigger:
+      - platform: state
+        entity_id:
+          - binary_sensor.lighting
+        from: 'on'
+        to: 'off'
+
+    action:
+      - service: script.turn_off_evening_lights
+        data: {}
+
+  - alias: Turn Lights On in the morning
+    id: Automation__Turn_Lights_On_in_the_morning
+    description: 'Turn morning lights on in the morning,'
+    mode: single
+
+    trigger:
+      - platform: state
+        entity_id:
+          - binary_sensor.lighting
+        from: 'off'
+        to: 'on'
+
+    condition:
+      - condition: time
+        before: "14:00:00"
+
+    action:
+      - service: script.turn_on_morning_lights
+        data: {}
+
+  - alias: Turn Lights On in the evening 
+    id: Automation__Turn_Lights_On_in_the_evening
+    description: 'Turn evening lights on in the evening.'
+    mode: single
+
+    trigger:
+      - platform: state
+        entity_id:
+          - binary_sensor.lighting
+        from: 'off'
+        to: 'on'
+
+    condition:
+      - condition: time
+        after: "14:00:00"
+
+    action:
+      - service: script.turn_on_evening_lights
+        data: {}
+
+  - alias: Turn Lights Off in the morning
+    id: Automation__Turn_Lights_Off_in_the_morning
+    description: 'Turn morning lights off in the morning.'
+    mode: single
+
+    trigger:
+      - platform: state
+        entity_id:
+          - binary_sensor.lighting
+        from: 'off'
+        to: 'om'
+
+    condition:
+      - condition: time
+        before: "14:00:00"
+
+    action:
+      - service: script.turn_off_morning_lights
+        data: {}
+
+  - alias: Turn Lights Off in the evening 
+    id: Automation__Turn_Lights_Off_in_the_evening
+    description: 'Turn evening lights off in the evening.'
+    mode: single
+
+    trigger:
+      - platform: state
+        entity_id:
+          - binary_sensor.lighting
+        from: 'on'
+        to: 'off'
+
+    condition:
+      - condition: time
+        after: "14:00:00"
+
+    action:
+      - service: script.turn_off_evening_lights
+        data: {}
+
+  # This light is turned on after sunset.
+  # It is turned off by 'Auto MC Off Slaapkamer' (see slaakamermc.yaml).
+
+  - alias: Turn on Avondlichtje
+    id: Automation__Turn_on_Avondlichtje
+    description: 'Turn on avondlichtje (slaapkamer) at sunset.'
+    mode: single
+
+    trigger:
+      - platform: sun
+        event: sunset
+
+    action:
+      - service: light.turn_on
+        target:
+          entity_id: light.slaapkamer_avondlichtje
+        data: {}
+
+  # This is to track darkness switching.
+  
+  - alias: Verlichting Hoek Woonkamer On/Off Notification
+    id: Automation__Verlichting_Hoek_Woonkamer_on_off_Notification
+    description: 'Verlichting Hoek Woonkamer On/Off Notification/'
+    use_blueprint:
+      path: device_onoff_notification.yaml
+      input:
+        dev_ent: light.woonkamer_hoek

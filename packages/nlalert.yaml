@@ -1,0 +1,58 @@
+automation:
+  - alias: "NL-Alert: Kaart ophalen"
+    description: ""
+    trigger:
+      - platform: state
+        entity_id:
+          - sensor.nl_alert_state
+      - platform: homeassistant
+        event: start
+    condition: []
+    action:
+      - service: button.press
+        data: {}
+        target:
+          entity_id: button.refresh_map
+    mode: single
+
+template:
+   - binary_sensor:
+      - name: "NL-Alert in de regio"
+        state: >-
+          {{ 'hier|je|regio|waar|je|woont|of|waar|je|een|nlalert|van|wil|zien' in state_attr('sensor.nl_alert_state', 'melding') | lower }}
+
+
+multiscrape:
+  - name: HA scraper
+    resource: https://crisis.nl/nl-alert/nl-alerts/
+    scan_interval: 3600
+    sensor:
+      - unique_id: nl_alert_state
+        name: NL-Alert
+        select: "#content > div:nth-child(4) > a > h3"
+        value_template: '{{ "Actief" if  "ACTIEF" in value else "Geen actieve NL Alerts" }}'
+        attributes:
+          - name: Melding
+            select: "#content > div:nth-child(4) > a > p"
+          - name: Datum & Tijd
+            select: "#content > div:nth-child(4) > a > h3"
+            value_template: >
+              {{ value.split('ACTIEF')[-1].strip() if 'ACTIEF' in value else value.strip() }}
+          - name: Meer informatie
+            select: "#content > div:nth-child(4) > a"
+            attribute: href
+
+  - name: NL
+    button:
+      unique_id: refresh_map
+      name: Kaart laden
+    resource_template: http://www.crisis.nl{{ state_attr('sensor.nl_alert_state', 'meer_informatie') }}
+    scan_interval: 3600
+    sensor:
+      - unique_id: nl_alert_kaart
+        name: Kaart
+        value_template: "Kaart"
+        attributes:
+          - name: URL
+            select: "#main > div.wrapper > div.googlemaps > img"
+            attribute: src

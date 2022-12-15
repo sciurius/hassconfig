@@ -1,0 +1,147 @@
+title: Weerstation
+views:
+  - title: Weerstation
+    cards:
+      - type: vertical-stack
+        cards:
+
+          - !include bresser51/compass.yaml
+
+          - type: custom:mini-graph-card
+            hours_to_show: 24
+            graph: line
+            points_per_hour: 1
+            hour24: true
+            font_size: 75
+            entities:
+              - entity: sensor.bresser51_temperature
+            name: Temperatuur
+
+          - type: custom:mini-graph-card
+            hours_to_show: 24
+            points_per_hour: 1
+            hour24: true
+            graph: line
+            name: Vochtigheid
+            font_size: 75
+            entities:
+              - entity: sensor.bresser51_humidity
+
+      - type: entities
+        title: Weerstation
+        entities:
+          - entity: sensor.bresser51_temperature
+            name: Temperatuur
+          - entity: sensor.bresser51_wind_chill
+            name: Voelt als
+          - entity: sensor.bresser51_humidity
+            name: Vochtigheid
+          - entity: weather.openweathermap
+            icon: mdi:gauge
+            type: custom:template-entity-row
+            name: Luchtdruk (OWM)
+            state: >
+              {{ state_attr('weather.openweathermap','pressure') }} hPa
+          - entity: sensor.bresser51_time
+            name: Tijdstip
+            format: datetime
+          - entity: binary_sensor.bresser51_battery
+            name: Batterij
+      - type: entities
+        title: Wind
+        entities:
+          - entity: sensor.bresser51_wind_beaufort
+            name: Kracht
+          - entity: sensor.bresser51_wind_direction_name
+            name: Richting
+          - type: divider
+          - entity: sensor.bresser51_wind_speed
+            name: Snelheid
+            icon: mdi:weather-windy
+          - entity: sensor.bresser51_wind_speed_kmh
+            name: Snelheid
+            icon: mdi:weather-windy
+          - entity: sensor.bresser51_wind_gust
+            name: Vlaag
+            icon: mdi:weather-windy
+          - entity: sensor.bresser51_wind_direction_unadjusted
+            name: Richting (ruw)
+          - entity: sensor.bresser51_dir_corr
+            name: Richting (corr.)
+          - entity: sensor.bresser51_wind_direction
+            name: Richting (gecorr.)
+          - entity: sensor.bresser51_wind_direction_sector
+            name: Sector
+          - entity: sensor.bresser51_wind_direction_sector_adjusted
+            name: Sector (graden)
+      - type: vertical-stack
+        cards:
+          - type: entities
+            title: Neerslag
+            entities:
+              - entity: sensor.bresser51_rain
+                name: Totaal
+              - entity: sensor.bresser51_rain_1h
+                name: Laatste uur
+              - entity: sensor.bresser51_rain_24h
+                name: Laatste 24 uur
+              - entity: sensor.bresser51_rain_168h
+                name: Laatste 168 uur
+              - entity: sensor.bresser51_rain_earliest
+                name: 168 uur waarde
+              - entity: sensor.bresser51_rain_offset
+                name: Offset
+          - type: custom:mini-graph-card
+            hours_to_show: 168
+            graph: line
+            name: Neerslag recent
+            points-per-hour: 1
+            hour24: true
+            font_size: 75
+            entities:
+              - entity: sensor.bresser51_rain_168h
+                show_graph: false
+              - entity: sensor.bresser51_rain
+            
+      - type: vertical-stack
+        cards:
+          - type: entities
+            entities:
+              - entity: sensor.knmi_home_omschrijving
+                name: Omschrijving
+              - entity: sensor.knmi_temperature
+                name: Temperatuur
+                secondary_info: last-updated
+              - entity: sensor.knmi_home_gevoelstemperatuur
+                name: Gevoelstemperatuur
+              - entity: sensor.knmi_humidity
+                name: Vochtigheid
+              - entity: sensor.knmi_pressure
+                name: Luchtdruk
+              - entity: sensor.knmi_wind_speed
+                name: Windsnelheid
+              - entity: sensor.knmi_wind_speed_kmh
+                name: Windsnelheid
+              - entity: sensor.knmi_wind_bearing
+                name: Windrichting
+              - entity: sensor.knmi_wind_direction_name
+                name: Windrichting
+              - entity: binary_sensor.knmi_home_zon
+                name: Zon
+                state_color: true
+              - entity: binary_sensor.knmi_home_waarschuwing
+                name: Waarschuwing
+            title: KNMI
+          - type: conditional
+            conditions:
+              - entity: binary_sensor.knmi_home_waarschuwing
+                state: "on"
+            card:
+              type: markdown
+              content: >-
+                  {{ state_attr("binary_sensor.knmi_home_waarschuwing","Waarschuwing") }}
+              name: Waarschuwing
+              title: Waarschuwing
+          - type: weather-forecast
+            entity: weather.knmi_home
+            show_forecast: true

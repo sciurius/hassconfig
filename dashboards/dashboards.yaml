@@ -1,0 +1,58 @@
+# YAML Dashboards
+
+lovelace-overzicht:
+  mode: yaml
+  title: Overzicht
+  icon: mdi:script
+  show_in_sidebar: true
+  filename: dashboards/overzicht.yaml
+  
+lovelace-joan:
+  mode: yaml
+  title: Joan
+  icon: mdi:heart-circle-outline
+  show_in_sidebar: true
+  filename: dashboards/joan.yaml
+  
+lovelace-bresser51:
+  mode: yaml
+  title: Weerstation
+  icon:  mdi:weather-partly-rainy
+  show_in_sidebar: true
+  filename: dashboards/bresser51.yaml
+  
+lovelace-test:
+  mode: yaml
+  title: Test
+  icon: mdi:script
+  show_in_sidebar: false
+  filename: dashboards/test.yaml
+  
+lovelace-badkamerafzuiging:
+  mode: yaml
+  title: Badkamerafzuiging
+  icon: mdi:fan
+  show_in_sidebar: true
+  filename: dashboards/badkamerafzuiging.yaml
+  
+lovelace-slaapkamerremote:
+  mode: yaml
+  title: Afstandsbediening
+  icon: mdi:remote
+  show_in_sidebar: true
+  filename: dashboards/slaapkamerremote.yaml
+  
+lovelace-remotedevices:
+  mode: yaml
+  title: Remote Devices
+  icon: mdi:remote
+  show_in_sidebar: true
+  filename: dashboards/remotedevices.yaml
+  
+lovelace-growatt:
+  mode: yaml
+  title: Growatt
+  icon: mdi:solar-power
+  show_in_sidebar: true
+  filename: dashboards/growatt.yaml
+  

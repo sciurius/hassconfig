@@ -1,0 +1,67 @@
+#                       -*- hass -*-
+
+sensor:
+
+  - platform: imap
+    name: IMAP Johan Vromans
+    server: mail.vandervlis.nl
+    username: johanvromans
+    password: !secret imap_johanvromans
+
+  - platform: imap
+    name: IMAP Mojore
+    server: mail.vandervlis.nl
+    username: mojore
+    password: !secret imap_mojore
+
+
+automation:
+
+  - id: Automation__New_mail_for_Johan
+    alias: New mail for Johan
+    initial_state: false
+    trigger:
+      - platform: state
+        entity_id:
+          - sensor.imap_johan_vromans
+    condition:
+      - condition: template
+        value_template: "{{ trigger.to_state.state|int(0) > 0 }}"
+    action:
+      - service: notify.messenger
+        data:
+          message: >-
+            {% set x = (trigger.to_state.state|int(0)) %} 
+            {% if x == 1 %}
+            You have 1 new message.
+            {% else %}
+            You have {{ x }} new messages.
+            {% endif %}
+    
+  - id: Automation__New_mail_for_Mojore
+    alias: New mail for Mojore
+    trigger:
+      - platform: state
+        entity_id:
+          - sensor.imap_mojore
+    condition:
+      - condition: template
+        value_template: "{{ trigger.to_state.state|int(0) > 0 }}"
+    action:
+      - service: notify.mojore_messenger
+        data:
+          message: >-
+            {% set x = (trigger.to_state.state|int(0)) %} 
+            {% if x == 1 %}
+            Er is 1 nieuwe mail.
+            {% else %}
+            Er zijn {{ x }} nieuwe mails.
+            {% endif %}
+    
+# Exclude some fast changing (and less relevant) sensors from the
+# LogBook.
+
+logbook:
+  exclude:
+    entity_globs:
+      - sensor.imap_*

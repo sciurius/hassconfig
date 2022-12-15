@@ -1,0 +1,62 @@
+automation:
+- id: Automation__Voordeurbel_Notification
+  alias: Notify Voordeurbel
+  description: ''
+  trigger:
+  - platform: device
+    type: turned_on
+    device_id: bec7934ef3d60bb6dac9e6d99cead844
+    entity_id: switch.doorbell
+    domain: switch
+  condition: []
+  action:
+  - service: notify.mobile_app_sm_a320fl
+    data:
+      message: TTS
+      data:
+        tts_text: Someone at the door
+        priority: high
+        ttl: 0
+        media_stream: "alarm_stream_max"
+        importance: high
+  - service: script.doorbell_alarm
+    data: {}
+  - service: telegram_bot.send_message
+    data:
+      message: Ding Dong!
+  mode: single
+
+
+- id: '1650742628501'
+  alias: Doorbell Mode
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: input_select.doorbell_mode
+  condition: []
+  action:
+  - service: mqtt.publish
+    data:
+      topic: cmnd/doorbell/json
+      payload_template: '{% if trigger.to_state.state == ''Mute'' %} {"SwitchMode1":"15"}
+        {% elif trigger.to_state.state == ''1 Sec'' %} {"SwitchMode1":"13","PulseTime1":"10"}
+        {% elif trigger.to_state.state == ''2 Sec'' %} {"SwitchMode1":"13","PulseTime1":"20"}
+        {% else %} {"SwitchMode1":"0","PulseTime1":"0"} {% endif %}'
+  mode: single
+
+script:
+  doorbell_alarm:
+    alias: Doorbell Alarm
+    sequence:
+    - service: shell_command.dingdong_picky
+      data: {}
+    mode: single
+    icon: mdi:bell-alert
+
+shell_command:
+  dingdong_picky: >-
+    curl 'http://lms.squirrel.nl:9000/plugins/LMSannounce/js.html?cmd=announceFile&file=%2Fhome%2fjv%2fSounds%2fWestminster-chimes-doorbell.mp3&playerid=80%3a1f%3a02%3ac2%3a37%3a7d'
+  dingdong_phoenix: >-
+    curl 'http://lms.squirrel.nl:9000/plugins/LMSannounce/js.html?cmd=announceFile&file=%2Fhome%2fjv%2fSounds%2fWestminster-chimes-doorbell.mp3&playerid=e0%3ad5%3a5e%3ad9%3a7b%3a67'
+  dingdong_sleepy: >-
+    curl 'http://lms.squirrel.nl:9000/plugins/LMSannounce/js.html?cmd=announceFile&file=%2Fhome%2fjv%2fSounds%2fWestminster-chimes-doorbell.mp3&playerid=00%3a04%3a20%3a12%3ab8%3a91'

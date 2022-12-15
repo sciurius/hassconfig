@@ -1,0 +1,33 @@
+# AVM FRITZ!Box Call Monitor            -*-hass-*-
+
+automation:
+
+  - alias: "Notify about phone state"
+    id: Automation__Notify_about_phone_state
+
+    trigger:
+      - platform: state
+        entity_id: sensor.fritz_box_phone
+
+    action:
+      - service: telegram_bot.send_message
+        data:
+          title: "Phone"
+          message: >-
+            {{ states("sensor.fritz_box_phone_state") }}
+
+template:
+
+  sensor:
+
+    - name: "FRITZ!Box Phone State"
+      state: >-
+        {% if is_state("sensor.fritz_box_phone", "idle") %}
+          Phone is idle
+        {% elif is_state("sensor.fritz_box_phone", "dialing") %}
+          Calling {{ state_attr("sensor.fritz_box_phone", "to_name") }} ({{ state_attr("sensor.fritz_box_phone", "to") }})
+        {% elif is_state("sensor.fritz_box_phone", "ringing") %}
+          Incoming call from {{ state_attr("sensor.fritz_box_phone", "from_name") }} ({{ state_attr("sensor.fritz_box_phone", "from") }})
+        {% else %}
+          Talking to {{ state_attr("sensor.fritz_box_phone", "with_name") }} ({{ state_attr("sensor.fritz_box_phone", "with") }})
+        {% endif %}

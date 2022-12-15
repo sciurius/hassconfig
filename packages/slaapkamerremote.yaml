@@ -1,0 +1,440 @@
+# BroadLink RM Mini3                    -*- hass -*-
+
+# automation:
+
+#   - id: slaapkamer_mc_powered_on
+#     alias: Slaapkamer MC powered on
+#     description: >-
+#       Initial volume is too loud, so when MC becomes available
+#       turn it down a bit.
+#     trigger:
+#       - platform: state
+#         entity_id:
+#           - switch.slaapkamer_media_center
+#         from: "off"
+#         to: "on"
+#     action:
+#       # Wait for things to become responsive.
+#       - delay: 30
+#       # Send some volume down commands.
+#       - repeat:
+#           count: 10
+#           sequence:
+#             - service: remote.send_command
+#               data:
+#                 entity_id: remote.slaapkamer
+#                 device: audio
+#                 command: voldown
+#     mode: single
+
+# Helpers to keep track of switchable devices status.
+# The audio amplifier, video player and HDMI switch are always on.
+
+input_boolean:
+
+  kiosk_mode:
+    name: Kiosk mode
+  slaapkamer_tv:
+    name: TV is on
+  slaapkamer_stb:
+    name: SetTop box is on
+  slaapkamer_audio:
+    name: Audio is on
+
+# Scripts.
+
+script:
+
+  activity_tv:
+
+    sequence:
+
+      # Register activity, will be adjusted later.
+      - service: input_select.select_option
+        target:
+          entity_id: input_select.mc
+        data:
+          option: TV
+
+      # Power on TV, unless already on.
+      - if:
+          - condition: state
+            entity_id: input_boolean.slaapkamer_tv
+            state: "off"
+        then:
+          - service: pyscript.ircontrol
+            data:
+              device: tv
+              command: power
+          - service: input_boolean.turn_on
+            target:
+              entity_id: input_boolean.slaapkamer_tv
+
+      # Power on STB, unless already on.
+      - if:
+          - condition: state
+            entity_id: input_boolean.slaapkamer_stb
+            state: "off"
+        then:
+          - service: pyscript.ircontrol
+            data:
+              device: stb
+              command: power
+          - service: input_boolean.turn_on
+            target:
+              entity_id: input_boolean.slaapkamer_stb
+
+      # Power on Audio, unless already on.
+      - if:
+          - condition: state
+            entity_id: input_boolean.slaapkamer_audio
+            state: "off"
+        then:
+          - service: pyscript.ircontrol
+            data:
+              device: audio
+              command: power
+          - service: input_boolean.turn_on
+            target:
+              entity_id: input_boolean.slaapkamer_audio
+
+      # Set HDMI switch to TV input.
+      - service: pyscript.ircontrol
+        data:
+          device: hdmiswitch
+          command: input1
+
+  activity_video:
+
+    sequence:
+
+      # Register activity, will be adjusted later.
+      - service: input_select.select_option
+        target:
+          entity_id: input_select.mc
+        data:
+          option: Video
+
+      # Power on TV, unless already on.
+      - if:
+          - condition: state
+            entity_id: input_boolean.slaapkamer_tv
+            state: "off"
+        then:
+          - service: pyscript.ircontrol
+            data:
+              device: tv
+              command: power
+          - service: input_boolean.turn_on
+            target:
+              entity_id: input_boolean.slaapkamer_tv
+
+      # Power off STB, if on.
+      - if:
+          - condition: state
+            entity_id: input_boolean.slaapkamer_stb
+            state: "on"
+        then:
+          - service: pyscript.ircontrol
+            data:
+              device: stb
+              command: power
+          - service: input_boolean.turn_off
+            target:
+              entity_id: input_boolean.slaapkamer_stb
+
+      # Power on Audio, unless already on.
+      - if:
+          - condition: state
+            entity_id: input_boolean.slaapkamer_audio
+            state: "off"
+        then:
+          - service: pyscript.ircontrol
+            data:
+              device: audio
+              command: power
+          - service: input_boolean.turn_on
+            target:
+              entity_id: input_boolean.slaapkamer_audio
+
+      # Set HDMI switch to Video input.
+      - service: pyscript.ircontrol
+        data:
+          device: hdmiswitch
+          command: input2
+
+  activity_chromecast:
+
+    sequence:
+
+      # Register activity, will be adjusted later.
+      - service: input_select.select_option
+        target:
+          entity_id: input_select.mc
+        data:
+          option: Chromecast
+
+      # Power on TV, unless already on.
+      - if:
+          - condition: state
+            entity_id: input_boolean.slaapkamer_tv
+            state: "off"
+        then:
+          - service: pyscript.ircontrol
+            data:
+              device: tv
+              command: power
+          - service: input_boolean.turn_on
+            target:
+              entity_id: input_boolean.slaapkamer_tv
+
+      # Power off STB, if on.
+      - if:
+          - condition: state
+            entity_id: input_boolean.slaapkamer_stb
+            state: "on"
+        then:
+          - service: pyscript.ircontrol
+            data:
+              device: stb
+              command: power
+          - service: input_boolean.turn_off
+            target:
+              entity_id: input_boolean.slaapkamer_stb
+
+      # Power on Audio, unless already on.
+      - if:
+          - condition: state
+            entity_id: input_boolean.slaapkamer_audio
+            state: "off"
+        then:
+          - service: pyscript.ircontrol
+            data:
+              device: audio
+              command: power
+          - service: input_boolean.turn_on
+            target:
+              entity_id: input_boolean.slaapkamer_audio
+
+      # Set HDMI switch to Chromecast input.
+      - service: pyscript.ircontrol
+        data:
+          device: hdmiswitch
+          command: input3
+
+  activity_off:
+
+    sequence:
+
+      # Power off TV if on.
+      - if:
+          - condition: state
+            entity_id: input_boolean.slaapkamer_tv
+            state: "on"
+        then:
+          - service: pyscript.ircontrol
+            data:
+              device: tv
+              command: power
+          - service: input_boolean.turn_off
+            target:
+              entity_id: input_boolean.slaapkamer_tv
+
+      # Power off STB if on.
+      - if:
+          - condition: state
+            entity_id: input_boolean.slaapkamer_stb
+            state: "on"
+        then:
+          - service: pyscript.ircontrol
+            data:
+              device: stb
+              command: power
+          - service: input_boolean.turn_off
+            target:
+              entity_id: input_boolean.slaapkamer_stb
+
+      # Power off Audio.
+      - if:
+          - condition: state
+            entity_id: input_boolean.slaapkamer_audio
+            state: "on"
+        then:
+          - service: pyscript.ircontrol
+            data:
+              device: audio
+              command: power
+          - service: input_boolean.turn_off
+            target:
+              entity_id: input_boolean.slaapkamer_audio
+
+  channel_npo1:
+    sequence:
+      - service: pyscript.ircontrol
+        data:
+          device: stb
+          command: key_0 key_0 key_0 key_1
+
+  channel_npo2:
+    sequence:
+      - service: pyscript.ircontrol
+        data:
+          device: stb
+          command: key_0 key_0 key_0 key_2
+
+  channel_npo3:
+    sequence:
+      - service: pyscript.ircontrol
+        data:
+          device: stb
+          command: key_0 key_0 key_0 key_3
+
+  channel_rtl4:
+    sequence:
+      - service: pyscript.ircontrol
+        data:
+          device: stb
+          command: key_0 key_0 key_0 key_4
+
+  channel_bbc1:
+    sequence:
+      - service: pyscript.ircontrol
+        data:
+          device: stb
+          command: key_0 key_0 key_2 key_6
+
+  channel_bbc2:
+    sequence:
+      - service: pyscript.ircontrol
+        data:
+          device: stb
+          command: key_0 key_0 key_2 key_7
+
+  channel_een:
+    sequence:
+      - service: pyscript.ircontrol
+        data:
+          device: stb
+          command: key_0 key_0 key_2 key_9
+
+  channel_canvas:
+    sequence:
+      - service: pyscript.ircontrol
+        data:
+          device: stb
+          command: key_0 key_0 key_3 key_0
+
+  channel_rtvdrenthe:
+    sequence:
+      - service: pyscript.ircontrol
+        data:
+          device: stb
+          command: key_0 key_5 key_0 key_3
+
+  channel_subtitles:
+    sequence:
+      - service: pyscript.ircontrol
+        data:
+          device: stb
+          command: text
+      - delay: 1
+      - service: pyscript.ircontrol
+        data:
+          device: stb
+          command: key_8 key_8 key_8
+
+  # learn_audio_commands:
+  #   sequence:
+  #     - service: remote.learn_command
+  #       target:
+  #         entity_id: remote.slaapkamer
+  #       data:
+  #         device: audio
+  #         command:
+  #           - power
+  #           - back
+  #           - mode
+  #           - prevch
+  #           - nextch
+  #           - eq
+  #           - prev
+  #           - next
+  #           - play
+  #           - voldown
+  #           - volup
+  #           - key_0
+  #           - one
+  #           - two
+  #           - three
+  #           - four
+  #           - five
+  #           - six
+  #           - seven
+  #           - eight
+  #           - nine
+
+  # learn_hdmiswitch_commands:
+  #   sequence:
+  #     - service: remote.learn_command
+  #       target:
+  #         entity_id: remote.slaapkamer
+  #       data:
+  #         device: hdmiswitch
+  #         command:
+  #           - input1
+  #           - input2
+  #           - input3
+  #           - input4
+  #           - inauto
+  #           - ch20
+  #           - ch51
+  #           - ch71
+  #           - chauto
+  #           - arc
+
+  # learn_tv_commands:
+  #   sequence:
+  #     - service: remote.learn_command
+  #       target:
+  #         entity_id: remote.slaapkamer
+  #       data:
+  #         device: tv
+  #         command:
+  #           - power
+  #           - ok
+  #           - home
+  #           - text
+  #           - back
+  #           - key_0
+  #           - one
+  #           - two
+  #           - three
+  #           - four
+  #           - five
+  #           - six
+  #           - seven
+  #           - eight
+  #           - nine
+
+  # learn_stb_commands:
+  #   sequence:
+  #     - service: remote.learn_command
+  #       target:
+  #         entity_id: remote.slaapkamer
+  #       data:
+  #         device: stb
+  #         command:
+  #           - power
+  #           - ok
+  #           - text
+  #           - back
+  #           - key_0
+  #           - one
+  #           - two
+  #           - three
+  #           - four
+  #           - five
+  #           - six
+  #           - seven
+  #           - eight
+  #           - nine

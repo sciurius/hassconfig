@@ -1,0 +1,116 @@
+# Devices - all devices                 -*- hass -*-
+
+light:
+
+  - name: Woonkamer Verlichting
+    platform: group
+    unique_id: lightgroup_woonkamer_verlichting
+    entities:
+      - light.woonkamer_hoek
+      - light.woonkamer_tafeltje
+      - light.woonkamer_wand
+      - light.woonkamer_totem
+      - light.woonkamer_heks
+      - light.woonkamer_tafel
+      
+  - name: Woonkamer Wand
+    platform: group
+    unique_id: lightgroup_woonkamer_wand
+    entities:
+      - light.woonkamer_wand_l
+      - light.woonkamer_wand_r
+      
+  - name: Hal Verlichting
+    platform: group
+    unique_id: lightgroup_hal_verlichting
+    entities:
+      - light.hal_hoek
+      
+  - name: Slaapkamer Verlichting
+    platform: group
+    unique_id: lightgroup_slaapkamer_verlichting
+    entities:
+      - light.slaapkamer_avondlichtje
+
+  - name: Badkamer Verlichting
+    platform: group
+    unique_id: lightgroup_badkamer_verlichting
+    entities:
+      - light.badkamer_verlichting
+
+  - name: Alle Verlichting
+    platform: group
+    unique_id: lightgroup_alle_verlichting
+    entities:
+      - light.woonkamer_verlichting
+      - light.hal_verlichting
+      - light.slaapkamer_avondlichtje
+      - light.badkamer_verlichting
+   
+  - name: Morning Lights
+    platform: group
+    unique_id: lightgroup_morning_lights
+    entities:
+      - light.woonkamer_hoek
+      - light.hal_hoek
+
+  - name: Evening Lights
+    platform: group
+    unique_id: lightgroup_evening_lights
+    entities:
+      - light.woonkamer_tafeltje
+      - light.morning_lights
+   
+  - name: SlaapkamerMC Signals
+    platform: group
+    unique_id: lightgroup_slaapkamermc_signals
+    entities:
+      - light.bulb01
+      - light.woonkamer_heks
+
+script:
+
+  # A kind of global sanitizer. Turn off everything...
+  
+  turn_off_everything:
+
+    alias: Turn Off Everything
+    icon: mdi:lightbulb-group-outline
+    mode: restart
+
+    sequence:
+
+      - repeat:
+          for_each: |
+            {{ state_attr("light.alle_verlichting", "entity_id") | list }}
+          sequence:
+          - service: light.turn_off
+            target:
+              entity_id: '{{ repeat.item }}'
+          - delay:
+              seconds: 1
+
+      - repeat:
+          for_each:
+            - switch.slaapkamer_media_center
+            - switch.woonkamer_sound_system
+            - switch.psw03
+          sequence:
+            - service: switch.turn_off
+              target:
+                entity_id: "{{ repeat.item }}"        
+            - delay:
+                seconds: 1
+
+automation:
+
+  # A kind of global sanitizer. Turn off everything...
+
+  - alias: Turn Off Everything
+    id: Automation__Turn_Off_Everything
+    mode: single
+    trigger:
+      - platform: time
+        at: "01:00:00"
+    action:
+      - service: script.turn_off_everything

@@ -1,0 +1,75 @@
+# Package Afvalwijzer
+
+sensor:
+
+  - platform: afvalwijzer
+    provider: mijnafvalwijzer
+    postal_code: 7875EB
+    street_number:  6
+    suffix: ''                       # (optional, default = '')
+    exclude_pickup_today: true
+    default_label: Geen
+    id: 'afvalwijzer_bo'
+    exclude_list: ''                 # (optional, default = '') comma separated list of wast types (case ignored). F.e. "papier, gft"
+
+# This input boolean is used to suppress the display in the UI.
+# For example, when there is no afval, or the afval was collected.
+# It is enebled by long-pressing the entry in the UI.
+
+input_boolean:
+  afval_dismiss:
+    name: Dismiss afval signal
+
+# Re-enable afval notifications at midnight.
+automation:
+  - id: '164191467263x'
+    description: Re-enable afval notifications
+    trigger:
+      - platform: time
+        at: "00:00:00"
+    action:
+      - service: input_boolean.turn_off
+        target:
+          entity_id: input_boolean.afval_dismiss
+
+# Example of use in UI (entities card).
+#
+# - type: custom:template-entity-row
+#   entity: sensor.afvalwijzer_afvalwijzer_bo_today
+#   name: Afval (vandaag)
+#   icon: mdi:recycle
+#   active: true
+#   condition: >
+#     {{ ( not
+#        is_state('sensor.afvalwijzer_afvalwijzer_bo_today','Geen') )
+#        and ( now() < today_at("17:00") )
+#        and is_state('input_boolean.afval_dismiss','off')
+#     }}
+#   state: >-
+#     {{ states('sensor.afvalwijzer_afvalwijzer_bo_today').capitalize()
+#     }}
+#   hold_action:
+#     action: call-service
+#     service: input_boolean.turn_on
+#     target:
+#       entity_id: input_boolean.afval_dismiss
+#
+# - type: custom:template-entity-row
+#   entity: sensor.afvalwijzer_afvalwijzer_bo_tomorrow
+#   name: Afval (morgen)
+#   icon: mdi:recycle
+#   active: false
+#   state: >-
+#     {{
+#     states('sensor.afvalwijzer_afvalwijzer_bo_tomorrow').capitalize()
+#     }}
+#   condition: >-
+#     {{ not
+#        is_state('sensor.afvalwijzer_afvalwijzer_bo_tomorrow','Geen')
+#        and is_state('input_boolean.afval_dismiss','off')
+#     }}
+#   hold_action:
+#     action: call-service
+#     service: input_boolean.turn_on
+#     target:
+#       entity_id: input_boolean.afval_dismiss

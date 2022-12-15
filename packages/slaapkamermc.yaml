@@ -1,0 +1,158 @@
+# Slaapkamer Media Center               -*- hass -*-
+
+script:
+  slaapkamermc_define_sensors:
+    mode: single
+    sequence:
+      - service: mqtt.publish
+        data:
+          topic: homeassistant/select/mc_01/config
+          retain: 0
+          payload: |
+            {
+               "device" : {
+                  "identifiers" : [
+                     "mc-mc-01"
+                  ],
+                  "manufacturer" : "Johan",
+                  "model" : "MC",
+                  "name" : "Slaapkamer Media Center",
+                  "sw_version" : "0"
+               },
+               "~": "mc/mc_01",
+               "unique_id": "mc_01",
+               "availability_topic": "~/available",
+               "payload_available": "online",
+               "payload_not_available": "offline",
+               "options": [
+                   "TV",
+                   "Video",
+                   "ChromeCast",
+                   "Aux",
+                   "Off"
+               ],
+               "name": "Slaapkamer Media Center",
+               "state_topic": "~/status",
+               "value_template": {% raw %}"{{value_json.input}}"{%  endraw %},
+               "command_topic": "~/cmnd",
+               "platform": "mqtt"
+            }
+
+automation:
+
+  # Setup autodiscovery for the sensors.
+  - alias: Trigger Slaapkamer MC device sensors definitions
+    trigger:
+      - platform: homeassistant
+        event: start
+    action:
+      - service: script.slaapkamermc_define_sensors
+        data: {}
+
+  - alias: Media Center Online check
+    id: '1642537797217'
+    description: ''
+    trigger:
+    - platform: state
+      entity_id: select.slaapkamer_media_center
+      to: 'Off'
+      for:
+        hours: 0
+        minutes: 10
+        seconds: 0
+    condition: []
+    action:
+    - service: input_select.select_option
+      target:
+        entity_id: input_select.mc
+      data:
+        option: Offline
+    - service: telegram_bot.send_message
+      data:
+        message: Media Center Offline
+        disable_notification: true
+    mode: single
+
+  - alias: Media Center Offline
+    id: '1644498985250'
+    description: ''
+    trigger:
+    - platform: state
+      entity_id: select.slaapkamer_media_center
+      to: unavailable
+    condition: []
+    action:
+    - service: light.turn_off
+      data: {}
+      target:
+        entity_id: light.slaapkamermc_signals
+    mode: single
+
+  - alias: Media Center On/Off Notification
+    id: '1649157769378'
+    description: ''
+    use_blueprint:
+      path: device_onoff_notification.yaml
+      input:
+        dev_ent: switch.slaapkamer_media_center
+
+  - alias: Media Center State
+    id: '1644499122291'
+    description: ''
+    trigger:
+    - platform: state
+      entity_id: select.slaapkamer_media_center
+      to: 'Off'
+      variables:
+        color: red
+    - platform: state
+      entity_id: select.slaapkamer_media_center
+      to: TV
+      variables:
+        color: green
+    - platform: state
+      entity_id: select.slaapkamer_media_center
+      to: Video
+      variables:
+        color: blue
+    - platform: state
+      entity_id: select.slaapkamer_media_center
+      to: ChromeCast
+      variables:
+        color: magenta
+    condition: []
+    action:
+    - service: light.turn_on
+      data:
+        color_name: '{{ color }}'
+        brightness_pct: 30
+      target:
+        entity_id: light.slaapkamermc_signals
+    mode: restart
+
+  - alias: Auto Off MC Slaapkamer
+    id: '1649157576008'
+    description: ''
+    trigger:
+    - platform: state
+      entity_id: sensor.mc_state
+      from:
+      - TV
+      - Video
+      - ChromeCast
+      to: 'Off'
+      for:
+        hours: 0
+        minutes: 20
+        seconds: 0
+    condition: []
+    action:
+    - service: switch.turn_off
+      target:
+        entity_id: switch.slaapkamer_media_center
+    - service: light.turn_off
+      data: {}
+      target:
+        entity_id: light.slaapkamer_avondlichtje
+    mode: single
+
