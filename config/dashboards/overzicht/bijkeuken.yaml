@@ -1,0 +1,38 @@
+# Dashboard: Overzicht -- Bijkeuken       -*- hass -*-
+
+type: entities
+title: Bijkeuken
+state_color: true
+
+entities:
+
+  - entity: sensor.bijkeuken_temperature
+    type: custom:multiple-entity-row
+    name: Temperatuur
+    icon: mdi:thermometer
+    show_state: false
+    entities:
+      - entity: sensor.bijkeuken_temperature
+        name: false
+      - entity: sensor.bijkeuken_humidity
+        name: false
+        format: precision0
+
+  - entity: sensor.boiler_status_text
+    name: CV Status
+
+  - entity: sensor.boiler_system_pressure
+    name: CV Waterdruk
+
+  - entity: sensor.boiler_current_flow_temperature
+    name: CV Watertemperatuur
+
+  - entity: sensor.boiler_heating_temperature
+    name: CV Instelling
+
+  - entity: binary_sensor.boiler_heating_active
+    name: Verwarming
+
+  - type: weblink
+    url: http://phoenix.squirrel.nl:3000/d/cQ46XxeD4z/verwarming-overzicht?orgId=1
+name: Grafieken verwarming

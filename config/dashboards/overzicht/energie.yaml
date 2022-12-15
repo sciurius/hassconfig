@@ -1,0 +1,33 @@
+# Dashboard: Overzicht -- Weerstation       -*- hass -*-
+
+type: entities
+title: Energie
+state_color: true
+
+entities:
+
+  - type: custom:multiple-entity-row
+    entity: sensor.energy_generated
+    name: Zonnepanelen
+    icon: mdi:solar-power
+    format: kilo
+    unit: kWh
+    secondary_info: PVOutput
+
+  - type: custom:multiple-entity-row
+    entity: sensor.dsmr_day_consumption_electricity_merged
+    name: Energie gebruikt
+    format: precision1
+
+  - type: custom:multiple-entity-row
+    entity: sensor.dsmr_day_consumption_electricity_returned_merged
+    name: Energy geleverd
+    format: precision1
+
+  - type: custom:multiple-entity-row
+    entity: sensor.dsmr_day_consumption_gas
+    name: Gas
+    format: precision1
+
+  - entity: sensor.growatt_temperature
+    name: Omvormer

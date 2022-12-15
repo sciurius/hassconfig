@@ -1,0 +1,12 @@
+# Dashboard: Overzicht -- Media Player: picky       -*- hass -*-
+
+type: conditional
+conditions:
+  - entity: media_player.picky
+    state_not: idle
+  - entity: media_player.picky
+    state_not: unavailable
+
+card:
+  type: media-control
+  entity: media_player.picky

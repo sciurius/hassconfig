@@ -1,0 +1,32 @@
+# Dashboard - Badkamerafzuiging - itho-graph          -*- hass -*-
+
+type: custom:mini-graph-card
+name: Afzuiging (4 uur)
+hours_to_show: 4
+graph: line
+points_per_hour: 60
+hour24: true
+font_size: 75
+line_width: 2
+
+show:
+  legend: false
+  labels: true
+
+color_thresholds_transition: hard
+color_thresholds:
+  - value: 0
+    color: "#00ff00"
+  - value: 65
+    color: "#ff0000"
+
+entities:
+  - entity: sensor.ithocve_fan_speed_status
+    name: Afzuiging
+    y_axis: secondary
+    color: blue
+    show_points: false
+    show_line: false
+  - entity: sensor.badkamer_humidity
+    name: Vochtigheid
+

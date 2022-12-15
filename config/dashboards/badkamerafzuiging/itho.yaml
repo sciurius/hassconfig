@@ -1,0 +1,146 @@
+# Dashboard - Badkamerafzuiging - itho          -*- hass -*-
+
+type: vertical-stack
+title: false
+
+cards:
+
+- type: conditional
+  conditions:
+    - entity: switch.psw05
+      state: "on"
+
+  card:
+
+    type: entities
+    title: Badkamerafzuiging
+    show_header_toggle: false
+    entities:
+
+      - entity: switch.psw05
+        name: Master
+        icon: mdi:fan-off
+
+      - entity: sensor.ithocve_temperature
+        type: custom:multiple-entity-row
+        name: Temperatuur
+        icon: mdi:thermometer
+        show_state: false
+        entities:
+          - entity: sensor.ithocve_temperature
+            name: false
+          - entity: sensor.ithocve_humidity
+            name: false
+            format: precision0
+
+      - entity: sensor.badkamer_temperature
+        type: custom:multiple-entity-row
+        name: Temperatuur
+        icon: mdi:thermometer
+        show_state: false
+        entities:
+          - entity: sensor.badkamer_temperature
+            name: false
+          - entity: sensor.badkamer_humidity
+            name: false
+        secondary_info: Badkamer
+            
+      # - entity: sensor.ithocve_humidity_ppmw
+      #   name: Humidity
+      #   icon: mdi:water-percent
+
+      - entity: input_boolean.ithocve_humidity_sensor
+        name: Vochtsensor
+
+      - type: conditional
+        conditions:
+          - entity: input_boolean.ithocve_humidity_sensor
+            state: "on"
+        row:
+            entity: input_number.ithocve_humidity_threshold
+            name: Vochtdrempel
+            icon: mdi:ray-vertex
+
+      - entity: sensor.ithocve_fan_info
+        name: Mode
+        icon: mdi:fan
+
+      - entity: sensor.ithocve_fan_speed
+        name: Fan Speed
+        type: custom:multiple-entity-row
+        show_state: false
+        entities:
+          - entity: sensor.ithocve_fan_info
+            name: false
+          - entity: sensor.ithocve_fan_speed
+            name: false
+        secondary_info:
+          entity: sensor.ithocve_fan_setpoint
+          name: Instelling
+
+      - entity: sensor.ithocve_state_percent
+        type: custom:multiple-entity-row
+        name: Speed control
+        entities:
+          - entity: sensor.ithocve_state
+            name: false
+
+      - entity: input_number.ithocve_fan_speed
+        name: Speed
+        icon: mdi:ray-vertex
+
+      - entity: sensor.ithocve_fan_speed
+        type: custom:multiple-entity-row
+        name: Afzuiging
+        show_state: false
+        entities:
+          - entity: sensor.ithocve_fan_info
+            name: false
+          - entity: sensor.ithocve_fan_speed
+            name: false
+        secondary_info:
+          entity: sensor.ithocve_ventilation_setpoint
+          name: instelling
+
+      - entity: sensor.ithocve_fan_setpoint
+        name: Fan Setpoint
+
+      - entity: sensor.ithocve_ventilation_setpoint
+        name: Ventilation Setpoint
+
+      - entity: sensor.ithocve_fan_speed_status
+        name: Fan Status
+
+      - type: conditional
+        conditions:
+          - entity: sensor.ithocve_fan_remaining_time
+            state_not: "0"
+        row:
+          entity: sensor.ithocve_fan_remaining_time
+          name: Fan Timer
+
+      - entity: input_select.ithocve_fan_mode
+        name: Presets
+
+
+- type: conditional
+  conditions:
+    - entity: switch.psw05
+      state: "off"
+  card:
+    type: entities
+    title: Badkamerafzuiging
+    show_header_toggle: false
+    entities:
+      - entity: switch.psw05
+        name: Master
+        icon: mdi:fan-off
+
+- type: conditional
+  conditions:
+    - entity: switch.psw05
+      state: unavailable
+  card:
+    type: markdown
+    content: |
+        <ha-alert alert-type="error">Badkamerafzuiging offline</ha-alert>

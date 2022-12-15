@@ -1,0 +1,54 @@
+# Dashboard: Overzicht -- Kantoor       -*- hass -*-
+
+type: entities
+title: Kantoor
+state_color: true
+show_header_toggle: false
+
+entities:
+
+  - entity: sensor.kantoor_temperature
+    type: custom:multiple-entity-row
+    name: Temperatuur
+    icon: mdi:thermometer
+    show_state: false
+    entities:
+      - entity: sensor.kantoor_temperature
+        name: false
+      - entity: sensor.kantoor_humidity
+        name: false
+
+  - type: custom:template-entity-row
+    entity: binary_sensor.home_assistant_website_update_available
+    condition: >-
+      {{ is_state('binary_sensor.home_assistant_website_update_available','on') }}
+    state: >-
+      {% if ( is_state('binary_sensor.home_assistant_website_update_available','on') ) %}
+      Update available
+      {% else %}
+      Up-to-date
+      {% endif %}
+    active: >-
+      {{ is_state('binary_sensor.home_assistant_website_update_available','on') }}
+    tap_action: |
+      {
+      "action": "url",
+      "url_path": "{{ state_attr('sensor.home_assistant_website','release_notes') }}"
+      }
+    name: HASS Software
+
+  - entity: sensor.home_assistant_website
+    name: Hass Software
+
+  - entity: sensor.nas1_volume_1_status
+    name: NAS1 Status
+
+  - entity: sensor.nas1_volume_1_volume_used
+    name: NAS1 Used
+
+  # - entity: switch.psw03
+  #   name: Printer
+  #   icon: mdi:printer
+
+  - entity: light.bulb01
+    name: Media Center actief

@@ -1,0 +1,25 @@
+# Dashboard: Overzicht -- Twilight       -*- hass -*-
+
+type: entities
+title: Duisterlicht
+state_color: true
+
+entities:
+
+  - type: custom:multiple-entity-row
+    entity: binary_sensor.lighting
+    name: Duisterlicht
+    entities:
+      - entity: binary_sensor.day_time
+        name: Dag
+      - entity: binary_sensor.darkness
+        name: Donker
+
+  - entity: sensor.achterkamer_illuminance
+
+  - entity: input_number.luminance_threshold_down
+    name: Ondergrens
+
+  - entity: input_number.luminance_threshold_up
+    name: Bovengrens
+    

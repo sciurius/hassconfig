@@ -1,0 +1,19 @@
+# Dashboard - Bresser51 - compass          -*- hass -*-
+
+type: custom:compass-card
+header: false
+language: nl
+
+indicator_sensors:
+  - sensor: sensor.bresser51_wind_direction_sector_adjusted
+    indicator:
+      type: arrow_inward
+      show: false
+      dynamic_style:
+        sensor: sensor.bresser51_wind_speed
+        bands:
+          - from_value: 0.1
+            show: true
+
+value_sensors:
+  - sensor: sensor.bresser51_wind_beaufort

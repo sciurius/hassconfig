@@ -1,0 +1,69 @@
+# Dashboard: Overzicht -- Badkamer       -*- hass -*-
+
+type: entities
+title: Badkamer
+state_color: true
+
+entities:
+
+  - entity: sensor.badkamer_temperature
+    type: custom:multiple-entity-row
+    name: Temperatuur
+    icon: mdi:thermometer
+    show_state: false
+    entities:
+      - entity: sensor.badkamer_temperature
+        name: false
+      - entity: sensor.badkamer_humidity
+        name: false
+
+  - type: conditional
+    conditions:
+      - entity: sensor.boiler_dhw_current_tap_water_flow
+        state_not: '0'
+    row:
+      entity: sensor.boiler_dhw_current_tap_water_flow
+      name: Warm water
+      icon: mdi:shower
+
+  - type: conditional
+    conditions:
+      - entity: sensor.ithocve_fan_info
+        state_not: "unavailable"
+    row:
+      entity: sensor.ithocve_fan_speed
+      type: custom:multiple-entity-row
+      name: Afzuiging
+      show_state: false
+      entities:
+        - entity: sensor.ithocve_fan_info
+          name: false
+        - entity: sensor.ithocve_fan_speed
+          name: false
+          format: precision0
+      secondary_info:
+        entity: sensor.ithocve_ventilation_setpoint
+        name: instelling
+
+  - type: conditional
+    conditions:
+      - entity: sensor.ithocve_fan_info
+        state: "unavailable"
+    row:
+      entity: switch.psw05
+      name: Afzuiging
+      icon: mdi:fan
+
+  - type: conditional
+    conditions:
+      - entity: sensor.ithocve_fan_remaining_time
+        state_not: "0"
+      - entity: sensor.ithocve_fan_remaining_time
+        state_not: "unavailable"
+    row:
+      entity: sensor.ithocve_fan_remaining_time
+      name: Fan Timer
+
+  - entity: light.badkamer_verlichting
+    name: Verlichting
+    icon: mdi:dome-light

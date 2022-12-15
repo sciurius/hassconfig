@@ -1,0 +1,135 @@
+# Dashboard: Overzicht -- Media Player: osmc       -*- hass -*-
+
+type: entities
+title: Woonkamer
+state_color: true
+show_header_toggle: true
+
+entities:
+
+  - entity: climate.thermostat_hc1
+    name: Thermostaat
+
+  - entity: sensor.woonkamer_temperature
+    type: custom:multiple-entity-row
+    name: Temperatuur
+    icon: mdi:thermometer
+    show_state: false
+    entities:
+      - entity: sensor.woonkamer_temperature
+        name: false
+      - entity: sensor.woonkamer_humidity
+        name: false
+
+  - entity: sensor.achterkamer_illuminance
+
+  - type: divider
+
+  - type: custom:paper-buttons-row
+    base_config:
+      icon: mdi:bell-ring-outline
+      layout: name
+#     tap_action: cannot be templated yet
+#     https://github.com/jcwillox/lovelace-paper-buttons-row/issues/74
+        
+    buttons:
+      - name: Für Elise
+        layout: icon|name
+        tap_action:
+          action: call-service
+          service: script.rfbridge_chime
+          service_data:
+            chime: 1
+      - name: Big Ben
+        tap_action:
+          action: call-service
+          service: script.rfbridge_chime
+          service_data:
+            chime: 2
+      - name: Ding Dong 1
+        tap_action:
+          action: call-service
+          service: script.rfbridge_chime
+          service_data:
+            chime: 3
+      - name: Ding Dong 2
+        tap_action:
+          action: call-service
+          service: script.rfbridge_chime
+          service_data:
+            chime: 4
+
+  - type: divider
+
+  - entity: switch.woonkamer_sound_system
+    name: Music Center
+    icon: mdi:music-circle-outline
+
+  - type: divider
+
+  - entity: light.woonkamer_tafel
+    name: Tafel
+    icon: mdi:ceiling-light
+
+  - entity: light.woonkamer_tafeltje
+    name: Tafeltje
+    icon: mdi:lamp
+
+  - entity: switch.smart_plug_1
+    name: Hoek
+
+  - entity: light.woonkamer_heks
+    icon: mdi:light-flood-down
+    name: Heks
+    hold_action:
+      action: call-service
+      service: light.toggle
+      data:
+        entity_id: light.woonkamer_heks
+        brightness_pct: 100
+        rgb_color: [191,0,255]
+
+  - entity: light.woonkamer_totem
+    icon: mdi:light-flood-down
+    name: Totem
+
+  - type: custom:multiple-entity-row
+    name: Wand
+    entity: light.woonkamer_wand_r
+    icon: mdi:light-flood-down
+    toggle: true
+    entities:
+      - entity: light.woonkamer_wand_l
+        toggle: true
+        name: false
+
+  - type: divider
+
+  - entity: sensor.sm_a320fl_battery_level
+    type: custom:multiple-entity-row
+    show_state: false
+    name: false
+    icon: mdi:battery
+    entities:
+      - entity: sensor.sm_a320fl_battery_level
+        name: Smotty
+      - entity: sensor.sm_t830_battery_level
+        name: GlaxS4
+      - entity: sensor.sm_t733_battery_level
+        name: GlaxS7
+      - entity: sensor.p00c_battery_level
+        name: Zenny
+      - entity: sensor.battery_tz200
+        name: TZ200
+        hide_if: unknown
+
+  - type: custom:multiple-entity-row
+    name: Irmby
+    entity: vacuum.irmby
+    entities:
+      - entity: binary_sensor.irmby_bin_full
+        name: Opvangbak
+        hide_if: 'off'
+      - entity: sensor.irmby_battery_level
+        name: accu
+        hide_if: 100

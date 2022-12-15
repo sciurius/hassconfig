@@ -1,0 +1,10 @@
+# Dashboard: Overzicht -- Media Player: osmc       -*- hass -*-
+
+type: conditional
+conditions:
+  - entity: sensor.mc_state
+    state: Video
+
+card:
+  type: media-control
+  entity: media_player.osmc

@@ -1,0 +1,18 @@
+# Dashboard: Overzicht -- Computers       -*- hass -*-
+
+type: entities
+title: Computers
+
+entities:
+
+  - entity: sensor.systems_phoenix_temperature
+    name: Phoenix
+
+  - entity: sensor.systems_srv1_temperature
+    name: Server1
+
+  - entity: sensor.systems_srv4_temperature
+    name: Server4
+
+  - entity: sensor.systems_nas1_temperature
+    name: NAS1

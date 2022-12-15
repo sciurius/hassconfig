@@ -1,0 +1,25 @@
+# Dashboard: Overzicht -- Keuken      -*- hass -*-
+
+type: entities
+title: Keuken
+state_color: true
+show_header_toggle: false
+
+entities:
+
+  - entity: sensor.keuken_temperature
+    type: custom:multiple-entity-row
+    name: Temperatuur
+    icon: mdi:thermometer
+    show_state: false
+    entities:
+      - entity: sensor.keuken_temperature
+        name: false
+      - entity: sensor.keuken_humidity
+        name: false
+        format: precision0
+
+  - entity: switch.keuken_afzuigkap
+    name: Afzuigkap
+    icon: mdi:fan
+      

@@ -1,0 +1,138 @@
+# Dashboard: Overzicht -- Buiten       -*- hass -*-
+
+type: entities
+title: Buiten
+state_color: true
+
+entities:
+
+  - entity: weather.openweathermap
+    name: Temperatuur
+
+  - type: custom:template-entity-row
+    entity: sun.sun
+    active: false
+    condition: '{{ is_state(''sun.sun'',''above_horizon'') }}'
+    name: Daglicht
+    state: |-
+      {{ as_timestamp(states.sun.sun.attributes.next_rising)
+         | float | timestamp_custom('%H:%M')}}
+      —
+      {{ as_timestamp(states.sun.sun.attributes.next_setting)
+         | float | timestamp_custom('%H:%M')}}
+
+  - type: custom:template-entity-row
+    entity: sun.sun
+    active: false
+    condition: '{{ not is_state(''sun.sun'',''above_horizon'') }}'
+    name: Nacht
+    icon: mdi:weather-night
+    state: |-
+      {{ as_timestamp(states.sun.sun.attributes.next_setting)
+         | float | timestamp_custom('%H:%M')}}
+      —
+      {{ as_timestamp(states.sun.sun.attributes.next_rising)
+         | float | timestamp_custom('%H:%M')}}
+
+  - entity: sensor.buiten_temperature
+    type: custom:multiple-entity-row
+    name: Temperatuur
+    icon: mdi:thermometer
+    show_state: false
+    entities:
+      - entity: sensor.buiten_temperature
+        name: false
+      - entity: sensor.buiten_humidity
+        name: false
+
+  - entity: weather.openweathermap
+    icon: mdi:gauge
+    type: custom:template-entity-row
+    name: Luchtdruk
+    secondary: OpenWeatherMap
+    state: >
+      {{ state_attr('weather.openweathermap','pressure') }} hPa
+
+  - type: conditional
+    conditions:
+      - entity: binary_sensor.pollen
+        state: 'on'
+    row:
+      entity: sensor.tomorrow_io_home_weed_pollen_index
+      type: custom:multiple-entity-row
+      show_state: false
+      name: Pollen
+      secondary_info: Tomorrow.io
+      entities:
+        - entity: sensor.tomorrow_io_home_tree_pollen_index
+          hide_if: none
+        - entity: sensor.tomorrow_io_home_grass_pollen_index
+          hide_if: none
+        - entity: sensor.tomorrow_io_home_weed_pollen_index
+          hide_if: none
+
+  - type: conditional
+    conditions:
+      - entity: binary_sensor.stookalert_drenthe
+        state_not: 'off'
+    row:
+      entity: binary_sensor.stookalert_drenthe
+      name: Stookalert
+
+  - type: conditional
+    conditions:
+      - entity: sensor.apk_expiration_near
+        state_not: nog_lang_niet
+    row:
+      entity: sensor.apk_expiration
+      name: APK verloopt
+
+  - type: custom:multiple-entity-row
+    entity: binary_sensor.lighting
+    name: Duisterlicht
+    entities:
+      - entity: binary_sensor.day_time
+        name: Dag
+      - entity: binary_sensor.darkness
+        name: Donker
+
+  - type: custom:template-entity-row
+    entity: sensor.afvalwijzer_afvalwijzer_bo_today
+    name: Afval
+    icon: mdi:recycle
+    active: true
+    condition: >
+      {{ ( not
+         is_state('sensor.afvalwijzer_afvalwijzer_bo_today','Geen') )
+         and ( now() < today_at("17:00") )
+         and is_state('input_boolean.afval_dismiss','off')
+      }}
+    state: >-
+      {{ states('sensor.afvalwijzer_afvalwijzer_bo_today').capitalize()
+      }}
+    hold_action:
+      action: call-service
+      service: input_boolean.turn_on
+      target:
+        entity_id: input_boolean.afval_dismiss
+
+  - type: custom:template-entity-row
+    entity: sensor.afvalwijzer_afvalwijzer_bo_tomorrow
+    name: Afval (morgen)
+    icon: mdi:recycle
+    active: false
+    state: >-
+      {{
+      states('sensor.afvalwijzer_afvalwijzer_bo_tomorrow').capitalize()
+      }}
+    condition: >-
+      {{ not
+         is_state('sensor.afvalwijzer_afvalwijzer_bo_tomorrow','Geen')
+         and is_state('input_boolean.afval_dismiss','off')
+      }}
+    hold_action:
+      action: call-service
+      service: input_boolean.turn_on
+      target:
+        entity_id: input_boolean.afval_dismiss
+
