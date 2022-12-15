@@ -5,8 +5,8 @@
 # Author          : Johan Vromans
 # Created On      : Fri Jun 17 08:32:04 2022
 # Last Modified By: Johan Vromans
-# Last Modified On: Wed Jun 22 15:49:06 2022
-# Update Count    : 35
+# Last Modified On: Mon Dec  5 14:55:37 2022
+# Update Count    : 38
 # Status          : Unknown, Use with caution!
 
 ################ Common stuff ################
@@ -63,18 +63,21 @@ my @ids =
   qw( binary_sensor.boiler_heating_active
       binary_sensor.boiler_heating_pump
       number.boiler_heating_temperature
+      number.hc1_selected_room_temperature
       sensor.boiler_current_flow_temperature
+      sensor.boiler_return_temperature
       sensor.bresser51_humidity
       sensor.bresser51_rain
       sensor.bresser51_temperature
-      sensor.energy_consumed
-      sensor.energy_generated
-      sensor.fritz_box_phone_state
       sensor.dsmr_consumption_gas_delivered
       sensor.dsmr_reading_electricity_delivered_1
       sensor.dsmr_reading_electricity_delivered_2
       sensor.dsmr_reading_electricity_returned_1
       sensor.dsmr_reading_electricity_returned_2
+      sensor.energy_consumed
+      sensor.energy_generated
+      sensor.fritz_box_phone_state
+      sensor.hc1_current_room_temperature
       sensor.openweathermap_humidity
       sensor.openweathermap_temperature
       sensor.shelly1l_1_tasmota_analog_temperature
@@ -84,7 +87,7 @@ my @ids =
 );
 
 for my $area ( qw( achterkamer badkamer bijkeuken buiten hal kantoor kelder
-		   kruipruimte slaapkamer vliering woonkamer zolder ) ) {
+		   keuken kruipruimte slaapkamer vliering woonkamer zolder ) ) {
     for ( qw( temperature humidity ) ) {
 	push( @ids, "sensor.${area}_$_" );
     }
