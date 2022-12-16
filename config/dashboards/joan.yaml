@@ -145,6 +145,13 @@ views:
                 entity: light.woonkamer_heks
                 name: Verlichting heks
                 icon: mdi:light-flood-down
+                tap_action:
+                  action: call-service
+                  service: light.toggle
+                  service_data:
+                    entity_id: light.woonkamer_heks
+                    brightness_pct: 100
+                    rgb_color: [191,0,255]
 
               - type: custom:button-card
                 template: standard
