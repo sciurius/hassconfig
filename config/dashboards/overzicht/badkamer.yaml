@@ -21,6 +21,8 @@ entities:
     conditions:
       - entity: sensor.boiler_wwcurflow
         state_not: '0'
+      - entity: sensor.boiler_wwcurflow
+        state_not: '0.0'
     row:
       entity: sensor.boiler_wwcurflow
       name: Warm water
