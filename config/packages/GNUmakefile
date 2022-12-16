@@ -16,8 +16,8 @@ pkgs : $(addprefix ${DST}/packages/,$(addsuffix .yaml,${PKGS}))
 
 ${DST}/packages/%.yaml :: %.pl
 	perl $< > $(basename $<).yaml \
-	&& install --preserve-timestamps --mode=0666 $(basename $<).yaml $@ \
+	&& install --preserve-timestamps --mode=0664 $(basename $<).yaml $@ \
 	&& rm $(basename $<).yaml
 
 ${DST}/packages/%.yaml :: %.yaml
-	install --preserve-timestamps --mode=0666 $< $@
+	install --preserve-timestamps --mode=0664 $< $@

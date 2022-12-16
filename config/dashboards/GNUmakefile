@@ -16,11 +16,8 @@ all : $(addprefix ${DST}/dashboards/,$(addsuffix .yaml,${PKGS}))
 
 ${DST}/dashboards/%.yaml :: %.pl
 	perl $< > $(basename $<).yaml \
-	&& install --preserve-timestamps --mode=0665 $(basename $<).yaml $@ \
+	&& install --preserve-timestamps --mode=0664 $(basename $<).yaml $@ \
 	&& rm $(basename $<).yaml
 
-${DST}/dashboards.yaml :: dashboards.yaml
-	install --preserve-timestamps --mode=0665 $< $@
-
 ${DST}/dashboards/%.yaml :: %.yaml
-	install --preserve-timestamps --mode=0665 $< $@
+	install --preserve-timestamps --mode=0664 $< $@
