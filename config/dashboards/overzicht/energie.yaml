@@ -21,7 +21,7 @@ entities:
 
   - type: custom:multiple-entity-row
     entity: sensor.dsmr_day_consumption_electricity_returned_merged
-    name: Energy geleverd
+    name: Energie geleverd
     format: precision1
 
   - type: custom:multiple-entity-row
