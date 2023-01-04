@@ -11,6 +11,12 @@ input_number:
     mode: box
     unit_of_measurement: "⁰C"
 
+input_boolean:
+
+  # To register return temp high status
+  emsgw_return_temp_high:
+    icon: mdi:thermometer-alert
+
 template:
 
   - sensor:
@@ -141,7 +147,7 @@ automation:
                     threshold {{ threshold }},
                     heating set to {{ burner_low }}
 
-  - alias: EMSGW Check Return Temperature
+  - alias: EMSGW Check Return Temperature Up
     description: Check return temp. Must be below 55.
     mode: single
 
@@ -151,11 +157,39 @@ automation:
         entity_id: sensor.boiler_rettemp
         above: 55
         for: "00:05:00"
+
+    condition: >
+      {{ is_state('input_boolean.emsgw_return_temp_high','off')
+         and
+         states('sensor.boiler_wwcurflow')|float <= 0
+      }}
+      
+    action:
+      - service: telegram_bot.send_message
+        data:
+          message: >-
+            CV: Return temperature
+            {% if trigger.id == "too_high" %} too high:
+            {% else %} OK again:
+            {% endif %}
+            {{ trigger.to_state.state|round(1) }}
+            ⁰C
+      - service: input_boolean.turn_on
+        target:
+          entity_id: input_boolean.emsgw_return_temp_high
+
+  - alias: EMSGW Check Return Temperature Down
+    description: Check return temp. Must be below 55.
+    mode: single
+
+    trigger:
       - platform: numeric_state
         id: ok_again
         entity_id: sensor.boiler_rettemp
         below: 55
         for: "00:05:00"
+
+    condition: "{{ is_state('input_boolean.emsgw_return_temp_high','on') }}"
 
     action:
       - service: telegram_bot.send_message
@@ -167,3 +201,33 @@ automation:
             {% endif %}
             {{ trigger.to_state.state|round(1) }}
             ⁰C
+      - service: input_boolean.turn_off
+        target:
+          entity_id: input_boolean.emsgw_return_temp_high
+
+  # - alias: EMSGW Check Return Temperature
+  #   description: Check return temp. Must be below 55.
+  #   mode: single
+  #
+  #   trigger:
+  #     - platform: numeric_state
+  #       id: too_high
+  #       entity_id: sensor.boiler_rettemp
+  #       above: 55
+  #       for: "00:05:00"
+  #     - platform: numeric_state
+  #       id: ok_again
+  #       entity_id: sensor.boiler_rettemp
+  #       below: 55
+  #       for: "00:05:00"
+  #
+  #   action:
+  #     - service: telegram_bot.send_message
+  #       data:
+  #         message: >-
+  #           CV: Return temperature
+  #           {% if trigger.id == "too_high" %} too high:
+  #           {% else %} OK again:
+  #           {% endif %}
+  #           {{ trigger.to_state.state|round(1) }}
+  #           ⁰C
