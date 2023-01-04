@@ -19,6 +19,26 @@ entities:
         name: false
         format: precision0
 
+  - entity: light.keuken_aanrecht_verlichting
+    type: custom:multiple-entity-row
+    name: Aanrecht
+    icon: mdi:ceiling-light-multiple-outline
+    show_state: false
+    tap_action:
+      action: call-service
+      service: mqtt.publish
+      data:
+        topic: cmnd/tasm19/add1
+        payload: 1
+      
+    entities:
+      - entity: light.keuken_aanrecht_klein
+        name: false
+        toggle: true
+      - entity: light.keuken_aanrecht_groot
+        name: false
+        toggle: true
+
   - entity: switch.keuken_afzuigkap
     name: Afzuigkap
     icon: mdi:fan

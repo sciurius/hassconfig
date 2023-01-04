@@ -38,6 +38,13 @@ light:
     entities:
       - light.badkamer_verlichting
 
+  - name: Keuken Aanrecht Verlichting
+    platform: group
+    unique_id: lightgroup_keuken_aanrecht_verlichting
+    entities:
+      - light.keuken_aanrecht_klein
+      - light.keuken_aanrecht_groot
+
   - name: Alle Verlichting
     platform: group
     unique_id: lightgroup_alle_verlichting
@@ -46,6 +53,7 @@ light:
       - light.hal_verlichting
       - light.slaapkamer_avondlichtje
       - light.badkamer_verlichting
+      - light.keuken_aanrecht_verlichting
    
   - name: Morning Lights
     platform: group
