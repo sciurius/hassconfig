@@ -95,10 +95,13 @@ entities:
 
   - type: custom:multiple-entity-row
     name: Wand
-    entity: light.woonkamer_wand_l
+    entity: light.woonkamer_wand
     icon: mdi:light-flood-down
-    toggle: true
+    show_state: false
     entities:
+      - entity: light.woonkamer_wand_l
+        toggle: true
+        name: false
       - entity: light.woonkamer_wand_r
         toggle: true
         name: false
