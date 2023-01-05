@@ -20,4 +20,4 @@ ${DST}/packages/%.yaml :: %.pl
 	&& rm $(basename $<).yaml
 
 ${DST}/packages/%.yaml :: %.yaml
-	install --preserve-timestamps --mode=0664 $< $@
+	install --mode=0664 $< $@
