@@ -46,9 +46,9 @@ entities:
   - entity: sensor.nas1_volume_1_volume_used
     name: NAS1 Used
 
-  # - entity: switch.psw03
-  #   name: Printer
-  #   icon: mdi:printer
+  - entity: switch.psw03
+    name: Printer
+    icon: mdi:printer
 
   - entity: light.bulb01
     name: Media Center actief
