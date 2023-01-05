@@ -1,0 +1,48 @@
+# templates
+
+sensor:                 ################
+
+# sensor.mc_state
+# Returns the state of select.tv_slaapkamer as a string.
+# This makes it a read-only sensor.
+
+- name: "MC State"
+  state: "{{ states('select.slaapkamer_media_center') }}"
+
+# sensor.apk_expiration_near
+# Return the expiration date if it is within 60 days.
+
+- name: "APK Expiration Near"
+  state: >
+    {% if
+       ((as_timestamp(strptime(states('sensor.apk_expiration'),
+                               '%Y-%m-%d')) / 86400) | int )
+       -
+       ((as_timestamp(strptime(states('sensor.date'),
+                               '%Y-%m-%d')) / 86400) | int )
+       < 60 %}
+    {{ states('sensor.apk_expiration') }}
+    {% else %} nog_lang_niet {% endif %}
+
+# For testing and development
+- name: Dummy
+  state: "0"
+
+- name: Uit
+  state: "Uit"
+
+binary_sensor:          ################
+
+# binary_sensor.pollen
+# Returns true if any of the pollen sensors is not 'none'.
+
+  - name: "Pollen"
+    state: >
+      {{ not
+         ( is_state('sensor.tomorrow_io_home_tree_pollen_index','none')
+           and
+           is_state('sensor.tomorrow_io_home_grass_pollen_index','none')
+           and
+           is_state('sensor.tomorrow_io_home_weed_pollen_index','none') )
+      }}
+      

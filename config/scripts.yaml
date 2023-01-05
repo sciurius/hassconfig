@@ -1,0 +1,30 @@
+smotty_notify:
+  alias: Smotty Notify
+  variables:
+    message: Message
+  sequence:
+  - service: notify.mobile_app_sm_a320fl
+    data:
+      message: '{{ message }}'
+      data:
+        priority: high
+        ttl: 0
+  mode: single
+  icon: mdi:alarm-light-outline
+smotty_alarm:
+  alias: Smotty Alarm
+  variables:
+    message: Message
+  sequence:
+  - service: notify.mobile_app_sm_a320fl
+    data:
+      message: '{{ message }}'
+      data:
+        priority: high
+        ttl: 0
+        channel: AlarmChannel
+        importance: urgent
+        persistent: true
+        tag: persistent
+  mode: single
+  icon: mdi:alert

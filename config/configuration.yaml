@@ -1,0 +1,73 @@
+
+# Configure a default setup of Home Assistant (frontend, api, etc)
+default_config:
+
+group:      !include groups.yaml
+automation: !include automations.yaml
+script:     !include scripts.yaml
+scene:      !include scenes.yaml
+sensor:     !include sensors.yaml
+template:   !include templates.yaml
+schedule:   !include schedules.yaml
+recorder:   !include recorder.yaml
+# Yes, there's only one recorder :)
+
+# For the NGINX proxy on HAOS.
+http:
+  use_x_forwarded_for: true
+  trusted_proxies:
+    - 172.30.33.0/24
+    
+telegram_bot:
+  - platform: polling
+    api_key: !secret telegram_api_key
+    allowed_chat_ids:
+      - !secret telegram_chat_id
+      - !secret telegram_mojore_chat_id
+
+notify:
+
+  - platform: telegram
+    name: Messenger
+    chat_id: !secret telegram_chat_id
+
+  - platform: telegram
+    name: Mojore Messenger
+    chat_id: !secret telegram_mojore_chat_id
+
+logger:
+  default: warning
+  logs:
+    custom_components.pyscript: info
+#    custom_components.localtuya: debug
+
+# Exclude some fast changing (and less relevant) sensors from the
+# LogBook.
+
+logbook:
+  exclude:
+    entities:
+      - zone.home
+      - sensor.thermostat_datetime
+      - sensor.dsmr_reading_timestamp
+
+homeassistant:
+  packages: !include_dir_named packages
+
+lovelace:
+  mode: storage
+  dashboards: !include dashboards.yaml
+
+device_tracker:
+  - platform: ping
+    hosts:
+      smotty: smotty.squirrel.nl
+      zenny: zenny.squirrel.nl
+
+pyscript:
+  allow_all_imports: true
+  hass_is_global: true
+  
+frontend:
+  extra_module_url:
+    - /local/community/lovelace-card-mod/card-mod.js

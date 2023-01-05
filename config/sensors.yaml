@@ -1,0 +1,12 @@
+  - platform: time_date
+    display_options:
+      - 'date'
+      # Note: These cause excessive log records...
+      # - 'time'
+      # - 'date_time'
+      # - 'date_time_utc'
+      # - 'date_time_iso'
+      # - 'time_date'
+      # - 'time_utc'
+      # - 'beat'
+

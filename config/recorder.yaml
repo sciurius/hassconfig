@@ -1,0 +1,5 @@
+  db_url: !secret recorder_db
+  auto_purge: false
+
+# Purging is handled by an extern tool which removes all unwanted
+# entities older than 2 weeks.

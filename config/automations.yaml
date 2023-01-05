@@ -1,0 +1,110 @@
+- id: '1642078786585'
+  alias: Bulb01 On/Off Notification
+  description: ''
+  use_blueprint:
+    path: device_onoff_notification.yaml
+    input:
+      dev_ent: light.bulb01
+- id: '1642089210326'
+  alias: Bulb02 On/Off Notification
+  description: ''
+  use_blueprint:
+    path: device_onoff_notification.yaml
+    input:
+      dev_ent: light.bulb02
+- id: '1642346014906'
+  alias: PSW01 On/Off Notification
+  description: ''
+  use_blueprint:
+    path: device_onoff_notification.yaml
+    input:
+      dev_ent: switch.smart_plug_1
+- id: '1642346075944'
+  alias: PSW02 On/Off Notification
+  description: ''
+  use_blueprint:
+    path: device_onoff_notification.yaml
+    input:
+      dev_ent: switch.smart_plug_2
+- id: '1648669157889'
+  alias: Auto Off Picky
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: media_player.picky
+    to: idle
+    for:
+      hours: 0
+      minutes: 15
+      seconds: 0
+  - platform: state
+    entity_id: media_player.picky
+    to: paused
+    for:
+      hours: 0
+      minutes: 30
+      seconds: 0
+  condition: []
+  action:
+  - type: turn_off
+    device_id: 196cc562bf1d8144ddac671abe627526
+    entity_id: switch.woonkamer_sound_system
+    domain: switch
+  mode: single
+- id: '1648748459520'
+  alias: Sound System On/Off Notification
+  description: ''
+  use_blueprint:
+    path: device_onoff_notification.yaml
+    input:
+      dev_ent: switch.woonkamer_sound_system
+- id: '1649945524670'
+  alias: Shel01 Temperature
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.shelly1l_1_tasmota_analog_temperature
+    above: '60'
+  condition: []
+  action:
+  - service: notify.notify
+    data:
+      message: Shelley temperature high!
+  - service: telegram_bot.send_message
+    data:
+      message: Shelley temperature {{ states('sensor.shelly1l_1_tasmota_analog_temperature')
+        }} ⁰C
+  mode: single
+- id: '1642491446446'
+  alias: CV Pressure Notification
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.boiler_system_pressure
+    below: '0.85'
+    for:
+      hours: 0
+      minutes: 10
+      seconds: 0
+  condition: []
+  action:
+  - service: notify.notify
+    data:
+      message: CV Pressure low!
+  - service: telegram_bot.send_message
+    data:
+      message: CV Pressure low!
+  mode: single
+- id: '1666291891255'
+  alias: IthoCVE Re-enable afzuiging
+  description: ''
+  trigger:
+  - platform: time
+    at: 00:05:05
+  condition: []
+  action:
+  - service: automation.turn_on
+    data: {}
+    target:
+      entity_id: automation.ithocve_afzuiging
+  mode: single
