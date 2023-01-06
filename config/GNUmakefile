@@ -3,13 +3,14 @@
 HADIR     := /mnt/ha
 DST       := ${HADIR}/config
 CONFIGS   := $(basename $(wildcard *.yaml))
+ALL       := $(addprefix ${DST}/,$(addsuffix .yaml,${CONFIGS})) packages dashboards
 
 default :: all
 
 test ::
-	echo ${CONFIGS}
+	echo ${ALL}
 
-all :: mount $(addprefix ${DST}/,$(addsuffix .yaml,${CONFIGS})) packages dashboards
+all :: mount ${ALL}
 
 mount ::
 	test -d ${HADIR}/config/.storage || mount ${HADIR}/config
