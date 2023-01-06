@@ -8,6 +8,8 @@ points_per_hour: 60
 hour24: true
 font_size: 75
 line_width: 2
+lower_bound: 0
+upper_bound: 100
 
 show:
   legend: false
