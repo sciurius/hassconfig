@@ -69,3 +69,12 @@ entities:
   - entity: light.badkamer_verlichting
     name: Verlichting
     icon: mdi:dome-light
+
+  - type: custom:multiple-entity-row
+    entity: switch.pswm02
+    name: Verwarming
+    icon: mdi:radiator
+    entities:
+      - entity: sensor.pswm01_energy_power
+        name: false
+
