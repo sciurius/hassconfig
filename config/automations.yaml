@@ -80,7 +80,7 @@
   description: ''
   trigger:
   - platform: numeric_state
-    entity_id: sensor.boiler_system_pressure
+    entity_id: sensor.boiler_syspress
     below: '0.85'
     for:
       hours: 0
