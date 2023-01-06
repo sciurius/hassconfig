@@ -29,8 +29,49 @@ entities:
         name: false
         format: precision0
 
-  - entity: switch.psw03
-    name: Deken
-    icon: mdi:radiator
+  - type: conditional
+    conditions:
+      - entity: switch.slaapkamer_warmtedeken_joan
+        state: "on"
+      - entity: sensor.slaapkamer_warmtedeken_joan_ui
+        state: Uit
+    row:
+      entity: switch.slaapkamer_warmtedeken_joan
+      type: custom:multiple-entity-row
+      name: Deken
+      icon: mdi:radiator
+      show_state: false
+      state_color: false
+      entities:
+        - entity: sensor.slaapkamer_warmtedeken_joan_ui
+          name: false
+
+  - type: conditional
+    conditions:
+      - entity: switch.slaapkamer_warmtedeken_joan
+        state: "on"
+      - entity: sensor.slaapkamer_warmtedeken_joan_ui
+        state_not: Uit
+    row:
+      entity: switch.slaapkamer_warmtedeken_joan
+      type: custom:multiple-entity-row
+      name: Deken
+      icon: mdi:radiator
+      show_state: false
+      state_color: true
+      entities:
+        - entity: sensor.slaapkamer_warmtedeken_joan_ui
+          name: false
+
+  - type: conditional
+    conditions:
+      - entity: switch.slaapkamer_warmtedeken_joan
+        state: "off"
+    row:
+      entity: switch.slaapkamer_warmtedeken_joan
+      name: Deken
+      icon: mdi:radiator
+      toggle: true
+      state_color: true
 
   - entity: light.slaapkamer_avondlichtje
