@@ -25,8 +25,8 @@ my @sensors =
       device_class => "timestamp",
     },
     "Status",
-    { name => "Temperature(⁰C)", topic => "Temperature", value => "float" },
-    { name => "IPM Temperature(⁰C)", topic => "IPM Temperature", value => "float" },
+    { name => "Temperature(°C)", topic => "Temperature", value => "float" },
+    { name => "IPM Temperature(°C)", topic => "IPM Temperature", value => "float" },
     { name => "Vpv1(V)", topic => "Vpv1", value => "float" },
     { name => "Vpv2(V)", topic => "Vpv2", value => "float" },
     { name => "Ipv1(A)", topic => "Ipv1", value => "float" },
@@ -52,7 +52,7 @@ my @sensors =
     { name => "Epv total(kWh)",  topic => "Epv_total" , value => "float" },
     { name => "Epv1 total(kWh)", topic => "Epv1_total", value => "float" },
     { name => "Epv2 total(kWh)", topic => "Epv2_total", value => "float" },
-    { name => "T total(H)", topic => "T_total", value => "float" },
+    { name => "T total(h)", topic => "T_total", value => "float" },
     { name => "P BUS Voltage(V)", topic => "P_BUS_Voltage", value => "float" },
     { name => "N BUS Voltage(V)", topic => "N_BUS_Voltage", value => "float" },
     { name => "Power Factor", topic => "Power_Factor",
@@ -100,7 +100,7 @@ automation:
     action:
       - service: telegram_bot.send_message
         data:
-          message: "Growatt Omvormer → {{ states('sensor.growatt_temperature') }} ⁰C"
+          message: "Growatt Omvormer → {{ states('sensor.growatt_temperature') }} °C"
 
 # Exclude some fast changing (and less relevant) sensors from the
 # LogBook.

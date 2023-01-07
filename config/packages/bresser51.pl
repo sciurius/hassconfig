@@ -24,7 +24,7 @@ my @sensors =
   (
    { name => "Serial number",
      topic => "id" },
-   { name => "Temperature (⁰C)",
+   { name => "Temperature (°C)",
      topic => "temperature_C",
      value => "float" },
    { name => "Humidity (%)",
@@ -36,7 +36,7 @@ my @sensors =
    { name => "Wind Speed (m/s)",
      topic => "wind_avg_m_s",
      value => "float" },
-   { name => "Wind Direction Unadjusted(⁰)",
+   { name => "Wind Direction Unadjusted(°)",
      icon => "mdi:compass-rose",
      topic => "wind_dir_deg",
      value => "int" },
@@ -92,7 +92,7 @@ input_number:
     max: 359
     step: 1
     mode: slider
-    unit_of_measurement: "⁰"
+    unit_of_measurement: "°"
     icon: mdi:axis-z-rotate-clockwise
 
   # The weather station resets its values when the batteries are
@@ -129,12 +129,12 @@ template:
              (states('sensor.bresser51_wind_direction_unadjusted')|int)
            - (states('sensor.bresser51_dir_corr')|int)
            ) % 360 }}
-      unit_of_measurement: "⁰"
+      unit_of_measurement: "°"
       icon: mdi:compass-rose
 
     - name: Bresser51 Dir Corr
       state: "{{ states('input_number.bresser51_dir_corr') }}"
-      unit_of_measurement: "⁰"
+      unit_of_measurement: "°"
       icon: mdi:axis-z-rotate-clockwise
 
     # Map heading in degrees to discrete values 0..16
@@ -149,7 +149,7 @@ template:
 
     # The adjusted direction, in degrees. 0 22.5 45 67.5 ...
     - name: Bresser51 Wind Direction Sector Adjusted
-      unit_of_measurement: "⁰"
+      unit_of_measurement: "°"
       icon: mdi:compass-rose
       state: >-
         {{ (states('sensor.bresser51_wind_direction_sector')|int) * 22.5 }}
@@ -191,7 +191,7 @@ template:
         {% set chill = (13.12 + 0.6215 * t + ( 0.4867 * t - 13.96 ) * s ** 0.16) %}
         {% if ( chill > t ) %}{% set chill = t %}{% endif %}
         {{ chill|round(1) }}
-      unit_of_measurement: "⁰C"
+      unit_of_measurement: "°C"
       icon: mdi:thermometer
 
 # Fetching history data from PostgreSQL recorder db.
@@ -294,7 +294,7 @@ template:
 
     - name: Buiten Temperature
       state: "{{ states('sensor.bresser51_temperature') }}"
-      unit_of_measurement: ⁰C
+      unit_of_measurement: °C
       device_class: temperature
 
     - name: Buiten Humidity

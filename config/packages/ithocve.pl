@@ -54,7 +54,7 @@ $d = HA::MQTT::Device->new
 
 @sensors =
   (
-   { name            => "Temperature (⁰C)",
+   { name            => "Temperature (°C)",
      value_template  => "{{ value_json.temp | float }}" },
    { name            => "Humidity (%)",
      device_class    => "humidity",

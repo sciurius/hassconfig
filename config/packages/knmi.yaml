@@ -7,7 +7,7 @@ template:
     - name: KNMI Temperature
       state: >-
         {{ state_attr('weather.knmi_home', 'temperature') }}
-      unit_of_measurement: "⁰C"
+      unit_of_measurement: "°C"
       device_class: temperature
 
     - name: KNMI Humidity
@@ -38,7 +38,7 @@ template:
       state: >-
         {{ state_attr('weather.knmi_home', 'wind_bearing')|int }}
       icon: mdi:compass-rose
-      unit_of_measurement: "⁰"
+      unit_of_measurement: "°"
       
     - name: KNMI Wind Direction Name
       state: >-
