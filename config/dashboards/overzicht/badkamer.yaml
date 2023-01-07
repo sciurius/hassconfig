@@ -66,15 +66,43 @@ entities:
       entity: sensor.ithocve_fan_remaining_time
       name: Fan Timer
 
-  - entity: light.badkamer_verlichting
-    name: Verlichting
-    icon: mdi:dome-light
+  - type: conditional
+    conditions:
+      - entity: light.badkamer_verlichting
+        state: unavailable
+    row:
+      entity: sensor.uit
+      name: Verlichting
+      icon: mdi:dome-light
 
-  - type: custom:multiple-entity-row
-    entity: switch.pswm02
-    name: Verwarming
-    icon: mdi:radiator
-    entities:
-      - entity: sensor.pswm01_energy_power
-        name: false
+  - type: conditional
+    conditions:
+      - entity: light.badkamer_verlichting
+        state_not: unavailable
+    row:
+      entity: light.badkamer_verlichting
+      name: Verlichting
+      icon: mdi:dome-light
+
+  - type: conditional
+    conditions:
+      - entity: switch.pswm02
+        state: unavailable
+    row:
+      entity: sensor.uit
+      icon: mdi:radiator
+      name: Verwarming
+
+  - type: conditional
+    conditions:
+      - entity: switch.pswm02
+        state_not: unavailable
+    row:
+      type: custom:multiple-entity-row
+      entity: switch.pswm02
+      name: Verwarming
+      icon: mdi:radiator
+      entities:
+        - entity: sensor.pswm01_energy_power
+          name: false
 
