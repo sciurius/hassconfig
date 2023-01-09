@@ -103,6 +103,6 @@ entities:
       name: Verwarming
       icon: mdi:radiator
       entities:
-        - entity: sensor.pswm01_energy_power
+        - entity: sensor.pswm02_energy_power
           name: false
 
