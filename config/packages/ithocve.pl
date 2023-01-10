@@ -193,7 +193,7 @@ template:
   - sensor:
 
       - name: IthoCVE State Percent
-        state: "{{ (states('sensor.ithocve_state')|int / 2.54) |round }}"
+        state: "{{ (states('sensor.ithocve_state')|int / 2.55) |round }}"
         unit_of_measurement: "%"
 
       - name: IthoCVE Fan Info
@@ -287,11 +287,11 @@ automation:
              -
              states('input_number.ithocve_fan_speed')|int )|abs > 1 }}
     action:
-      service: mqtt.publish
-      data:
-        topic: itho/cmd
-        payload_template: >-
-          { "speed": "{{ (trigger.to_state.state|float * 2.54)|round }}" }
+      - service: mqtt.publish
+        data:
+          topic: itho/cmd
+          payload_template: >-
+            { "speed" : "{{ (trigger.to_state.state|float * 2.55)|round }}" }
 
   - id: Automation__IthoCVE_Afzuiging
     alias: IthoCVE Afzuiging
