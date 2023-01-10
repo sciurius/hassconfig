@@ -46,10 +46,17 @@ logger:
 
 logbook:
   exclude:
+    entity_globs:
+      - sensor.ups_pico*
     entities:
       - zone.home
       - sensor.thermostat_datetime
       - sensor.dsmr_reading_timestamp
+  include:
+    entities:
+      - sensor.ups_pico_battery_level
+      - sensor.ups_pico_rpi_level
+      - sensor.ups_pico_power_mode
 
 homeassistant:
   packages: !include_dir_named packages
