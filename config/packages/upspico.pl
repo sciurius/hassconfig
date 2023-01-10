@@ -82,7 +82,7 @@ $d->add_sensor( { state_topic => "~/rtc", %$_ } ) for @sensors;
     { name => "Low Power Restart Time (s)",
       icon => "mdi:camera-timer",
       value_template => "{{ value_json.lprsta }}" },
-    { name => "Battery Poewring Testing Timeout (s)",
+    { name => "Battery Powering Testing Timeout (s)",
       icon => "mdi:camera-timer",
       value_template => "{{ value_json.btto }}" },
     { name => "Filesystem Shutdown Timeout (s)",
@@ -112,3 +112,22 @@ automation:
 
 [% automation %]
 
+recorder:
+  exclude:
+    entity_globs:
+      - sensor.ups_pico*
+  include:
+    entities:
+      - sensor.ups_pico_battery_level
+      - sensor.ups_pico_rpi_level
+      - sensor.ups_pico_power_mode
+
+logbook:
+  exclude:
+    entity_globs:
+      - sensor.ups_pico*
+  include:
+    entities:
+      - sensor.ups_pico_battery_level
+      - sensor.ups_pico_rpi_level
+      - sensor.ups_pico_power_mode
