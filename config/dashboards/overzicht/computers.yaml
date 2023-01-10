@@ -16,3 +16,14 @@ entities:
 
   - entity: sensor.systems_nas1_temperature
     name: NAS1
+
+  - type: custom:multiple-entity-row
+    entity: sensor.ups_pico_battery_level
+    name: UPS PIco
+    show_state: false
+    icon: mdi:battery-charging
+    entities:
+      - entity: sensor.ups_pico_rpi_level
+        name: false
+      - entity: sensor.ups_pico_battery_level
+        name: false
