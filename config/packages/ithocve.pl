@@ -291,7 +291,7 @@ automation:
         data:
           topic: itho/cmd
           payload_template: >-
-            { "speed" : "{{ (trigger.to_state.state|float * 2.55)|round }}" }
+            { "speed":{{ (trigger.to_state.state|float * 2.55)|round }} }
 
   - id: Automation__IthoCVE_Afzuiging
     alias: IthoCVE Afzuiging
