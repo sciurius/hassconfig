@@ -1,4 +1,5 @@
 # Dashboard: Overzicht -- Slaapkamer       -*- hass -*-
+# WARNING: This is a generated file -- DO NOT EDIT
 
 type: entities
 title: Slaapkamer
@@ -7,27 +8,7 @@ show_header_toggle: false
 
 entities:
 
-  - entity: switch.slaapkamer_media_center
-    type: custom:multiple-entity-row
-    name: Media Center
-    icon: mdi:television
-    toggle: true
-    entities:
-      - entity: sensor.mc_state
-        hide_if: unavailable
-        name: false
-
-  - entity: sensor.slaapkamer_temperature
-    type: custom:multiple-entity-row
-    name: Temperatuur
-    icon: mdi:thermometer
-    show_state: false
-    entities:
-      - entity: sensor.slaapkamer_temperature
-        name: false
-      - entity: sensor.slaapkamer_humidity
-        name: false
-        format: precision0
+  - [% INCLUDE temphum sensor = "slaapkamer" %]
 
   - type: conditional
     conditions:

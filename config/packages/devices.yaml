@@ -122,3 +122,11 @@ automation:
         at: "01:00:00"
     action:
       - service: script.turn_off_everything
+
+mqtt:
+  sensor:
+    - name: Phoenix NVMe0 Temperature
+      state_topic: phoenix/nvme0/status
+      device_class: Temperature
+      unit_of_measurement: "°C"
+      value_template: "{{ value_json.temperature }}"

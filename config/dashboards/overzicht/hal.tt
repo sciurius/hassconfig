@@ -1,4 +1,5 @@
 # Dashboard: Overzicht -- Hal       -*- hass -*-
+# WARNING: This is a generated file -- DO NOT EDIT
 
 type: entities
 title: Hal
@@ -10,17 +11,7 @@ entities:
   - entity: light.hal_hoek
     name: Verlichting
 
-  - entity: sensor.hal_temperature
-    type: custom:multiple-entity-row
-    name: Temperatuur
-    icon: mdi:thermometer
-    show_state: false
-    entities:
-      - entity: sensor.hal_temperature
-        name: false
-      - entity: sensor.hal_humidity
-        name: false
-        format: precision0
+  - [% INCLUDE temphum sensor = "hal" %]
 
   - entity: switch.doorbell
     type: custom:multiple-entity-row

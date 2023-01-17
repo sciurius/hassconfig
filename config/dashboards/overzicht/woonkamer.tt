@@ -1,4 +1,5 @@
 # Dashboard: Overzicht -- Media Player: osmc       -*- hass -*-
+# WARNING: This is a generated file -- DO NOT EDIT
 
 type: entities
 title: Woonkamer
@@ -10,16 +11,7 @@ entities:
   - entity: climate.thermostat_hc1
     name: Thermostaat
 
-  - entity: sensor.woonkamer_temperature
-    type: custom:multiple-entity-row
-    name: Temperatuur
-    icon: mdi:thermometer
-    show_state: false
-    entities:
-      - entity: sensor.woonkamer_temperature
-        name: false
-      - entity: sensor.woonkamer_humidity
-        name: false
+  - [% INCLUDE temphum sensor = "woonkamer" %]
 
   - entity: sensor.achterkamer_illuminance
 
@@ -32,32 +24,18 @@ entities:
 #     tap_action: cannot be templated yet
 #     https://github.com/jcwillox/lovelace-paper-buttons-row/issues/74
         
-    buttons:
-      - name: Für Elise
-        layout: icon|name
-        tap_action:
-          action: call-service
-          service: script.rfbridge_chime
-          service_data:
-            chime: 1
-      - name: Big Ben
-        tap_action:
-          action: call-service
-          service: script.rfbridge_chime
-          service_data:
-            chime: 2
-      - name: Ding Dong 1
-        tap_action:
-          action: call-service
-          service: script.rfbridge_chime
-          service_data:
-            chime: 3
-      - name: Ding Dong 2
-        tap_action:
-          action: call-service
-          service: script.rfbridge_chime
-          service_data:
-            chime: 4
+    buttons: [
+[% FOREACH bell IN [ "Für Elise", "Big Ben", "Ding Dong 1", "Ding Dong 2" ] %]
+      { name: "[% bell.dquote %]",
+        layout: [% IF loop.first %] icon|name [% ELSE %] name [% END %],
+        tap_action: {
+          action: call-service,
+          service: script.rfbridge_chime,
+          service_data: { chime: [% 1 + loop.index %] }
+      } }
+      [%- "," UNLESS loop.last %]
+[% END %]
+    ]
 
   - type: divider
 

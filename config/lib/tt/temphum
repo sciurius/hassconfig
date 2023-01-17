@@ -1,0 +1,29 @@
+[%# Multi-entity row for temperature/humidity.		-*- tt -*-
+
+Arguments:
+
+sensor	   e.g. badkamer, hal 
+label      defaults to "Temperatuur"
+sensor_t   defaults to 'sensor.' _ sensor _ '_temperature'
+sensor_h   defaults to 'sensor.' _ sensor _ '_humidity'
+icon       defaults to 'mdi:thermometer'
+
+-%][%-
+
+DEFAULT label    = "Temperatuur";
+DEFAULT sensor_t = "sensor.${sensor}_temperature";
+DEFAULT sensor_h = "sensor.${sensor}_humidity";
+DEFAULT icon     = "mdi:thermometer";
+
+-%]{
+  entity: [% sensor_t %],
+  type: custom:multiple-entity-row,
+  name: "[% label.dquote %]",
+  icon: [% icon %],
+  show_state: false,
+  entities: [
+    { entity: [% sensor_t %],
+      name: false },
+    { entity: [% sensor_h %],
+      name: false,
+      format: precision0 } ] }

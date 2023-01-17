@@ -5,9 +5,13 @@ title: Computers
 
 entities:
 
-  - entity: sensor.systems_phoenix_temperature
+  - type: custom:multiple-entity-row
+    entity: sensor.systems_phoenix_temperature
+    secondary_info:
+      name: NVMe0
+      entity: sensor.phoenix_nvme0_temperature
     name: Phoenix
-
+      
   - entity: sensor.systems_srv1_temperature
     name: Server1
 

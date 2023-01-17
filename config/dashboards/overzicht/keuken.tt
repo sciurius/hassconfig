@@ -1,4 +1,5 @@
 # Dashboard: Overzicht -- Keuken      -*- hass -*-
+# WARNING: This is a generated file -- DO NOT EDIT
 
 type: entities
 title: Keuken
@@ -7,17 +8,7 @@ show_header_toggle: false
 
 entities:
 
-  - entity: sensor.keuken_temperature
-    type: custom:multiple-entity-row
-    name: Temperatuur
-    icon: mdi:thermometer
-    show_state: false
-    entities:
-      - entity: sensor.keuken_temperature
-        name: false
-      - entity: sensor.keuken_humidity
-        name: false
-        format: precision0
+  - [% INCLUDE temphum sensor = "keuken" %]
 
   - entity: light.keuken_aanrecht_verlichting
     type: custom:multiple-entity-row
