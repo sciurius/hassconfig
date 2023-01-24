@@ -7,7 +7,7 @@ cards:
 
 - type: conditional
   conditions:
-    - entity: switch.psw05
+    - entity: switch.psw10
       state: "on"
 
   card:
@@ -17,7 +17,7 @@ cards:
     show_header_toggle: false
     entities:
 
-      - entity: switch.psw05
+      - entity: switch.psw10
         name: Master
         icon: mdi:fan-off
 
@@ -125,20 +125,20 @@ cards:
 
 - type: conditional
   conditions:
-    - entity: switch.psw05
+    - entity: switch.psw10
       state: "off"
   card:
     type: entities
     title: Badkamerafzuiging
     show_header_toggle: false
     entities:
-      - entity: switch.psw05
+      - entity: switch.psw10
         name: Master
         icon: mdi:fan-off
 
 - type: conditional
   conditions:
-    - entity: switch.psw05
+    - entity: switch.psw10
       state: unavailable
   card:
     type: markdown
