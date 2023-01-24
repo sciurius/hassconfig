@@ -10,7 +10,6 @@ HADIR     := /mnt/ha
 DST       := ${HADIR}/config
 TTLIB     := $(shell realpath ../lib/tt)
 
-
 test :
 	echo ${PKGS_PL}
 	echo ${PKGS_TT}
