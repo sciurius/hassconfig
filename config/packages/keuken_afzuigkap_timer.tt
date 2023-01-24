@@ -1,0 +1,4 @@
+# Keuken Afzuigkap (Timer)               -*- hass -*-
+# WARNING: This is a generated file -- DO NOT EDIT
+
+[% INCLUDE switchoff_timer name = "Keuken Afzuigkap" %]
