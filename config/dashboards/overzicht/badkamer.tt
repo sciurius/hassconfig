@@ -88,13 +88,36 @@ entities:
   - type: conditional
     conditions:
       - entity: switch.pswm02
-        state_not: unavailable
+        state: "on"
     row:
       type: custom:multiple-entity-row
       entity: switch.pswm02
       name: Verwarming
       icon: mdi:radiator
+      toggle: true
       entities:
         - entity: sensor.pswm02_energy_power
           name: false
 
+  - type: conditional
+    conditions:
+      - entity: switch.pswm02
+        state: "off"
+    row:
+      type: custom:multiple-entity-row
+      entity: switch.pswm02
+      name: Verwarming
+      icon: mdi:radiator
+      toggle: true
+      state_color: false
+      entities: []
+
+  - type: conditional
+    conditions:
+      - entity: timer.badkamer_verwarming
+        state: active
+    row:
+      entity: timer.badkamer_verwarming
+      icon: mdi:radiator
+      name: Timer
+    

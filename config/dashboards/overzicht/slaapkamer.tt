@@ -13,15 +13,24 @@ entities:
   - type: conditional
     conditions:
       - entity: switch.slaapkamer_warmtedeken_joan
+        state: unavailable
+    row:
+      entity: sensor.uit
+      icon: mdi:radiator
+      name: Deken
+
+  - type: conditional
+    conditions:
+      - entity: switch.slaapkamer_warmtedeken_joan
         state: "on"
       - entity: sensor.slaapkamer_warmtedeken_joan_ui
         state: Uit
     row:
-      entity: switch.slaapkamer_warmtedeken_joan
       type: custom:multiple-entity-row
+      entity: switch.slaapkamer_warmtedeken_joan
       name: Deken
       icon: mdi:radiator
-      show_state: false
+      toggle: true
       state_color: false
       entities:
         - entity: sensor.slaapkamer_warmtedeken_joan_ui
@@ -34,11 +43,11 @@ entities:
       - entity: sensor.slaapkamer_warmtedeken_joan_ui
         state_not: Uit
     row:
-      entity: switch.slaapkamer_warmtedeken_joan
       type: custom:multiple-entity-row
+      entity: switch.slaapkamer_warmtedeken_joan
       name: Deken
+      toggle: true
       icon: mdi:radiator
-      show_state: false
       state_color: true
       entities:
         - entity: sensor.slaapkamer_warmtedeken_joan_ui
@@ -49,10 +58,21 @@ entities:
       - entity: switch.slaapkamer_warmtedeken_joan
         state: "off"
     row:
+      type: custom:multiple-entity-row
       entity: switch.slaapkamer_warmtedeken_joan
       name: Deken
-      icon: mdi:radiator
       toggle: true
-      state_color: true
+      icon: mdi:radiator
+      state_color: false
+      entities: []
+
+  - type: conditional
+    conditions:
+      - entity: timer.slaapkamer_warmtedeken_joan
+        state: active
+    row:
+      entity: timer.slaapkamer_warmtedeken_joan
+      icon: mdi:radiator
+      name: Timer
 
   - entity: light.slaapkamer_avondlichtje
