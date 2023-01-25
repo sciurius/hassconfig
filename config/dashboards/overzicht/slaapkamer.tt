@@ -8,6 +8,16 @@ show_header_toggle: false
 
 entities:
 
+  - entity: switch.slaapkamer_media_center
+    type: custom:multiple-entity-row
+    name: Media Center
+    icon: mdi:television
+    toggle: true
+    entities:
+      - entity: sensor.mc_state
+        hide_if: unavailable
+        name: false
+
   - [% INCLUDE temphum sensor = "slaapkamer" %]
 
   - type: conditional
