@@ -1,0 +1,17 @@
+[% # Switch-Off timer (entities row)
+   DEFAULT timer     = name.lower.replace(" ","_");
+   -%]
+{ type: conditional,
+    conditions: [ {
+       entity: timer.[% timer %],
+       state: active } ],
+    row: {
+      entity: timer.[% timer %],
+      [% IF icon %]icon: mdi:[% icon %],[% END %]
+      name: [% name %],
+      hold_action: {
+        action: call-service,
+        service: timer.cancel,
+        service_data: {
+          entity_id: timer.[% timer %]
+} } } }

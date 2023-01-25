@@ -1,5 +1,5 @@
-[% #switchoff_timer
-
+[% # Switch-Off timer
+   DEFAULT type      = "switch";
    DEFAULT duration  = "00:15:00";
    DEFAULT increment = "00:15:00";
    DEFAULT timer     = name.lower.replace(" ","_");
@@ -55,5 +55,5 @@ automation:
         event_data:
           entity_id: timer.[% timer %]
     action:
-      - service: switch.turn_off
-        entity_id: switch.[% switch %]
+      - service: [% type %].turn_off
+        entity_id: [% type %].[% switch %]

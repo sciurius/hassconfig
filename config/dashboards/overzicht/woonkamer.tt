@@ -70,6 +70,12 @@ entities:
   - entity: light.woonkamer_totem
     icon: mdi:light-flood-down
     name: Totem
+    hold_action:
+      action: call-service
+      service: script.start_woonkamer_totem_timer
+
+  - [% INCLUDE switchoff_timer_row name = "Timer",
+       timer = "woonkamer_totem" %]
 
   - type: custom:multiple-entity-row
     name: Wand

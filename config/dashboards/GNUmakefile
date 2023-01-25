@@ -22,8 +22,9 @@ ${DST}/dashboards/%.yaml :: %.pl
 	&& install --mode=0644 $(basename $<).yaml $@ \
 	&& rm $(basename $<).yaml
 
-${DST}/dashboards/%.yaml :: %.tt ${TTLIB}/temphum
-	tpage --include_path=${TTLIB} $< > $(basename $<).yaml \
+${DST}/dashboards/%.yaml :: %.tt ${TTLIB}/ui/*
+	tpage --include_path=${TTLIB} --include_path=${TTLIB}/ui \
+	  $< > $(basename $<).yaml \
 	&& install --mode=0644 $(basename $<).yaml $@ \
 	&& rm $(basename $<).yaml
 

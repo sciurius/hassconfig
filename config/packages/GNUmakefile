@@ -22,7 +22,7 @@ ${DST}/packages/%.yaml :: %.pl
 	&& install --mode=0644 $(basename $<).yaml $@ \
 	&& rm $(basename $<).yaml
 
-${DST}/packages/%.yaml :: %.tt ${TTLIB}/temphum
+${DST}/packages/%.yaml :: %.tt ${TTLIB}/???*
 	tpage --include_path=${TTLIB} $< > $(basename $<).yaml \
 	&& install --mode=0644 $(basename $<).yaml $@ \
 	&& rm $(basename $<).yaml

@@ -37,17 +37,5 @@ entities:
       action: call-service
       service: script.start_keuken_afzuigkap_timer
 
-  - type: conditional
-    conditions:
-      - entity: timer.keuken_afzuigkap
-        state: active
-    row:
-      entity: timer.keuken_afzuigkap
-      icon: mdi:fan
-      name: Timer
-      hold_action:
-        action: call-service
-        service: timer.cancel
-        service_data:
-          entity_id: timer.keuken_afzuigkap
-    
+  - [% INCLUDE switchoff_timer_row name = "Timer",
+       timer = "keuken_afzuigkap", icon = "fan" %]
