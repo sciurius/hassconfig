@@ -1,5 +1,14 @@
-  db_url: !secret recorder_db
-  auto_purge: false
+# Settings for HomeAssistant recorder.
+
+db_url: !secret recorder_db
+
+# Since the database is on an external system, give it some time to
+# become ready after a power fail.
+
+db_retry_wait: 5
+db_max_retries: 100
 
 # Purging is handled by an extern tool which removes all unwanted
 # entities older than 2 weeks.
+
+auto_purge: false
