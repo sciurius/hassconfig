@@ -114,9 +114,6 @@ entities:
     name: Irmby
     entity: vacuum.irmby
     entities:
-      - entity: binary_sensor.irmby_bin_full
-        name: Opvangbak
-        hide_if: 'off'
       - entity: sensor.irmby_battery_level
         name: accu
         hide_if: 100
