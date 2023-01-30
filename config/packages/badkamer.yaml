@@ -1,0 +1,54 @@
+# Badkamer                      -*- hass -*-
+
+timer:
+
+  badkamer_verwarming:
+    duration: "00:30:00"
+    restore: true
+
+automation:
+
+  - id: Automation__Start_Badkamerverwarming_Timer
+    alias: "Start badkamerverwarming timer."
+    description: "Start badkamerverwarming timer."
+    mode: restart
+
+    trigger:
+      - platform: numeric_state
+        entity_id: sensor.pswm02_energy_power
+        above: 5
+
+    action:
+      - service: timer.start
+        entity_id: timer.badkamer_verwarming
+        data: { duration: "00:30:00" }
+
+  - id: Automation__Stop_Badkamerverwarming_Timer
+    alias: "Stop badkamerverwarming timer."
+    description: "Stop badkamerverwarming timer."
+    mode: restart
+
+    trigger:
+      - platform: numeric_state
+        entity_id: sensor.pswm02_energy_power
+        below: 5
+        for: "00:02:00"
+      - platform: state
+        entity_id: switch.pswm02
+        to: 'off'
+
+    action:
+      - service: timer.cancel
+        entity_id: timer.badkamer_verwarming
+
+  - id: Automation__Switch_Off_Badkamerverwarming
+    alias: Switch Off Badkamerverwarming
+    description: Switch Off Badkamerverwarming
+    trigger:
+      - platform: event
+        event_type: timer.finished
+        event_data:
+          entity_id: timer.badkamer_verwarming
+    action:
+      - service: switch.turn_off
+        entity_id: switch.pswm02
