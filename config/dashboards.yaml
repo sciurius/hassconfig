@@ -28,6 +28,13 @@ lovelace-test:
   show_in_sidebar: false
   filename: dashboards/test.yaml
   
+lovelace-woonkamer:
+  mode: yaml
+  title: Woonkamer
+  icon: mdi:script
+  show_in_sidebar: false
+  filename: dashboards/wk.yaml
+  
 lovelace-badkamerafzuiging:
   mode: yaml
   title: Badkamerafzuiging
