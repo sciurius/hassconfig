@@ -5,9 +5,6 @@ use strict;
 use utf8;
 
 use HA::MQTT::Device;
-use Text::Template::Tiny;
-
-# Generate HA YAML for Growatt7k.
 
 my $d = HA::MQTT::Device->new
   ( name	      => "Systems",
@@ -28,9 +25,5 @@ for ( qw( Phoenix NAS1 Srv1 Srv4 ) ) {
 
 binmode STDOUT => ':utf8';
 
-print <<EOD;
-# MQTT sensors for systems              -*- hass -*-
-
-EOD
-
+print "# MQTT sensors for systems              -*- hass -*-\n\n";
 print $d->as_string;
