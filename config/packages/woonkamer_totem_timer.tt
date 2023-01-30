@@ -1,0 +1,4 @@
+# Woonkamer Totem verlichting (Timer)               -*- hass -*-
+# WARNING: This is a generated file -- DO NOT EDIT
+
+[% INCLUDE switchoff_timer name = "Woonkamer Totem" type = "light" %]
