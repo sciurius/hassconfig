@@ -4,13 +4,13 @@ sensor:
 
   - platform: imap
     name: IMAP Johan Vromans
-    server: mail.vandervlis.nl
+    server: !secret imap_server
     username: johanvromans
     password: !secret imap_johanvromans
 
   - platform: imap
     name: IMAP Mojore
-    server: mail.vandervlis.nl
+    server: !secret imap_server
     username: mojore
     password: !secret imap_mojore
 
