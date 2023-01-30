@@ -1,0 +1,11 @@
+# Sample responsive layout,             -*- hass -*-
+[% INCLUDE kiosk %]
+
+views:
+  - theme: Backend-selected
+    title: Home
+    badges: []
+    cards:
+      - type: vertical-stack
+        cards:
+          - !include overzicht/woonkamer.yaml
