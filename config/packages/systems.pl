@@ -5,6 +5,7 @@ use strict;
 use utf8;
 
 use HA::MQTT::Device;
+use Template;
 
 my $d = HA::MQTT::Device->new
   ( name	      => "Systems",
@@ -25,5 +26,26 @@ for ( qw( Phoenix NAS1 Srv1 Srv4 ) ) {
 
 binmode STDOUT => ':utf8';
 
-print "# MQTT sensors for systems              -*- hass -*-\n\n";
-print $d->as_string;
+my $res = $d->generate;
+
+my $xp = Template->new;
+
+my $tmp = join( "", map { $d->detab($_) } <DATA> );
+$xp->process( \$tmp, $res );
+
+__DATA__
+# MQTT sensors for systems              -*- hass -*-
+
+script:
+
+[% script %]
+
+automation:
+
+[% automation %]
+
+homeassistant:
+
+  customize:
+
+[% customize %]
