@@ -6,9 +6,6 @@ PKGS_PL   := $(basename $(shell find * -name '*.pl' -print))
 PKGS_TT   := $(basename $(shell find * -name '*.tt' -print))
 PKGS_YAML := $(basename $(shell find * -name '*.yaml' -print))
 PKGS      := ${PKGS_PL} ${PKGS_TT} ${PKGS_YAML}
-HADIR     := /mnt/ha
-DST       := ${HADIR}/config
-TTLIB     := $(shell realpath ../lib/tt)
 
 test :
 	echo ${PKGS_PL}

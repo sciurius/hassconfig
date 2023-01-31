@@ -120,79 +120,79 @@ input_number:
 
 template:
 
-- sensor:
+  - sensor:
 
-    # Adjust for not being north-oriented.
-    - name: Bresser51 Wind Direction
-      state: >-
-        {{ (
-             (states('sensor.bresser51_wind_direction_unadjusted')|int)
-           - (states('sensor.bresser51_dir_corr')|int)
-           ) % 360 }}
-      unit_of_measurement: "°"
-      icon: mdi:compass-rose
+      # Adjust for not being north-oriented.
+      - name: Bresser51 Wind Direction
+	state: >-
+	  {{ (
+	       (states('sensor.bresser51_wind_direction_unadjusted')|int)
+	     - (states('sensor.bresser51_dir_corr')|int)
+	     ) % 360 }}
+	unit_of_measurement: "°"
+	icon: mdi:compass-rose
 
-    - name: Bresser51 Dir Corr
-      state: "{{ states('input_number.bresser51_dir_corr') }}"
-      unit_of_measurement: "°"
-      icon: mdi:axis-z-rotate-clockwise
+      - name: Bresser51 Dir Corr
+	state: "{{ states('input_number.bresser51_dir_corr') }}"
+	unit_of_measurement: "°"
+	icon: mdi:axis-z-rotate-clockwise
 
-    # Map heading in degrees to discrete values 0..16
-    # Note that the bresser sensor returns values:
-    #  0 22 45 68 90 112 135 158 180 202 225 248 270 292 315 338 360?
-    - name: Bresser51 Wind Direction Sector
-      icon: mdi:compass-rose
-      state: >-
-        {{ (
-        (states('sensor.bresser51_wind_direction')|int) /
-        22 ) | int % 16 }}
+      # Map heading in degrees to discrete values 0..16
+      # Note that the bresser sensor returns values:
+      #  0 22 45 68 90 112 135 158 180 202 225 248 270 292 315 338 360?
+      - name: Bresser51 Wind Direction Sector
+	icon: mdi:compass-rose
+	state: >-
+	  {{ (
+	  (states('sensor.bresser51_wind_direction')|int) /
+	  22 ) | int % 16 }}
 
-    # The adjusted direction, in degrees. 0 22.5 45 67.5 ...
-    - name: Bresser51 Wind Direction Sector Adjusted
-      unit_of_measurement: "°"
-      icon: mdi:compass-rose
-      state: >-
-        {{ (states('sensor.bresser51_wind_direction_sector')|int) * 22.5 }}
+      # The adjusted direction, in degrees. 0 22.5 45 67.5 ...
+      - name: Bresser51 Wind Direction Sector Adjusted
+	unit_of_measurement: "°"
+	icon: mdi:compass-rose
+	state: >-
+	  {{ (states('sensor.bresser51_wind_direction_sector')|int) * 22.5 }}
 
-# {% set names = "N NNE NE ENE E ESE SE SSE S SSW SW WSW W WNW NW NNW N".split() %}
+  # {% set names = "N NNE NE ENE E ESE SE SSE S SSW SW WSW W WNW NW NNW N".split() %}
 
-    # Map sector to symbolic name.
-    - name: Bresser51 Wind Direction Name
-      icon: mdi:compass-rose
-      state: |
-        {% set names = "N NNO NO ONO O OZO ZO ZZO Z ZZW ZW WZW W WNW NW NNW N".split() %}
-        {{ names[states('sensor.bresser51_wind_direction_sector')|int] }}
+      # Map sector to symbolic name.
+      - name: Bresser51 Wind Direction Name
+	icon: mdi:compass-rose
+	state: |
+	  {% set names = "N NNO NO ONO O OZO ZO ZZO Z ZZW ZW WZW W WNW NW NNW N".split() %}
+	  {{ names[states('sensor.bresser51_wind_direction_sector')|int] }}
 
-# {% set names = "N NNE NE ENE E ESE SE SSE S SSW SW WSW W WNW NW NNW N".split() %}
+  # {% set names = "N NNE NE ENE E ESE SE SSE S SSW SW WSW W WNW NW NNW N".split() %}
 
-    # Wind force.
-    - name: Bresser51 Wind Beaufort
-      unit_of_measurement: "Bft"
-      icon: mdi:windsock
-      state: |
-        {{(((states('sensor.bresser51_wind_speed') | float) / 0.836) ** (2/3)) | round(0, 'ceil')}}
+      # Wind force.
+      - name: Bresser51 Wind Beaufort
+	unit_of_measurement: "Bft"
+	icon: mdi:windsock
+	state: |
+	  {{(((states('sensor.bresser51_wind_speed') | float) / 0.836) ** (2/3)) | round(0, 'ceil')}}
 
-    # Wind speed in Km/h, for convenience
-    - name: Bresser51 Wind Speed Kmh
-      state: |
-        {{ ( 3.6 * (states('sensor.bresser51_wind_speed') | float) ) | round(1) }}
-      unit_of_measurement: "km/h"
-      icon: mdi:weather-windy
+      # Wind speed in Km/h, for convenience
+      - name: Bresser51 Wind Speed Kmh
+	state: |
+	  {{ ( 3.6 * (states('sensor.bresser51_wind_speed') | float) ) | round(1) }}
+	unit_of_measurement: "km/h"
+	icon: mdi:weather-windy
 
-    # Wind Chill (Feels like) temperature.
-    # JAG/TI formula.
-    # Correction in line 3 is for 1.5m level measurement of the wind
-    # speed instead of the required 10m.
-    - name: Bresser51 Wind Chill
-      state: |
-        {% set t = states('sensor.bresser51_temperature')|float %}
-        {% set s = states('sensor.bresser51_wind_speed')|float %}
-        {% set s = s * 1.5 %}
-        {% set chill = (13.12 + 0.6215 * t + ( 0.4867 * t - 13.96 ) * s ** 0.16) %}
-        {% if ( chill > t ) %}{% set chill = t %}{% endif %}
-        {{ chill|round(1) }}
-      unit_of_measurement: "°C"
-      icon: mdi:thermometer
+      # Wind Chill (Feels like) temperature.
+      # JAG/TI formula.
+      # Correction in line 3 is for 1.5m level measurement of the wind
+      # speed instead of the required 10m.
+      - name: Bresser51 Wind Chill
+	state: |
+	  {% set t = states('sensor.bresser51_temperature')|float %}
+	  {% set s = states('sensor.bresser51_wind_speed')|float %}
+	  {% set s = s * 1.5 %}
+	  {% set chill = (13.12 + 0.6215 * t + ( 0.4867 * t - 13.96 ) * s ** 0.16) %}
+	  {% if ( chill > t ) %}{% set chill = t %}{% endif %}
+	  {{ chill|round(1) }}
+	unit_of_measurement: "°C"
+	icon: mdi:thermometer
 
 # Fetching history data from PostgreSQL recorder db.
 # Must now be done via UI now. Such a shame!
@@ -230,77 +230,77 @@ template:
 #         column: state
 #         unit_of_measurement: mm
 
-    - name: Bresser51 Rain
-      # Note: sensor.bresser51_rain_unadjusted often returns insane
-      # values. If so, do not update but just return the current
-      # value of this sensor.
-      state: |
-        {% if states('sensor.bresser51_rain_unadjusted') | float > 66757 %}
-	{{ states('sensor.bresser51_rain') }}
-        {% else %}
-        {{ ( states('sensor.bresser51_rain_unadjusted') | float )
-           +
-           ( states('sensor.bresser51_rain_offset') | float ) }}
-        {% endif %}
-      unit_of_measurement: "mm"
-      icon: mdi:weather-rainy
+      - name: Bresser51 Rain
+	# Note: sensor.bresser51_rain_unadjusted often returns insane
+	# values. If so, do not update but just return the current
+	# value of this sensor.
+	state: |
+	  {% if states('sensor.bresser51_rain_unadjusted') | float > 66757 %}
+	  {{ states('sensor.bresser51_rain') }}
+	  {% else %}
+	  {{ ( states('sensor.bresser51_rain_unadjusted') | float )
+	     +
+	     ( states('sensor.bresser51_rain_offset') | float ) }}
+	  {% endif %}
+	unit_of_measurement: "mm"
+	icon: mdi:weather-rainy
 
-    - name: Bresser51 Rain Earliest
-      unit_of_measurement: mm
-      icon: mdi:weather-rainy
-      state: "{{ states('input_number.bresser51_rain_earliest') | float }}"
+      - name: Bresser51 Rain Earliest
+	unit_of_measurement: mm
+	icon: mdi:weather-rainy
+	state: "{{ states('input_number.bresser51_rain_earliest') | float }}"
 
-    # Sensor corresponding to the input_number for rain offset.
-    - name: Bresser51 Rain Offset
-      unit_of_measurement: mm
-      icon: mdi:weather-rainy
-      state: "{{ states('input_number.bresser51_rain_offset') | float }}"
-      
-    # Rain (last hour);
-    - name: Bresser51 Rain 1H
-      unit_of_measurement: "mm"
-      icon: mdi:weather-rainy
-      state: |
-        {% set x = states('sensor.bresser51_db_rain_1h') %}
-        {% if x == "unknown" %}
-        {% set x = states('sensor.bresser51_rain_earliest') %}
-        {% endif %} 
-        {{ ((states('sensor.bresser51_rain') | float) - ( x | float) ) | round(1) }} 
+      # Sensor corresponding to the input_number for rain offset.
+      - name: Bresser51 Rain Offset
+	unit_of_measurement: mm
+	icon: mdi:weather-rainy
+	state: "{{ states('input_number.bresser51_rain_offset') | float }}"
 
-    # Rain (last 24 hours);
-    - name: Bresser51 Rain 24H
-      unit_of_measurement: "mm"
-      icon: mdi:weather-rainy
-      state: |
-        {% set x = states('sensor.bresser51_db_rain_24h') %}
-        {% if x == "unknown" %}
-        {% set x = states('sensor.bresser51_rain_earliest') %}
-        {% endif %} 
-        {{ ((states('sensor.bresser51_rain') | float) - ( x | float) ) | round(1) }} 
+      # Rain (last hour);
+      - name: Bresser51 Rain 1H
+	unit_of_measurement: "mm"
+	icon: mdi:weather-rainy
+	state: |
+	  {% set x = states('sensor.bresser51_db_rain_1h') %}
+	  {% if x == "unknown" %}
+	  {% set x = states('sensor.bresser51_rain_earliest') %}
+	  {% endif %} 
+	  {{ ((states('sensor.bresser51_rain') | float) - ( x | float) ) | round(1) }} 
 
-    # Rain (last 168 hours (week));
-    - name: Bresser51 Rain 168H
-      unit_of_measurement: "mm"
-      icon: mdi:weather-rainy
-      state: |
-        {% set x = states('sensor.bresser51_db_rain_168h') %}
-        {% if x == "unknown" %}
-        {% set x = states('sensor.bresser51_rain_earliest') %}
-        {% endif %} 
-        {{ ((states('sensor.bresser51_rain') | float) - ( x | float) ) | round(1) }} 
+      # Rain (last 24 hours);
+      - name: Bresser51 Rain 24H
+	unit_of_measurement: "mm"
+	icon: mdi:weather-rainy
+	state: |
+	  {% set x = states('sensor.bresser51_db_rain_24h') %}
+	  {% if x == "unknown" %}
+	  {% set x = states('sensor.bresser51_rain_earliest') %}
+	  {% endif %} 
+	  {{ ((states('sensor.bresser51_rain') | float) - ( x | float) ) | round(1) }} 
 
-    # Use the temperature/humidity as a replacement for the old outside
-    # meters.
+      # Rain (last 168 hours (week));
+      - name: Bresser51 Rain 168H
+	unit_of_measurement: "mm"
+	icon: mdi:weather-rainy
+	state: |
+	  {% set x = states('sensor.bresser51_db_rain_168h') %}
+	  {% if x == "unknown" %}
+	  {% set x = states('sensor.bresser51_rain_earliest') %}
+	  {% endif %} 
+	  {{ ((states('sensor.bresser51_rain') | float) - ( x | float) ) | round(1) }} 
 
-    - name: Buiten Temperature
-      state: "{{ states('sensor.bresser51_temperature') }}"
-      unit_of_measurement: °C
-      device_class: temperature
+      # Use the temperature/humidity as a replacement for the old outside
+      # meters.
 
-    - name: Buiten Humidity
-      unit_of_measurement: "%"
-      device_class: humidity
-      state: "{{ states('sensor.bresser51_humidity') }}"
+      - name: Buiten Temperature
+	state: "{{ states('sensor.bresser51_temperature') }}"
+	unit_of_measurement: °C
+	device_class: temperature
+
+      - name: Buiten Humidity
+	unit_of_measurement: "%"
+	device_class: humidity
+	state: "{{ states('sensor.bresser51_humidity') }}"
 
 automation:
 
