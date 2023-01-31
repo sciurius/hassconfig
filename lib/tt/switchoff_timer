@@ -1,4 +1,16 @@
-[% # Switch-Off timer
+[%#  Switch-Off timer			-*- tt -*-
+
+Arguments:
+
+name	   A name for the timer, e.g. "Keuken Afzuigkap".
+type	   The type of the associated device, e.g. "switch" or "light".
+	   Defaults to "switch".
+duration   Duration of the count down timer. Defaults to 15 minutes.
+increment  Increment the timer when it is already running.
+timer	   A name for the timer, defaults to an id derived from the name.
+switch	   The switch to turn off, if not the same as the timer.
+
+-%][%-
    DEFAULT type      = "switch";
    DEFAULT duration  = "00:15:00";
    DEFAULT increment = "00:15:00";
