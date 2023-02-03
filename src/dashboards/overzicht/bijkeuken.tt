@@ -26,4 +26,4 @@ entities:
 
   - type: weblink
     url: http://phoenix.squirrel.nl:3000/d/cQ46XxeD4z/verwarming-overzicht?orgId=1
-name: Grafieken verwarming
+    name: Grafieken verwarming

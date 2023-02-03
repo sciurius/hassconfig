@@ -9,7 +9,7 @@ input_number:
     max: 50
     step: 1
     mode: box
-    unit_of_measurement: "⁰C"
+    unit_of_measurement: "°C"
 
 input_boolean:
 
@@ -24,17 +24,17 @@ template:
       # This is mainly to show the current settings in a dashboard.
       - name: Boiler HeatingTemp
         state: "{{ states('number.boiler_heatingtemp')|round(1) }}"
-        unit_of_measurement: "⁰C"
+        unit_of_measurement: "°C"
         icon: mdi:car-cruise-control
 
       - name: Thermostat Temperature
         state: "{{ state_attr('climate.thermostat_hc1','current_temperature') }}"
-        unit_of_measurement: "⁰C"
+        unit_of_measurement: "°C"
         icon: mdi:thermometer
         
       - name: Thermostat Setting
         state: "{{ state_attr('climate.thermostat_hc1','temperature') }}"
-        unit_of_measurement: "⁰C"
+        unit_of_measurement: "°C"
         icon: mdi:thermometer
 
       - name: 'Boiler Status Text'
@@ -173,7 +173,7 @@ automation:
             {% else %} OK again:
             {% endif %}
             {{ trigger.to_state.state|round(1) }}
-            ⁰C
+            °C
       - service: input_boolean.turn_on
         target:
           entity_id: input_boolean.emsgw_return_temp_high
@@ -200,7 +200,7 @@ automation:
             {% else %} OK again:
             {% endif %}
             {{ trigger.to_state.state|round(1) }}
-            ⁰C
+            °C
       - service: input_boolean.turn_off
         target:
           entity_id: input_boolean.emsgw_return_temp_high
@@ -230,4 +230,4 @@ automation:
   #           {% else %} OK again:
   #           {% endif %}
   #           {{ trigger.to_state.state|round(1) }}
-  #           ⁰C
+  #           °C
