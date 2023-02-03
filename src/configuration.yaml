@@ -12,6 +12,7 @@ schedule:   !include schedules.yaml
 recorder:   !include recorder.yaml
 # Yes, there's only one recorder :)
 
+
 # For the NGINX proxy on HAOS.
 http:
   use_x_forwarded_for: true
@@ -76,5 +77,6 @@ pyscript:
   hass_is_global: true
   
 frontend:
+  themes: !include themes.yaml
   extra_module_url:
     - /local/community/lovelace-card-mod/card-mod.js
