@@ -45,7 +45,8 @@ Classic:
   state-timer-color: '#FFC107' # Amber
   state-update-color: '#4CAF50' # Green
   state-update-installing-color: '#FF9800' # Orange
-  state-vacuum-color: '#009688' # Teal  modes:
+  state-vacuum-color: '#009688' # Teal
+  modes:
     light:
       state-default-color: '#44739E' # Blue-Grey
     dark:

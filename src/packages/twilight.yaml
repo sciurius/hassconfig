@@ -74,6 +74,24 @@ template:
       state: "{{ is_state('binary_sensor.darkness', 'on')
                  and is_state('schedule.daytime_schedule', 'on') }}"
 
+    - name: "Day Period"
+      state: "{{ is_state('sun.sun','above_horizon') }}"
+      icon: >
+        mdi:weather-{% if is_state('sun.sun','above_horizon') %}sunny{%else%}nightly{% endif %}
+      attributes:
+        st: >-
+          {% if is_state('sun.sun','above_horizon') %}
+          {{ as_timestamp(states.sun.sun.attributes.next_rising)
+             | float | timestamp_custom('%H:%M')}} — {{
+             as_timestamp(states.sun.sun.attributes.next_setting)
+             | float | timestamp_custom('%H:%M')}}
+          {% else %}
+          {{ as_timestamp(states.sun.sun.attributes.next_setting)
+             | float | timestamp_custom('%H:%M')}} — {{
+             as_timestamp(states.sun.sun.attributes.next_rising)
+             | float | timestamp_custom('%H:%M')}}
+          {% endif %}
+
 schedule:
 
   # Time when we are (supposed to be) active.

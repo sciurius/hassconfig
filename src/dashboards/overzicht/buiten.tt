@@ -10,32 +10,13 @@ entities:
   - entity: weather.openweathermap
     name: Temperatuur
 
-  - type: custom:template-entity-row
-    entity: sun.sun
-    active: false
-    condition: '{{ is_state(''sun.sun'',''above_horizon'') }}'
-    name: Daglicht
-    state: |-
-      {{ as_timestamp(states.sun.sun.attributes.next_rising)
-         | float | timestamp_custom('%H:%M')}}
-      —
-      {{ as_timestamp(states.sun.sun.attributes.next_setting)
-         | float | timestamp_custom('%H:%M')}}
-
-  - type: custom:template-entity-row
-    entity: sun.sun
-    active: false
-    condition: '{{ not is_state(''sun.sun'',''above_horizon'') }}'
-    name: Nacht
-    icon: mdi:weather-night
-    state: |-
-      {{ as_timestamp(states.sun.sun.attributes.next_setting)
-         | float | timestamp_custom('%H:%M')}}
-      —
-      {{ as_timestamp(states.sun.sun.attributes.next_rising)
-         | float | timestamp_custom('%H:%M')}}
-
   - [% INCLUDE temphum sensor = "buiten" %]
+
+  - type: attribute
+    entity: binary_sensor.day_period
+    state_color: true
+    attribute: st
+    name: Daglicht
 
   - entity: weather.openweathermap
     icon: mdi:gauge
