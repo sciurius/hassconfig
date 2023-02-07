@@ -12,11 +12,27 @@ entities:
 
   - [% INCLUDE temphum sensor = "buiten" %]
 
-  - type: attribute
-    entity: binary_sensor.day_period
-    state_color: true
-    attribute: st
-    name: Daglicht
+  - type: conditional
+    conditions:
+      - entity: binary_sensor.day_period
+        state: "on"
+    row:
+      type: attribute
+      entity: binary_sensor.day_period
+      state_color: true
+      attribute: st
+      name: Daglicht
+
+  - type: conditional
+    conditions:
+      - entity: binary_sensor.day_period
+        state: "off"
+    row:
+      type: attribute
+      entity: binary_sensor.day_period
+      state_color: false
+      attribute: st
+      name: Nacht
 
   - entity: weather.openweathermap
     icon: mdi:gauge
