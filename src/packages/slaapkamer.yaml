@@ -5,6 +5,7 @@ template:
   sensor:
 
     - name: "Slaapkamer Warmtedeken Joan UI"
+      unique_id: slaapkamer_warmtedeken_joan_ui
       state: >
         {% if states('sensor.pswm01_energy_power')|float(0) < 5 %}
         Uit

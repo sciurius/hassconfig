@@ -128,5 +128,6 @@ mqtt:
     - name: Phoenix NVMe0 Temperature
       state_topic: phoenix/nvme0/status
       device_class: Temperature
+      unique_id: sensor__phoenix_nvme0_temperature
       unit_of_measurement: "°C"
       value_template: "{{ value_json.temperature }}"

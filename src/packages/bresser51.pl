@@ -124,6 +124,7 @@ template:
 
       # Adjust for not being north-oriented.
       - name: Bresser51 Wind Direction
+        unique_id: bresser51_wind_direction
 	state: >-
 	  {{ (
 	       (states('sensor.bresser51_wind_direction_unadjusted')|int)
@@ -133,6 +134,7 @@ template:
 	icon: mdi:compass-rose
 
       - name: Bresser51 Dir Corr
+        unique_id: bresser51_dir_corr
 	state: "{{ states('input_number.bresser51_dir_corr') }}"
 	unit_of_measurement: "°"
 	icon: mdi:axis-z-rotate-clockwise
@@ -141,6 +143,7 @@ template:
       # Note that the bresser sensor returns values:
       #  0 22 45 68 90 112 135 158 180 202 225 248 270 292 315 338 360?
       - name: Bresser51 Wind Direction Sector
+        unique_id: bresser51_wind_direction_sector
 	icon: mdi:compass-rose
 	state: >-
 	  {{ (
@@ -149,6 +152,7 @@ template:
 
       # The adjusted direction, in degrees. 0 22.5 45 67.5 ...
       - name: Bresser51 Wind Direction Sector Adjusted
+        unique_id: bresser51_wind_direction_sector_adjusted
 	unit_of_measurement: "°"
 	icon: mdi:compass-rose
 	state: >-
@@ -158,6 +162,7 @@ template:
 
       # Map sector to symbolic name.
       - name: Bresser51 Wind Direction Name
+        unique_id: bresser51_wind_direction_name
 	icon: mdi:compass-rose
 	state: |
 	  {% set names = "N NNO NO ONO O OZO ZO ZZO Z ZZW ZW WZW W WNW NW NNW N".split() %}
@@ -167,6 +172,7 @@ template:
 
       # Wind force.
       - name: Bresser51 Wind Beaufort
+        unique_id: bresser51_wind_beaufort
 	unit_of_measurement: "Bft"
 	icon: mdi:windsock
 	state: |
@@ -174,6 +180,7 @@ template:
 
       # Wind speed in Km/h, for convenience
       - name: Bresser51 Wind Speed Kmh
+        unique_id: bresser51_wind_speed_kmh
 	state: |
 	  {{ ( 3.6 * (states('sensor.bresser51_wind_speed') | float) ) | round(1) }}
 	unit_of_measurement: "km/h"
@@ -231,6 +238,7 @@ template:
 #         unit_of_measurement: mm
 
       - name: Bresser51 Rain
+        unique_id: bresser51_rain
 	# Note: sensor.bresser51_rain_unadjusted often returns insane
 	# values. If so, do not update but just return the current
 	# value of this sensor.
@@ -246,18 +254,21 @@ template:
 	icon: mdi:weather-rainy
 
       - name: Bresser51 Rain Earliest
+        unique_id: bresser51_rain_earliest
 	unit_of_measurement: mm
 	icon: mdi:weather-rainy
 	state: "{{ states('input_number.bresser51_rain_earliest') | float }}"
 
       # Sensor corresponding to the input_number for rain offset.
       - name: Bresser51 Rain Offset
+        unique_id: bresser51_rain_offset
 	unit_of_measurement: mm
 	icon: mdi:weather-rainy
 	state: "{{ states('input_number.bresser51_rain_offset') | float }}"
 
       # Rain (last hour);
       - name: Bresser51 Rain 1H
+	unique_id: bresser51_rain_1h
 	unit_of_measurement: "mm"
 	icon: mdi:weather-rainy
 	state: |
@@ -269,6 +280,7 @@ template:
 
       # Rain (last 24 hours);
       - name: Bresser51 Rain 24H
+        unique_id: bresser51_rain_24h
 	unit_of_measurement: "mm"
 	icon: mdi:weather-rainy
 	state: |
@@ -280,6 +292,7 @@ template:
 
       # Rain (last 168 hours (week));
       - name: Bresser51 Rain 168H
+        unique_id: bresser51_rain_168h
 	unit_of_measurement: "mm"
 	icon: mdi:weather-rainy
 	state: |
@@ -293,11 +306,13 @@ template:
       # meters.
 
       - name: Buiten Temperature
+	unique_id: buiten_temperature
 	state: "{{ states('sensor.bresser51_temperature') }}"
 	unit_of_measurement: °C
 	device_class: temperature
 
       - name: Buiten Humidity
+	unique_id: buiten_humidity
 	unit_of_measurement: "%"
 	device_class: humidity
 	state: "{{ states('sensor.bresser51_humidity') }}"

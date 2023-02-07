@@ -5,42 +5,49 @@ template:
 - sensor:
 
     - name: KNMI Temperature
+      unique_id: knmi_temperature
       state: >-
         {{ state_attr('weather.knmi_home', 'temperature') }}
       unit_of_measurement: "°C"
       device_class: temperature
 
     - name: KNMI Humidity
+      unique_id: knmi_humidity
       state: >-
         {{ state_attr('weather.knmi_home', 'humidity') }}
       unit_of_measurement: "%"
       device_class: humidity
 
     - name: KNMI Pressure
+      unique_id: knmi_pressure
       state: >-
         {{ state_attr('weather.knmi_home', 'pressure') }}
       unit_of_measurement: "hPa"
       device_class: pressure
 
     - name: KNMI Wind Speed
+      unique_id: knmi_wind_speed
       state: >-
         {{ ((state_attr('weather.knmi_home', 'wind_speed') | float(0)) / 3.6 ) | round(1) }}
       unit_of_measurement: "m/s"
       icon: mdi:weather-windy
       
     - name: KNMI Wind Speed Kmh
+      unique_id: knmi_wind_speed_kmh
       state: >-
         {{ state_attr('weather.knmi_home', 'wind_speed') }}
       unit_of_measurement: "km/h"
       icon: mdi:weather-windy
       
     - name: KNMI Wind Bearing
+      unique_id: knmi_wind_bearing
       state: >-
         {{ state_attr('weather.knmi_home', 'wind_bearing')|int }}
       icon: mdi:compass-rose
       unit_of_measurement: "°"
       
     - name: KNMI Wind Direction Name
+      unique_id: knmi_wind_direction_name
       state: >-
         {% set names = "N NNO NO ONO O OZO ZO ZZO Z ZZW ZW WZW W WNW NW NNW N".split() %}
         {{ names[((state_attr('weather.knmi_home', 'wind_bearing')|int) / 22)|int] }}

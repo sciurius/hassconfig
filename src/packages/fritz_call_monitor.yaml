@@ -21,6 +21,7 @@ template:
   sensor:
 
     - name: "FRITZ!Box Phone State"
+      unique_id: fritz_box_phone_state
       state: >-
         {% if is_state("sensor.fritz_box_phone", "idle") %}
           Phone is idle

@@ -18,6 +18,7 @@ automation:
 template:
    - binary_sensor:
       - name: "NL-Alert in de regio"
+        unique_id: nl_alert_in_de_regio
         state: >-
           {{ 'hier|je|regio|waar|je|woont|of|waar|je|een|nlalert|van|wil|zien' in state_attr('sensor.nl_alert_state', 'melding') | lower }}
 

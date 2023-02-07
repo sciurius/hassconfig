@@ -193,10 +193,12 @@ template:
   - sensor:
 
       - name: IthoCVE State Percent
+        unique_id: ithocve_state_percent
         state: "{{ (states('sensor.ithocve_state')|int / 2.55) |round }}"
         unit_of_measurement: "%"
 
       - name: IthoCVE Fan Info
+        unique_id: ithocve_fan_info
         state: "{{ states('select.ithocve_fan_info') }}"
 
 ################ Automations ################

@@ -95,6 +95,7 @@ template:
 
   - sensor:
       - name: Otolift On
+        unique_id: otolift_on
         state: >-
           {% if is_state('binary_sensor.otolift_going_up','on') %}
           up

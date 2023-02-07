@@ -59,6 +59,7 @@ template:
     #    }}
 
     - name: "Day Time"
+      unique_id: twilight_day_time
       state: "{{ is_state('schedule.daytime_schedule', 'on') }}"
 
     # Binary sensor to reflect the state of input_boolean.darkness.
@@ -66,18 +67,21 @@ template:
     # measured light level.
     
     - name: "Darkness"
+      unique_id: twilight_darkness
       state: "{{ states('input_boolean.darkness') }}"
 
     # Binary sensor to indicate that the lights must be on.
     
     - name: "Lighting"
+      unique_id: twilight_lighting
       state: "{{ is_state('binary_sensor.darkness', 'on')
                  and is_state('schedule.daytime_schedule', 'on') }}"
 
     - name: "Day Period"
+      unique_id: twilight_day_period
       state: "{{ is_state('sun.sun','above_horizon') }}"
       icon: >
-        mdi:weather-{% if is_state('sun.sun','above_horizon') %}sunny{%else%}nightly{% endif %}
+        mdi:weather-{% if is_state('sun.sun','above_horizon') %}sunny{%else%}night{% endif %}
       attributes:
         st: >-
           {% if is_state('sun.sun','above_horizon') %}
