@@ -1,13 +1,11 @@
-# Dashboard: Overzicht -- Bijkeuken       -*- hass -*-
+# Dashboard: Overzicht -- CV       -*- hass -*-
 # WARNING: This is a generated file -- DO NOT EDIT
 
 type: entities
-title: Bijkeuken
+title: CV
 state_color: true
 
 entities:
-
-  - [% INCLUDE temphum sensor = "bijkeuken" %]
 
   - entity: sensor.boiler_status_text
     name: CV Status
