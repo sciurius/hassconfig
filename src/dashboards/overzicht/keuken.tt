@@ -23,10 +23,10 @@ entities:
         payload: 1
       
     entities:
-      - entity: light.keuken_aanrecht_klein
+      - entity: light.keuken_aanrecht_groot
         name: false
         toggle: true
-      - entity: light.keuken_aanrecht_groot
+      - entity: light.keuken_aanrecht_klein
         name: false
         toggle: true
 
