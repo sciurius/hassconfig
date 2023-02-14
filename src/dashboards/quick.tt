@@ -1,0 +1,159 @@
+# Quick Access                      -*- hass -*-
+
+button_card_templates:
+  standard:
+    variables:
+    aspect_ratio: 1/1
+    styles:
+      card:
+      icon:
+        - width: 100%
+    show_name: true
+    color: rgb(255,216,68)
+    state:
+      - value: 'off'
+        color: rgb(68,115,158)
+      - value: 'unavailable'
+        color: rgb(200,200,200)
+    tap_action:
+      action: toggle
+    hold_action:
+      action: more-info
+
+  woonkamer:
+    template: standard
+    styles:
+      card:
+        - background-color: lightgreen
+
+  keuken:
+    template: standard
+    styles:
+      card:
+        - background-color: lightblue
+
+  slaapkamer:
+    template: standard
+    styles:
+      card:
+        - background-color: pink
+
+  badkamer:
+    template: standard
+    styles:
+      card:
+        - background-color: lightgrey
+
+  hal:
+    template: standard
+    styles:
+      card:
+        - background-color: orange
+
+  kantoor:
+    template: standard
+    styles:
+      card:
+        - background-color: '#efa0ef'
+
+
+[% BLOCK button;
+   DEFAULT switch = "light";
+   DEFAULT entity = "${switch}.${area}_$name";
+"{ type: custom:button-card,\n";
+"  entity: $entity,\n";
+"  name: $name,\n";
+"  template: $area,\n";
+IF icon; THEN; "  icon: $icon,\n"; END;
+IF style; THEN; "  styles: { $style },\n"; END;
+"}\n";
+   END %]
+
+[% BLOCK blank;
+" { type: custom:button-card,\n";
+"   color_type: blank-card,\n";
+"   template: standard\n";
+"}\n";
+   END %]
+   
+title: Quick Access
+
+[% INCLUDE kiosk %]
+
+views:
+  - title: Quick Access
+    type: custom:vertical-layout
+    cards:
+
+      - type: horizontal-stack
+        cards:
+          - type: custom:state-switch
+            entity: group
+            states:
+              admin:
+                type: horizontal-stack
+                cards:
+                  - type: custom:button-card
+                    entity: input_boolean.kiosk_mode
+                    styles:
+                      card:
+                        - height: 30px
+                        - background: lightyellow
+                    name: Kiosk mode
+                    show_icon: false
+
+      - type: grid
+        columns: 4
+        cards:
+
+          [% area = "woonkamer" %]
+          - type: custom:button-card
+            entity: switch.woonkamer_sound_system
+            name: audio
+            template: woonkamer
+          - [% INCLUDE button name = "tafel" %]
+          - [% INCLUDE button name = "tafeltje",
+               style = "icon: [ width: 50% ]" %]
+          - [% INCLUDE button name = "hoek" %]
+
+          - [% INCLUDE button name = "heks",
+               style = "icon: [ color: var(--button-card-light-color) ]" %]
+          - [% INCLUDE button name = "totem" %]
+          - [% INCLUDE button name = "wand",
+              entity = "light.${area}_wand_l" %]
+          - [% INCLUDE button name = "wand",
+              entity = "light.${area}_wand_r" %]
+
+          [% area = "keuken" %]
+          - [% INCLUDE button name = "afzuigkap", switch = "switch" %]
+          - [% INCLUDE button name = "aanrecht",
+               entity = "light.${area}_aanrecht_klein" %]
+          - [% INCLUDE button name = "aanrecht",
+               entity = "light.${area}_aanrecht_groot" %]
+
+          [% area = "hal" %]
+          - [% INCLUDE button name = "hal",
+              entity = "light.${area}_hoek" %]
+
+          [% area = "slaapkamer" %]
+          - [% INCLUDE button name = "deken",
+               entity = "switch.${area}_warmtedeken_joan" %]
+          - [% INCLUDE button name = "video",
+               entity = "switch.${area}_media_center" %]
+          - [% INCLUDE button name = "lichtje",
+               entity = "light.${area}_avondlichtje",
+               style = "icon: [ width: 50% ]" %]
+
+          - [% INCLUDE blank %]
+
+          [% area = "badkamer" %]
+          - [% INCLUDE button name = "kachel",
+               entity = "switch.pswm02", icon = "mdi:heat-wave" %]
+          - [% INCLUDE button name = "lamp",
+               entity = "light.${area}_verlichting" %]
+
+          - [% INCLUDE blank %]
+
+          [% area = "kantoor" %]
+          - [% INCLUDE button name = "printer",
+               entity = "switch.psw03", icon = "mdi:printer" %]
