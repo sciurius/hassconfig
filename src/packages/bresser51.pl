@@ -213,8 +213,8 @@ template:
 #         query: >-
 #           SELECT * FROM states
 #           WHERE entity_id = 'sensor.bresser51_rain'
-#                 AND last_updated < CURRENT_TIMESTAMP - INTERVAL '1 hour'
-#           ORDER BY last_updated DESC
+#                 AND last_updated_ts < extract(epoch from CURRENT_TIMESTAMP) - 3600
+#           ORDER BY last_updated_ts DESC
 #           LIMIT 1;
 #         column: state
 #         unit_of_measurement: mm
@@ -222,8 +222,8 @@ template:
 #         query: >-
 #           SELECT * FROM states
 #           WHERE entity_id = 'sensor.bresser51_rain'
-#                 AND last_updated < CURRENT_TIMESTAMP - INTERVAL '24 hour'
-#           ORDER BY last_updated DESC
+#                 AND last_updated_ts < extract(epoch from CURRENT_TIMESTAMP) - 86400
+#           ORDER BY last_updated_ts DESC
 #           LIMIT 1;
 #         column: state
 #         unit_of_measurement: mm
@@ -231,8 +231,8 @@ template:
 #         query: >-
 #           SELECT * FROM states
 #           WHERE entity_id = 'sensor.bresser51_rain'
-#                 AND last_updated < CURRENT_TIMESTAMP - INTERVAL '168 hour'
-#           ORDER BY last_updated DESC
+#                 AND last_updated_ts < extract(epoch from CURRENT_TIMESTAMP) - 604800
+#           ORDER BY last_updated_ts DESC
 #           LIMIT 1;
 #         column: state
 #         unit_of_measurement: mm
