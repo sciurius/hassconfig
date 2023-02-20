@@ -6,6 +6,8 @@ button_card_templates:
     aspect_ratio: 1/1
     styles:
       card:
+      name:
+        - color: black
       icon:
         - width: 100%
     show_name: true
@@ -24,37 +26,37 @@ button_card_templates:
     template: standard
     styles:
       card:
-        - background-color: lightgreen
+        - background-color: '#bffcc6'
 
   keuken:
     template: standard
     styles:
       card:
-        - background-color: lightblue
+        - background-color: '#c4faf8'
 
   slaapkamer:
     template: standard
     styles:
       card:
-        - background-color: pink
+        - background-color: '#dcd3ff'
 
   badkamer:
     template: standard
     styles:
       card:
-        - background-color: lightgrey
+        - background-color: '#ffbebc'
 
   hal:
     template: standard
     styles:
       card:
-        - background-color: orange
+        - background-color: '#fff5ba'
 
   kantoor:
     template: standard
     styles:
       card:
-        - background-color: '#efa0ef'
+        - background-color: '#ffccf9'
 
 
 [% BLOCK button;
@@ -99,6 +101,8 @@ views:
                       card:
                         - height: 30px
                         - background: lightyellow
+                      name:
+                        - color: grey
                     name: Kiosk mode
                     show_icon: false
 
