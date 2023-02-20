@@ -15,7 +15,14 @@ entities:
       - entity: binary_sensor.darkness
         name: Donker
 
-  - entity: sensor.achterkamer_illuminance
+  - type: custom:multiple-entity-row
+    entity: binary_sensor.illuminated
+    state_color: true
+    show_state: false
+    name: Licht
+    entities:
+      - entity: sensor.achterkamer_illuminance
+        name: false
 
   - entity: input_number.luminance_threshold_down
     name: Ondergrens
