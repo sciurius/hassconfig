@@ -96,6 +96,15 @@ template:
              | float | timestamp_custom('%H:%M')}}
           {% endif %}
 
+    - name: "Illuminated"
+      unique_id: twilight_illuminated
+      state: >-
+        {{ states('sensor.achterkamer_illuminance')
+           >=
+           states('input_number.luminance_threshold_down') }}
+      icon: >
+        mdi:weather-{% if is_state('sun.sun','above_horizon') %}sunny{%else%}night{% endif %}
+
 schedule:
 
   # Time when we are (supposed to be) active.
