@@ -16,8 +16,7 @@ INSTALL   := install -m 0644
 TPAGE     := tpage --include_path=${TTLIB} --include_path=${TTLIB}/ui
 PERL      := perl -Mlib=${PLLIB}
 
-default ::
-	@echo No default. Use '"publish"' to publish.
+default :: publish
 
 # For testing/debugging.
 test :
