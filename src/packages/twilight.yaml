@@ -99,9 +99,9 @@ template:
     - name: "Illuminated"
       unique_id: twilight_illuminated
       state: >-
-        {{ states('sensor.achterkamer_illuminance')
+        {{ states('sensor.achterkamer_illuminance')|int
            >=
-           states('input_number.luminance_threshold_down') }}
+           states('input_number.luminance_threshold_down')|int }}
       icon: >
         mdi:weather-{% if is_state('sun.sun','above_horizon') %}sunny{%else%}night{% endif %}
 
