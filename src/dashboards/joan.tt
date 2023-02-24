@@ -1,16 +1,18 @@
-# dashboard: Joan                       -*-hass-*-
+# layout,             -*- hass -*-
 
 button_card_templates:
   standard:
     variables:
       image_on:  "bg_on.jpg"
       image_off: ""
+    aspect_ratio: 1/1
     styles:
       name:
         - color: white
       card:
-        - height: 200px
-        - width: 200px
+#        - height: 200px
+#        - width: 200px
+        - background-size: cover
         - background-image: >
             [[[
             if ( entity.state === 'on' || variables.image_off === '' )
@@ -23,88 +25,77 @@ button_card_templates:
         - margin-left: -70%
         - width: 25%
     icon: mdi:lamp
+    color: rgb(255,216,68)
+    state:
+      - value: 'off'
+        color: rgb(68,115,158)
+      - value: 'unavailable'
+        color: rgb(200,200,200)
     show_name: true
     tap_action:
       action: toggle
     hold_action:
       action: toggle
 
-title: Home
-kiosk_mode:
-  non_admin_settings:
-    kiosk: true
-    ignore_entity_settings: true
-  entity_settings:
-    - entity:
-        input_boolean.kiosk_mode: 'on'
-      hide_header: true
-      hide_sidebar: true
-    - entity:
-        input_boolean.kiosk_mode: 'off'
-      hide_header: false
-      hide_sidebar: false
-views:
-  - theme: Backend-selected
-    path: default_view
-    title: Home
-    type: custom:masonry-layout
-    layout:
-      width: 688
-    badges: []
-    cards:
-      - type: vertical-stack
-        cards:
-          - type: horizontal-stack
-            cards:
-              - type: entities
-                show_header_toggle: false
-                title: Buiten
-                entities:
-                  - entity: weather.openweathermap
-                    name: Temperatuur
-              - type: custom:compass-card
-                header: false
-                language: nl
-                indicator_sensors:
-                  - sensor: sensor.bresser51_wind_direction
-                    indicator:
-                      type: arrow_inward
-                      show: false
-                      dynamic_style:
-                        sensor: sensor.bresser51_wind_speed
-                        bands:
-                          - from_value: 0.1
-                            show: true
-                value_sensors:
-                  - sensor: sensor.bresser51_wind_beaufort
-              - show_name: true
-                show_icon: true
-                show_state: true
-                type: glance
-                columns: 4
-                entities:
-                  - entity: sensor.tomorrow_io_home_tree_pollen_index
-                  - entity: sensor.tomorrow_io_home_grass_pollen_index
-                  - entity: sensor.tomorrow_io_home_weed_pollen_index
-                  - entity: binary_sensor.stookalert_drenthe
-                    name: Stookalarm
-                state_color: true
-              - type: custom:button-card
-                styles:
-                  name:
-                    - color: white
-                  card:
-                    - height: 200px
-                    - width: 200px
-                    - background-image: url("/local/rc2.png")
-                tap_action:
-                  action: navigate
-                  navigation_path: /lovelace-slaapkamerremote
-          - square: true
-            columns: 5
-            type: grid
+title: Joan
+theme: default
 
-            cards:
+[% INCLUDE kiosk %]
+
+views:
+  - type: custom:vertical-layout
+    max_cols: 1
+    layout:
+      width: 760
+    background:
+      - color: black
+    cards:
+      - type: grid
+        columns: 14
+        square: 1
+        cards:
+          - type: markdown
+            content: ' '
+          - type: markdown
+            content: ' '
+          - type: markdown
+            content: ' '
+          - type: markdown
+            content: ' '
+          - type: markdown
+            content: ' '
+          - type: markdown
+            content: ' '
+          - type: markdown
+            content: ' '
+          - type: markdown
+            content: ' '
+          - type: markdown
+            content: ' '
+          - type: markdown
+            content: ' '
+          - type: markdown
+            content: ' '
+          - type: markdown
+            content: ' '
+          - type: markdown
+            content: ' '
+          - type: custom:button-card
+            aspect_ratio: 1/1
+            styles:
+              name:
+                - color: white
+              card:
+                - background-image: url("/local/rc2.png")
+                  background-size: cover
+            tap_action:
+              action: navigate
+              navigation_path: /lovelace-slaapkamerremote
+
+      - type: grid
+        columns: 5
+        square: 1
+        cards:
 
               - type: custom:button-card
                 template: standard
@@ -177,6 +168,7 @@ views:
                 name: Media Center
                 icon: mdi:television-box
 
+
               - type: custom:button-card
                 template: standard
                 variables:
@@ -188,7 +180,23 @@ views:
               - type: custom:button-card
                 template: standard
                 variables:
+                  image_on: "sr-bed-joan_200.png"
+                entity: switch.slaapkamer_warmtedeken_joan
+                name: Deken
+                icon: mdi:radiator
+
+              - type: custom:button-card
+                template: standard
+                variables:
                   image_on: "hall-corner_200.png"
                 entity: light.hal_hoek
                 name: Verlichting hoek
                 icon: mdi:floor-lamp-torchiere
+
+              - type: custom:button-card
+                template: standard
+                variables:
+                  image_on: "br-kacheltje_200.png"
+                entity: switch.pswm02
+                name: Kacheltje
+                icon: mdi:radiator
