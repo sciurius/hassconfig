@@ -14,9 +14,13 @@ automation:
     mode: restart
 
     trigger:
-      - platform: numeric_state
-        entity_id: sensor.pswm02_energy_power
-        above: 5
+#      - platform: numeric_state
+#        entity_id: sensor.pswm02_energy_power
+#        above: 5
+      - platform: state
+        entity_id: switch.pswm02
+        from: 'off'
+        to: 'on'
 
     action:
       - service: timer.start
@@ -29,10 +33,10 @@ automation:
     mode: restart
 
     trigger:
-      - platform: numeric_state
-        entity_id: sensor.pswm02_energy_power
-        below: 5
-        for: "00:02:00"
+#      - platform: numeric_state
+#        entity_id: sensor.pswm02_energy_power
+#        below: 5
+#        for: "00:02:00"
       - platform: state
         entity_id: switch.pswm02
         to: 'off'

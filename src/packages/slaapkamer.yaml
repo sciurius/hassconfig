@@ -56,6 +56,43 @@ automation:
   #     - service: timer.start
   #       entity_id: timer.slaapkamer_warmtedeken_joan_4
 
+  # - id: Automation__Start_Warmtedeken_timer
+  #   alias: "Start warmtedeken timer."
+  #   description: "Start warmtedeken timer."
+  #   mode: queued
+  #
+  #   trigger:
+  #     - platform: state
+  #       entity_id: sensor.slaapkamer_warmtedeken_joan_ui
+  #       to: Hoog
+  #     - platform: state
+  #       entity_id: sensor.slaapkamer_warmtedeken_joan_ui
+  #       to: Laag
+  #
+  #   action:
+  #     - service: timer.start
+  #       entity_id: timer.slaapkamer_warmtedeken_joan
+  #       data:
+  #         duration: |
+  #           {% if trigger.to_state.state == "Hoog" %}01:00:00{% else %}04:00:00{% endif %}
+  #
+  # - id: Automation__Stop_Warmtedeken_timer
+  #   alias: "Stop warmtedeken timer."
+  #   description: "Stop warmtedeken timer."
+  #   mode: queued
+  #
+  #   trigger:
+  #     - platform: state
+  #       entity_id: sensor.slaapkamer_warmtedeken_joan_ui
+  #       to: Uit
+  #     - platform: state
+  #       entity_id: switch.slaapkamer_warmtedeken_joan
+  #       to: 'off'
+  #
+  #   action:
+  #     - service: timer.cancel
+  #       entity_id: timer.slaapkamer_warmtedeken_joan
+
   - id: Automation__Start_Warmtedeken_timer
     alias: "Start warmtedeken timer."
     description: "Start warmtedeken timer."
@@ -63,18 +100,15 @@ automation:
 
     trigger:
       - platform: state
-        entity_id: sensor.slaapkamer_warmtedeken_joan_ui
-        to: Hoog
-      - platform: state
-        entity_id: sensor.slaapkamer_warmtedeken_joan_ui
-        to: Laag
+        entity_id: switch.slaapkamer_warmtedeken_joan
+        from: 'off'
+        to: 'on'
 
     action:
       - service: timer.start
         entity_id: timer.slaapkamer_warmtedeken_joan
         data:
-          duration: |
-            {% if trigger.to_state.state == "Hoog" %}01:00:00{% else %}04:00:00{% endif %}
+          duration: "01:00:00"
 
   - id: Automation__Stop_Warmtedeken_timer
     alias: "Stop warmtedeken timer."
@@ -82,9 +116,6 @@ automation:
     mode: queued
 
     trigger:
-      - platform: state
-        entity_id: sensor.slaapkamer_warmtedeken_joan_ui
-        to: Uit
       - platform: state
         entity_id: switch.slaapkamer_warmtedeken_joan
         to: 'off'
