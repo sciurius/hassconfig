@@ -54,6 +54,7 @@ light:
       - light.slaapkamer_avondlichtje
       - light.badkamer_verlichting
       - light.keuken_aanrecht_verlichting
+      - light.buitenverlichting_achter
    
   - name: Morning Lights
     platform: group

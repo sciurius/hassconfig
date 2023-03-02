@@ -58,6 +58,12 @@ button_card_templates:
       card:
         - background-color: '#ffccf9'
 
+  buiten:
+    template: standard
+    styles:
+      card:
+        - background-color: '#fddcf9'
+
 
 [% BLOCK button;
    DEFAULT switch = "light";
@@ -161,3 +167,10 @@ views:
           [% area = "kantoor" %]
           - [% INCLUDE button name = "printer",
                entity = "switch.psw03", icon = "mdi:printer" %]
+
+          - [% INCLUDE blank %]
+          - [% INCLUDE blank %]
+
+          [% area = "buiten" %]
+          - [% INCLUDE button name = "buiten",
+               entity = "light.buitenverlichting_achter", icon = "mdi:outdoor-lamp" %]

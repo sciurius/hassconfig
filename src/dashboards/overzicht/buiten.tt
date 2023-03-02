@@ -68,6 +68,21 @@ entities:
       entity: binary_sensor.stookalert_drenthe
       name: Stookalert
 
+  - entity: light.buitenverlichting_achter
+    name: Achterkant
+    hold_action:
+      action: call-service
+      service: script.start_buitenverlichting_achter_timer
+      
+  - type: conditional
+    conditions:
+      - entity: timer.buitenverlichting_achter
+        state: active
+    row:
+      entity: timer.buitenverlichting_achter
+      icon: mdi:outdoor-lamp
+      name: Timer
+
   - type: conditional
     conditions:
       - entity: sensor.apk_expiration_near
