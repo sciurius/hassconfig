@@ -296,7 +296,7 @@ views:
                 or
                 is_state("select.slaapkamer_media_center","Video")
                 or
-                is_state("select.slaapkamer_media_center","Chromecast")
+                is_state("select.slaapkamer_media_center","ChromeCast")
                 or
                 is_state("input_boolean.kiosk_mode","off") %}
           sound_card
