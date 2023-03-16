@@ -6,6 +6,12 @@ timer:
     duration: "00:30:00"
     restore: true
 
+input_boolean:
+
+  badkamerverwarming_on_doorbell:
+    name: Switch on badkamerverwarming on doorbell
+    icon: mdi:doorbell
+
 automation:
 
   - id: Automation__Start_Badkamerverwarming_Timer
@@ -56,3 +62,25 @@ automation:
     action:
       - service: switch.turn_off
         entity_id: switch.pswm02
+
+  #### NOTE: One-shot.
+  - id: Automation__Doorbell_Switch_On_Badkamerverwarming
+    alias: Doorbell Switches On Badkamerverwarming
+    description: Turn on badkamerverwarming when the doorbell is pressed.
+    mode: single
+    trigger:
+      - platform: state
+        entity_id:
+          - switch.doorbell
+        to: "on"
+    condition:
+      - condition: state
+        entity_id: input_boolean.badkamerverwarming_on_doorbell
+        state: "on"
+    action:
+      - service: switch.turn_on
+        target:
+          entity_id: switch.pswm02
+      - service: input_boolean.turn_off
+        target:
+          entity_id: input_boolean.badkamerverwarming_on_doorbell

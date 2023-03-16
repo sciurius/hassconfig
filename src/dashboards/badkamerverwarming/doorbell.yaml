@@ -1,0 +1,10 @@
+# Badkamerverwarming                    -*- hass -*-
+
+type: entities
+title: Badkamerverwarming
+state_color: true
+
+entities:
+
+  - entity: input_boolean.badkamerverwarming_on_doorbell
+    name: Deurbel actief
