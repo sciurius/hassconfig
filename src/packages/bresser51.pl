@@ -263,6 +263,7 @@ template:
              +
              ( states('sensor.bresser51_rain_offset') | float ) }}
           {% endif %}
+        state_class: total_increasing
         unit_of_measurement: "mm"
         icon: mdi:weather-rainy
 
@@ -282,6 +283,7 @@ template:
       # Rain (last hour);
       - name: Bresser51 Rain 1H
         unique_id: bresser51_rain_1h
+        state_class: measurement
         unit_of_measurement: "mm"
         icon: mdi:weather-rainy
         state: |
@@ -294,6 +296,7 @@ template:
       # Rain (last 24 hours);
       - name: Bresser51 Rain 24H
         unique_id: bresser51_rain_24h
+        state_class: measurement
         unit_of_measurement: "mm"
         icon: mdi:weather-rainy
         state: |
@@ -306,6 +309,7 @@ template:
       # Rain (last 168 hours (week));
       - name: Bresser51 Rain 168H
         unique_id: bresser51_rain_168h
+        state_class: measurement
         unit_of_measurement: "mm"
         icon: mdi:weather-rainy
         state: |
