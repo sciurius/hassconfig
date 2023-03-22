@@ -103,7 +103,9 @@ script:
           for_each:
             - switch.slaapkamer_media_center
             - switch.woonkamer_sound_system
-            - switch.psw03
+            - switch.keuken_afzuigkap
+            - switch.pswm01
+            - switch.pswm02
           sequence:
             - service: switch.turn_off
               target:
