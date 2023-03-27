@@ -37,11 +37,6 @@ input_number:
     mode: box
     unit_of_measurement: lx
     
-input_text:
-
-  daylight:
-    mode: text
-
 template:
 
   - binary_sensor:
