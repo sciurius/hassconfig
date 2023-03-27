@@ -86,6 +86,10 @@ views:
 
       - !include overzicht/weerstation.yaml
 
+      - type: custom:sun-card
+        timeFormat: '24h'
+        language: nl
+
   - title: Diversen
     cards:
       - type: energy-distribution
