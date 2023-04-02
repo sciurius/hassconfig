@@ -1,0 +1,36 @@
+# Let's Encrypt                 -*- hass -*-
+
+automation:
+  
+  - alias: "Let's Encrypt Renewal"
+    trigger:
+      platform: time
+      at: '01:25:00'
+    action:
+      - service: hassio.addon_restart
+        data:
+          addon: core_letsencrypt
+
+  - alias: "Let's Encrypt Renewal Alarm"
+    trigger:
+      platform: numeric_state
+      entity_id: sensor.letsencrypt_cert_days
+      below: 15
+    action:
+      - service: notify.notify
+        data:
+          message: Let's Encrypt cert needs renewal
+          title: Cert Renewal
+          
+sensor:
+
+  - platform: cert_expiry
+    host: hass.squirrel.nl
+  
+template:
+
+  - sensor:
+      - name: LetsEncrypt Cert Days
+        unique_id: letsencrypt_cert_days
+        state: >-
+          {{((as_timestamp(states('sensor.cert_expiry_timestamp_hass_squirrel_nl'),0) - as_timestamp(states.sensor.date.last_updated)) / 86400)  | int(0)  }}
