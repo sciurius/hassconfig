@@ -1,19 +1,20 @@
 #                       -*- hass -*-
 
-sensor:
-
-  - platform: imap
-    name: IMAP Johan Vromans
-    server: !secret imap_server
-    username: johanvromans
-    password: !secret imap_johanvromans
-
-  - platform: imap
-    name: IMAP Mojore
-    server: !secret imap_server
-    username: mojore
-    password: !secret imap_mojore
-
+# Setting up the integration is now handled by the UI.
+#
+# sensor:
+#
+#   - platform: imap
+#     name: IMAP Johan Vromans
+#     server: !secret imap_server
+#     username: johanvromans
+#     password: !secret imap_johanvromans
+#
+#   - platform: imap
+#     name: IMAP Mojore
+#     server: !secret imap_server
+#     username: mojore
+#     password: !secret imap_mojore
 
 automation:
 
@@ -23,7 +24,7 @@ automation:
     trigger:
       - platform: state
         entity_id:
-          - sensor.imap_johan_vromans
+          - sensor.imap_johanvromans
     condition:
       - condition: template
         value_template: "{{ trigger.to_state.state|int(0) > 0 }}"
