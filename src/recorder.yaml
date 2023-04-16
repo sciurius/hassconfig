@@ -1,4 +1,4 @@
-# Settings for HomeAssistant recorder.
+# Settings for HomeAssistant recorder.  -*- hass -*-
 
 db_url: !secret recorder_db
 
@@ -8,7 +8,4 @@ db_url: !secret recorder_db
 db_retry_wait: 5
 db_max_retries: 100
 
-# Purging is handled by an extern tool which removes all unwanted
-# entities older than 2 weeks.
-
-auto_purge: false
+auto_purge: true
