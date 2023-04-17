@@ -108,19 +108,19 @@ schedule:
   daytime_schedule:
     name: Daytime schedule
     monday:
-      - from: "07:30:00"
+      - from: "07:15:00"
         to:   "23:15:00"
     tuesday:
-      - from: "07:30:00"
+      - from: "07:15:00"
         to:   "23:15:00"
     wednesday:
-      - from: "07:30:00"
+      - from: "07:15:00"
         to:   "23:15:00"
     thursday:
-      - from: "07:30:00"
+      - from: "07:15:00"
         to:   "23:15:00"
     friday:
-      - from: "07:30:00"
+      - from: "07:15:00"
         to:   "23:30:00"
     saturday:
       - from: "10:00:00"
