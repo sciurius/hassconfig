@@ -1,0 +1,20 @@
+# SQL sensors.                  -*- hass -*-
+
+# sql:
+
+# WARNING: DO NOT SELECT * FROM STATES, some columns will yield
+# results that are not JSON serializable.
+# (And we don't need those extra attributes anyway.)
+
+
+#   - name: Test SQL
+#     query: >-
+#       SELECT state FROM states
+#       WHERE metadata_id IN ( SELECT metadata_id
+#                              FROM states_meta
+#                              WHERE entity_id = 'sensor.bresser51_rain' )
+#             AND last_updated_ts < extract(epoch from CURRENT_TIMESTAMP) - 3600
+#       ORDER BY last_updated_ts DESC
+#       LIMIT 1;
+#     column: state
+#     unit_of_measurement: mm
