@@ -60,7 +60,7 @@ entities:
     name: Tafeltje
     icon: mdi:lamp
 
-  - entity: switch.smart_plug_1
+  - entity: light.woonkamer_hoek
     name: Hoek
 
   - entity: light.woonkamer_heks
