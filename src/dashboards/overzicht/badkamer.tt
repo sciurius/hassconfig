@@ -76,14 +76,14 @@ entities:
       name: Verlichting
       icon: mdi:dome-light
 
-  - type: conditional
-    conditions:
-      - entity: switch.pswm02
-        state: unavailable
-    row:
-      entity: sensor.uit
-      icon: mdi:radiator
-      name: Verwarming
+#  - type: conditional
+#    conditions:
+#      - entity: switch.pswm02
+#        state: unavailable
+#    row:
+#      entity: sensor.uit
+#      icon: mdi:radiator
+#      name: Verwarming
 
   - type: conditional
     conditions:
