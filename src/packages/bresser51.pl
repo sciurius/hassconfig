@@ -121,45 +121,44 @@ input_number:
 # Fetching history data from PostgreSQL recorder db.
 # Must now be done via UI. Such a shame!
 # Hey, it's back! And the default is now to use the recorder db.
-# HOWEVER we do not switch back until we found out how to keep the history.
-#
-# sql:
-#
-#   - name: Bresser51 DB Rain 1H
-#     query: >-
-#       SELECT state FROM states
-#       WHERE metadata_id IN ( SELECT metadata_id
-#                              FROM states_meta
-#                              WHERE entity_id = 'sensor.bresser51_rain' )
-#             AND last_updated_ts < extract(epoch from CURRENT_TIMESTAMP) - 3600
-#       ORDER BY last_updated_ts DESC
-#       LIMIT 1;
-#     column: state
-#     unit_of_measurement: mm
-#
-#   - name: Bresser51 DB Rain 24H
-#     query: >-
-#       SELECT state FROM states
-#       WHERE metadata_id IN ( SELECT metadata_id
-#                              FROM states_meta
-#                              WHERE entity_id = 'sensor.bresser51_rain' )
-#             AND last_updated_ts < extract(epoch from CURRENT_TIMESTAMP) - 86400
-#       ORDER BY last_updated_ts DESC
-#       LIMIT 1;
-#     column: state
-#     unit_of_measurement: mm
-#
-#   - name: Bresser51 DB Rain 168H
-#     query: >-
-#       SELECT state FROM states
-#       WHERE metadata_id IN ( SELECT metadata_id
-#                              FROM states_meta
-#                              WHERE entity_id = 'sensor.bresser51_rain' )
-#             AND last_updated_ts < extract(epoch from CURRENT_TIMESTAMP) - 604800
-#       ORDER BY last_updated_ts DESC
-#       LIMIT 1;
-#     column: state
-#     unit_of_measurement: mm
+
+sql:
+
+  - name: Bresser51 DB Rain 1H
+    query: >-
+      SELECT state FROM states
+      WHERE metadata_id IN ( SELECT metadata_id
+                             FROM states_meta
+                             WHERE entity_id = 'sensor.bresser51_rain' )
+            AND last_updated_ts < extract(epoch from CURRENT_TIMESTAMP) - 3600
+      ORDER BY last_updated_ts DESC
+      LIMIT 1;
+    column: state
+    unit_of_measurement: mm
+
+  - name: Bresser51 DB Rain 24H
+    query: >-
+      SELECT state FROM states
+      WHERE metadata_id IN ( SELECT metadata_id
+                             FROM states_meta
+                             WHERE entity_id = 'sensor.bresser51_rain' )
+            AND last_updated_ts < extract(epoch from CURRENT_TIMESTAMP) - 86400
+      ORDER BY last_updated_ts DESC
+      LIMIT 1;
+    column: state
+    unit_of_measurement: mm
+
+  - name: Bresser51 DB Rain 168H
+    query: >-
+      SELECT state FROM states
+      WHERE metadata_id IN ( SELECT metadata_id
+                             FROM states_meta
+                             WHERE entity_id = 'sensor.bresser51_rain' )
+            AND last_updated_ts < extract(epoch from CURRENT_TIMESTAMP) - 604800
+      ORDER BY last_updated_ts DESC
+      LIMIT 1;
+    column: state
+    unit_of_measurement: mm
 
 template:
 
