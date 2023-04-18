@@ -20,14 +20,14 @@ entities:
 
   - [% INCLUDE temphum sensor = "slaapkamer" %]
 
-  - type: conditional
-    conditions:
-      - entity: switch.slaapkamer_warmtedeken_joan
-        state: unavailable
-    row:
-      entity: sensor.uit
-      icon: mdi:radiator
-      name: Deken
+#  - type: conditional
+#    conditions:
+#      - entity: switch.slaapkamer_warmtedeken_joan
+#        state: unavailable
+#    row:
+#      entity: sensor.uit
+#      icon: mdi:radiator
+#      name: Deken
 
   - type: conditional
     conditions:
