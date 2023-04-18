@@ -32,6 +32,7 @@ cards:
           - entity: sensor.ithocve_humidity
             name: false
             format: precision0
+        secondary_info: CVE-S
 
       - entity: sensor.badkamer_temperature
         type: custom:multiple-entity-row
