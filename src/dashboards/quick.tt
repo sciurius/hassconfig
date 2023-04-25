@@ -135,11 +135,12 @@ views:
               entity = "light.${area}_wand_r" %]
 
           [% area = "keuken" %]
-          - [% INCLUDE button name = "afzuigkap", switch = "switch" %]
           - [% INCLUDE button name = "aanrecht",
                entity = "light.${area}_aanrecht_klein" %]
           - [% INCLUDE button name = "aanrecht",
                entity = "light.${area}_aanrecht_groot" %]
+
+          - [% INCLUDE blank %]
 
           [% area = "hal" %]
           - [% INCLUDE button name = "hal",
