@@ -70,3 +70,11 @@ lovelace-growatt:
   show_in_sidebar: true
   filename: dashboards/growatt.yaml
   
+  
+lovelace-oven:
+  mode: yaml
+  title: Oven
+  icon: mdi:toaster-oven
+  show_in_sidebar: true
+  filename: dashboards/oven.yaml
+  
