@@ -30,12 +30,49 @@ entities:
         name: false
         toggle: true
 
-  - entity: switch.keuken_afzuigkap
-    name: Afzuigkap
-    icon: mdi:fan
-    hold_action:
-      action: call-service
-      service: script.start_keuken_afzuigkap_timer
+  - entity: binary_sensor.aeg_oven_apl_status
+    type: custom:multiple-entity-row
+    name: Oven
+    icon: mdi:toaster-oven
+    show_state: false
+    secondary_info:
+      entity: binary_sensor.aeg_oven_ov1_doorstate
+    entities:
+      - entity: sensor.aeg_oven_ov1_targettemperature
+        name: target
+      - entity: sensor.aeg_oven_ov1_displaytemperature
+        name: temp
 
-  - [% INCLUDE switchoff_timer_row name = "Timer",
-       timer = "keuken_afzuigkap", icon = "fan" %]
+  - type: conditional
+    conditions:
+      - entity: sensor.aeg_oven_ov1_runningtime
+        state_not: "0"
+      - entity: sensor.aeg_oven_ov1_runningtime
+        state_not: "unavailable"
+      - entity: sensor.aeg_oven_ov1_runningtime
+        state_not: "unknown"
+    row:
+      type: custom:multiple-entity-row
+      entity: sensor.aeg_oven_ov1_runningtime
+      entities:
+        - entity: sensor.aeg_oven_ov1_timetoend
+          name: end
+
+  - type: conditional
+    conditions:
+      - entity: sensor.aeg_oven_ov1_starttime
+        state_not: "-1"
+      - entity: sensor.aeg_oven_ov1_starttime
+        state_not: "0"
+      - entity: sensor.aeg_oven_ov1_runningtime
+        state_not: "unavailable"
+      - entity: sensor.aeg_oven_ov1_runningtime
+        state_not: "unknown"
+    row:
+      type: custom:multiple-entity-row
+      entity: sensor.aeg_oven_ov1_runningtime
+      entities:
+        - entity: sensor.aeg_oven_ov1_starttime
+          name: start
+
+        
