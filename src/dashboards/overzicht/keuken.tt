@@ -36,7 +36,8 @@ entities:
     icon: mdi:toaster-oven
     show_state: false
     secondary_info:
-      entity: binary_sensor.aeg_oven_ov1_doorstate
+      entity: sensor.aeg_oven_ov1_appliancestate
+      name: false
     entities:
       - entity: sensor.aeg_oven_ov1_targettemperature
         name: target
@@ -56,7 +57,7 @@ entities:
       entity: sensor.aeg_oven_ov1_runningtime
       entities:
         - entity: sensor.aeg_oven_ov1_timetoend
-          name: end
+          name: Stopt over
 
   - type: conditional
     conditions:
