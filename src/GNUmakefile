@@ -28,7 +28,7 @@ publish :: mount $(addprefix ${DST}/,$(addsuffix .yaml,${CFGS}))
 
 # Make sure the destination is available, mount it if necessary.
 mount ::
-	test -d ${HADIR}/config/.storage || mount ${HADIR}/config
+	test -d ${DST}/.storage || mount ${HADIR}/config
 
 # Rule for programmatically generated configs.
 ${DST}/%.yaml :: %.pl
