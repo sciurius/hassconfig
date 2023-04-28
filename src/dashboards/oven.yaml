@@ -12,7 +12,8 @@ views:
         - type: conditional
           conditions:
             - entity: binary_sensor.aeg_oven_apl_status
-              state: "on"
+              state_not: "xx"
+              # Sometimes it reports disconnected, while everyting is functional.
 
           card:
 
@@ -29,7 +30,7 @@ views:
                 name: Status
 
               - entity: binary_sensor.aeg_oven_ov1_doorstate
-                name: Door
+                name: Deur
 
               - entity: sensor.aeg_oven_ov1_remotecontrol
                 name: Remote Control
@@ -44,23 +45,23 @@ views:
                 icon: mdi:stop
 
               - entity: sensor.aeg_oven_ov1_starttime
-                name: Starts in
+                name: Start over
                 icon: mdi:clock-start
 
               - entity: sensor.aeg_oven_ov1_timetoend
-                name: Ends in
+                name: Stopt over
                 icon: mdi:clock-end
 
               - entity: sensor.aeg_oven_ov1_runningtime
-                name: Running
+                name: In bedrijf
                 icon: mdi:clock
 
               - entity: sensor.aeg_oven_ov1_targettemperature
-                name: Target temperature
+                name: Instelling
                 icon: mdi:thermometer
 
               - entity: sensor.aeg_oven_ov1_displaytemperature
-                name: Temperature
+                name: Temperatuur
                 icon: mdi:thermometer
                 
         - type: conditional
