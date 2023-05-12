@@ -329,12 +329,6 @@ automation:
         target:
           entity_id: input_number.ithocve_fan_speed
 
-      - service: telegram_bot.send_message
-        data:
-          message: >
-            Badkamer vochtigheid {{ states('sensor.badkamer_humidity') }}%,
-            afzuiging → {{ states('input_number.ithocve_fan_speed')|int }}%
-
   - id: Automation__IthoCVE_Afzuiging_Off
     alias: IthoCVE Afzuiging Off
     description: Schakel de afzuiging uit wanneer de badkamer niet vochtig.
@@ -363,8 +357,3 @@ automation:
         target:
           entity_id: input_number.ithocve_fan_speed
 
-      - service: telegram_bot.send_message
-        data:
-          message: >
-            Badkamer vochtigheid {{ states('sensor.badkamer_humidity') }}%,
-            afzuiging → OFF
