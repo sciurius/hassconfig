@@ -1,0 +1,18 @@
+# Buitnverlichting (Timer)               -*- hass -*-
+# WARNING: This is a generated file -- DO NOT EDIT
+
+[% INCLUDE switchoff_timer name = "Buitenverlichting Achter" type = "light" %]
+
+  - id: Automation__Start_Buitenverlichting_Achter_timer
+    alias: "Start Buitenverlichting Achter timer."
+    description: "Start Buitenverlichting Achter timer."
+    mode: queued
+
+    trigger:
+      - platform: state
+        entity_id: light.buitenverlichting_achter
+        to: 'on'
+
+    action:
+      - service: script.start_buitenverlichting_achter_timer
+
