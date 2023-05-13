@@ -1,5 +1,9 @@
-calendar:
-  - platform: caldav
-    username: !secret caldav_account
-    password: !secret caldav_password
-    url: !secret caldav_url
+# Calendar                              -* hass -*=
+
+# Functional. Enable when we find a purpose for it...
+
+# calendar:
+#   - platform: caldav
+#     username: !secret caldav_account
+#     password: !secret caldav_password
+#     url: !secret caldav_url
