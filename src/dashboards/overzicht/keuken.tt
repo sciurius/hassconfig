@@ -30,6 +30,26 @@ entities:
         name: false
         toggle: true
 
+  - entity: light.keuken_kook_rechts
+    type: custom:multiple-entity-row
+    name: Kookplaat
+    icon: mdi:wall-sconce-flat-outline
+    show_state: false
+    tap_action:
+      action: call-service
+      service: mqtt.publish
+      data:
+        topic: cmnd/tasm22/add1
+        payload: 1
+      
+    entities:
+      - entity: light.keuken_kook_links
+        name: false
+        toggle: true
+      - entity: light.keuken_kook_rechts
+        name: false
+        toggle: true
+
   - entity: binary_sensor.aeg_oven_apl_status
     type: custom:multiple-entity-row
     name: Oven
