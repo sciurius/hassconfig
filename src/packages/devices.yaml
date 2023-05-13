@@ -45,6 +45,20 @@ light:
       - light.keuken_aanrecht_klein
       - light.keuken_aanrecht_groot
 
+  - name: Keuken Kook Verlichting
+    platform: group
+    unique_id: lightgroup_keuken_kook_verlichting
+    entities:
+      - light.keuken_kook_links
+      - light.keuken_kook_rechts
+
+  - name: Keuken Verlichting
+    platform: group
+    unique_id: lightgroup_keuken_verlichting
+    entities:
+      - light.keuken_aanrecht_verlichting
+      - light.keuken_kook_verlichting
+
   - name: Alle Verlichting
     platform: group
     unique_id: lightgroup_alle_verlichting
@@ -53,7 +67,7 @@ light:
       - light.hal_verlichting
       - light.slaapkamer_avondlichtje
       - light.badkamer_verlichting
-      - light.keuken_aanrecht_verlichting
+      - light.keuken_verlichting
       - light.buitenverlichting_achter
    
   - name: Morning Lights
@@ -134,3 +148,14 @@ mqtt:
       unique_id: sensor__phoenix_nvme0_temperature
       unit_of_measurement: "°C"
       value_template: "{{ value_json.temperature }}"
+
+sensor:
+
+  # CPU temperature when running on RPi4.
+  - platform: command_line
+    name: CPU Temperature
+    unique_id: 6a0fb005-dc73-4545-a09c-d4717a48b856
+    command: "cat /sys/class/thermal/thermal_zone0/temp"
+    unit_of_measurement: "°C"
+    value_template: "{{ value | multiply(0.001) | round(1) }}"
+    scan_interval: 120
