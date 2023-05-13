@@ -18,6 +18,9 @@ entities:
   - entity: sensor.systems_srv4_temperature
     name: Server4
 
+  - entity: sensor.cpu_temperature
+    name: Server5
+
   - entity: sensor.systems_nas1_temperature
     name: NAS1
 
