@@ -109,7 +109,7 @@ entities:
         name: Smotty
       - entity: sensor.sm_t830_battery_level
         name: GlaxS4
-      - entity: sensor.sm_t733_battery_level
+      - entity: sensor.glaxs7_battery_level
         name: GlaxS7
       - entity: sensor.p00c_battery_level
         name: Zenny
