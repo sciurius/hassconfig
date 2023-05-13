@@ -1,0 +1,74 @@
+[% # Default theme colours.
+
+SET
+ Amber		    = "'#FFC107'",
+ Blue		    = "'#2196F3'",
+ BlueGrey	    = "'#44739E'",
+ Cyan		    = "'#00BCD4'",
+ DeepOrange	    = "'#FF5722'",
+ DeepPurple	    = "'#673AB7'",
+ Default_SlateGrey  = "'#44739E'",
+ Green		    = "'#4CAF50'",
+ Grey		    = "'#9E9E9E'",
+ LightBlue	    = "'#03A9F4'",
+ Off_MidGrey	    = "'#8A8A8A'",
+ Orange             = "'#FF9800'",
+ Purple		    = "'#9C27B0'",
+ Red		    = "'#F44336'",
+ Teal		    = "'#009688'";
+-%]
+
+Classic:
+
+  state-default-color: [% Default_SlateGrey %]
+  state-alarm-armed-color: [% Red %]
+  state-alarm-arming-color: [% Orange %]
+  state-alarm-disarmed-color: [% Green %]
+  state-alarm-pending-color: [% Orange %]
+  state-alarm-triggered-color: [% Red %]
+  state-alert-color: [% Red %]
+  state-automation-color: [% Amber %]
+  state-binary-sensor-alerting-color: [% Red %]
+  state-binary-sensor-color: [% Amber %]
+  state-calendar-color: [% Amber %]
+  state-camera-color: [% Amber %]
+  state-climate-auto-color: [% Green %]
+  state-climate-cool-color: [% Blue %]
+  state-climate-dry-color: [% Orange %]
+  state-climate-fan-only-color: [% Cyan %]
+  state-climate-heat-color: [% DeepOrange %]
+  state-climate-heat-cool-color: [% Amber %]
+  state-climate-idle-color: [% Off_MidGrey %]
+  state-cover-color: [% Purple %]
+  state-fan-color: [% Cyan %]
+  state-group-color: [% Amber %]
+  state-humidifier-color: [% Blue %]
+  state-input-boolean-color: [% Amber %]
+  state-light-color: [% Amber %]
+  state-lock-jammed-color: [% Red %]
+  state-lock-locked-color: [% Green %]
+  state-lock-pending-color: [% Orange %]
+  state-lock-unlocked-color: [% Red %]
+  state-media-player-color: [% LightBlue %]
+  state-person-home-color: [% Green %]
+  state-person-not-home-color: [% Grey %]
+  state-person-zone-color: [% Blue %]
+  state-remote-color: [% Amber %]
+  state-script-color: [% Amber %]
+  state-sensor-battery-high-color: [% Green %]
+  state-sensor-battery-low-color: [% Red %]
+  state-sensor-battery-medium-color: [% Orange %]
+  state-sensor-battery-unknown-color: [% Off_MidGrey %]
+  state-siren-color: [% Red %]
+  state-sun-day-color: [% Amber %]
+  state-sun-night-color: [% DeepPurple %]
+  state-switch-color: [% Amber %]
+  state-timer-color: [% Amber %]
+  state-update-color: [% Green %]
+  state-update-installing-color: [% Orange %]
+  state-vacuum-color: [% Teal %]
+  modes:
+    light:
+      state-default-color: [% BlueGrey %]
+    dark:
+      state-default-color: [% BlueGrey %]
