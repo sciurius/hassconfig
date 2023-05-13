@@ -33,7 +33,7 @@ views:
                 name: Deur
 
               - entity: sensor.aeg_oven_ov1_remotecontrol
-                name: Remote Control
+                name: " "
                 icon: mdi:remote
 
               - entity: button.aeg_oven_ov1_executecommand_2
