@@ -1,0 +1,51 @@
+# Oven                                  -*- hass -*-
+
+# Entities:
+#
+#   binary_sensor.aeg_oven_apl_status
+#     Connected / Disconnected
+#   binary_sensor.aeg_oven_ov1_doorstate
+#     Open / Closed
+#   button.aeg_oven_ov1_executecommand_2
+#     Start
+#   button.aeg_oven_ov1_executecommand_3
+#     Stop
+#   sensor.aeg_oven_niu_linkqualityindicator
+#     0..5? Usually 4.
+#   sensor.aeg_oven_niu_ssid
+#     SSID
+#   sensor.aeg_oven_ov1_appliancestate
+#     Ready to start / Running
+#   sensor.aeg_oven_ov1_displaytemperature
+#     Current temperature
+#   sensor.aeg_oven_ov1_remotecontrol
+#     - Remote Control Enabled for No Safety Relevant Operations
+#     - Remote Control Enabled
+#     - Temporary Locked
+#   sensor.aeg_oven_ov1_runningtime
+#     Total working time
+#   sensor.aeg_oven_ov1_starttime
+#     Oven starts in ... (-1 if n/a)
+#   sensor.aeg_oven_ov1_targettemperature
+#     Target temperature
+#   sensor.aeg_oven_ov1_timetoend
+#     Oven will finish in ... (-1 or 0 if n/a)
+
+automation:
+
+  - id: Automation__Oven_Reached_Temperature
+    alias: Oven Reached Temperature
+    description: "The oven reached the target temperature."
+    mode: single
+    trigger:
+      - platform: numeric_state
+        entity_id: sensor.aeg_oven_ov1_displaytemperature
+        value_template: >-
+          {{ states('sensor.aeg_oven_ov1_displaytemperature')|int - states('sensor.aeg_oven_ov1_targettemperature')|int }}
+        above: -1
+    action:
+      - service: telegram_bot.send_message
+        data:
+          message: >
+            Oven op temperatuur ({{ states('sensor.aeg_oven_ov1_displaytemperature') }} °C na
+            {{ states('sensor.aeg_oven_ov1_runningtime') }} min.)
