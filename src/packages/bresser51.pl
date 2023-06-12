@@ -173,6 +173,7 @@ template:
              - (states('sensor.bresser51_dir_corr')|int)
              ) % 360 }}
         unit_of_measurement: "°"
+        availability: "{{ states('sensor.bresser51_wind_direction_unadjusted') != 'unknown' }}"
         icon: mdi:compass-rose
 
       - name: Bresser51 Dir Corr
@@ -219,12 +220,14 @@ template:
         icon: mdi:windsock
         state: |
           {{(((states('sensor.bresser51_wind_speed') | float) / 0.836) ** (2/3)) | round(0, 'ceil')}}
+        availability: "{{ states('sensor.bresser51_wind_speed') != 'unknown' }}"
 
       # Wind speed in Km/h, for convenience
       - name: Bresser51 Wind Speed Kmh
         unique_id: bresser51_wind_speed_kmh
         state: |
           {{ ( 3.6 * (states('sensor.bresser51_wind_speed') | float) ) | round(1) }}
+        availability: "{{ states('sensor.bresser51_wind_speed') != 'unknown' }}"
         unit_of_measurement: "km/h"
         icon: mdi:weather-windy
 
@@ -240,6 +243,10 @@ template:
           {% set chill = (13.12 + 0.6215 * t + ( 0.4867 * t - 13.96 ) * s ** 0.16) %}
           {% if ( chill > t ) %}{% set chill = t %}{% endif %}
           {{ chill|round(1) }}
+        availability: >-
+          {{ states('sensor.bresser51_wind_speed') != 'unknown'
+             and
+             states('sensor.bresser51_temperature') != 'unknown' }}
         unit_of_measurement: "°C"
         icon: mdi:thermometer
 
@@ -269,6 +276,7 @@ template:
              +
              ( states('sensor.bresser51_rain_offset') | float ) }}
           {% endif %}
+        availability: "{{ states('sensor.bresser51_rain_unadjusted') != 'unknown' }}"
         state_class: total_increasing
         unit_of_measurement: "mm"
         icon: mdi:weather-rainy
@@ -331,6 +339,7 @@ template:
       - name: Buiten Temperature
         unique_id: buiten_temperature
         state: "{{ states('sensor.bresser51_temperature') }}"
+        availability: "{{ states('sensor.bresser51_temperature') != 'unknown' }}"
         unit_of_measurement: °C
         device_class: temperature
 
@@ -339,6 +348,7 @@ template:
         unit_of_measurement: "%"
         device_class: humidity
         state: "{{ states('sensor.bresser51_humidity') }}"
+        availability: "{{ states('sensor.bresser51_humidity') != 'unknown' }}"
 
 automation:
 
