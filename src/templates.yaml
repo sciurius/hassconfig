@@ -38,11 +38,19 @@ binary_sensor:          ################
 
   - name: "Pollen"
     state: >
-      {{ not
-         ( is_state('sensor.tomorrow_io_home_tree_pollen_index','none')
-           and
-           is_state('sensor.tomorrow_io_home_grass_pollen_index','none')
-           and
-           is_state('sensor.tomorrow_io_home_weed_pollen_index','none') )
+      {{ states('sensor.tomorrow_io_home_tree_pollen_index')|int(0) > 0
+         or
+         states('sensor.tomorrow_io_home_grass_pollen_index')|int(0) > 0
+         or
+         states('sensor.tomorrow_io_home_weed_pollen_index')|int(0) > 0
+      }}
+      
+  - name: "Pollen Kleenex"
+    state: >
+      {{ states('sensor.kleenex_tree_pollen')|int(0) > 0
+         or
+         states('sensor.kleenex_grass_pollen')|int(0) > 0
+         or
+         states('sensor.kleenex_weed_pollen')|int(0) > 0
       }}
       
