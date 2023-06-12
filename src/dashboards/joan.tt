@@ -37,6 +37,49 @@ button_card_templates:
     hold_action:
       action: toggle
 
+  pollen:
+    aspect_ratio: 1/1
+    color_type: icon
+    show_name: false
+    show_state: true
+    show_units: false
+    styles:
+      card:
+        - font-size: 6px
+    size: 200%
+    show_icon: '[[[ entity.state > 0 ]]]'
+    tap_action:
+      action: none
+    variables:
+      levels : [ 10, 96, 208, 704 ]
+    state:
+      - value: '[[[ return variables.levels[3] ]]]'
+        operator: '>='
+        styles:
+          icon:
+            - color: red
+        spin: true
+      - value: '[[[ return variables.levels[2] ]]]'
+        operator: '>='
+        styles:
+          icon:
+            - color: red
+      - value: '[[[ return variables.levels[1] ]]]'
+        operator: '>='
+        styles:
+          icon:
+            - color: orange
+      - value: '[[[ return variables.levels[0] ]]]'
+        operator: '>'
+        styles:
+          icon:
+            - color: green
+      - value: 0
+        operator: '>='
+        styles:
+          icon:
+            - color: white
+
 title: Joan
 theme: default
 
@@ -74,12 +117,21 @@ views:
             content: ' '
           - type: markdown
             content: ' '
-          - type: markdown
-            content: ' '
-          - type: markdown
-            content: ' '
-          - type: markdown
-            content: ' '
+          - type: custom:button-card
+            entity: sensor.kleenex_tree_pollen
+            template: pollen
+            variables:
+              levels : [ 10, 96, 208, 704 ]
+          - type: custom:button-card
+            entity: sensor.kleenex_grass_pollen
+            template: pollen
+            variables:
+              levels : [ 3, 30, 61, 342 ]
+          - type: custom:button-card
+            entity: sensor.kleenex_weed_pollen
+            template: pollen
+            variables:
+              levels : [ 2, 21, 78, 267 ]
           - type: custom:button-card
             aspect_ratio: 1/1
             styles:
