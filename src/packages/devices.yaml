@@ -149,13 +149,30 @@ mqtt:
       unit_of_measurement: "°C"
       value_template: "{{ value_json.temperature }}"
 
-sensor:
+command_line:
+
+  # CPU temperature when running on T520.
+  - sensor:
+      name: T520 CPU Temperature
+      unique_id: sensor_t520_cpu_temperature
+      command: "cat /sys/class/hwmon/hwmon0/temp1_input"
+      unit_of_measurement: "°C"
+      value_template: "{{ value | multiply(0.001) | round(1) }}"
+      scan_interval: 120
 
   # CPU temperature when running on RPi4.
-  - platform: command_line
-    name: CPU Temperature
-    unique_id: 6a0fb005-dc73-4545-a09c-d4717a48b856
-    command: "cat /sys/class/thermal/thermal_zone0/temp"
-    unit_of_measurement: "°C"
-    value_template: "{{ value | multiply(0.001) | round(1) }}"
-    scan_interval: 120
+  - sensor:
+      name: RPi CPU Temperature
+      unique_id: sensor_rpi_cpu_temperature
+      command: "cat /sys/class/thermal/thermal_zone0/temp"
+      unit_of_measurement: "°C"
+      value_template: "{{ value | multiply(0.001) | round(1) }}"
+      scan_interval: 120
+
+template:
+  - sensor:
+      name: Nextcloud Free Space
+      unique_id: nextcloud_free_space
+      unit_of_measurement: "GiB"
+      state: >-
+        {{ ((states('sensor.nextcloud_nextcloud_system_freespace')|int(0))/1073741824)|int }}
