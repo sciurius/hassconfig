@@ -8,6 +8,7 @@ PLLIB     := ${LIB}/perl5
 CFGS_PL   := $(basename $(shell find * -name '*.pl'   -print))
 CFGS_TT   := $(basename $(shell find * -name '*.tt'   -print))
 CFGS_YAML := $(basename $(shell find * -name '*.yaml' -print))
+CFGS_PYS  := $(shell find * -name '*.py'   -print)
 CFGS      := ${CFGS_PL} ${CFGS_TT} ${CFGS_YAML}
 TCFG      := $(shell mktemp)
 
@@ -23,8 +24,9 @@ test :
 	@echo YAML: ${CFGS_YAML}
 	@echo PL:   ${CFGS_PL}
 	@echo TT:   ${CFGS_TT}
+	@echo PY:   ${CFGS_PYS}
 
-publish :: mount $(addprefix ${DST}/,$(addsuffix .yaml,${CFGS}))
+publish :: mount $(addprefix ${DST}/,$(addsuffix .yaml,${CFGS})) $(addprefix ${DST}/,${CFGS_PYS})
 
 # Make sure the destination is available, mount it if necessary.
 mount ::
@@ -48,3 +50,6 @@ ${DST}/%.yaml :: %.tt ${TTLIB}/ui/*
 ${DST}/%.yaml :: %.yaml
 	${INSTALL} $< $@
 
+
+${DST}/%.py :: %.py
+	${INSTALL} $< $@
