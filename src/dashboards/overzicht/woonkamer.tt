@@ -11,8 +11,6 @@ entities:
   - entity: climate.thermostat_hc1
     name: Thermostaat
 
-  - [% INCLUDE temphum sensor = "woonkamer" %]
-
   - type: custom:multiple-entity-row
     entity: binary_sensor.illuminated
     state_color: true
