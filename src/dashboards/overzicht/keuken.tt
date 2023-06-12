@@ -50,6 +50,13 @@ entities:
         name: false
         toggle: true
 
+  - entity: switch.keuken_afzuigkap
+    type: custom:template-entity-row
+    name: Afzuigkap
+    icon: mdi:fan
+    state: >-
+      {% if is_state('switch.keuken_afzuigkap','on') %}Ready{% else %}Off{% endif %}
+        
   - entity: binary_sensor.aeg_oven_apl_status
     type: custom:multiple-entity-row
     name: Oven
