@@ -62,6 +62,30 @@ entities:
 
   - type: conditional
     conditions:
+      - entity: binary_sensor.pollen_kleenex
+        state: 'on'
+    row:
+      entity: sensor.kleenex_weed_pollen
+      type: custom:multiple-entity-row
+      show_state: false
+      name: Pollen
+      secondary_info: Kleenex.NL
+      entities:
+        - entity: sensor.kleenex_tree_pollen
+          hide_if: none
+          name: Bomen
+          unit: false
+        - entity: sensor.kleenex_grass_pollen
+          hide_if: none
+          name: Gras
+          unit: false
+        - entity: sensor.kleenex_weed_pollen
+          hide_if: none
+          name: Kruiden
+          unit: false
+
+  - type: conditional
+    conditions:
       - entity: binary_sensor.stookalert_drenthe
         state_not: 'off'
     row:
