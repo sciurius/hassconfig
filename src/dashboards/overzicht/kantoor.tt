@@ -32,12 +32,22 @@ entities:
   - entity: sensor.home_assistant_website
     name: Hass Software
 
-  - entity: sensor.nas1_volume_1_status
-    name: NAS1 Status
-
   - entity: sensor.nas1_volume_1_volume_used
-    name: NAS1 Used
+    type: custom:multiple-entity-row
+    name: NAS1
+    secondary_info:
+      entity: sensor.nas1_volume_1_status
+      name: Status
 
+  - entity: sensor.nextcloud_free_space
+    type: custom:multiple-entity-row
+    name: NextCloud
+    icon: mdi:cloud
+    unit: "GiB free"
+    secondary_info:
+      entity: sensor.nextcloud_nextcloud_system_version
+      name: Version
+    
   - entity: switch.psw03
     name: Printer
     icon: mdi:printer
