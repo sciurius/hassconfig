@@ -125,9 +125,15 @@ automation:
     - service: light.turn_on
       data:
         color_name: '{{ color }}'
+        brightness_pct: 60
+      target:
+        entity_id: light.woonkamer_heks
+    - service: light.turn_on
+      data:
+        color_name: '{{ color }}'
         brightness_pct: 30
       target:
-        entity_id: light.slaapkamermc_signals
+        entity_id: light.bulb01
     mode: restart
 
   - alias: Auto Off MC Slaapkamer
