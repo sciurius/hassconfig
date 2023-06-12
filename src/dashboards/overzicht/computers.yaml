@@ -18,8 +18,21 @@ entities:
   - entity: sensor.systems_srv4_temperature
     name: Server4
 
-  - entity: sensor.cpu_temperature
-    name: Server5
+  - type: conditional
+    conditions:
+      - entity: sensor.rpi_cpu_temperature
+        state_not: "unavailable"
+    row:
+        entity: sensor.rpi_cpu_temperature
+        name: Server5
+
+  - type: conditional
+    conditions:
+      - entity: sensor.t520_cpu_temperature
+        state_not: "unavailable"
+    row:
+        entity: sensor.t520_cpu_temperature
+        name: T520
 
   - entity: sensor.systems_nas1_temperature
     name: NAS1
