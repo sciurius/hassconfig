@@ -1,0 +1,40 @@
+# Woonkamer                             -*- hass -*-
+
+automation:
+
+  - id: Automation__Sound_System_OnOff_Notification
+    alias: Sound System On/Off Notification
+    description: Sound System On/Off Notification
+
+    use_blueprint:
+      path: device_onoff_notification.yaml
+      input:
+        dev_ent: switch.woonkamer_sound_system
+        friendly_name: Woonkamer Sound System
+
+  - id: Automation__Auto_Off_Sound_System
+    alias: Auto Off Sound System
+    description: Sound System Off when player stops
+
+    trigger:
+      - platform: state
+        entity_id: media_player.picky
+        to: idle
+        for:
+          hours: 0
+          minutes: 15
+          seconds: 0
+      - platform: state
+        entity_id: media_player.picky
+        to: paused
+        for:
+          hours: 0
+          minutes: 30
+          seconds: 0
+
+    condition: []
+
+    action:
+      - service: switch.turn_off
+        target:
+          entity_id: switch.woonkamer_sound_system
