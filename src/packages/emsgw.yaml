@@ -74,6 +74,30 @@ sensor:
 
 automation:
 
+  - id: Automation__CV_Pressure_Notification
+    alias: CV Pressure Notification
+    description: "Send alarm when pressure is getting low."
+    mode: single
+
+    trigger:
+      - platform: numeric_state
+        entity_id: sensor.boiler_syspress
+        below: '0.85'
+        for:
+          hours: 0
+          minutes: 10
+          seconds: 0
+
+    condition: []
+
+    action:
+      - service: notify.notify
+        data:
+          message: CV Pressure low!
+      - service: telegram_bot.send_message
+        data:
+          message: CV Pressure low!
+
   - alias: EMSGW Save Wind Chill
     description: "Copies the chill factor to the helper."
     mode: single
