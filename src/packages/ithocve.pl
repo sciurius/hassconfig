@@ -357,3 +357,18 @@ automation:
         target:
           entity_id: input_number.ithocve_fan_speed
 
+  - id: Automation__IthoCVE_Re-enable_Afzuiging
+    alias: IthoCVE Re-enable afzuiging
+    description: Enable de afzuiging indien disabled
+    initial_state: false
+
+    trigger:
+      - platform: time
+        at: 00:05:05
+    condition: []
+
+    action:
+      - service: automation.turn_on
+        data: {}
+        target:
+            entity_id: automation.ithocve_afzuiging
