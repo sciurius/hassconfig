@@ -95,6 +95,7 @@ automation:
       path: device_onoff_notification.yaml
       input:
         dev_ent: switch.slaapkamer_media_center
+        friendly_name: Slaapkamer Media Center
 
   - alias: Media Center State
     id: '1644499122291'
