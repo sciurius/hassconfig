@@ -20,6 +20,14 @@ entities:
 
   - type: conditional
     conditions:
+      - entity: switch.srv5
+        state_not: "unavailable"
+    row:
+      entity: switch.srv5
+      name: Server5
+
+  - type: conditional
+    conditions:
       - entity: sensor.rpi_cpu_temperature
         state_not: "unavailable"
     row:
