@@ -78,7 +78,7 @@ entities:
 
 #  - type: conditional
 #    conditions:
-#      - entity: switch.pswm02
+#      - entity: switch.badkamer_verwarming
 #        state: unavailable
 #    row:
 #      entity: sensor.uit
@@ -87,25 +87,25 @@ entities:
 
   - type: conditional
     conditions:
-      - entity: switch.pswm02
+      - entity: switch.badkamer_verwarming
         state: "on"
     row:
       type: custom:multiple-entity-row
-      entity: switch.pswm02
+      entity: switch.badkamer_verwarming
       name: Verwarming
       icon: mdi:radiator
       toggle: true
       entities:
-        - entity: sensor.pswm02_energy_power
+        - entity: sensor.badkamer_verwarming_energy_power
           name: false
 
   - type: conditional
     conditions:
-      - entity: switch.pswm02
+      - entity: switch.badkamer_verwarming
         state: "off"
     row:
       type: custom:multiple-entity-row
-      entity: switch.pswm02
+      entity: switch.badkamer_verwarming
       name: Verwarming
       icon: mdi:radiator
       toggle: true
