@@ -10,46 +10,40 @@ entities:
 
   - [% INCLUDE temphum sensor = "keuken" %]
 
-  - entity: light.keuken_aanrecht_verlichting
-    type: custom:multiple-entity-row
-    name: Aanrecht
-    icon: mdi:ceiling-light-multiple-outline
-    show_state: false
-    tap_action:
-      action: call-service
-      service: mqtt.publish
-      data:
-        topic: cmnd/tasm19/add1
-        payload: 1
-      
+  - type: custom:fold-entity-row
+    head:
+      entity: light.keuken_aanrecht_verlichting
+      name: Aanrecht
+      icon: mdi:ceiling-light-multiple-outline
+      tap_action:
+        action: call-service
+        service: mqtt.publish
+        data:
+          topic: cmnd/tasm19/add1
+          payload: 1
     entities:
       - entity: light.keuken_aanrecht_groot
-        name: false
-        toggle: true
+        name: Groot
       - entity: light.keuken_aanrecht_klein
-        name: false
-        toggle: true
+        name: Klein
 
-  - entity: light.keuken_kook_rechts
-    type: custom:multiple-entity-row
-    name: Kookplaat
-    icon: mdi:wall-sconce-flat-outline
-    show_state: false
-    tap_action:
-      action: call-service
-      service: mqtt.publish
-      data:
-        topic: cmnd/tasm22/add1
-        payload: 1
-      
+  - type: custom:fold-entity-row
+    head:
+      name: Kookplaat
+      icon: mdi:wall-sconce-flat-outline
+      entity: light.keuken_kook_verlichting
+      tap_action:
+        action: call-service
+        service: mqtt.publish
+        data:
+          topic: cmnd/tasm22/add1
+          payload: 1
     entities:
       - entity: light.keuken_kook_links
-        name: false
-        toggle: true
+        name: Links
       - entity: light.keuken_kook_rechts
-        name: false
-        toggle: true
-
+        name: Rechts
+      
   - entity: switch.keuken_afzuigkap
     type: custom:template-entity-row
     name: Afzuigkap
