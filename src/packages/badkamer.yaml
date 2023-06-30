@@ -21,10 +21,10 @@ automation:
 
     trigger:
 #      - platform: numeric_state
-#        entity_id: sensor.pswm02_energy_power
+#        entity_id: sensor.badkamer_verwarming_energy_power
 #        above: 5
       - platform: state
-        entity_id: switch.pswm02
+        entity_id: switch.badkamer_verwarming
         from: 'off'
         to: 'on'
 
@@ -40,11 +40,11 @@ automation:
 
     trigger:
 #      - platform: numeric_state
-#        entity_id: sensor.pswm02_energy_power
+#        entity_id: sensor.badkamer_verwarming_energy_power
 #        below: 5
 #        for: "00:02:00"
       - platform: state
-        entity_id: switch.pswm02
+        entity_id: switch.badkamer_verwarming
         to: 'off'
 
     action:
@@ -61,7 +61,7 @@ automation:
           entity_id: timer.badkamer_verwarming
     action:
       - service: switch.turn_off
-        entity_id: switch.pswm02
+        entity_id: switch.badkamer_verwarming
 
   #### NOTE: One-shot.
   - id: Automation__Doorbell_Switch_On_Badkamerverwarming
@@ -80,7 +80,7 @@ automation:
     action:
       - service: switch.turn_on
         target:
-          entity_id: switch.pswm02
+          entity_id: switch.badkamer_verwarming
       - service: input_boolean.turn_off
         target:
           entity_id: input_boolean.badkamerverwarming_on_doorbell
