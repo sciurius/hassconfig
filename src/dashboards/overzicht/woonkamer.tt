@@ -4,7 +4,7 @@
 type: entities
 title: Woonkamer
 state_color: true
-show_header_toggle: true
+show_header_toggle: false
 
 entities:
 
@@ -82,18 +82,16 @@ entities:
   - [% INCLUDE switchoff_timer_row name = "Timer",
        timer = "woonkamer_totem" %]
 
-  - type: custom:multiple-entity-row
-    name: Wand
-    entity: light.woonkamer_wand
-    icon: mdi:light-flood-down
-    show_state: false
+  - type: custom:fold-entity-row
+    head:
+      name: Wand
+      entity: light.woonkamer_wand
+      icon: mdi:light-flood-down
     entities:
       - entity: light.woonkamer_wand_l
-        toggle: true
-        name: false
+        name: Links
       - entity: light.woonkamer_wand_r
-        toggle: true
-        name: false
+        name: Rechts
 
   - type: divider
 
