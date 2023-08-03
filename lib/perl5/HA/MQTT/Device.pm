@@ -86,7 +86,7 @@ my %dcmap; INIT {
 	    V	  => "voltage",
 	    W	  => "power",
 	    Wh	  => "energy",
-	    "⁰C"  => "temperature",
+	    "°C"  => "temperature",
     );
 }
 
