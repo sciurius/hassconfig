@@ -229,13 +229,18 @@ views:
                 name: Avondlichtje
                 icon: mdi:lamp
 
-              - type: custom:button-card
-                template: standard
-                variables:
-                  image_on: "sr-bed-joan_200.png"
-                entity: switch.slaapkamer_warmtedeken_joan
-                name: Deken
-                icon: mdi:radiator
+              - type: conditional
+                conditions:
+                  - entity: switch.slaapkamer_warmtedeken_joan
+                    state_not: unavailable
+                card:
+                  type: custom:button-card
+                  template: standard
+                  variables:
+                    image_on: "sr-bed-joan_200.png"
+                  entity: switch.slaapkamer_warmtedeken_joan
+                  name: Deken
+                  icon: mdi:radiator
 
               - type: custom:button-card
                 template: standard
@@ -245,10 +250,15 @@ views:
                 name: Verlichting hoek
                 icon: mdi:floor-lamp-torchiere
 
-              - type: custom:button-card
-                template: standard
-                variables:
-                  image_on: "br-kacheltje_200.png"
-                entity: switch.pswm02
-                name: Kacheltje
-                icon: mdi:radiator
+              - type: conditional
+                conditions:
+                  - entity: switch.badkamer_verwarming
+                    state_not: unavailable
+                card:
+                  type: custom:button-card
+                  template: standard
+                  variables:
+                    image_on: "br-kacheltje_200.png"
+                  entity: switch.badkamer_verwarming
+                  name: Kacheltje
+                  icon: mdi:radiator
