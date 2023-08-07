@@ -1,0 +1,20 @@
+# Slaapkamer Fan (Timer)               -*- hass -*-
+# WARNING: This is a generated file -- DO NOT EDIT
+
+[% INCLUDE switchoff_timer name = "Slaapkamer Fan"
+           type = "switch"
+           duration = "00:30:00" %]
+
+  - id: Automation__Start_Slaapkamer_Fan_timer
+    alias: "Start Slaapkamer Fan timer."
+    description: "Start Slaapkamer Fan timer."
+    mode: queued
+
+    trigger:
+      - platform: state
+        entity_id: switch.slaapkamer_fan
+        to: 'on'
+
+    action:
+      - service: script.start_slaapkamer_fan_timer
+
