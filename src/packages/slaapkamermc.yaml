@@ -16,7 +16,7 @@ script:
                   ],
                   "manufacturer" : "Johan",
                   "model" : "MC",
-                  "name" : "Slaapkamer Media Center",
+                  "name" : "SlaapkamerMC",
                   "sw_version" : "0"
                },
                "~": "mc/mc_01",

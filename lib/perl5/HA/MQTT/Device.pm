@@ -303,6 +303,12 @@ sub generate {
 
     for my $d ( @{ $self->{sensors} } ) {
 	$d->{type} = "binary_sensor" if $d->{type} eq "binary";
+
+	# As of 2023.8 entity names may no longer contain the device name.
+	my $name = $d->{name};
+	my $devname = $d->{device}->{name};
+	$name =~ s/^$devname\s+//;
+
 	my $seq =
 	  { service => "mqtt.publish",
 	    data =>
@@ -312,7 +318,7 @@ sub generate {
 	    }
 	  };
 	my $pl =
-	  { name => $d->{name},
+	  { name => $name,
 	    "~" => $self->{root},
 	    unique_id => $d->{unique_id},
 	    state_topic => $d->{state_topic},
@@ -369,12 +375,12 @@ sub generate {
 
     $t = "";
     for my $d ( @{ $self->{sensors} } ) {
-	next unless $d->{friendly_name};
-	next if $d->{name} eq $d->{friendly_name};
+	next unless my $fn = $d->{friendly_name};
+	next if $d->{name} eq $fn;
 	$t .= join( "",
 		    "    ",
 		    $d->{type} . "." . lc( $self->_mkid($d->{name}) ), ":\n",
-		    "      friendly_name: ", $d->{friendly_name}, "\n",
+		    "      friendly_name: ", $fn, "\n",
 		    "\n" );
     }
 

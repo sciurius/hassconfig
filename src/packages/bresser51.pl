@@ -135,6 +135,8 @@ sql:
       LIMIT 1;
     column: state
     unit_of_measurement: mm
+    device_class: precipitation
+    state_class: measurement
 
   - name: Bresser51 DB Rain 24H
     query: >-
@@ -147,6 +149,8 @@ sql:
       LIMIT 1;
     column: state
     unit_of_measurement: mm
+    device_class: precipitation
+    state_class: measurement
 
   - name: Bresser51 DB Rain 168H
     query: >-
@@ -159,6 +163,8 @@ sql:
       LIMIT 1;
     column: state
     unit_of_measurement: mm
+    device_class: precipitation
+    state_class: measurement
 
 template:
 
@@ -279,11 +285,13 @@ template:
         availability: "{{ states('sensor.bresser51_rain_unadjusted') != 'unknown' }}"
         state_class: total_increasing
         unit_of_measurement: "mm"
+        device_class: precipitation
         icon: mdi:weather-rainy
 
       - name: Bresser51 Rain Earliest
         unique_id: bresser51_rain_earliest
         unit_of_measurement: mm
+        device_class: precipitation
         icon: mdi:weather-rainy
         state: "{{ states('input_number.bresser51_rain_earliest') | float }}"
 
@@ -291,6 +299,7 @@ template:
       - name: Bresser51 Rain Offset
         unique_id: bresser51_rain_offset
         unit_of_measurement: mm
+        device_class: precipitation
         icon: mdi:weather-rainy
         state: "{{ states('input_number.bresser51_rain_offset') | float }}"
 
@@ -298,6 +307,7 @@ template:
       - name: Bresser51 Rain 1H
         unique_id: bresser51_rain_1h
         state_class: measurement
+        device_class: precipitation
         unit_of_measurement: "mm"
         icon: mdi:weather-rainy
         state: |
@@ -312,6 +322,7 @@ template:
         unique_id: bresser51_rain_24h
         state_class: measurement
         unit_of_measurement: "mm"
+        device_class: precipitation
         icon: mdi:weather-rainy
         state: |
           {% set x = states('sensor.bresser51_db_rain_24h') %}
@@ -325,6 +336,7 @@ template:
         unique_id: bresser51_rain_168h
         state_class: measurement
         unit_of_measurement: "mm"
+        device_class: precipitation
         icon: mdi:weather-rainy
         state: |
           {% set x = states('sensor.bresser51_db_rain_168h') %}

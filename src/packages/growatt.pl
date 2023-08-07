@@ -9,10 +9,10 @@ use Text::Template::Tiny;
 # Generate HA YAML for Growatt7k.
 
 my $d = HA::MQTT::Device->new
-  ( name	      => "Growatt7k",
-    prefix	      => "Growatt",
-    root	      => "growatt7k",
-    model	      => "Growatt 7000 TL3",
+  ( name              => "Growatt7k",
+    prefix            => "Growatt",
+    root              => "growatt7k",
+    model             => "Growatt 7000 TL3",
     manufacturer      => "Growatt",
     identifiers       => [ "AH44460477" ],
     sw_version        => "3.1",
@@ -101,6 +101,29 @@ automation:
       - service: telegram_bot.send_message
         data:
           message: "Growatt Omvormer → {{ states('sensor.growatt_temperature') }} °C"
+
+  # Limit is 523V.
+  - id: Automation__Growatt_Voltage_Alarm
+    alias: Growatt Voltage Alarm
+    description: "Alarm when Growatt voltage gets too high."
+    mode: single
+    trigger:
+      - platform: numeric_state
+        entity_id: sensor.growatt_vacr
+        above: 250
+        for: "00:05:00"
+      - platform: numeric_state
+        entity_id: sensor.growatt_vacs
+        above: 250
+        for: "00:05:00"
+      - platform: numeric_state
+        entity_id: sensor.growatt_vact
+        above: 250
+        for: "00:05:00"
+    action:
+      - service: telegram_bot.send_message
+        data:
+          message: "Netspanning hoog: {{ trigger.to_state.state }} V"
 
 # Exclude some fast changing (and less relevant) sensors from the
 # LogBook.
