@@ -20,6 +20,17 @@ entities:
       name: Warm water
       icon: mdi:shower
 
+  - type: custom:template-entity-row
+    entity: sensor.ems_esp_shower_duration
+    name: Douche
+    state: >-
+      {{ states('sensor.ems_esp_shower_duration')|int|
+         timestamp_custom('%-M\'%S"') }}
+    secondary: >-
+      {{ as_timestamp(states.sensor.ems_esp_shower_duration.last_changed) |
+         timestamp_custom('%-d %b %-H:%M') }}
+    hide_unavailable: true
+      
   - type: conditional
     conditions:
       - entity: sensor.ithocve_fan_info
