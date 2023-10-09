@@ -27,7 +27,7 @@ entities:
       {{ states('sensor.ems_esp_shower_duration')|int|
          timestamp_custom('%-M\'%S"') }}
     secondary: >-
-      {{ as_timestamp(states.sensor.ems_esp_shower_duration.last_changed) |
+      {{ state_attr('input_datetime.emsgw_showered','timestamp') |
          timestamp_custom('%-d %b %-H:%M') }}
     hide_unavailable: true
       
