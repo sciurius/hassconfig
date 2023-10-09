@@ -107,8 +107,8 @@ entities:
         name: GlaxS4
       - entity: sensor.glaxs7_battery_level
         name: GlaxS7
-      - entity: sensor.p00c_battery_level
-        name: Zenny
+      - entity: sensor.joni_battery_level
+        name: Joni
       - entity: sensor.battery_tz200
         name: TZ200
         hide_if: unknown
