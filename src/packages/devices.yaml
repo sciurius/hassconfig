@@ -36,7 +36,7 @@ light:
     platform: group
     unique_id: lightgroup_badkamer_verlichting
     entities:
-      - light.badkamer_verlichting
+      - light.badkamer_verlichting_plafond
 
   - name: Keuken Aanrecht Verlichting
     platform: group
@@ -82,6 +82,7 @@ light:
     unique_id: lightgroup_evening_lights
     entities:
       - light.woonkamer_tafeltje
+      - light.keuken_kook_rechts
       - light.morning_lights
    
   - name: SlaapkamerMC Signals
