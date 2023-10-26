@@ -70,7 +70,7 @@ device_tracker:
   - platform: ping
     hosts:
       smotty: smotty.squirrel.nl
-      zenny: zenny.squirrel.nl
+      joni: joni.squirrel.nl
 
 pyscript:
   allow_all_imports: true
