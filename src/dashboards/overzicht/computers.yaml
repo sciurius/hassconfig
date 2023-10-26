@@ -12,8 +12,25 @@ entities:
       entity: sensor.phoenix_nvme0_temperature
     name: Phoenix
       
-  - entity: sensor.systems_srv1_temperature
+  - type: custom:multiple-entity-row
+    entity: sensor.systems_srv1_temperature
+    secondary_info:
+      name: UPS
+      entity: sensor.ups_pico_battery_level
     name: Server1
+
+  - entity: sensor.systems_nas1_temperature
+    name: Server2 (NAS1)
+
+  - type: conditional
+    conditions:
+      - entity: sensor.t520_cpu_temperature
+        state_not: "unavailable"
+      - entity: sensor.t520_cpu_temperature
+        state_not: "unknown"
+    row:
+        entity: sensor.t520_cpu_temperature
+        name: Server3 (HASS)
 
   - entity: sensor.systems_srv4_temperature
     name: Server4
@@ -24,7 +41,7 @@ entities:
         state_not: "unavailable"
     row:
       entity: switch.srv5
-      name: Server5
+      name: Server5 (HAXX)
 
   - type: conditional
     conditions:
@@ -34,28 +51,15 @@ entities:
         state_not: "unknown"
     row:
         entity: sensor.rpi_cpu_temperature
-        name: Server5
+        name: Server5 (HAXX)
 
-  - type: conditional
-    conditions:
-      - entity: sensor.t520_cpu_temperature
-        state_not: "unavailable"
-      - entity: sensor.t520_cpu_temperature
-        state_not: "unknown"
-    row:
-        entity: sensor.t520_cpu_temperature
-        name: T520
-
-  - entity: sensor.systems_nas1_temperature
-    name: NAS1
-
-  - type: custom:multiple-entity-row
-    entity: sensor.ups_pico_battery_level
-    name: UPS PIco
-    show_state: false
-    icon: mdi:battery-charging
-    entities:
-      - entity: sensor.ups_pico_rpi_level
-        name: false
-      - entity: sensor.ups_pico_battery_level
-        name: false
+#  - type: custom:multiple-entity-row
+#    entity: sensor.ups_pico_battery_level
+#    name: Srv1 UPS
+#    show_state: false
+#    icon: mdi:battery-charging
+#    entities:
+#      - entity: sensor.ups_pico_rpi_level
+#        name: false
+#      - entity: sensor.ups_pico_battery_level
+#        name: false
