@@ -1,0 +1,30 @@
+[% INCLUDE switchoff_timer name = "Radiatorfans"
+           type = "switch"
+           duration = "00:10:00" %]
+
+  - id: Automation__Start_Radiatorfans_timer
+    alias: "Start RadiatorFans timer."
+    description: "Start RadiatorFans timer."
+    mode: queued
+
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.boiler_heatingactive
+        to: "off"
+
+    action:
+      - service: script.start_radiatorfans_timer
+
+  - id: Automation__Cancel_Radiatorfans_timer
+    alias: "Cancel RadiatorFans timer."
+    description: "Cancel RadiatorFans timer."
+    mode: queued
+
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.boiler_heatingactive
+        to: "on"
+
+    action:
+      - service: timer.cancel
+        entity_id: timer.radiatorfans

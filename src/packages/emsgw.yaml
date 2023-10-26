@@ -279,3 +279,22 @@ automation:
             states('sensor.ems_esp_shower_duration')|int
             | timestamp_custom('%-M\'%S"') }}
 
+  - id: Automation__CV_RadiatorFans
+    alias: CV Radiatorfans
+    description: "Turn radiator fans on/off."
+    mode: single
+
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.boiler_heatingactive
+        to: "on"
+
+    action:
+      - service_template: 'switch.turn_{{trigger.to_state.state}}'
+        entity_id: switch.psw05
+
+      - service: telegram_bot.send_message
+        data:
+          message: "Radiator fans turned {{trigger.to_state.state}}"
+
+

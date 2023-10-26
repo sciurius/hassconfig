@@ -17,4 +17,6 @@
 
     action:
       - service: script.start_slaapkamer_fan_timer
-
+      - service: telegram_bot.send_message
+        data:
+          message: "Radiator fans turned off"
