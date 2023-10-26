@@ -1,0 +1,27 @@
+# Dashboard: Overzicht -- Logeerkamer       -*- hass -*-
+# WARNING: This is a generated file -- DO NOT EDIT
+
+type: entities
+title: Logeerkamer
+state_color: true
+
+entities:
+
+  - type: conditional
+    conditions:
+      - entity: light.logeerkamer_verlichting
+        state: unavailable
+    row:
+      entity: sensor.uit
+      name: Verlichting
+      icon: mdi:dome-light
+
+  - type: conditional
+    conditions:
+      - entity: light.logeerkamer_verlichting
+        state_not: unavailable
+    row:
+      entity: light.logeerkamer_verlichting
+      name: Verlichting
+      icon: mdi:dome-light
+

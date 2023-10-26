@@ -25,6 +25,7 @@ views:
       - !include overzicht/slaapkamer.yaml
       - !include overzicht/badkamer.yaml
 
+      - !include overzicht/logeerkamer.yaml
       - !include overzicht/overig.yaml
 
       - !include overzicht/computers.yaml
@@ -46,6 +47,10 @@ views:
       - !include badkamerafzuiging/itho.yaml
       - !include badkamerafzuiging/itho-graph.yaml
       - !include badkamerverwarming/doorbell.yaml
+
+  - title: Logeerkamer
+    cards:
+      - !include overzicht/logeerkamer.yaml
 
   - title: Hal
     cards:
