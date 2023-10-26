@@ -11,14 +11,6 @@ input_number:
     mode: box
     unit_of_measurement: "°C"
 
-input_datetime:
-
-  # To save the shower last updated time.
-  emsgw_showered:
-    name: Shower time
-    has_date: true
-    has_time: true
-
 input_boolean:
 
   # To register return temp high status
@@ -277,18 +269,13 @@ automation:
       - platform: state
         entity_id: sensor.ems_esp_shower_duration
 
-    condition: >-
-      {{ trigger.to_state.state != trigger.from_state.state }}
-
     action:
-      - service: input_datetime.set_datetime
-        target:
-          entity_id: input_datetime.emsgw_showered
-        data:
-          timestamp: >-
-            {{ as_timestamp(states.sensor.ems_esp_shower_duration.last_updated) }}
       - service: telegram_bot.send_message
         data:
-          message: >-
-            Shower: {{ trigger.to_state.state|int|timestamp_custom('%-M:%S') }}
+          message: >
+            Shower: {{
+            as_timestamp(states('sensor.ems_esp_shower_timestamp')) 
+            | timestamp_custom('%-d %b %-H:%M') }} -- {{
+            states('sensor.ems_esp_shower_duration')|int
+            | timestamp_custom('%-M\'%S"') }}
 
