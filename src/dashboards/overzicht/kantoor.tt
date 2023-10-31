@@ -48,6 +48,19 @@ entities:
       entity: sensor.nextcloud_nextcloud_system_version
       name: Version
     
+  - entity: switch.radiatorfans
+    name: Radiator fans
+    icon: mdi:fan
+
+  - type: conditional
+    conditions:
+      - entity: timer.radiatorfans
+        state: active
+    row:
+      entity: timer.radiatorfans
+      icon: mdi:radiator
+      name: Timer
+
   - entity: switch.psw03
     name: Printer
     icon: mdi:printer

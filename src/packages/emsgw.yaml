@@ -61,6 +61,13 @@ template:
           {% else %} {{ sc }}
           {% endif %}
   
+  - binary_sensor:
+
+      - name: Radiatorfans
+        unique_id: radiatorfans
+#        state: "{{ has_value('sensor.tasm02_wifi_connect_count') }}"
+        state: "{{ is_state('switch.radiatorfans','on') }}"
+
 sensor:
 
   # Average wind chill over the last hour.
@@ -281,7 +288,7 @@ automation:
 
   - id: Automation__CV_RadiatorFans
     alias: CV Radiatorfans
-    description: "Turn radiator fans on/off."
+    description: "Turn radiator fans on."
     mode: single
 
     trigger:
@@ -291,7 +298,7 @@ automation:
 
     action:
       - service_template: 'switch.turn_{{trigger.to_state.state}}'
-        entity_id: switch.psw05
+        entity_id: switch.radiatorfans
 
       - service: telegram_bot.send_message
         data:

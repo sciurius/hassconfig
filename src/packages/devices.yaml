@@ -119,6 +119,7 @@ script:
             - switch.slaapkamer_media_center
             - switch.woonkamer_sound_system
             - switch.keuken_afzuigkap
+            - switch.radiatorfans
             - switch.pswm01
             - switch.pswm02
           sequence:
