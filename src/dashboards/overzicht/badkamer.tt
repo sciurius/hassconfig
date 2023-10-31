@@ -55,7 +55,7 @@ entities:
       - entity: sensor.ithocve_fan_info
         state: "unavailable"
     row:
-      entity: switch.psw05
+      entity: switch.psw10
       name: Afzuiging
       icon: mdi:fan
 
