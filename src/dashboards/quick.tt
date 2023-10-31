@@ -159,7 +159,7 @@ views:
 
           [% area = "badkamer" %]
           - [% INCLUDE button name = "kachel",
-               entity = "switch.pswm02", icon = "mdi:heat-wave" %]
+               entity = "switch.badkamer_verwarming", icon = "mdi:heat-wave" %]
           - [% INCLUDE button name = "lamp",
                entity = "light.${area}_verlichting" %]
 
