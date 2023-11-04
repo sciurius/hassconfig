@@ -1,6 +1,6 @@
 [% INCLUDE switchoff_timer name = "Radiatorfans"
            type = "switch"
-           duration = "00:15:00" %]
+           duration = "00:20:00" %]
 
   - id: Automation__Start_Radiatorfans_timer
     alias: "Start RadiatorFans timer."
