@@ -46,6 +46,12 @@ button_card_templates:
       card:
         - background-color: '#ffbebc'
 
+  logeerkamer:
+    template: standard
+    styles:
+      card:
+        - background-color: '#bffcc6'
+
   hal:
     template: standard
     styles:
@@ -158,18 +164,21 @@ views:
               entity = "light.${area}_hoek" %]
 
           [% area = "badkamer" %]
+          - [% INCLUDE button name = "deurbel",
+               entity = "input_boolean.${area}verwarming_on_doorbell", icon = "mdi:cog-play-outline" %]
           - [% INCLUDE button name = "kachel",
                entity = "switch.badkamer_verwarming", icon = "mdi:heat-wave" %]
           - [% INCLUDE button name = "lamp",
-               entity = "light.${area}_verlichting" %]
+               entity = "light.${area}_verlichting", icon = "mdi:dome-light" %]
 
-          - [% INCLUDE blank %]
+          [% area = "logeerkamer" %]
+          - [% INCLUDE button name = "lamp",
+               entity = "light.${area}_verlichting", icon = "mdi:dome-light" %]
 
           [% area = "kantoor" %]
           - [% INCLUDE button name = "printer",
                entity = "switch.psw03", icon = "mdi:printer" %]
 
-          - [% INCLUDE blank %]
           - [% INCLUDE blank %]
 
           [% area = "buiten" %]
