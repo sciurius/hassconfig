@@ -91,7 +91,7 @@ automation:
 
   - id: Automation__Growatt_Temperature_Alarm
     alias: Growatt Temperature Alarm
-    description: "Alarm when Groatt temperature gets too high."
+    description: "Alarm when Growatt temperature gets too high."
     mode: single
     trigger:
       - platform: numeric_state
