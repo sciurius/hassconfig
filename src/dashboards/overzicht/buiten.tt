@@ -86,6 +86,16 @@ entities:
 
   - type: conditional
     conditions:
+      - entity: sensor.valtherweg_air_quality_index
+        state_not: unavailable
+    row:
+      entity: sensor.valtherweg_air_quality_index
+      type: custom:multiple-entity-row
+      name: Luchtkwaliteit
+      secondary_info: Valtherweg
+
+  - type: conditional
+    conditions:
       - entity: binary_sensor.stookalert_drenthe
         state_not: 'off'
     row:

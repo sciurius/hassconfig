@@ -92,6 +92,8 @@ views:
 
       - !include overzicht/weerstation.yaml
 
+      - !include overzicht/airquality.yaml
+
       - type: custom:sun-card
         timeFormat: '24h'
         language: nl

@@ -1,0 +1,29 @@
+type: entities
+title: Luchtkwaliteit
+state_color: true
+
+entities:
+
+[% sensors = [ "air_quality_index" "dominant_pollutant"
+	       "humidity" "nitrogen_dioxide" "pressure" "temperature"
+	       "pm10" "pm2_5" ] -%]
+[% FOREACH area IN [ "Valtherweg" "Noorderdiep_Valthermond" ];
+   FOREACH sensor IN sensors -%]
+  - type: conditional
+    conditions:
+      - entity: sensor.[% area.lower %]_[% sensor %]
+        state_not: unavailable
+    row:
+[% IF loop.first -%]
+      type: custom:multiple-entity-row
+      entity: sensor.[% area.lower %]_[% sensor %]
+      secondary_info: [% area.replace("_"," ") %]
+[% ELSE -%]
+      entity: sensor.[% area.lower %]_[% sensor %]
+[% END -%]
+      name: [% sensor.ucfirst.replace("_"," ") %]
+[% END;
+   UNLESS loop.last %]
+  - type: divider
+[% END;
+   END %]
