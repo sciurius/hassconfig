@@ -300,8 +300,3 @@ automation:
       - service_template: 'switch.turn_{{trigger.to_state.state}}'
         entity_id: switch.radiatorfans
 
-      - service: telegram_bot.send_message
-        data:
-          message: "Radiator fans turned {{trigger.to_state.state}}"
-
-
