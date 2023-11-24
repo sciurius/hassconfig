@@ -103,4 +103,8 @@ entities:
       icon: mdi:fan
       name: Timer
 
+  - entity: automation.scheduled_switch_on_warmtedeken
+    state_color: false
+
   - entity: light.slaapkamer_avondlichtje
+

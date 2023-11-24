@@ -135,3 +135,35 @@ automation:
     action:
       - service: switch.turn_off
         entity_id: switch.slaapkamer_warmtedeken_joan
+
+  - id: Automation__Switch_On_Warmtedeken_On_Schedule
+    alias: Scheduled switch on warmtedeken
+    description: "Scheduled switch on warmtedeken."
+    mode: single
+
+    # Two trigger times: 12:10 and 18:10
+    trigger:
+      - platform: time
+        at: "12:10"
+      - platform: time
+        at: "18:10"
+
+    # If
+    condition:
+      # Any
+      - or:
+          # the 18:10 trigger
+          - condition: trigger
+            id: 1
+          # the 12:10 trigger only on weekdays
+          - condition: time
+            weekday:
+              - mon
+              - tue
+              - wed
+              - thu
+              - fri
+
+    action:
+      - service: switch.turn_on
+        entity_id: switch.slaapkamer_warmtedeken_joan
