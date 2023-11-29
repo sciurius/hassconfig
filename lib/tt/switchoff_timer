@@ -51,7 +51,7 @@ automation:
 
     trigger:
       - platform: state
-        entity_id: switch.[% switch %]
+        entity_id: [% type %].[% switch %]
         to: 'off'
 
     action:
