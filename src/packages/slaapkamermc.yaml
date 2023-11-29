@@ -1,5 +1,16 @@
 # Slaapkamer Media Center               -*- hass -*-
 
+input_select:
+  mc:
+    name: Media Center
+    options:
+      - TV
+      - Video
+      - ChromeCast
+      - Aux
+      - "Off"
+      - "Offline"
+
 script:
   slaapkamermc_define_sensors:
     mode: single
