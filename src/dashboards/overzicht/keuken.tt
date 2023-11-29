@@ -9,6 +9,7 @@ show_header_toggle: false
 entities:
 
   - [% INCLUDE temphum sensor = "keuken" %]
+  - [% INCLUDE temphum sensor = "keukenlek" label = "Lekplek" %]
 
   - type: custom:fold-entity-row
     head:
