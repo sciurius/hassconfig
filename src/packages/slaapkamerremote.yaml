@@ -172,7 +172,7 @@ script:
         target:
           entity_id: input_select.mc
         data:
-          option: Chromecast
+          option: ChromeCast
 
       # Power on TV, unless already on.
       - if:
@@ -216,7 +216,7 @@ script:
             target:
               entity_id: input_boolean.slaapkamer_audio
 
-      # Set HDMI switch to Chromecast input.
+      # Set HDMI switch to ChromeCast input.
       - service: pyscript.ircontrol
         data:
           device: hdmiswitch
