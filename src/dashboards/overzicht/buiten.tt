@@ -119,6 +119,14 @@ entities:
 
   - type: conditional
     conditions:
+      - entity: light.balkonkerstverlichting
+        state_not: unavailable
+    row:
+      entity: light.balkonkerstverlichting
+      name: Balkon (Kerst)
+
+  - type: conditional
+    conditions:
       - entity: sensor.apk_expiration_near
         state_not: nog_lang_niet
     row:
