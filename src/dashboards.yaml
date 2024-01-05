@@ -42,6 +42,13 @@ lovelace-woonkamer:
   show_in_sidebar: false
   filename: dashboards/wk.yaml
   
+lovelace-kpnitv
+  mode: yaml
+  title: KPN iTV
+  icon: mdi:youtube-tv
+  show_in_sidebar: true
+  filename: dashboards/kpnitv.yaml
+  
 lovelace-badkamerafzuiging:
   mode: yaml
   title: Badkamerafzuiging
