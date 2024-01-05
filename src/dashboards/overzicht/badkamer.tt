@@ -4,6 +4,12 @@
 type: entities
 title: Badkamer
 state_color: true
+card_mod:
+  style: |
+    ha-card {
+      background: lightblue;
+      box-shadow: none;
+    }
 
 entities:
 
@@ -132,3 +138,5 @@ entities:
       icon: mdi:radiator
       name: Timer
     
+  - entity: input_boolean.badkamerverwarming_on_doorbell
+    name: Deurbel actief
