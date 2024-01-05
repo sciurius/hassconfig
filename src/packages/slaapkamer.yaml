@@ -155,12 +155,11 @@ automation:
           # the 18:10 trigger
           - condition: trigger
             id: 1
-          # the 12:10 trigger only on weekdays
+          # the 12:10 trigger only on weekdays and not wednesday
           - condition: time
             weekday:
               - mon
               - tue
-              - wed
               - thu
               - fri
 
