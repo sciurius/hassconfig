@@ -1,0 +1,21 @@
+# KPN iTV                           -*- hass -*-
+
+title: KPN iTV
+views:
+  - title: KPN iTV
+    cards:
+      - type: entities
+        title: Opnamen
+        entities:
+          - entity: sensor.kpn_itv_recordings_used
+            icon: mdi:gauge
+            type: custom:template-entity-row
+            name: In gebruik
+            state: >
+              {{ ( ( states('sensor.kpn_itv_recordings_used')|int * 100 )
+                   / states('sensor.kpn_itv_recordings_total')|int )|int
+              }} %
+            secondary: >-
+              {{ (states('sensor.kpn_itv_timestamp')|int / 1000) |
+                 timestamp_custom("%-d %b %Y %-H:%M", "nl_NL")
+              }}
