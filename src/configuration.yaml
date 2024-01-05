@@ -66,12 +66,6 @@ lovelace:
   mode: storage
   dashboards: !include dashboards.yaml
 
-device_tracker:
-  - platform: ping
-    hosts:
-      smotty: smotty.squirrel.nl
-      joni: joni.squirrel.nl
-
 pyscript:
   allow_all_imports: true
   hass_is_global: true
