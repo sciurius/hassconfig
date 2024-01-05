@@ -11,6 +11,7 @@
     trigger:
       - platform: state
         entity_id: light.buitenverlichting_achter
+        from: 'off'
         to: 'on'
 
     action:
