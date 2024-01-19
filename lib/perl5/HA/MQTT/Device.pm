@@ -87,6 +87,9 @@ my %dcmap; INIT {
 	    W	  => "power",
 	    Wh	  => "energy",
 	    "°C"  => "temperature",
+	    map { $_ => "data_size" }
+	      qw( bit kbit Mbit Gbit B kB MB GB TB PB EB ZB YB
+		  KiB MiB GiB TiB PiB EiB ZiB YiB ),
     );
 }
 
