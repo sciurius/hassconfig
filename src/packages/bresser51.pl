@@ -103,6 +103,7 @@ input_number:
 
   bresser51_rain_offset:
     name: Rain Correction
+    initial: 1776.8
     min: 0.0
     max: 9999999.9
     step: 0.1
