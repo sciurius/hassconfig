@@ -24,6 +24,11 @@ for ( qw( Phoenix NAS1 Srv1 Srv4 Srv5 ) ) {
 		      state_topic => "~/".lc($_)."/temperature" } );
 }
 
+$d->add_sensor( { name => "WAN Uptime(s)",
+		  value => "int",
+		  device_class => "duration",
+		  state_topic => "tele/fritz/uptime" } );
+
 binmode STDOUT => ':utf8';
 
 my $res = $d->generate;
