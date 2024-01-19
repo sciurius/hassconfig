@@ -29,6 +29,16 @@ entities:
       }
     name: HASS Software
 
+  - entity: sensor.systems_wan_uptime
+    type: custom:template-entity-row
+    name: WAN Up
+    icon: mdi:wan
+    color: >-
+      {{ "red" if states('sensor.systems_wan_uptime')|int<86400 else "green" }}
+    state: >-
+      {% from 'relative_time_plus.jinja' import relative_time_plus %}
+      {{ relative_time_plus(states('sensor.systems_wan_uptime'),parts=2,abbr=true,compare_date=0)|replace(" and ",", ")}}
+
   - entity: sensor.home_assistant_website
     name: Hass Software
 
@@ -47,6 +57,14 @@ entities:
     secondary_info:
       entity: sensor.nextcloud_nextcloud_system_version
       name: Version
+    
+  - entity: sensor.www_disk_inuse
+    type: custom:template-entity-row
+    name: WWW Server
+    icon: mdi:cloud
+    color: >-
+      {{ "red" if states('sensor.www_disk_inuse')|int>95 else "green" }}
+    secondary_info: Disk space
     
   - entity: switch.radiatorfans
     name: Radiator fans
