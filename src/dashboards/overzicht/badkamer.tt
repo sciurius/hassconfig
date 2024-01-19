@@ -9,6 +9,7 @@ card_mod:
     ha-card {
       background: lightblue;
       box-shadow: none;
+      color: black;
     }
 
 entities:
