@@ -41,6 +41,7 @@ automation:
     
   - id: Automation__New_mail_for_Mojore
     alias: New mail for Mojore
+    initial_state: false
     trigger:
       - platform: state
         entity_id:
