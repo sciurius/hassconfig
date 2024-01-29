@@ -141,6 +141,14 @@ automation:
         at: "01:00:00"
     action:
       - service: script.turn_off_everything
+      - service: mqtt.publish
+        data:
+          topic: cmnd/tasm19/var1
+          payload: 1
+      - service: mqtt.publish
+        data:
+          topic: cmnd/tasm22/var1
+          payload: 2
 
   - id: Automation__Shel01_Temperature_Guard
     alias: Shel01 Temperature Guard
