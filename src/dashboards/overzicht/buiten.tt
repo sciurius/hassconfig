@@ -147,6 +147,7 @@ entities:
     name: Afval
     icon: mdi:recycle
     active: true
+    color: "#ffc107"
     condition: >
       {{ ( not
          is_state('sensor.afvalwijzer_afvalwijzer_bo_today','Geen') )
