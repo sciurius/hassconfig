@@ -2,35 +2,85 @@
 
 # Entities:
 #
-#   binary_sensor.aeg_oven_apl_status
-#     Connected / Disconnected
-#   binary_sensor.aeg_oven_ov1_doorstate
-#     Open / Closed
-#   button.aeg_oven_ov1_executecommand_2
-#     Start
-#   button.aeg_oven_ov1_executecommand_3
-#     Stop
-#   sensor.aeg_oven_niu_linkqualityindicator
-#     0..5? Usually 4.
-#   sensor.aeg_oven_niu_ssid
-#     SSID
-#   sensor.aeg_oven_ov1_appliancestate
-#     Ready to start / Running
-#   sensor.aeg_oven_ov1_displaytemperature
-#     Current temperature
-#   sensor.aeg_oven_ov1_remotecontrol
+#   sensor.aeg_oven_appliancestate
+#     Ready To Start / RUNNING / End Of Cycle
+#   select.aeg_oven_cavitylight
+#     False / True
+#   sensor.aeg_oven_connectivitystate
+#     CONNECTED / DISCONNECTED
+#   sensor.aeg_oven_doorstate
+#     OPEN / CLOSED
+#   select.aeg_oven_program
+#     No Program / Conventional Cooking / ...
+#   sensor.aeg_oven_remotecontrol
 #     - Remote Control Enabled for No Safety Relevant Operations
-#     - Remote Control Enabled
+#     - ENABLED
 #     - Temporary Locked
-#   sensor.aeg_oven_ov1_runningtime
+#   sensor.aeg_oven_runningtime
 #     Total working time
-#   sensor.aeg_oven_ov1_starttime
+#   button.aeg_oven_executecommand_start
+#     START
+#   number.aeg_oven_starttime
 #     Oven starts in ... (-1 if n/a)
-#   sensor.aeg_oven_ov1_targettemperature
+#   button.aeg_oven_executecommand_stopreset
+#     STOPRESET
+#   number.aeg_oven_targetduration
+#     Target duration 
+#   sensor.aeg_oven_displaytemperaturec
+#     Actual temperature
+#   number.aeg_oven_targettemperature
 #     Target temperature
-#   sensor.aeg_oven_ov1_timetoend
-#     Oven will finish in ... (-1 or 0 if n/a)
+#   sensor.aeg_oven_timetoend
+#     Oven will finish in ... seconds (-1 or 0 if n/a)
 
+template:
+
+  binary_sensor:
+    - name: "AEG Oven Door"
+      unique_id: binary_sensor_aeg_oven_door
+      device_class: door
+      state: "{{ states('sensor.aeg_oven_doorstate') != 'CLOSED' }}"
+      
+    - name: "AEG Oven Light"
+      unique_id: binary_sensor_aeg_oven_light
+      state: >-
+        {{ states('select.aeg_oven_cavitylight') == 'On' }}
+      device_class: light
+      icon: mdi:lightbulb-outline
+
+  sensor:
+
+    - name: "AEG Oven Program"
+      unique_id: sensor_aeg_oven_program
+      state: "{{ states('select.aeg_oven_program') }}"
+      icon: mdi:script-outline
+
+    - name: "AEG Oven Starttime"
+      unique_id: sensor_aeg_oven_start
+      state: "{{ states('number.aeg_oven_starttime') }}"
+      icon: mdi:clock-start
+      unit_of_measurement: min
+
+    - name: "AEG Oven Targetduration"
+      unique_id: sensor_aeg_oven_targetduration
+      state: "{{ states('number.aeg_oven_targetduration') }}"
+      icon: mdi:clock-start
+      unit_of_measurement: s
+
+    - name: "AEG Oven Targettemperature"
+      unique_id: sensor_aeg_oven_targettemperature
+      state: "{{ states('number.aeg_oven_targettemperaturec')|int }}"
+      icon: mdi:thermostat
+      device_class: temperature
+      unit_of_measurement: "°C"
+
+    - name: "AEG Oven Displaytemperature"
+      unique_id: sensor_aeg_oven_displaytemperature
+      state: "{{ states('sensor.aeg_oven_displaytemperaturec')|int }}"
+      icon: mdi:thermometer
+      device_class: temperature
+      unit_of_measurement: "°C"
+      
 automation:
 
   - id: Automation__Oven_Reached_Temperature
@@ -39,13 +89,13 @@ automation:
     mode: single
     trigger:
       - platform: numeric_state
-        entity_id: sensor.aeg_oven_ov1_displaytemperature
+        entity_id: sensor.aeg_oven_displaytemperature
         value_template: >-
-          {{ states('sensor.aeg_oven_ov1_displaytemperature')|int - states('sensor.aeg_oven_ov1_targettemperature')|int }}
+          {{ states('sensor.aeg_oven_displaytemperature')|int - states('sensor.aeg_oven_targettemperature')|int }}
         above: -1
     action:
       - service: telegram_bot.send_message
         data:
           message: >
-            Oven op temperatuur ({{ states('sensor.aeg_oven_ov1_displaytemperature') }} °C na
-            {{ states('sensor.aeg_oven_ov1_runningtime') }} min.)
+            Oven op temperatuur ({{ states('sensor.aeg_oven_displaytemperature') }} °C na
+            {{ states('sensor.aeg_oven_runningtime') }} min.)
