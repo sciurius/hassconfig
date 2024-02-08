@@ -52,50 +52,59 @@ entities:
     state: >-
       {% if is_state('switch.keuken_afzuigkap','on') %}Ready{% else %}Off{% endif %}
         
-  - entity: binary_sensor.aeg_oven_apl_status
-    type: custom:multiple-entity-row
-    name: Oven
-    icon: mdi:toaster-oven
-    show_state: false
-    secondary_info:
-      entity: sensor.aeg_oven_ov1_appliancestate
-      name: false
-    entities:
-      - entity: sensor.aeg_oven_ov1_targettemperature
-        name: target
-      - entity: sensor.aeg_oven_ov1_displaytemperature
-        name: temp
+  - type: conditional
+    conditions:
+      - entity: sensor.aeg_oven_targettemperature
+        state_not: "unavailable"
+      - entity: sensor.aeg_oven_appliancestate
+        state_not: "unavailable"
+      - entity: sensor.aeg_oven_appliancestate
+        state_not: "unknown"
+    row:
+      entity: sensor.aeg_oven_appliancestate
+      type: custom:multiple-entity-row
+      name: Oven
+      icon: mdi:toaster-oven
+      show_state: false
+      secondary_info:
+        entity: sensor.aeg_oven_appliancestate
+        name: false
+      entities:
+        - entity: sensor.aeg_oven_targettemperature
+          name: target
+        - entity: sensor.aeg_oven_displaytemperature
+          name: temp
 
   - type: conditional
     conditions:
-      - entity: sensor.aeg_oven_ov1_runningtime
+      - entity: sensor.aeg_oven_runningtime
         state_not: "0"
-      - entity: sensor.aeg_oven_ov1_runningtime
+      - entity: sensor.aeg_oven_runningtime
         state_not: "unavailable"
-      - entity: sensor.aeg_oven_ov1_runningtime
+      - entity: sensor.aeg_oven_runningtime
         state_not: "unknown"
     row:
       type: custom:multiple-entity-row
-      entity: sensor.aeg_oven_ov1_runningtime
+      entity: sensor.aeg_oven_runningtime
       entities:
-        - entity: sensor.aeg_oven_ov1_timetoend
+        - entity: sensor.aeg_oven_timetoend
           name: Stopt over
 
   - type: conditional
     conditions:
-      - entity: sensor.aeg_oven_ov1_starttime
+      - entity: sensor.aeg_oven_starttime
         state_not: "-1"
-      - entity: sensor.aeg_oven_ov1_starttime
+      - entity: sensor.aeg_oven_starttime
         state_not: "0"
-      - entity: sensor.aeg_oven_ov1_runningtime
+      - entity: sensor.aeg_oven_runningtime
         state_not: "unavailable"
-      - entity: sensor.aeg_oven_ov1_runningtime
+      - entity: sensor.aeg_oven_runningtime
         state_not: "unknown"
     row:
       type: custom:multiple-entity-row
-      entity: sensor.aeg_oven_ov1_runningtime
+      entity: sensor.aeg_oven_runningtime
       entities:
-        - entity: sensor.aeg_oven_ov1_starttime
+        - entity: sensor.aeg_oven_starttime
           name: start
 
         
