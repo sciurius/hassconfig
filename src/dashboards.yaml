@@ -42,7 +42,7 @@ lovelace-woonkamer:
   show_in_sidebar: false
   filename: dashboards/wk.yaml
   
-lovelace-kpnitv
+lovelace-kpnitv:
   mode: yaml
   title: KPN iTV
   icon: mdi:youtube-tv
@@ -76,7 +76,6 @@ lovelace-growatt:
   icon: mdi:solar-power
   show_in_sidebar: true
   filename: dashboards/growatt.yaml
-  
   
 lovelace-oven:
   mode: yaml
