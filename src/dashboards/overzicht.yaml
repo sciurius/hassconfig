@@ -8,8 +8,10 @@ views:
 
       - !include overzicht/buiten.yaml
 
-      - !include bresser51/compass.yaml
-      - !include overzicht/weerstation.yaml
+      - type: vertical-stack
+        cards:
+          - !include bresser51/compass.yaml
+          - !include overzicht/weerstation.yaml
 
       - !include overzicht/hal.yaml
 
