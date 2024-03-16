@@ -63,9 +63,9 @@ template:
 
     - name: "AEG Oven Targetduration"
       unique_id: sensor_aeg_oven_targetduration
-      state: "{{ states('number.aeg_oven_targetduration') }}"
+      state: "{{ (states('number.aeg_oven_targetduration')|int / 60) |int }}"
       icon: mdi:clock-start
-      unit_of_measurement: s
+      unit_of_measurement: min
 
     - name: "AEG Oven Targettemperature"
       unique_id: sensor_aeg_oven_targettemperature
