@@ -39,12 +39,12 @@ template:
     - name: "AEG Oven Door"
       unique_id: binary_sensor_aeg_oven_door
       device_class: door
-      state: "{{ states('sensor.aeg_oven_doorstate') != 'CLOSED' }}"
+      state: "{{ states('sensor.aeg_oven_doorstate')|lower != 'closed' }}"
       
     - name: "AEG Oven Light"
       unique_id: binary_sensor_aeg_oven_light
       state: >-
-        {{ states('select.aeg_oven_cavitylight') == 'On' }}
+        {{ states('switch.aeg_oven_cavitylight')|lower == 'on' }}
       device_class: light
       icon: mdi:lightbulb-outline
 
