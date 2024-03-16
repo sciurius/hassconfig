@@ -92,6 +92,27 @@ light:
       - light.bulb01
       - light.woonkamer_heks
 
+notify:
+  - platform: group
+    name: Johan TTS
+    services:
+      - service: mobile_app_sm_a320fl
+        data:
+          message: TTS
+          data:
+            priority: high
+            ttl: 0
+            media_stream: "alarm_stream_max"
+            importance: high
+      - service: mobile_app_sm_t830
+        data:
+          message: TTS
+          data:
+            priority: high
+            ttl: 0
+            media_stream: "alarm_stream_max"
+            importance: high
+      
 script:
 
   # A kind of global sanitizer. Turn off everything...
@@ -187,6 +208,7 @@ command_line:
       name: T520 CPU Temperature
       unique_id: sensor_t520_cpu_temperature
       command: "cat /sys/class/hwmon/hwmon0/temp1_input"
+      device_class: temperature
       unit_of_measurement: "°C"
       value_template: "{{ value | multiply(0.001) | round(1) }}"
       scan_interval: 120
@@ -196,6 +218,7 @@ command_line:
       name: RPi CPU Temperature
       unique_id: sensor_rpi_cpu_temperature
       command: "cat /sys/class/thermal/thermal_zone0/temp"
+      device_class: temperature
       unit_of_measurement: "°C"
       value_template: "{{ value | multiply(0.001) | round(1) }}"
       scan_interval: 120
