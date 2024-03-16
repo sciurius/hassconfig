@@ -109,13 +109,11 @@ views:
         cards:
           - type: entities
             entities:
-              - entity: sensor.knmi_home_omschrijving
+              - entity: sensor.knmi_weather_forecast
                 name: Omschrijving
               - entity: sensor.knmi_temperature
                 name: Temperatuur
                 secondary_info: last-updated
-              - entity: sensor.knmi_home_gevoelstemperatuur
-                name: Gevoelstemperatuur
               - entity: sensor.knmi_humidity
                 name: Vochtigheid
               - entity: sensor.knmi_pressure
@@ -128,20 +126,20 @@ views:
                 name: Windrichting
               - entity: sensor.knmi_wind_direction_name
                 name: Windrichting
-              - entity: binary_sensor.knmi_home_zon
+              - entity: binary_sensor.knmi_sun
                 name: Zon
                 state_color: true
-              - entity: binary_sensor.knmi_home_waarschuwing
+              - entity: binary_sensor.knmi_warning
                 name: Waarschuwing
             title: KNMI
           - type: conditional
             conditions:
-              - entity: binary_sensor.knmi_home_waarschuwing
+              - entity: binary_sensor.knmi_warning
                 state: "on"
             card:
               type: markdown
               content: >-
-                  {{ state_attr("binary_sensor.knmi_home_waarschuwing","Waarschuwing") }}
+                  {{ state_attr("binary_sensor.knmi_warning","description) }}
               name: Waarschuwing
               title: Waarschuwing
           - type: weather-forecast
