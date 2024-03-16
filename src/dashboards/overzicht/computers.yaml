@@ -14,9 +14,15 @@ entities:
       
   - type: custom:multiple-entity-row
     entity: sensor.systems_srv1_temperature
+    show_state: false
     secondary_info:
       name: UPS
       entity: sensor.ups_pico_battery_level
+    entities:
+      - entity: sensor.systems_srv1_gpu_temperature
+        name: GPU
+      - entity: sensor.systems_srv1_temperature
+        name: CPU
     name: Server1
 
   - entity: sensor.systems_nas1_temperature
@@ -32,8 +38,22 @@ entities:
         entity: sensor.t520_cpu_temperature
         name: Server3 (HASS)
 
-  - entity: sensor.systems_srv4_temperature
-    name: Server4
+  - type: conditional
+    conditions:
+      - entity: sensor.systems_srv4_temperature
+        state_not: "unavailable" 
+      - entity: sensor.systems_srv4_temperature
+        state_not: "unknown"
+    row:
+        type: custom:multiple-entity-row
+        entity: sensor.systems_srv4_temperature
+        show_state: false
+        entities:
+          - entity: sensor.systems_srv4_gpu_temperature
+            name: GPU
+          - entity: sensor.systems_srv4_temperature
+            name: CPU
+        name: Server4
 
   - type: conditional
     conditions:
@@ -52,6 +72,45 @@ entities:
     row:
         entity: sensor.rpi_cpu_temperature
         name: Server5 (HAXX)
+
+  - type: conditional
+    conditions:
+      - entity: sensor.mc_state
+        state_not: "unavailable" 
+      - entity: sensor.systems_mc_temperature
+        state_not: "unavailable" 
+      - entity: sensor.systems_mc_temperature
+        state_not: "unknown"
+    row:
+        type: custom:multiple-entity-row
+        entity: sensor.systems_mc_temperature
+        show_state: false
+        secondary_info:
+          entity: sensor.mc_state
+          name: false
+        entities:
+          - entity: sensor.systems_mc_gpu_temperature
+            name: GPU
+          - entity: sensor.systems_mc_temperature
+            name: CPU
+        name: Media Center
+
+  - type: conditional
+    conditions:
+      - entity: sensor.systems_mc621_temperature
+        state_not: "unavailable" 
+      - entity: sensor.systems_mc621_temperature
+        state_not: "unknown"
+    row:
+        type: custom:multiple-entity-row
+        entity: sensor.systems_mc621_temperature
+        show_state: false
+        name: MC621
+        entities:
+          - entity: sensor.systems_mc621_gpu_temperature
+            name: GPU
+          - entity: sensor.systems_mc621_temperature
+            name: CPU
 
 #  - type: custom:multiple-entity-row
 #    entity: sensor.ups_pico_battery_level

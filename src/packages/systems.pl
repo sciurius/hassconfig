@@ -18,16 +18,32 @@ my $d = HA::MQTT::Device->new
   );
 
 
-for ( qw( Phoenix NAS1 Srv1 Srv4 Srv5 ) ) {
+for ( qw( Phoenix NAS1 Srv5 ) ) {
     $d->add_sensor( { name => "$_ Temperature (°C)",
 		      value => "float",
 		      state_topic => "~/".lc($_)."/temperature" } );
+}
+for ( "mc/mc_01" ) {
+    $d->add_sensor( { name => "MC Temperature (°C)",
+		      value => "float",
+		      state_topic => "$_/temperature" } );
+    $d->add_sensor( { name => "MC GPU Temperature (°C)",
+		      value => "float",
+		      state_topic => "$_/gputemperature" } );
+}
+for ( qw( srv1 srv4 mc621 ) ) {
+    $d->add_sensor( { name => uc($_)." Temperature (°C)",
+		      value => "float",
+		      state_topic => "~/$_/temperature" } );
+    $d->add_sensor( { name => uc($_)." GPU Temperature (°C)",
+		      value => "float",
+		      state_topic => "~/$_/gputemperature" } );
 }
 
 $d->add_sensor( { name => "WAN Uptime(s)",
 		  value => "int",
 		  device_class => "duration",
-		  state_topic => "tele/fritz/uptime" } );
+		  state_topic => "~/fritz/uptime" } );
 
 binmode STDOUT => ':utf8';
 
