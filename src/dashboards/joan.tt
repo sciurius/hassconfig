@@ -97,8 +97,21 @@ views:
         columns: 14
         square: 1
         cards:
-          - type: markdown
-            content: ' '
+          - type: custom:button-card
+            aspect_ratio: 1/1
+            icon: mdi:alert-outline
+            color: red
+            size: "200%"
+            styles:
+              name:
+                - color: white
+            tap_action:
+              action: call-service
+              service: notify.johan_tts
+              data:
+                message: TTS
+                data:
+                  tts_text: Damsel in distress
           - type: markdown
             content: ' '
           - type: markdown
