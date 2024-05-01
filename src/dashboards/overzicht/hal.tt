@@ -23,123 +23,123 @@ entities:
       - entity: input_select.doorbell_mode
         name: false
 
-  # - entity: sensor.otolift_on
-  #   name: Traplift
+  - entity: sensor.otolift_on
+    name: Traplift
 
-  # - type: conditional
-  #   conditions:
-  #     - entity: sensor.otolift_on
-  #       state: stopped
-  #   row:
-  #     entity: sensor.otolift_on
-  #     name: Traplift
-  #     extend_paper_buttons_row:
-  #       hide_state: true
-  #       buttons:
-  #         - name: Omhoog
-  #           icon: mdi:arrow-up-bold-outline
-  #           layout: icon
-  #           tap_action:
-  #             action: call-service
-  #             service: script.otolift_up
-  #           styles:
-  #             icon:
-  #               color: black
-  #         - name: Stop
-  #           icon: mdi:stop-circle-outline
-  #           layout: name
-  #           tap_action:
-  #             action: call-service
-  #             service: script.otolift_stop
-  #           styles:
-  #             button:
-  #               color: black
-  #         - name: Omlaag
-  #           icon: mdi:arrow-down-bold-outline
-  #           layout: icon
-  #           tap_action:
-  #             action: call-service
-  #             service: script.otolift_down
-  #           styles:
-  #             icon:
-  #               color: black
+  - type: conditional
+    conditions:
+      - entity: sensor.otolift_on
+        state: stopped
+    row:
+      entity: sensor.otolift_on
+      name: Traplift
+      extend_paper_buttons_row:
+        hide_state: true
+        buttons:
+          - name: Omhoog
+            icon: mdi:arrow-up-bold-outline
+            layout: icon
+            tap_action:
+              action: call-service
+              service: script.otolift_up
+            styles:
+              icon:
+                color: black
+          - name: Stop
+            icon: mdi:stop-circle-outline
+            layout: name
+            tap_action:
+              action: call-service
+              service: script.otolift_stop
+            styles:
+              button:
+                color: black
+          - name: Omlaag
+            icon: mdi:arrow-down-bold-outline
+            layout: icon
+            tap_action:
+              action: call-service
+              service: script.otolift_down
+            styles:
+              icon:
+                color: black
 
-  # - type: conditional
-  #   conditions:
-  #     - entity: sensor.otolift_on
-  #       state: up
-  #   row:
-  #     entity: sensor.otolift_on
-  #     name: Traplift
-  #     extend_paper_buttons_row:
-  #       hide_state: true
-  #       buttons:
-  #         - name: Omhoog
-  #           icon: mdi:arrow-up-bold-outline
-  #           layout: icon
-  #           tap_action:
-  #             action: call-service
-  #             service: script.otolift_up
-  #           styles:
-  #             button:
-  #               animation: blink 1s linear infinite
-  #             icon:
-  #               color: red
-  #         - name: Stop
-  #           icon: mdi:stop-circle-outline
-  #           layout: name
-  #           tap_action:
-  #             action: call-service
-  #             service: script.otolift_stop
-  #           styles:
-  #             button:
-  #               color: black
-  #         - name: Omlaag
-  #           icon: mdi:arrow-down-bold-outline
-  #           layout: icon
-  #           tap_action:
-  #             action: call-service
-  #             service: script.otolift_down
-  #           styles:
-  #             icon:
-  #               color: black
+  - type: conditional
+    conditions:
+      - entity: sensor.otolift_on
+        state: up
+    row:
+      entity: sensor.otolift_on
+      name: Traplift
+      extend_paper_buttons_row:
+        hide_state: true
+        buttons:
+          - name: Omhoog
+            icon: mdi:arrow-up-bold-outline
+            layout: icon
+            tap_action:
+              action: call-service
+              service: script.otolift_up
+            styles:
+              button:
+                animation: blink 1s linear infinite
+              icon:
+                color: red
+          - name: Stop
+            icon: mdi:stop-circle-outline
+            layout: name
+            tap_action:
+              action: call-service
+              service: script.otolift_stop
+            styles:
+              button:
+                color: black
+          - name: Omlaag
+            icon: mdi:arrow-down-bold-outline
+            layout: icon
+            tap_action:
+              action: call-service
+              service: script.otolift_down
+            styles:
+              icon:
+                color: black
 
-  # - type: conditional
-  #   conditions:
-  #     - entity: sensor.otolift_on
-  #       state: down
-  #   row:
-  #     entity: sensor.otolift_on
-  #     name: Traplift
-  #     extend_paper_buttons_row:
-  #       hide_state: true
-  #       buttons:
-  #         - name: Omhoog
-  #           icon: mdi:arrow-up-bold-outline
-  #           layout: icon
-  #           tap_action:
-  #             action: call-service
-  #             service: script.otolift_up
-  #           styles:
-  #             icon:
-  #               color: black
-  #         - name: Stop
-  #           icon: mdi:stop-circle-outline
-  #           layout: name
-  #           tap_action:
-  #             action: call-service
-  #             service: script.otolift_stop
-  #           styles:
-  #             button:
-  #               color: black
-  #         - name: Omlaag
-  #           icon: mdi:arrow-down-bold-outline
-  #           layout: icon
-  #           tap_action:
-  #             action: call-service
-  #             service: script.otolift_down
-  #           styles:
-  #             button:
-  #               animation: blink 1s linear infinite
-  #             icon:
-  #               color: red
+  - type: conditional
+    conditions:
+      - entity: sensor.otolift_on
+        state: down
+    row:
+      entity: sensor.otolift_on
+      name: Traplift
+      extend_paper_buttons_row:
+        hide_state: true
+        buttons:
+          - name: Omhoog
+            icon: mdi:arrow-up-bold-outline
+            layout: icon
+            tap_action:
+              action: call-service
+              service: script.otolift_up
+            styles:
+              icon:
+                color: black
+          - name: Stop
+            icon: mdi:stop-circle-outline
+            layout: name
+            tap_action:
+              action: call-service
+              service: script.otolift_stop
+            styles:
+              button:
+                color: black
+          - name: Omlaag
+            icon: mdi:arrow-down-bold-outline
+            layout: icon
+            tap_action:
+              action: call-service
+              service: script.otolift_down
+            styles:
+              button:
+                animation: blink 1s linear infinite
+              icon:
+                color: red

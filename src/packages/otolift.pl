@@ -18,7 +18,7 @@ my $d = HA::MQTT::Device->new
     model	      => "Modul Air One",
     manufacturer      => "OtoLift",
     identifiers       => [ "otolift" ],
-    sw_version        => "0",
+    sw_version        => "1.00",
     # Common to all sensors.
     state_topic           => "~/STATE",
     availability_topic    => "~/LWT",
