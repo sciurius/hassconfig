@@ -221,6 +221,8 @@ automation:
       {{ trigger.to_state.state not in ( "unavailable", "unknown" )
 	 and
 	 trigger.from_state.state != "unavailable"
+	 and
+	 trigger.to_state.state in button_mapper
       }}
 
     action:
