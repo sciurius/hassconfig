@@ -109,21 +109,24 @@ automation:
     mode: single
     trigger:
       - platform: numeric_state
+        id: VacR
         entity_id: sensor.growatt_vacr
         above: 250
         for: "00:05:00"
       - platform: numeric_state
         entity_id: sensor.growatt_vacs
+        id: VacD
         above: 250
         for: "00:05:00"
       - platform: numeric_state
         entity_id: sensor.growatt_vact
+        id: VacT
         above: 250
         for: "00:05:00"
     action:
       - service: telegram_bot.send_message
         data:
-          message: "Netspanning hoog: {{ trigger.to_state.state }} V"
+          message: "Netspanning hoog: {{ trigger.to_state.state }} V ({{ trigger.id }})"
 
 # Exclude some fast changing (and less relevant) sensors from the
 # LogBook.
