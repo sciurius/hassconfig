@@ -86,13 +86,16 @@ entities:
 
   - type: conditional
     conditions:
-      - entity: sensor.valtherweg_air_quality_index
+      - entity: sensor.noorderdiep_valthermond_air_quality_index
         state_not: unavailable
     row:
-      entity: sensor.valtherweg_air_quality_index
+      entity: sensor.noorderdiep_valthermond_air_quality_index
       type: custom:multiple-entity-row
       name: Luchtkwaliteit
-      secondary_info: Valtherweg
+      secondary_info: Valthermond
+      entities:
+        - entity: sensor.noorderdiep_valthermond_dominant_pollutant
+          name: false
 
   - type: conditional
     conditions:
