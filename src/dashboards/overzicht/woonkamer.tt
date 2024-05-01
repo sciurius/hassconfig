@@ -5,6 +5,13 @@ type: entities
 title: Woonkamer
 state_color: true
 show_header_toggle: false
+card_mod:
+  style: |
+    ha-card {
+      background: lightgreen;
+      box-shadow: none;
+      color: black;
+    }
 
 entities:
 
