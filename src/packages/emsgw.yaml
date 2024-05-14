@@ -61,6 +61,34 @@ template:
           {% else %} {{ sc }}
           {% endif %}
   
+      - name: Thermostat Vacation 1
+        unique_id: thermostat_vacation_1
+        state: "{{ states('text.thermostat_hc1_vacations1') }}"
+
+      - name: Thermostat Vacation 2
+        unique_id: thermostat_vacation_2
+        state: "{{ states('text.thermostat_hc1_vacations2') }}"
+
+      - name: Thermostat Vacation 3
+        unique_id: thermostat_vacation_3
+        state: "{{ states('text.thermostat_hc1_vacations3') }}"
+
+      - name: Thermostat Vacation 4
+        unique_id: thermostat_vacation_4
+        state: "{{ states('text.thermostat_hc1_vacations4') }}"
+
+      - name: Thermostat Vacation 5
+        unique_id: thermostat_vacation_5
+        state: "{{ states('text.thermostat_hc1_vacations5') }}"
+
+      - name: Thermostat Vacation 6
+        unique_id: thermostat_vacation_6
+        state: "{{ states('text.thermostat_hc1_vacations6') }}"
+
+      - name: Thermostat Vacation 7
+        unique_id: thermostat_vacation_7
+        state: "{{ states('text.thermostat_hc1_vacations7') }}"
+
   - binary_sensor:
 
       - name: Radiatorfans

@@ -22,18 +22,34 @@ entities:
   - entity: binary_sensor.boiler_heatingactive
     name: Brander
 
-#  - entity: binary_sensor.radiatorfans
-#    name: Radiator fans
-#    icon: mdi:fan
-#
-#  - type: conditional
-#    conditions:
-#      - entity: timer.radiatorfans
-#        state: active
-#    row:
-#      entity: timer.radiatorfans
-#      icon: mdi:radiator
-#      name: Timer
+[% FOREACH i IN [ 1 2 3 4 5 6 7 ] %]
+  - type: conditional
+    conditions:
+      - entity: sensor.thermostat_vacation_[% i %]
+        state_not: "unavailable"
+      - entity: sensor.thermostat_vacation_[% i %]
+        state_not: "unknown"
+      - entity: sensor.thermostat_vacation_[% i %]
+        state_not: "01.01.2000-01.01.2000"
+    row:
+        entity: sensor.thermostat_vacation_[% i %]
+        name: Vakantie [% i %]
+[% END %]
+
+[% IF 0 %]
+  - entity: binary_sensor.radiatorfans
+    name: Radiator fans
+    icon: mdi:fan
+
+  - type: conditional
+    conditions:
+      - entity: timer.radiatorfans
+        state: active
+    row:
+      entity: timer.radiatorfans
+      icon: mdi:radiator
+      name: Timer
+[% END %]
 
   - type: weblink
     url: http://phoenix.squirrel.nl:3000/d/cQ46XxeD4y/verwarming-overzicht?orgId=1
