@@ -33,7 +33,7 @@ entities:
         state_not: "01.01.2000-01.01.2000"
     row:
         entity: sensor.thermostat_vacation_[% i %]
-        name: Vakantie [% i %]
+        name: Vakantie[% IF i>1; " $i"; END %]
 [% END %]
 
 [% IF 0 %]
