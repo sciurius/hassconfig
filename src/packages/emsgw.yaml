@@ -64,30 +64,49 @@ template:
       - name: Thermostat Vacation 1
         unique_id: thermostat_vacation_1
         state: "{{ states('text.thermostat_hc1_vacations1') }}"
+        icon: mdi:calendar-month-outline
 
       - name: Thermostat Vacation 2
         unique_id: thermostat_vacation_2
         state: "{{ states('text.thermostat_hc1_vacations2') }}"
+        icon: mdi:calendar-month-outline
 
       - name: Thermostat Vacation 3
         unique_id: thermostat_vacation_3
         state: "{{ states('text.thermostat_hc1_vacations3') }}"
+        icon: mdi:calendar-month-outline
 
       - name: Thermostat Vacation 4
         unique_id: thermostat_vacation_4
         state: "{{ states('text.thermostat_hc1_vacations4') }}"
+        icon: mdi:calendar-month-outline
 
       - name: Thermostat Vacation 5
         unique_id: thermostat_vacation_5
         state: "{{ states('text.thermostat_hc1_vacations5') }}"
+        icon: mdi:calendar-month-outline
 
       - name: Thermostat Vacation 6
         unique_id: thermostat_vacation_6
         state: "{{ states('text.thermostat_hc1_vacations6') }}"
+        icon: mdi:calendar-month-outline
 
       - name: Thermostat Vacation 7
         unique_id: thermostat_vacation_7
         state: "{{ states('text.thermostat_hc1_vacations7') }}"
+        icon: mdi:calendar-month-outline
+
+      - name: Thermostat Party Time
+        unique_id: thermostat_party_time
+        state: "{{ states('number.thermostat_hc1_party') }}"
+        icon: mdi:timelapse
+        unit_of_measurement: h
+
+      - name: Thermostat Pause Time
+        unique_id: thermostat_pause_time
+        state: "{{ states('number.thermostat_hc1_pause') }}"
+        icon: mdi:timelapse
+        unit_of_measurement: h
 
   - binary_sensor:
 
