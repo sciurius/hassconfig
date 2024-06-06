@@ -134,6 +134,7 @@ __DATA__
 # There are also timers for full speed: timer1 (10 min.), timer2 (20
 # min.) and timer3 (30 min.).
 # RemainingTime (min) -- The remaining time if a timer is active.
+# Note that the unit will always report back timer3.
 #
 # Currently unused:
 #
