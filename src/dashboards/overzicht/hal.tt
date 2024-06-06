@@ -26,6 +26,8 @@ entities:
   - entity: sensor.otolift_on
     name: Traplift
 
+[% SET colour = '"#a0a0a0"' %]
+
   - type: conditional
     conditions:
       - entity: sensor.otolift_on
@@ -44,16 +46,13 @@ entities:
               service: script.otolift_up
             styles:
               icon:
-                color: black
+                color: [% colour %]
           - name: Stop
             icon: mdi:stop-circle-outline
             layout: name
             tap_action:
               action: call-service
               service: script.otolift_stop
-            styles:
-              button:
-                color: black
           - name: Omlaag
             icon: mdi:arrow-down-bold-outline
             layout: icon
@@ -62,7 +61,7 @@ entities:
               service: script.otolift_down
             styles:
               icon:
-                color: black
+                color: [% colour %]
 
   - type: conditional
     conditions:
@@ -91,9 +90,6 @@ entities:
             tap_action:
               action: call-service
               service: script.otolift_stop
-            styles:
-              button:
-                color: black
           - name: Omlaag
             icon: mdi:arrow-down-bold-outline
             layout: icon
@@ -102,7 +98,7 @@ entities:
               service: script.otolift_down
             styles:
               icon:
-                color: black
+                color: [% colour %]
 
   - type: conditional
     conditions:
@@ -122,16 +118,13 @@ entities:
               service: script.otolift_up
             styles:
               icon:
-                color: black
+                color: [% colour %]
           - name: Stop
             icon: mdi:stop-circle-outline
             layout: name
             tap_action:
               action: call-service
               service: script.otolift_stop
-            styles:
-              button:
-                color: black
           - name: Omlaag
             icon: mdi:arrow-down-bold-outline
             layout: icon
