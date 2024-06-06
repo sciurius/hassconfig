@@ -7,8 +7,8 @@ state_color: true
 
 entities:
 
-  - entity: weather.openweathermap
-    name: Temperatuur
+  - entity: weather.knmi_home
+    name: KNMI
 
   - [% INCLUDE temphum sensor = "buiten" %]
 
@@ -34,13 +34,9 @@ entities:
       attribute: st
       name: Nacht
 
-  - entity: weather.openweathermap
-    icon: mdi:gauge
-    type: custom:template-entity-row
+  - entity: sensor.knmi_pressure
     name: Luchtdruk
-    secondary: OpenWeatherMap
-    state: >
-      {{ state_attr('weather.openweathermap','pressure') }} hPa
+    secondary: KNMI
 
   - type: conditional
     conditions:

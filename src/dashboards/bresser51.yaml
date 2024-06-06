@@ -38,12 +38,8 @@ views:
             name: Voelt als
           - entity: sensor.bresser51_humidity
             name: Vochtigheid
-          - entity: weather.openweathermap
-            icon: mdi:gauge
-            type: custom:template-entity-row
-            name: Luchtdruk (OWM)
-            state: >
-              {{ state_attr('weather.openweathermap','pressure') }} hPa
+          - entity: sensor.knmi_pressure
+            name: Luchtdruk (KNMI)
           - entity: sensor.bresser51_time
             name: Tijdstip
             format: datetime
