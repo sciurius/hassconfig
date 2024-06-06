@@ -115,7 +115,7 @@ automation:
         for: "00:05:00"
       - platform: numeric_state
         entity_id: sensor.growatt_vacs
-        id: VacD
+        id: VacS
         above: 250
         for: "00:05:00"
       - platform: numeric_state
