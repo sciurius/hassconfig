@@ -84,3 +84,30 @@ automation:
       - service: input_boolean.turn_off
         target:
           entity_id: input_boolean.badkamerverwarming_on_doorbell
+
+  - id: Automation__Badkamer_Fan_On_Humidity
+    alias: Badkamer fan on humidity
+    description: Switch fan on when humidity increases fast
+    mode: single
+    trigger:
+      - platform: numeric_state
+        entity_id: sensor.douche
+        above: 3
+    action:
+#      - service: input_number.set_value
+#        target:
+#          entity_id: input_number.ithocve_fan_speed
+#        data:
+#          value: 100
+      - service: mqtt.publish
+        metadata: {}
+        data:
+          qos: "0"
+          topic: itho/cmd
+          payload: "{\"vremotecmd\":\"timer1\"}"
+
+sensor:
+  - name: Douche
+    platform: derivative
+    source: sensor.badkamer_humidity
+    unit_time: min

@@ -40,6 +40,15 @@ entities:
       
   - type: conditional
     conditions:
+      - entity: sensor.douche
+        state_not: "unavailable"
+    row:
+      entity: sensor.douche
+      type: custom:multiple-entity-row
+      name: Douche
+
+  - type: conditional
+    conditions:
       - entity: sensor.ithocve_fan_info
         state_not: "unavailable"
     row:
