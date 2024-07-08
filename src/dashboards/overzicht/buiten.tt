@@ -34,9 +34,11 @@ entities:
       attribute: st
       name: Nacht
 
-  - entity: sensor.knmi_pressure
+  - type: custom:multiple-entity-row
+    entity: sensor.knmi_pressure
     name: Luchtdruk
-    secondary: KNMI
+    format: precision0
+    secondary_info: KNMI
 
   - type: conditional
     conditions:
