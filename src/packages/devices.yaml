@@ -230,3 +230,22 @@ template:
       unit_of_measurement: "GiB"
       state: >-
         {{ ((states('sensor.nextcloud_nextcloud_system_freespace')|int(0))/1073741824)|int }}
+
+switch:
+  
+  - platform: template
+
+    switches:
+      radiatorfans:
+        unique_id: switch_radiatorfans
+        friendly_name: Radiator Fans
+        availability_template: '{{ false }}'
+        # value_template: "{{ is_state('switch.source', 'on') }}"
+        turn_on:
+          # service: switch.turn_on
+          # target:
+          #   entity_id: switch.target
+        turn_off:
+          # service: switch.turn_off
+          # target:
+          #   entity_id: switch.target
