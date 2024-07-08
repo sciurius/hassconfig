@@ -8,10 +8,11 @@ button_card_templates:
     styles:
       card:
         - height: 70px
-        - background: yellow
+        - background: '[[[ if (entity.state.toLowerCase() == variables.device.toLowerCase()) return "lime"; else return "yellow" ]]]'
       icon:
         - color: red
         - width: 50%
+    entity: select.slaapkamer_media_center
     show_name: false
     tap_action:
       action: call-service
@@ -50,8 +51,10 @@ button_card_templates:
     icon: mdi:switch
     show_icon: false
     show_label: true
-    label: AAN/UIT
-    
+    entity: '[[[ return "input_boolean.slaapkamer_"+variables.device ]]]'
+    label: >-
+      [[[ if (entity.state==="on") return "UIT/AAN"; else return "AAN/UIT" ]]]
+
   general:
     variables:
       command: xx
@@ -157,6 +160,29 @@ button_card_templates:
     icon: mdi:video
     show_icon: true
 
+  general_kodi:
+    variables:
+      command: xx
+    styles:
+      card:
+        - background: pink
+      icon:
+        - width: 50%
+        - color: black
+    show_name: false
+    tap_action:
+      action: call-service
+      service: rest_command.kodicmd
+      data:
+        cmd: '[[[ return variables.command ]]]'
+    hold_action:
+      action: call-service
+      service: rest_command.kodicmd
+      data:
+        cmd: '[[[ return variables.command ]]]'
+    icon: mdi:video
+    show_icon: true
+
   channel:
     variables:
       channel: npo1
@@ -176,11 +202,21 @@ button_card_templates:
         - width: 25%
     show_name: false
     tap_action:
-      action: call-service
-      service: '[[[ return "script.channel_" + variables.channel ]]]'
+      multi-calls: |
+        [[[
+        hass.callService( "script", "channel_tv" );
+        setTimeout(() => {
+            hass.callService( "script", "channel_" + variables.channel );
+        }, 500);
+        ]]]
     hold_action:
-      action: call-service
-      service: '[[[ return "script.channel_" + variables.channel ]]]'
+      multi-calls: |
+        [[[
+        hass.callService( "script", "channel_tv" );
+        setTimeout(() => {
+            hass.callService( "script", "channel_" + variables.channel );
+        }, 500);
+        ]]]
     icon: mdi:television
     show_icon: false
 
@@ -235,7 +271,7 @@ views:
               show_state: false
               show_icon: false
               name: >-
-                [[[ if (entity.state==="on") return "Media center UIT"; else return "Media center AAN" ]]]
+                [[[ if (entity.state==="on") return "Media Center UIT"; else return "Media Center AAN" ]]]
               styles:
                 card:
                   - height: 70px
@@ -250,11 +286,14 @@ views:
               variables:
                 device: "off"
               icon: mdi:power
+              hold_action:
+                action: call-service
+                service: script.activity_reset
             - type: custom:button-card
               template: activity
               variables:
                 device: tv
-              icon: mdi:television
+              icon: mdi:television-classic
             - type: custom:button-card
               template: activity
               variables:
@@ -378,18 +417,52 @@ views:
                 - type: custom:button-card
                   template: general_video
                   variables:
-                    command: pause
-                  icon: mdi:pause
+                    command: play
+                  icon: mdi:play
+                - type: custom:button-card
+                  template: general_kodi
+                  variables:
+                    command: Input.Up
+                  icon: mdi:arrow-up-bold
                 - type: custom:button-card
                   template: general_video
                   variables:
                     command: stop
                   icon: mdi:stop
+            - type: horizontal-stack
+              cards:
+                - type: custom:button-card
+                  template: general_kodi
+                  variables:
+                    command: Input.Left
+                  icon: mdi:arrow-left-bold
+                - type: custom:button-card
+                  template: general_kodi
+                  variables:
+                    command: Input.Select
+                  icon: mdi:checkbox-outline
+                - type: custom:button-card
+                  template: general_kodi
+                  variables:
+                    command: Input.Right
+                  icon: mdi:arrow-right-bold
+            - type: horizontal-stack
+              cards:
                 - type: custom:button-card
                   template: general_video
                   variables:
-                    command: play
-                  icon: mdi:play
+                    command: pause
+                  icon: mdi:pause
+                - type: custom:button-card
+                  template: general_kodi
+                  variables:
+                    command: Input.Down
+                  icon: mdi:arrow-down-bold
+                - type: custom:button-card
+                  template: general_kodi
+                  variables:
+                    command: Input.Back
+                  icon: mdi:arrow-u-left-top
 
       - type: custom:layout-break
 
