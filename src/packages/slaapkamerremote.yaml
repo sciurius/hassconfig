@@ -1,4 +1,4 @@
-# BroadLink RM Mini3                    -*- hass -*-
+# Slaapkamer IR Remote                    -*- hass -*-
 
 # automation:
 
@@ -65,7 +65,8 @@ script:
           - service: pyscript.ircontrol
             data:
               device: tv
-              command: power
+              # power toggles, key_0 etc wakes up.
+              command: key_0
           - service: input_boolean.turn_on
             target:
               entity_id: input_boolean.slaapkamer_tv
@@ -124,7 +125,8 @@ script:
           - service: pyscript.ircontrol
             data:
               device: tv
-              command: power
+              # power toggles, key_0 etc wakes up.
+              command: key_0
           - service: input_boolean.turn_on
             target:
               entity_id: input_boolean.slaapkamer_tv
@@ -183,7 +185,8 @@ script:
           - service: pyscript.ircontrol
             data:
               device: tv
-              command: power
+              # power toggles, key_0 etc wakes up.
+              command: key_0
           - service: input_boolean.turn_on
             target:
               entity_id: input_boolean.slaapkamer_tv
@@ -268,6 +271,19 @@ script:
             target:
               entity_id: input_boolean.slaapkamer_audio
 
+  activity_reset:
+    # Force boolean states off.
+    sequence:
+      - service: input_boolean.turn_off
+        target:
+          entity_id: input_boolean.slaapkamer_tv
+      - service: input_boolean.turn_off
+        target:
+          entity_id: input_boolean.slaapkamer_stb
+      - service: input_boolean.turn_off
+        target:
+          entity_id: input_boolean.slaapkamer_audio
+
   channel_npo1:
     sequence:
       - service: pyscript.ircontrol
@@ -342,6 +358,13 @@ script:
         data:
           device: stb
           command: key_8 key_8 key_8
+
+  channel_tv:
+    sequence:
+      - service: pyscript.ircontrol
+        data:
+          device: stb
+          command: tv
 
   # learn_audio_commands:
   #   sequence:
@@ -438,3 +461,16 @@ script:
   #           - seven
   #           - eight
   #           - nine
+
+# Sending direct commands to Kodi.
+rest_command:
+  kodicmd:
+    url: http://osmc.squirrel.nl:80/jsonrpc
+    # url: http://phoenix.squirrel.nl:8084/jsonrpc
+    method: post
+    content_type: application/json
+    username: osmc
+    password: osmc
+    payload: |
+      {"jsonrpc": "2.0", "id": 1, "method": "{{ cmd }}", "params":{}}
+    
