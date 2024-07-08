@@ -98,11 +98,11 @@ template:
         unique_id: otolift_on
         state: >-
           {% if is_state('binary_sensor.otolift_going_up','on') %}
-          up
+          Up
           {% elif is_state('binary_sensor.otolift_going_down','on') %}
-          down
+          Down
           {% else %}
-          stopped
+          Stopped
           {% endif %}
         icon: mdi:elevator-passenger-outline
 
