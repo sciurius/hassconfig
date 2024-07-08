@@ -42,6 +42,17 @@ script:
           entity_id: timer.[% timer %]
     mode: queued
 
+  stop_[% timer %]_timer:
+
+    alias: Stop [% name %] Timer
+    description: >-
+      Stops (cancels) the [% timer %] timer.
+    sequence:
+      - service: timer.cancel
+        target:
+          entity_id: timer.[% timer %]
+    mode: queued
+
 automation:
 
   - id: Automation__Stop_[% name.replace(" ","_") %]_timer
