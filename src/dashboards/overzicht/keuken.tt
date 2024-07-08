@@ -9,7 +9,6 @@ show_header_toggle: false
 entities:
 
   - [% INCLUDE temphum sensor = "keuken" %]
-  - [% INCLUDE temphum sensor = "keukenlek" label = "Lekplek" %]
 
   - type: custom:fold-entity-row
     head:
@@ -45,6 +44,23 @@ entities:
       - entity: light.keuken_kook_rechts
         name: Rechts
       
+  - type: conditional
+    conditions:
+      - entity: binary_sensor.hob2hood_light
+        state: "on"
+    row:
+      type: custom:template-entity-row
+      entity: binary_sensor.hob2hood_light
+      name: Kookplaat
+      icon: mdi:radiator
+      color: >-
+        {{ "red" if states('sensor.hob2hood_fan')|int>1 else
+           "orange" if states('sensor.hob2hood_fan')|int>0 else "green" }}
+      state: >-
+        {{ states('sensor.hob2hood_fan')|int
+           if states('sensor.hob2hood_fan')|int>0
+           else states('binary_sensor.hob2hood_light')|title }}
+
   - entity: switch.keuken_afzuigkap
     type: custom:template-entity-row
     name: Afzuigkap
@@ -52,6 +68,15 @@ entities:
     state: >-
       {% if is_state('switch.keuken_afzuigkap','on') %}Ready{% else %}Off{% endif %}
         
+  - type: conditional
+    conditions:
+      - entity: timer.keuken_afzuigkap
+        state: active
+    row:
+      entity: timer.keuken_afzuigkap
+      icon: mdi:fan
+      name: Timer
+
   - type: conditional
     conditions:
       - entity: sensor.aeg_oven_targettemperature

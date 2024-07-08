@@ -84,3 +84,10 @@ lovelace-oven:
   show_in_sidebar: true
   filename: dashboards/oven.yaml
   
+lovelace-aeghob2hood:
+  mode: yaml
+  title: Hob2hood
+  icon: mdi:ceiling-fan-light
+  show_in_sidebar: true
+  filename: dashboards/aeghob2hood.yaml
+  

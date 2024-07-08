@@ -1,0 +1,32 @@
+# AEG Hob2Hood                      -*- hass -*-
+
+views:
+  - title: Hob2Hood
+    cards:
+
+      - type: vertical-stack
+        title: false
+
+        cards:
+
+        - type: conditional
+          conditions:
+            - entity: sensor.hob2hood_signal
+              state_not: "xx"
+
+          card:
+
+            type: entities
+            title: Hob2Hood
+            show_header_toggle: false
+            entities:
+
+              - entity: binary_sensor.hob2hood_light
+                name: Light
+
+              - entity: sensor.hob2hood_fan
+                name: Fan
+
+              - entity: sensor.hob2hood_signal
+                name: Last
+
