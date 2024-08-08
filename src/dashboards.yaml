@@ -63,6 +63,13 @@ lovelace-slaapkamerremote:
   show_in_sidebar: true
   filename: dashboards/slaapkamerremote.yaml
   
+lovelace-chromecast-slaapkamer:
+  mode: yaml
+  title: Chromecast
+  icon: mdi:remote
+  show_in_sidebar: true
+  filename: dashboards/chromecast_slaapkamer.yaml
+  
 lovelace-remotedevices:
   mode: yaml
   title: Remote Devices
