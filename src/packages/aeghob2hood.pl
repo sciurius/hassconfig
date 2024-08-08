@@ -137,12 +137,12 @@ automation:
       - choose:
           - conditions: '{{ trigger.to_state.state == "[% ir_LIGHT_ON %]" }}'
             sequence:
-              - service: input_boolean.turn_on
-                target:
-                  entity_id: input_boolean.hob2hood_light
               - service: switch.turn_on
                 target:
                   entity_id: switch.keuken_afzuigkap
+              - service: input_boolean.turn_on
+                target:
+                  entity_id: input_boolean.hob2hood_light
               - service: input_number.set_value
                 target:
                   entity_id: input_number.hob2hood_fan
@@ -151,12 +151,20 @@ automation:
               - service: script.stop_keuken_afzuigkap_timer
           - conditions: '{{ trigger.to_state.state == "[% ir_LIGHT_OFF %]" }}'
             sequence:
+              - service: script.start_keuken_afzuigkap_timer
               - service: input_boolean.turn_off
                 target:
                   entity_id: input_boolean.hob2hood_light
-              - service: script.start_keuken_afzuigkap_timer
+              - service: input_number.set_value
+                target:
+                  entity_id: input_number.hob2hood_fan
+                data:
+                  value: 0
           - conditions: '{{ trigger.to_state.state == "[% ir_SPEED_OFF %]" }}'
             sequence:
+              - service: switch.turn_on
+                target:
+                  entity_id: switch.keuken_afzuigkap
               - service: input_number.set_value
                 target:
                   entity_id: input_number.hob2hood_fan
@@ -164,6 +172,9 @@ automation:
                   value: 0
           - conditions: '{{ trigger.to_state.state == "[% ir_SPEED_1 %]" }}'
             sequence:
+              - service: switch.turn_on
+                target:
+                  entity_id: switch.keuken_afzuigkap
               - service: input_number.set_value
                 target:
                   entity_id: input_number.hob2hood_fan
@@ -171,6 +182,9 @@ automation:
                   value: 1
           - conditions: '{{ trigger.to_state.state == "[% ir_SPEED_2 %]" }}'
             sequence:
+              - service: switch.turn_on
+                target:
+                  entity_id: switch.keuken_afzuigkap
               - service: input_number.set_value
                 target:
                   entity_id: input_number.hob2hood_fan
@@ -178,6 +192,9 @@ automation:
                   value: 2
           - conditions: '{{ trigger.to_state.state == "[% ir_SPEED_3 %]" }}'
             sequence:
+              - service: switch.turn_on
+                target:
+                  entity_id: switch.keuken_afzuigkap
               - service: input_number.set_value
                 target:
                   entity_id: input_number.hob2hood_fan
@@ -185,6 +202,9 @@ automation:
                   value: 3
           - conditions: '{{ trigger.to_state.state == "[% ir_SPEED_4 %]" }}'
             sequence:
+              - service: switch.turn_on
+                target:
+                  entity_id: switch.keuken_afzuigkap
               - service: input_number.set_value
                 target:
                   entity_id: input_number.hob2hood_fan
