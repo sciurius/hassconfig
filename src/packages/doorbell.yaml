@@ -38,7 +38,7 @@ automation:
   - service: mqtt.publish
     data:
       topic: cmnd/doorbell/json
-      payload_template: '{% if trigger.to_state.state == ''Mute'' %} {"SwitchMode1":"15"}
+      payload: '{% if trigger.to_state.state == ''Mute'' %} {"SwitchMode1":"15"}
         {% elif trigger.to_state.state == ''1 Sec'' %} {"SwitchMode1":"13","PulseTime1":"10"}
         {% elif trigger.to_state.state == ''2 Sec'' %} {"SwitchMode1":"13","PulseTime1":"20"}
         {% else %} {"SwitchMode1":"0","PulseTime1":"0"} {% endif %}'

@@ -231,7 +231,7 @@ automation:
       - service: mqtt.publish
         data:
           topic: itho/cmd
-          payload_template: >-
+          payload: >-
             { "vremote": "{{ trigger.to_state.state }}" }
     mode: single
 
@@ -293,7 +293,7 @@ automation:
       - service: mqtt.publish
         data:
           topic: itho/cmd
-          payload_template: >-
+          payload: >-
             { "speed":{{ (trigger.to_state.state|float * 2.55)|round }} }
 
   - id: Automation__IthoCVE_Afzuiging
