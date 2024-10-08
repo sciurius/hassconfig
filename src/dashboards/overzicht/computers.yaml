@@ -112,6 +112,17 @@ entities:
           - entity: sensor.systems_mc621_temperature
             name: CPU
 
+  - type: conditional
+    conditions:
+      - entity: sensor.systems_maccho_temperature
+        state_not: "unavailable" 
+      - entity: sensor.systems_maccho_temperature
+        state_not: "unknown"
+    row:
+        entity: sensor.systems_maccho_temperature
+        name: Maccho
+
+
 #  - type: custom:multiple-entity-row
 #    entity: sensor.ups_pico_battery_level
 #    name: Srv1 UPS

@@ -18,7 +18,7 @@ my $d = HA::MQTT::Device->new
   );
 
 
-for ( qw( Phoenix NAS1 Srv5 ) ) {
+for ( qw( Phoenix NAS1 Srv5 Maccho ) ) {
     $d->add_sensor( { name => "$_ Temperature (°C)",
 		      value => "float",
 		      state_topic => "~/".lc($_)."/temperature" } );
