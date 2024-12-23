@@ -125,6 +125,7 @@ entities:
     row:
       entity: light.balkonkerstverlichting
       name: Balkon (Kerst)
+      icon: mdi:string-lights
 
   - type: conditional
     conditions:
