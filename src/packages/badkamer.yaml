@@ -93,6 +93,14 @@ automation:
       - platform: numeric_state
         entity_id: sensor.douche
         above: 3
+    # The temperature sensor often oscillates between 17.1 and 17.5.
+    # Exclude.
+    conditions:
+      not:
+        - condition: numeric_state
+          entity_id: sensor.badkamer_humidity
+          above: 17.0
+          below: 17.6
     action:
 #      - service: input_number.set_value
 #        target:
