@@ -6,6 +6,14 @@ state_color: true
 
 entities:
 
+  - type: custom:template-entity-row
+    entity: sensor.energie_balans
+    color: >-
+      {{ "lime" if states('sensor.energie_balans')|float>0.2 else
+         "yellow" if states('sensor.energie_balans')|float>0 else "none" }}
+    state: >-
+      {{ states('sensor.energie_balans')|round(3) }} kW
+
   - type: custom:multiple-entity-row
     entity: sensor.energy_generated
     name: Zonnepanelen
