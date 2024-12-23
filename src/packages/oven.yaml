@@ -2,14 +2,29 @@
 
 # Entities:
 #
+# sensor.aeg_oven_appliancestate
+# switch.aeg_oven_cavitylight
+# sensor.aeg_oven_connectivitystate
+# sensor.aeg_oven_displaytemperaturec
+# binary_sensor.aeg_oven_doorstate
+# select.aeg_oven_program
+# sensor.aeg_oven_remotecontrol
+# sensor.aeg_oven_runningtime
+# sensor.aeg_oven_starttime
+# sensor.aeg_oven_targetduration
+# sensor.aeg_oven_
+# button.aeg_oven_executecommand
+# sensor.aeg_oven_executecommand_2
+
+
+#   sensor.aeg_oven_alerts
 #   sensor.aeg_oven_appliancestate
 #     Ready To Start / RUNNING / End Of Cycle
 #   select.aeg_oven_cavitylight
 #     False / True
 #   sensor.aeg_oven_connectivitystate
 #     CONNECTED / DISCONNECTED
-#   sensor.aeg_oven_doorstate
-#     OPEN / CLOSED
+#   binary_sensor.aeg_oven_doorstate
 #   select.aeg_oven_program
 #     No Program / Conventional Cooking / ...
 #   sensor.aeg_oven_remotecontrol
@@ -18,11 +33,11 @@
 #     - Temporary Locked
 #   sensor.aeg_oven_runningtime
 #     Total working time
-#   button.aeg_oven_executecommand_start
+#   button.aeg_oven_executecommand
 #     START
 #   number.aeg_oven_starttime
 #     Oven starts in ... (-1 if n/a)
-#   button.aeg_oven_executecommand_stopreset
+#   button.aeg_oven_executecommand_2
 #     STOPRESET
 #   number.aeg_oven_targetduration
 #     Target duration 
@@ -36,10 +51,6 @@
 template:
 
   binary_sensor:
-    - name: "AEG Oven Door"
-      unique_id: binary_sensor_aeg_oven_door
-      device_class: door
-      state: "{{ states('sensor.aeg_oven_doorstate')|lower != 'closed' }}"
       
     - name: "AEG Oven Light"
       unique_id: binary_sensor_aeg_oven_light
@@ -61,12 +72,6 @@ template:
       icon: mdi:clock-start
       unit_of_measurement: min
 
-    - name: "AEG Oven Targetduration"
-      unique_id: sensor_aeg_oven_targetduration
-      state: "{{ (states('number.aeg_oven_targetduration')|int / 60) |int }}"
-      icon: mdi:clock-start
-      unit_of_measurement: min
-
     - name: "AEG Oven Targettemperature"
       unique_id: sensor_aeg_oven_targettemperature
       state: "{{ states('number.aeg_oven_targettemperaturec')|int }}"
@@ -80,7 +85,23 @@ template:
       icon: mdi:thermometer
       device_class: temperature
       unit_of_measurement: "°C"
-      
+
+  number:
+
+    - name: "AEG Oven Targetduration Minutes"
+      unique_id: number_aeg_oven_targetduration_m
+      state: "{{ states('number.aeg_oven_targetduration') | int // 60 }}"
+      icon: mdi:ray-vertex
+      unit_of_measurement: min
+      step: 1
+      max: 1439
+      set_value:
+        - service: number.set_value
+          target:
+            entity_id: number.aeg_oven_targetduration
+          data:
+            value: "{{ value * 60 }}"
+
 automation:
 
   - id: Automation__Oven_Reached_Temperature
