@@ -98,7 +98,7 @@ automation:
     conditions:
       not:
         - condition: numeric_state
-          entity_id: sensor.badkamer_humidity
+          entity_id: sensor.badkamer_temperature
           above: 17.0
           below: 17.6
     action:
@@ -119,3 +119,4 @@ sensor:
     platform: derivative
     source: sensor.badkamer_humidity
     unit_time: min
+    unique_id: badkamer__sensor_douche

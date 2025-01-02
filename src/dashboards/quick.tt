@@ -184,6 +184,6 @@ views:
           [% area = "buiten" %]
           - [% INCLUDE button name = "buiten",
                entity = "light.buitenverlichting_achter", icon = "mdi:outdoor-lamp" %]
-          - [% INCLUDE button name = "balkon",
-               entity = "light.balkonkerstverlichting", icon = "mdi:string-lights" %]
+#          - [% INCLUDE button name = "balkon",
+#               entity = "light.balkonkerstverlichting", icon = "mdi:string-lights" %]
 
