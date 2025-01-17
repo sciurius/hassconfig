@@ -63,8 +63,8 @@ entities:
     name: WWW Server
     icon: mdi:cloud
     color: >-
-      {{ "red" if states('sensor.www_disk_inuse')|int>95 else
-         "orange" if states('sensor.www_disk_inuse')|int>90 else "green" }}
+      {{ "red" if states('sensor.www_disk_inuse')|int>=98 else
+         "orange" if states('sensor.www_disk_inuse')|int>95 else "green" }}
     state: "{{ states('sensor.www_disk_inuse') }} %"
     secondary_info: Disk space
     
