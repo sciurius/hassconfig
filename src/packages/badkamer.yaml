@@ -119,4 +119,3 @@ sensor:
     platform: derivative
     source: sensor.badkamer_humidity
     unit_time: min
-    unique_id: badkamer__sensor_douche
