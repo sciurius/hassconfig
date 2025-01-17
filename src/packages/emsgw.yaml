@@ -243,7 +243,7 @@ automation:
     condition: >
       {{ is_state('input_boolean.emsgw_return_temp_high','off')
          and
-         states('sensor.boiler_wwcurflow')|float <= 0
+         states('sensor.boiler_dhw_curflow')|float <= 0
       }}
       
     action:
