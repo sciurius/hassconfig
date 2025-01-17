@@ -22,11 +22,6 @@ automation:
           message: Let's Encrypt cert needs renewal
           title: Cert Renewal
           
-sensor:
-
-  - platform: cert_expiry
-    host: hass.squirrel.nl
-  
 template:
 
   - sensor:
