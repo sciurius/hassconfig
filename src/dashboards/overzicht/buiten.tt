@@ -97,11 +97,20 @@ entities:
 
   - type: conditional
     conditions:
-      - entity: binary_sensor.stookalert_drenthe
+      - entity: sensor.stookwijzer_advice_code
         state_not: 'off'
     row:
-      entity: binary_sensor.stookalert_drenthe
-      name: Stookalert
+      entity: sensor.stookwijzer_advice_code
+      name: Stookwijzer
+      type: custom:template-entity-row
+      icon: mdi:air-filter
+      color: >-
+        {{ "red" if states('sensor.stookwijzer_advice_code') == "code_red" else
+           "orange" if states('sensor.stookwijzer_advice_code') == "code_orange" else "yellow" }}
+      state: >-
+        {{ "Slecht" if states('sensor.stookwijzer_advice_code') == "code_red" else
+           "Matig" if states('sensor.stookwijzer_advice_code') == "code_orange" else "Ok" }}
+        
 
   - entity: light.buitenverlichting_achter
     name: Achterkant
