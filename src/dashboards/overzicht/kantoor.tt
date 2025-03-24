@@ -64,7 +64,7 @@ entities:
     icon: mdi:cloud
     color: >-
       {{ "red" if states('sensor.www_disk_inuse')|int>=98 else
-         "orange" if states('sensor.www_disk_inuse')|int>95 else "green" }}
+         "orange" if states('sensor.www_disk_inuse')|int>95 else "none" }}
     state: "{{ states('sensor.www_disk_inuse') }} %"
     secondary_info: Disk space
     
@@ -81,6 +81,18 @@ entities:
       icon: mdi:radiator
       name: Timer
 
+  - entity: switch.kantoorkacheltje
+    name: Kantoorkacheltje
+
+  - type: conditional
+    conditions:
+      - entity: timer.kantoorkacheltje
+        state: active
+    row:
+      entity: timer.kantoorkacheltje
+      icon: mdi:heat-wave
+      name: Timer
+    
   - entity: switch.psw03
     name: Printer
     icon: mdi:printer
