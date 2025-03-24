@@ -132,4 +132,52 @@ entities:
         - entity: sensor.aeg_oven_starttime
           name: start
 
-        
+[%#        
+  - type: conditional
+    conditions:
+      - condition: numeric_state
+        entity: sensor.keukenboiler_energy_power
+        above: 1
+      - entity: switch.keukenboiler
+        state: "on"
+    row:
+      type: custom:multiple-entity-row
+      entity: switch.keukenboiler
+      name: Boiler
+      icon: mdi:water-boiler
+      toggle: true
+      entities:
+        - entity: sensor.keukenboiler_energy_power
+          name: false
+
+  - type: conditional
+    conditions:
+      - condition: numeric_state
+        entity: sensor.keukenboiler_energy_power
+        below: 1
+      - entity: switch.keukenboiler
+        state: "on"
+    row:
+      type: custom:multiple-entity-row
+      entity: switch.keukenboiler
+      name: Boiler
+      icon: mdi:water-boiler
+      toggle: true
+      state_color: false
+      entities:
+        - entity: sensor.keukenboiler_energy_power
+          name: false
+
+  - type: conditional
+    conditions:
+      - entity: switch.keukenboiler
+        state: "off"
+    row:
+      type: custom:multiple-entity-row
+      entity: switch.keukenboiler
+      name: Boiler
+      icon: mdi:water-boiler-off
+      toggle: true
+      state_color: false
+
+%]
