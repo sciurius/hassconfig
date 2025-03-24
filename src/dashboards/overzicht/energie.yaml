@@ -1,4 +1,4 @@
-# Dashboard: Overzicht -- Weerstation       -*- hass -*-
+# Dashboard: Overzicht -- Energie       -*- hass -*-
 
 type: entities
 title: Energie
@@ -36,6 +36,81 @@ entities:
     entity: sensor.dsmr_day_consumption_gas
     name: Gas
     format: precision1
+
+  - type: conditional
+    conditions:
+      - condition: numeric_state
+        entity: sensor.extboiler_energy_power
+        above: 1
+      - entity: switch.extboiler
+        state: "xxon"
+    row:
+      type: custom:multiple-entity-row
+      entity: switch.extboiler
+      name: Ext Boiler
+      icon: mdi:water-boiler
+      secondary_info:
+        entity: sensor.extboiler_energy_today
+        name: Verbruik
+      toggle: true
+      entities:
+        - entity: sensor.extboiler_energy_power
+          name: false
+
+  - type: conditional
+    conditions:
+      - condition: numeric_state
+        entity: sensor.extboiler_energy_power
+        below: 1
+      - entity: switch.extboiler
+        state: "xxon"
+    row:
+      type: custom:multiple-entity-row
+      entity: switch.extboiler
+      name: Ext Boiler
+      icon: mdi:water-boiler
+      toggle: true
+      state_color: false
+      secondary_info:
+        entity: input_boolean.extboiler_hot
+        name: Hot
+      entities:
+        - entity: sensor.extboiler_energy_power
+          name: false
+
+  - type: conditional
+    conditions:
+      - entity: switch.extboiler
+        state: "xxoff"
+    row:
+      type: custom:multiple-entity-row
+      entity: switch.extboiler
+      name: Ext Boiler
+      icon: mdi:water-boiler-off
+      toggle: true
+      state_color: false
+      secondary_info:
+        entity: sensor.extboiler_energy_today
+        name: Verbruik
+#        name: Hot
+ 
+#        entity: input_boolean.extboiler_hot
+#        name: Hot
+
+  - type: custom:template-entity-row
+    icon: mdi:water-boiler
+    name: Ext Boiler
+    entity: switch.extboiler
+    toggle: true
+    color: |
+      {% if is_state('input_boolean.extboiler_hot','on') %} green
+      {% else %}
+        {% if (states('sensor.extboiler_energy_power')|float) > 1 %} yellow
+        {% else %} none
+        {% endif %}
+      {% endif %}
+    secondary: |
+      Verbruik {{ states('sensor.extboiler_energy_today') }} kWh
 
   - entity: sensor.growatt_temperature
     name: Omvormer
