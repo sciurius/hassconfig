@@ -106,7 +106,7 @@ entities:
       icon: mdi:air-filter
       color: >-
         {{ "red" if states('sensor.stookwijzer_advice_code') == "code_red" else
-           "orange" if states('sensor.stookwijzer_advice_code') == "code_orange" else "yellow" }}
+           "orange" if states('sensor.stookwijzer_advice_code') == "code_orange" else "none" }}
       state: >-
         {{ "Slecht" if states('sensor.stookwijzer_advice_code') == "code_red" else
            "Matig" if states('sensor.stookwijzer_advice_code') == "code_orange" else "Ok" }}
@@ -154,19 +154,19 @@ entities:
         name: Donker
 
   - type: custom:template-entity-row
-    entity: sensor.afvalwijzer_afvalwijzer_bo_today
+    entity: sensor.afvalwijzer_today
     name: Afval
     icon: mdi:recycle
     active: true
     color: "#ffc107"
     condition: >
       {{ ( not
-         is_state('sensor.afvalwijzer_afvalwijzer_bo_today','Geen') )
+         is_state('sensor.afvalwijzer_today','geen') )
          and ( now() < today_at("17:00") )
          and is_state('input_boolean.afval_dismiss','off')
       }}
     state: >-
-      {{ states('sensor.afvalwijzer_afvalwijzer_bo_today').capitalize()
+      {{ states('sensor.afvalwijzer_today').capitalize()
       }}
     hold_action:
       action: call-service
@@ -175,17 +175,17 @@ entities:
         entity_id: input_boolean.afval_dismiss
 
   - type: custom:template-entity-row
-    entity: sensor.afvalwijzer_afvalwijzer_bo_tomorrow
+    entity: sensor.afvalwijzer_tomorrow
     name: Afval (morgen)
     icon: mdi:recycle
     active: false
     state: >-
       {{
-      states('sensor.afvalwijzer_afvalwijzer_bo_tomorrow').capitalize()
+      states('sensor.afvalwijzer_tomorrow').capitalize()
       }}
     condition: >-
       {{ not
-         is_state('sensor.afvalwijzer_afvalwijzer_bo_tomorrow','Geen')
+         is_state('sensor.afvalwijzer_tomorrow','geen')
          and is_state('input_boolean.afval_dismiss','off')
       }}
     hold_action:
