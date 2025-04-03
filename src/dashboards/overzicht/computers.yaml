@@ -58,6 +58,8 @@ entities:
   - type: conditional
     conditions:
       - entity: switch.srv5
+        state_not: "unknown"
+      - entity: switch.srv5
         state_not: "unavailable"
     row:
       entity: switch.srv5
