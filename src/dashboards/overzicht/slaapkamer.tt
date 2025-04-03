@@ -96,6 +96,8 @@ entities:
     conditions:
       - entity: switch.slaapkamer_fan
         state_not: "unavailable"
+      - entity: switch.slaapkamer_fan
+        state_not: "unknown"
     row:
       entity: switch.slaapkamer_fan
       name: Fan
