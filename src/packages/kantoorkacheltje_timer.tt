@@ -1,0 +1,24 @@
+# Kantoorkacheltje (Timer)               -*- hass -*-
+# WARNING: This is a generated file -- DO NOT EDIT
+
+[% INCLUDE switchoff_timer name = "Kantoorkacheltje"
+           type = "switch"
+           duration = "00:60:00" %]
+
+  - id: Automation__Start_Kantoorkacheltje_timer
+    alias: "Start Kantoorkacheltje timer."
+    description: "Start Kantoorkacheltje timer."
+    mode: queued
+
+    trigger:
+      - platform: state
+        entity_id: switch.kantoorkacheltje
+        from: 'off'
+        to: 'on'
+    conditions:
+      - not:
+          - condition: state
+            entity_id: binary_sensor.energie_overschot
+            state: 'on'
+    action:
+      - service: script.start_kantoorkacheltje_timer

@@ -1,0 +1,95 @@
+# Oven                      -*- hass -*-
+
+views:
+  - title: Oven
+    cards:
+
+      - type: vertical-stack
+        title: false
+
+        cards:
+
+        - type: conditional
+          conditions:
+            - entity: binary_sensor.aeg_oven_appliancestatus
+              state_not: "xx"
+              # Sometimes it reports disconnected, while everything is functional.
+
+          card:
+
+            type: entities
+            title: Oven
+            show_header_toggle: false
+            entities:
+
+              - entity: sensor.aeg_oven_connectivitystate
+                name: Connected
+                icon: mdi:check-network-outline
+
+              - entity: sensor.aeg_oven_appliancestate
+                name: Status
+
+              - entity: binary_sensor.aeg_oven_doorstate
+                name: Deur
+
+#              - entity: binary_sensor.aeg_oven_light
+              - entity: switch.aeg_oven_cavitylight
+                name: Lampje
+                icon: mdi:lightbulb-outline
+
+              - entity: sensor.aeg_oven_remotecontrol
+                name: " "
+                icon: mdi:remote
+
+              - entity: button.aeg_oven_executecommand
+                name: Start
+                icon: mdi:play
+
+              - entity: button.aeg_oven_executecommand_2
+                name: Stop
+                icon: mdi:stop
+
+#              - entity: sensor.aeg_oven_program
+              - entity: select.aeg_oven_program
+                name: Programma
+                icon: mdi:clock-start
+
+#              - entity: sensor.aeg_oven_starttime
+              - entity: number.aeg_oven_starttime
+                name: Start over
+                icon: mdi:clock-start
+
+#              - entity: sensor.aeg_oven_targetduration
+              - entity: number.aeg_oven_targetduration_minutes
+                name: Ingestelde tijd
+                mode: box
+
+              - entity: sensor.aeg_oven_runningtime
+                name: In bedrijf
+                icon: mdi:clock
+                unit_of_measurement: sec
+
+#              - entity: sensor.aeg_oven_targettemperature
+              - entity: number.aeg_oven_targettemperaturec
+                name: Instelling
+                icon: mdi:thermostat
+
+              - entity: sensor.aeg_oven_displaytemperature
+                name: Temperatuur
+                icon: mdi:thermometer
+                
+        - type: conditional
+          conditions:
+            - entity: binary_sensor.aeg_oven_appliancestatus
+              state: "off"
+
+          card:
+
+            type: entities
+            title: Oven
+            show_header_toggle: false
+            entities:
+
+              - entity: binary_sensor.aeg_oven_appliancestatus
+                name: Connected
+                icon: mdi:close-network-outline

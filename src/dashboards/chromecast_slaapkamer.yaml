@@ -1,0 +1,270 @@
+title: Chromecast Slaapkamer
+views:
+  - title: ChromeCast
+    cards:
+      - type: vertical-stack
+        cards:
+          - type: entities
+            entities:
+              - entity: remote.chromecast_hd
+          - square: true
+            columns: 3
+            type: grid
+            cards:
+              - type: button
+                show_icon: false
+                tap_action:
+                  action: none
+                hold_action:
+                  action: none
+              - type: button
+                icon: mdi:arrow-up-bold
+                tap_action:
+                  action: call-service
+                  service: remote.send_command
+                  data:
+                    command: DPAD_UP
+                  target:
+                    entity_id: remote.chromecast_hd
+                hold_action:
+                  action: none
+              - type: button
+                show_icon: false
+                tap_action:
+                  action: none
+                hold_action:
+                  action: none
+              - type: button
+                icon: mdi:arrow-left-bold
+                tap_action:
+                  action: call-service
+                  service: remote.send_command
+                  data:
+                    command: DPAD_LEFT
+                  target:
+                    entity_id: remote.chromecast_hd
+                hold_action:
+                  action: none
+              - type: button
+                icon: mdi:circle
+                tap_action:
+                  action: call-service
+                  service: remote.send_command
+                  data:
+                    command: DPAD_CENTER
+                  target:
+                    entity_id: remote.chromecast_hd
+                hold_action:
+                  action: call-service
+                  service: remote.send_command
+                  data:
+                    command: DPAD_CENTER
+                    hold_secs: 0.5
+                  target:
+                    entity_id: remote.chromecast_hd
+              - type: button
+                icon: mdi:arrow-right-bold
+                tap_action:
+                  action: call-service
+                  service: remote.send_command
+                  data:
+                    command: DPAD_RIGHT
+                  target:
+                    entity_id: remote.chromecast_hd
+                hold_action:
+                  action: none
+              - type: button
+                icon: mdi:arrow-left
+                tap_action:
+                  action: call-service
+                  service: remote.send_command
+                  data:
+                    command: BACK
+                  target:
+                    entity_id: remote.chromecast_hd
+                hold_action:
+                  action: call-service
+                  service: remote.send_command
+                  data:
+                    command: BACK
+                    hold_secs: 0.5
+                  target:
+                    entity_id: remote.chromecast_hd
+              - type: button
+                icon: mdi:arrow-down-bold
+                tap_action:
+                  action: call-service
+                  service: remote.send_command
+                  data:
+                    command: DPAD_DOWN
+                  target:
+                    entity_id: remote.chromecast_hd
+                hold_action:
+                  action: none
+              - type: button
+                icon: mdi:home-outline
+                tap_action:
+                  action: call-service
+                  service: remote.send_command
+                  data:
+                    command: HOME
+                  target:
+                    entity_id: remote.chromecast_hd
+                hold_action:
+                  action: call-service
+                  service: remote.send_command
+                  data:
+                    command: HOME
+                    hold_secs: 0.5
+                  target:
+                    entity_id: remote.chromecast_hd
+          - square: false
+            columns: 3
+            type: grid
+            cards:
+              - type: button
+                icon: mdi:skip-previous
+                tap_action:
+                  action: call-service
+                  service: remote.send_command
+                  data:
+                    command: MEDIA_PREVIOUS
+                  target:
+                    entity_id: remote.chromecast_hd
+                hold_action:
+                  action: call-service
+                  service: remote.send_command
+                  data:
+                    command: MEDIA_REWIND
+                  target:
+                    entity_id: remote.chromecast_hd
+              - type: button
+                icon: mdi:play-pause
+                tap_action:
+                  action: call-service
+                  service: remote.send_command
+                  data:
+                    command: MEDIA_PLAY_PAUSE
+                  target:
+                    entity_id: remote.chromecast_hd
+                hold_action:
+                  action: call-service
+                  service: remote.send_command
+                  data:
+                    command: MEDIA_STOP
+                  target:
+                    entity_id: remote.chromecast_hd
+              - type: button
+                icon: mdi:skip-next
+                tap_action:
+                  action: call-service
+                  service: remote.send_command
+                  data:
+                    command: MEDIA_NEXT
+                  target:
+                    entity_id: remote.chromecast_hd
+                hold_action:
+                  action: call-service
+                  service: remote.send_command
+                  data:
+                    command: MEDIA_FAST_FORWARD
+                  target:
+                    entity_id: remote.chromecast_hd
+              - type: button
+                icon: mdi:volume-off
+                tap_action:
+                  action: call-service
+                  service: remote.send_command
+                  data:
+                    command: MUTE
+                  target:
+                    entity_id: remote.chromecast_hd
+                hold_action:
+                  action: none
+              - type: button
+                icon: mdi:volume-medium
+                tap_action:
+                  action: call-service
+                  service: remote.send_command
+                  data:
+                    command: VOLUME_DOWN
+                  target:
+                    entity_id: remote.chromecast_hd
+                hold_action:
+                  action: none
+              - type: button
+                icon: mdi:volume-high
+                tap_action:
+                  action: call-service
+                  service: remote.send_command
+                  data:
+                    command: VOLUME_UP
+                  target:
+                    entity_id: remote.chromecast_hd
+                hold_action:
+                  action: none
+          - square: false
+            columns: 4
+            type: grid
+            cards:
+              - type: picture
+                image: >-
+                  https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/NPO_Start_logo.svg/320px-NPO_Start_logo.svg.png
+                tap_action:
+                  action: call-service
+                  service: remote.turn_on
+                  data:
+                    activity: nl.uitzendinggemist
+                  target:
+                    entity_id: remote.chromecast_hd
+                hold_action:
+                  action: none
+              - type: button
+                icon: mdi:youtube
+                tap_action:
+                  action: call-service
+                  service: remote.turn_on
+                  data:
+                    activity: https://www.youtube.com
+                  target:
+                    entity_id: remote.chromecast_hd
+                hold_action:
+                  action: none
+              - type: picture
+                image: >-
+                  https://static.wikia.nocookie.net/logopedia/images/6/60/TG4_2021.png
+                tap_action:
+                  action: call-service
+                  service: remote.turn_on
+                  data:
+                    activity: ie.bytes.tg4.tg4videoapp
+                  target:
+                    entity_id: remote.chromecast_hd
+                hold_action:
+                  action: none
+              - type: picture
+                image: >-
+                  https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Disney%2B_logo.svg/440px-Disney%2B_logo.svg.png
+                tap_action:
+                  action: call-service
+                  service: remote.turn_on
+                  data:
+                    activity: com.disney.disneyplus
+                  target:
+                    entity_id: remote.chromecast_hd
+                hold_action:
+                  action: none
+          - type: entity
+            entity: remote.chromecast_hd
+            attribute: current_activity
+          - type: media-control
+            entity: media_player.chromecast_hd
+
+# Activities:
+# nl.uitzendinggemist (NPO Start)
+# ie.bytes.tg4.tg4videoapp
+# com.spotify.tv.android
+# com.google.android.apps.tv.launcherx (home)
+# com.android.tv.settings
+# com.google.android.apps.tv.dreamx (backdrop images)
+# https://www.youtube.com/watch?v=dQw4w9WgXcQ
