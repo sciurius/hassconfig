@@ -130,6 +130,8 @@ entities:
   - type: conditional
     conditions:
       - entity: light.balkonkerstverlichting
+        state_not: unknown
+      - entity: light.balkonkerstverlichting
         state_not: unavailable
     row:
       entity: light.balkonkerstverlichting
