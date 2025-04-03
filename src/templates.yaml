@@ -15,13 +15,13 @@ sensor:                 ################
 - name: "APK Expiration Near"
   state: >
     {% if
-       ((as_timestamp(strptime(states('sensor.apk_expiration'),
+       ((as_timestamp(strptime(states('sensor.toyota_53xdsr_apk_expiration'),
                                '%Y-%m-%d')) / 86400) | int )
        -
        ((as_timestamp(strptime(states('sensor.date'),
                                '%Y-%m-%d')) / 86400) | int )
        < 60 %}
-    {{ states('sensor.apk_expiration') }}
+    {{ states('sensor.toyota_53xdsr_apk_expiration') }}
     {% else %} nog_lang_niet {% endif %}
 
 # For testing and development
