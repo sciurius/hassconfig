@@ -45,7 +45,8 @@ entities:
     row:
       entity: sensor.douche
       type: custom:multiple-entity-row
-      name: Douche
+      name: Vochttoename
+      icon: mdi:water-percent
 
   - type: conditional
     conditions:
