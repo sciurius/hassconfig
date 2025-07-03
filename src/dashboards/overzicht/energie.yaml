@@ -3,6 +3,7 @@
 type: entities
 title: Energie
 state_color: true
+show_header_toggle: false
 
 entities:
 
@@ -111,6 +112,13 @@ entities:
       {% endif %}
     secondary: |
       Verbruik {{ states('sensor.extboiler_energy_today') }} kWh
+
+  - type: custom:template-entity-row
+    name: Ext Verwarming
+    entity: switch.achterkamerkacheltje
+    toggle: true
+    secondary: |
+      Verbruik {{ states('sensor.pswm03_energy_today') }} kWh
 
   - entity: sensor.growatt_temperature
     name: Omvormer

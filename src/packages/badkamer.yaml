@@ -12,6 +12,12 @@ input_boolean:
     name: Switch on badkamerverwarming on doorbell
     icon: mdi:doorbell
 
+sensor:
+  - name: Douche
+    platform: derivative
+    source: sensor.badkamer_humidity
+    unit_time: min
+
 automation:
 
   - id: Automation__Start_Badkamerverwarming_Timer
@@ -114,8 +120,3 @@ automation:
           topic: itho/cmd
           payload: "{\"vremotecmd\":\"timer1\"}"
 
-sensor:
-  - name: Douche
-    platform: derivative
-    source: sensor.badkamer_humidity
-    unit_time: min

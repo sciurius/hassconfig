@@ -82,6 +82,7 @@ entities:
       name: Timer
 
   - entity: switch.kantoorkacheltje
+    icon: mdi:heat-wave
     name: Kantoorkacheltje
 
   - type: conditional

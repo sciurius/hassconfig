@@ -252,9 +252,6 @@ automation:
         entity_id: input_select.ithocve_fan_mode
       data:
         option: "{{ states('sensor.ithocve_fan_info') }}"
-    - service: telegram_bot.send_message
-      data:
-        message: "Badkamerafzuiging → {{ states('sensor.ithocve_fan_info').upper() }}"
     - service: automation.turn_on
       target:
         entity_id: automation.ithocve_set_fan_mode

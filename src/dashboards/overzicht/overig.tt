@@ -6,7 +6,7 @@ title: Overig
 
 entities:
   [
-    [% FOREACH item IN [ "bijkeuken", "kelder", "kruipruimte", "zolder", "garage", "th0602" ];
+    [% FOREACH item IN [ "bijkeuken", "kelder", "kruipruimte", "zolder", "garage", "achterkamer" ];
    INCLUDE temphum sensor = item, label = item.ucfirst;
    ", " UNLESS loop.last;
    END %]

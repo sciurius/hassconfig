@@ -15,10 +15,5 @@
         entity_id: switch.kantoorkacheltje
         from: 'off'
         to: 'on'
-    conditions:
-      - not:
-          - condition: state
-            entity_id: binary_sensor.energie_overschot
-            state: 'on'
     action:
       - service: script.start_kantoorkacheltje_timer

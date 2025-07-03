@@ -20,6 +20,29 @@ automation:
         target:
           entity_id: switch.extboiler
   
+  - id: Automation__ExtraEnergieBalansOn
+    alias: Extra EnergieBalans On
+    description: "Schakel belastingen aan bij energieoverschot"
+    mode: single
+    triggers:
+      - trigger: time_pattern
+        seconds: "2"
+    conditions:
+      - condition: numeric_state
+        entity_id: sensor.energie_balans
+        above: 1
+      - or:
+        - condition: state
+          entity_id: switch.extboiler
+          state: "on"
+        - condition: state
+          entity_id: input_boolean.extboiler_hot
+          state: "on"
+    actions:
+      - action: switch.turn_on
+        target:
+          entity_id: switch.achterkamerkacheltje
+  
   - id: Automation__EnergieBalansOff
     alias: EnergieBalans Off
     description: "Schakel belastingen uit bij energieoverschot"
@@ -37,6 +60,9 @@ automation:
       - action: switch.turn_off
         target:
           entity_id: switch.extboiler
+      - action: switch.turn_off
+        target:
+          entity_id: switch.achterkamerkacheltje
   
   - id: Automation__ExtBoiler_Hot
     alias: ExtBoiler Hot
