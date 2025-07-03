@@ -23,7 +23,8 @@ DEFAULT icon     = "mdi:thermometer";
   show_state: false,
   entities: [
     { entity: [% sensor_t %],
-      name: false },
+      name: false,
+      format: precision1 },
     { entity: [% sensor_h %],
       name: false,
       format: precision0 } ] }
