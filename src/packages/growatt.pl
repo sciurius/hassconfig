@@ -98,7 +98,10 @@ automation:
         entity_id: sensor.growatt_temperature
         above: 60
     action:
-      - service: telegram_bot.send_message
+      - action: notify.default
+        data:
+          message: "Growatt Omvormer → {{ states('sensor.growatt_temperature') }} °C"
+      - action: notify.info
         data:
           message: "Growatt Omvormer → {{ states('sensor.growatt_temperature') }} °C"
 
@@ -124,7 +127,10 @@ automation:
         above: 250
         for: "00:05:00"
     action:
-      - service: telegram_bot.send_message
+      - action: notify.default
+        data:
+          message: "Netspanning hoog: {{ trigger.to_state.state }} V ({{ trigger.id }})"
+      - action: notify.info
         data:
           message: "Netspanning hoog: {{ trigger.to_state.state }} V ({{ trigger.id }})"
 

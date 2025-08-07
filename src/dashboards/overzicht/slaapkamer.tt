@@ -112,8 +112,13 @@ entities:
       icon: mdi:fan
       name: Timer
 
-  - entity: automation.scheduled_switch_on_warmtedeken
-    state_color: false
+  - type: conditional
+    conditions:
+      - entity: switch.slaapkamer_warmtedeken_joan
+        state_not: unavailable
+    row:
+      entity: automation.scheduled_switch_on_warmtedeken
+      state_color: false
 
   - entity: light.slaapkamer_avondlichtje
 

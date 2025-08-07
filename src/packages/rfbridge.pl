@@ -84,7 +84,7 @@ script:
       - service: script.smotty_notify
         data:
           message: Button 0 pressed
-      - service: telegram_bot.send_message
+      - action: notify.info
         data:
           message: Button 0 pressed
 
@@ -95,7 +95,7 @@ script:
       - service: light.toggle
         target:
           entity_id: light.woonkamer_tafel
-      - service: telegram_bot.send_message
+      - action: notify.info
         data:
           message: Button A pressed
 
@@ -106,7 +106,7 @@ script:
       - service: switch.toggle
         target:
           entity_id: switch.woonkamer_sound_system
-      - service: telegram_bot.send_message
+      - action: notify.info
         data:
           message: Button B pressed
 
@@ -115,7 +115,7 @@ script:
     mode: queued
     sequence:
       - service: script.otolift_up
-      - service: telegram_bot.send_message
+      - action: notify.info
         data:
           message: Button C pressed
 
@@ -124,7 +124,7 @@ script:
     mode: queued
     sequence:
       - service: script.otolift_down
-      - service: telegram_bot.send_message
+      - action: notify.info
         data:
           message: Button D pressed
 
@@ -132,7 +132,7 @@ script:
 
     mode: queued
     sequence:
-      - service: telegram_bot.send_message
+      - action: notify.info
         data:
           message: Button 2 pressed
 
@@ -149,7 +149,7 @@ script:
             ttl: 0
             media_stream: "alarm_stream_max"
             importance: high
-      - service: telegram_bot.send_message
+      - action: notify.info
         data:
           message: Doorbell pressed
 
@@ -163,7 +163,7 @@ script:
         - "0x55550C"            # Westminster Bell
         - "0x555530"            # Ding Dong 1
         - "0x5555C0"            # Ding Dong 2
-        
+
     sequence:
       - service: mqtt.publish
         data:
@@ -224,7 +224,7 @@ automation:
           {% if button_mapper[trigger.to_state.state] %}
           script.rfbridge_{{ button_mapper[trigger.to_state.state]|lower }}_pressed
           {% else %}
-          telegram_bot.send_message
+          notify.send_message
           {% endif %}
         data:
           message: >

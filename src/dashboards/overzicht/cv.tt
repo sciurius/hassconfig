@@ -7,20 +7,22 @@ state_color: true
 
 entities:
 
-  - entity: sensor.boiler_status_text
+  - type: custom:multiple-entity-row
+    entity: binary_sensor.boiler_heatingactive
     name: Status
+    entities:
+      - entity: sensor.boiler_status_text
+        name: false
 
   - entity: sensor.boiler_syspress
     name: Waterdruk
 
-  - entity: sensor.boiler_curflowtemp
+  - type: custom:multiple-entity-row
+    entity: sensor.boiler_curflowtemp
     name: Watertemperatuur
-
-  - entity: sensor.boiler_heatingtemp
-    name: Instelling
-
-  - entity: binary_sensor.boiler_heatingactive
-    name: Brander
+    secondary_info:
+      entity: sensor.boiler_heatingtemp
+      name: Instelling
 
   - type: conditional
     conditions:

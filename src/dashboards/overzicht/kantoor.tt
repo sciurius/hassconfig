@@ -81,9 +81,14 @@ entities:
       icon: mdi:radiator
       name: Timer
 
-  - entity: switch.kantoorkacheltje
-    icon: mdi:heat-wave
-    name: Kantoorkacheltje
+  - type: conditional
+    conditions:
+      - entity: switch.kantoorkacheltje
+        state_not: "unavailable"
+    row:
+      entity: switch.kantoorkacheltje
+      icon: mdi:heat-wave
+      name: Kantoorkacheltje
 
   - type: conditional
     conditions:
@@ -98,5 +103,10 @@ entities:
     name: Printer
     icon: mdi:printer
 
-  - entity: light.bulb01
-    name: Media Center actief
+  - type: conditional
+    conditions:
+      - entity: switch.slaapkamer_media_center
+        state: "on"
+    row:
+      entity: light.bulb01
+      name: Media Center actief

@@ -10,7 +10,7 @@ automation:
         entity_id: sensor.fritz_box_phone
 
     action:
-      - service: telegram_bot.send_message
+      - action: notify.info
         data:
           title: "Phone"
           message: >-

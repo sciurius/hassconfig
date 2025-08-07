@@ -29,6 +29,7 @@ cards:
         entities:
           - entity: sensor.ithocve_temperature
             name: false
+            format: precision1
           - entity: sensor.ithocve_humidity
             name: false
             format: precision0
@@ -42,8 +43,10 @@ cards:
         entities:
           - entity: sensor.badkamer_temperature
             name: false
+            format: precision1
           - entity: sensor.badkamer_humidity
             name: false
+            format: precision0
         secondary_info: Badkamer
             
       # - entity: sensor.ithocve_humidity_ppmw

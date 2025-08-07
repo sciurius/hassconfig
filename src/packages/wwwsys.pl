@@ -75,9 +75,9 @@ automation:
     trigger:
       - platform: numeric_state
         entity_id: sensor.www_disk_inuse
-        above: 97
+        above: 98
     action:
-      - service: telegram_bot.send_message
+      - action: notify.default
         data:
           message: "WWW system vol: {{ trigger.to_state.state }} %"
     mode: single

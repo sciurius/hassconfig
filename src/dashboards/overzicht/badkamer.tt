@@ -27,26 +27,26 @@ entities:
       name: Warm water
       icon: mdi:shower
 
-  - type: custom:template-entity-row
-    entity: sensor.ems_esp_shower_duration
-    name: Douche
-    state: >-
-      {{ states('sensor.ems_esp_shower_duration')|int|
-         timestamp_custom('%-M\'%S"') }}
-    secondary: >-
-      {{ as_timestamp(states('sensor.ems_esp_shower_timestamp'))  |
-         timestamp_custom('%-d %b %-H:%M') }}
-    hide_unavailable: true
+#  - type: custom:template-entity-row
+#    entity: sensor.ems_esp_shower_duration
+#    name: Douche
+#    state: >-
+#      {{ states('sensor.ems_esp_shower_duration')|int|
+#         timestamp_custom('%-M\'%S"') }}
+#    secondary: >-
+#      {{ as_timestamp(states('sensor.ems_esp_shower_timestamp'))  |
+#         timestamp_custom('%-d %b %-H:%M') }}
+#    hide_unavailable: true
       
-  - type: conditional
-    conditions:
-      - entity: sensor.douche
-        state_not: "unavailable"
-    row:
-      entity: sensor.douche
-      type: custom:multiple-entity-row
-      name: Vochttoename
-      icon: mdi:water-percent
+#  - type: conditional
+#    conditions:
+#      - entity: sensor.douche
+#        state_not: "unavailable"
+#    row:
+#      entity: sensor.douche
+#      type: custom:multiple-entity-row
+#      name: Vochttoename
+#      icon: mdi:water-percent
 
   - type: conditional
     conditions:
@@ -149,5 +149,10 @@ entities:
       icon: mdi:radiator
       name: Timer
     
-  - entity: input_boolean.badkamerverwarming_on_doorbell
-    name: Deurbel actief
+  - type: conditional
+    conditions:
+      - entity: switch.badkamer_verwarming
+        state_not: unavailable
+    row:
+      entity: input_boolean.badkamerverwarming_on_doorbell
+      name: Deurbel actief

@@ -115,7 +115,7 @@ automation:
           {{ states('sensor.aeg_oven_displaytemperature')|int - states('sensor.aeg_oven_targettemperature')|int }}
         above: -1
     action:
-      - service: telegram_bot.send_message
+      - action: notify.default
         data:
           message: >
             Oven op temperatuur ({{ states('sensor.aeg_oven_displaytemperature') }} °C na

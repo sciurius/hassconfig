@@ -188,7 +188,7 @@ automation:
       - service: notify.notify
         data:
           message: Shelley temperature high!
-      - service: telegram_bot.send_message
+      - action: notify.default
         data:
           message: Shelley temperature {{ states('sensor.shelly1l_1_tasmota_analog_temperature')
             }} °C

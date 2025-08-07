@@ -78,10 +78,6 @@ automation:
         entity_id: input_select.mc
       data:
         option: Offline
-    - service: telegram_bot.send_message
-      data:
-        message: Media Center Offline
-        disable_notification: true
     mode: single
 
   - alias: Media Center Offline
@@ -98,15 +94,6 @@ automation:
       target:
         entity_id: light.slaapkamermc_signals
     mode: single
-
-  - alias: Media Center On/Off Notification
-    id: '1649157769378'
-    description: ''
-    use_blueprint:
-      path: device_onoff_notification.yaml
-      input:
-        dev_ent: switch.slaapkamer_media_center
-        friendly_name: Slaapkamer Media Center
 
   - alias: Media Center State
     id: '1644499122291'

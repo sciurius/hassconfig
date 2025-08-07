@@ -37,7 +37,8 @@ views:
   - title: Woonkamer
     cards:
       - !include overzicht/woonkamer.yaml
-      - !include overzicht/woonkamer_wand.yaml
+      - !include overzicht/woonkamer_verlichting.yaml
+      - !include overzicht/woonkamer_overig.yaml
 
   - title: Slaapkamer
     cards:

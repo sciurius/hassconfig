@@ -148,7 +148,7 @@ automation:
       - service: notify.notify
         data:
           message: CV Pressure low!
-      - service: telegram_bot.send_message
+      - action: notify.default
         data:
           message: CV Pressure low!
 
@@ -202,7 +202,7 @@ automation:
                 data:
                   topic: ems-esp/boiler/heatingtemp
                   payload: "{{ burner_high }}"
-              - service: telegram_bot.send_message
+              - action: notify.default
                 data:
                   message: >-
                     CV: Chill {{ trigger.to_state.state|round(1) }},
@@ -222,7 +222,7 @@ automation:
                 data:
                   topic: ems-esp/boiler/heatingtemp
                   payload: "{{ burner_low }}"
-              - service: telegram_bot.send_message
+              - action: notify.default
                 data:
                   message: >-
                     CV: Chill {{ trigger.to_state.state|round(1) }},
@@ -247,7 +247,7 @@ automation:
       }}
       
     action:
-      - service: telegram_bot.send_message
+      - action: notify.info
         data:
           message: >-
             CV: Return temperature
@@ -274,7 +274,7 @@ automation:
     condition: "{{ is_state('input_boolean.emsgw_return_temp_high','on') }}"
 
     action:
-      - service: telegram_bot.send_message
+      - action: notify.info
         data:
           message: >-
             CV: Return temperature
@@ -304,7 +304,7 @@ automation:
   #       for: "00:05:00"
   #
   #   action:
-  #     - service: telegram_bot.send_message
+  #     - action: notify.default
   #       data:
   #         message: >-
   #           CV: Return temperature
@@ -324,7 +324,7 @@ automation:
         entity_id: sensor.ems_esp_shower_duration
 
     action:
-      - service: telegram_bot.send_message
+      - action: notify.default
         data:
           message: >
             Shower: {{

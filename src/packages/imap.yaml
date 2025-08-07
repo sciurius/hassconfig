@@ -29,7 +29,7 @@ automation:
       - condition: template
         value_template: "{{ trigger.to_state.state|int(0) > 0 }}"
     action:
-      - service: notify.messenger
+      - action: notify.default
         data:
           message: >-
             {% set x = (trigger.to_state.state|int(0)) %} 
@@ -50,7 +50,7 @@ automation:
       - condition: template
         value_template: "{{ trigger.to_state.state|int(0) > 0 }}"
     action:
-      - service: notify.mojore_messenger
+      - action: notify.default
         data:
           message: >-
             {% set x = (trigger.to_state.state|int(0)) %} 

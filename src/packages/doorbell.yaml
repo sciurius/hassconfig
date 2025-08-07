@@ -21,7 +21,7 @@ automation:
         importance: high
   - service: script.doorbell_alarm
     data: {}
-  - service: telegram_bot.send_message
+  - action: notify.info
     data:
       message: Ding Dong!
   mode: single

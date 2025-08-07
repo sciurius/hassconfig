@@ -23,9 +23,6 @@ entities:
       - entity: input_select.doorbell_mode
         name: false
 
-  - entity: sensor.otolift_on
-    name: Traplift
-
 [% SET colour = '"#a0a0a0"' %]
 
   - type: conditional
