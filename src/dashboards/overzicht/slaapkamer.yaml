@@ -1,0 +1,144 @@
+# Slaapkamer                            -*- hass -*8
+# New design based on tile cards.
+
+# To use card_mod, we must put it in a vertical-stack-in-card.
+type: custom:vertical-stack-in-card
+
+# Anchors
+anchors:
+  <<: &v_active
+    condition: state
+    state: active
+  <<: &v_available
+    condition: state
+    state_not:
+      - unavailable
+      - unknown
+
+# Mods: draw a border.
+card_mod:
+  style: |
+    ha-card {
+      border: 1px solid orange;
+      padding: 5px;
+    }
+
+# The cards.
+cards:
+
+  # First, a heading card with temp/hum badges.
+  # This one also had a conditional badge for the MC, but now
+  # we use funcion-dependent icons.
+  - type: heading
+    heading: Slaapkamer
+    heading_style: title
+    icon: mdi:bed
+    xxcard_mod:
+      style: "ha-card .title { font-size: 30pt; }"
+
+    badges:
+
+      # - type: entity
+      #   show_state: true
+      #   show_icon: false
+      #   entity: sensor.mc_state
+      #   visibility:
+      #     - condition: state
+      #       entity: switch.slaapkamer_media_center
+      #       state: "on"
+
+      - type: entity
+        entity: sensor.slaapkamer_temperature
+
+      - type: entity
+        entity: sensor.slaapkamer_humidity
+
+    tap_action:
+      action: navigate
+      navigation_path: /lovelace-overzicht/2
+
+  # The contents cards; 2 column grid.
+  - type: grid
+    columns: 2
+    square: false
+
+    cards:
+
+      # Media center tile.
+      # Switches on/off the media center.
+      # The icon changes with the media function selected.
+      - type: tile
+        entity: switch.slaapkamer_media_center
+        features_position: bottom
+        vertical: false
+        name: Media Center
+        icon: mdi:television
+        card_mod:
+          style: |
+            ha-card {
+              {% if states('sensor.mc_state') == 'TV' %}
+              --card-mod-icon:mdi:television;
+              {% elif states('sensor.mc_state') == 'Video' %}
+              --card-mod-icon:mdi:movie-open-outline;
+              {% elif states('sensor.mc_state') == 'ChromeCast' %}
+              --card-mod-icon:mdi:cast;
+              {% else %}
+              --card-mod-icon:mdi:television-off;
+              {% endif %};
+            }
+
+      # Avondlichtje.
+      - type: tile
+        entity: light.slaapkamer_avondlichtje
+
+      # Fan on/off switch.
+      # Only visible if the fan exists.
+      - type: tile
+        entity: switch.slaapkamer_fan
+        visibility:
+          - entity: switch.slaapkamer_fan
+            <<: *v_available
+
+      # Fan timer.
+      # Only visible when the timer is running.
+      - type: tile
+        entity: timer.slaapkamer_fan
+        name: Timer
+        icon: mdi:fan
+        visibility:
+          - entity: timer.slaapkamer_fan
+            <<: *v_active
+          - entity: switch.slaapkamer_fan
+            <<: *v_available
+
+      # Warmtedeken switch.
+      # Only visible when the warmtedeken exists.
+      - type: tile
+        entity: switch.slaapkamer_warmtedeken_joan
+        icon: mdi:radiator
+        name: Deken
+        visibility:
+          - entity: switch.slaapkamer_warmtedeken_joan
+            <<: *v_available
+
+      # Warmtedeken automation.
+      # Only visible when the warmtedeken exists.
+      - type: tile
+        entity: automation.scheduled_switch_on_warmtedeken
+        name: Deken auto
+        color: false
+        visibility:
+          - entity: switch.slaapkamer_warmtedeken_joan
+            <<: *v_available
+
+      # Warmtedeken timer.
+      # Only visible when the timer is running.
+      - type: tile
+        entity: timer.slaapkamer_warmtedeken_joan
+        name: Timer
+        icon: mdi:radiator
+        visibility:
+          - entity: timer.slaapkamer_warmtedeken_joan
+            <<: *v_active
+          - entity: switch.slaapkamer_warmtedeken_joan
+            <<: *v_available
