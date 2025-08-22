@@ -61,12 +61,17 @@ entities:
            if states('sensor.hob2hood_fan')|int>0
            else states('binary_sensor.hob2hood_light')|title }}
 
-  - entity: switch.keuken_afzuigkap
-    type: custom:template-entity-row
-    name: Afzuigkap
-    icon: mdi:fan
-    state: >-
-      {% if is_state('switch.keuken_afzuigkap','on') %}Ready{% else %}Off{% endif %}
+  - type: conditional
+    conditions:
+      - entity: switch.keuken_afzuigkap
+        state_not: unavailable
+    row:
+      entity: switch.keuken_afzuigkap
+      type: custom:template-entity-row
+      name: Afzuigkap
+      icon: mdi:fan
+      state: >-
+        {% if is_state('switch.keuken_afzuigkap','on') %}Ready{% else %}Off{% endif %}
         
   - type: conditional
     conditions:
@@ -79,12 +84,10 @@ entities:
 
   - type: conditional
     conditions:
-      - entity: sensor.aeg_oven_targettemperature
+      - entity: number.aeg_oven_targettemperature
         state_not: "unavailable"
       - entity: sensor.aeg_oven_appliancestate
         state_not: "unavailable"
-      - entity: sensor.aeg_oven_appliancestate
-        state_not: "unknown"
     row:
       entity: sensor.aeg_oven_appliancestate
       type: custom:multiple-entity-row
@@ -103,7 +106,7 @@ entities:
   - type: conditional
     conditions:
       - entity: sensor.aeg_oven_runningtime
-        state_not: "0"
+        state_not: "0.0"
       - entity: sensor.aeg_oven_runningtime
         state_not: "unavailable"
       - entity: sensor.aeg_oven_runningtime
@@ -117,9 +120,9 @@ entities:
 
   - type: conditional
     conditions:
-      - entity: sensor.aeg_oven_starttime
+      - entity: number.aeg_oven_starttime
         state_not: "-1"
-      - entity: sensor.aeg_oven_starttime
+      - entity: number.aeg_oven_starttime
         state_not: "0"
       - entity: sensor.aeg_oven_runningtime
         state_not: "unavailable"

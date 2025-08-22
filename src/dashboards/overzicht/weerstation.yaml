@@ -37,22 +37,36 @@ entities:
         name: Bft
         unit: false
 
-  - entity: sensor.bresser51_rain
-    type: custom:multiple-entity-row
-    name: Neerslag
-    show_state: false
-    secondary_info:
-      entity: sensor.bresser51_rain_168h
-      name: false
-    entities:
-      - entity: sensor.bresser51_rain_24h
-        name: 24u
-        hide_unavailable: true
-        hide_if: 0
-      - entity: sensor.bresser51_rain_1h
-        name: uur
-        hide_unavailable: true
-        hide_if: 0
+  - type: conditional
+    conditions:
+      - condition: or
+        conditions:
+          - condition: numeric_state
+            entity: sensor.bresser51_rain_168h
+            above: 0
+          - condition: numeric_state
+            entity: sensor.bresser51_rain_24h
+            above: 0
+          - condition: numeric_state
+            entity: sensor.bresser51_rain_1h
+            above: 0
+    row:
+      entity: sensor.bresser51_rain
+      type: custom:multiple-entity-row
+      name: Neerslag
+      show_state: false
+      secondary_info:
+        entity: sensor.bresser51_rain_168h
+        name: false
+      entities:
+        - entity: sensor.bresser51_rain_24h
+          name: 24u
+          hide_unavailable: true
+          hide_if: 0
+        - entity: sensor.bresser51_rain_1h
+          name: uur
+          hide_unavailable: true
+          hide_if: 0
 
   - type: conditional
     conditions:
