@@ -1,158 +1,175 @@
 # Dashboard: Overzicht -- Badkamer       -*- hass -*-
 # WARNING: This is a generated file -- DO NOT EDIT
 
-type: entities
-title: Badkamer
-state_color: true
+# To use card_mod, we must put it in a vertical-stack-in-card.
+type: custom:vertical-stack-in-card
+[% PROCESS v_anchors.tt -%]
+
+# Mods: draw a border.
 card_mod:
   style: |
     ha-card {
-      background: lightblue;
-      box-shadow: none;
-      color: black;
+      border: 2px solid lightblue;
+      padding: 5px;
     }
 
-entities:
+# The cards.
+cards:
 
-  - [% INCLUDE temphum sensor = "badkamer" %]
+  # First, a heading card with temp/hum badges.
+  - type: heading
+    heading: Badkamer
+    heading_style: title
+    icon: mdi:bathtub
+    xxcard_mod:
+      style: "ha-card .title { font-size: 30pt; }"
 
-  - type: conditional
-    conditions:
-      - entity: sensor.boiler_dhw_curflow
-        state_not: '0'
-      - entity: sensor.boiler_dhw_curflow
-        state_not: '0.0'
-    row:
-      entity: sensor.boiler_dhw_curflow
-      name: Warm water
-      icon: mdi:shower
+    badges:
 
-#  - type: custom:template-entity-row
-#    entity: sensor.ems_esp_shower_duration
-#    name: Douche
-#    state: >-
-#      {{ states('sensor.ems_esp_shower_duration')|int|
-#         timestamp_custom('%-M\'%S"') }}
-#    secondary: >-
-#      {{ as_timestamp(states('sensor.ems_esp_shower_timestamp'))  |
-#         timestamp_custom('%-d %b %-H:%M') }}
-#    hide_unavailable: true
-      
-#  - type: conditional
-#    conditions:
-#      - entity: sensor.douche
-#        state_not: "unavailable"
-#    row:
-#      entity: sensor.douche
-#      type: custom:multiple-entity-row
-#      name: Vochttoename
-#      icon: mdi:water-percent
+      - type: entity
+        entity: sensor.badkamer_temperature
 
-  - type: conditional
-    conditions:
-      - entity: sensor.ithocve_fan_info
-        state_not: "unavailable"
-    row:
-      entity: sensor.ithocve_fan_speed
-      type: custom:multiple-entity-row
-      name: Afzuiging
-      show_state: false
-      entities:
-        - entity: sensor.ithocve_fan_info
-          name: false
-        - entity: sensor.ithocve_fan_speed
-          name: false
-          format: precision0
-      secondary_info:
+      - type: entity
+        entity: sensor.badkamer_humidity
+
+    tap_action:
+      action: navigate
+      navigation_path: /lovelace-overzicht/3
+
+  - type: grid
+    columns: 2
+    square: false
+    cards:
+
+      - type: tile
+        entity: light.badkamer_verlichting
+        name: Verlichting
+        icon: mdi:dome-light
+        visibility:
+          - entity: light.badkamer_verlichting
+            <<: *v_available
+
+      - type: tile
+        entity: sensor.uit
+        name: Verlichting
+        icon: mdi:dome-light
+        visibility:
+          - entity: light.badkamer_verlichting
+            condition: state
+            state: unavailable
+
+      - type: tile
+        entity: sensor.ithocve_fan_speed_status
+        name: Afzuiging
+        icon: mdi:fan
+        visibility:
+          - entity: sensor.ithocve_fan_speed_status
+            condition: numeric_state
+            above: 0
+        card_mod:
+          style:
+            .: |
+              ha-card {
+                {% if states('sensor.ithocve_fan_info') == 'auto' %}
+                --card-mod-icon:mdi:fan-auto
+                {% elif states('sensor.ithocve_fan_info') == 'high' %}
+                --card-mod-icon:mdi:fan-speed-3
+                {% elif states('sensor.ithocve_fan_info') == 'low' %}
+                --card-mod-icon:mdi:fan-speed-1
+                {% elif states('sensor.ithocve_fan_info') == 'timer 1' %}
+                --card-mod-icon:mdi:fan-clock
+                {% elif states('sensor.ithocve_fan_info') == 'timer 2' %}
+                --card-mod-icon:mdi:fan-clock
+                {% elif states('sensor.ithocve_fan_info') == 'timer 3' %}
+                --card-mod-icon:mdi:fan-clock
+                {% else %}
+                --card-mod-icon:mdi:fan
+                {% endif %};
+              }
+            ha-tile-info$: |
+              .secondary {
+                {% if (states('sensor.ithocve_fan_speed')|int) <= 0 %} display: none; {% endif %}
+              }
+
+      - type: tile
         entity: sensor.ithocve_ventilation_setpoint
-        name: instelling
+        name: Instelling
+        icon: mdi:fan
+        visibility:
+          - entity: sensor.ithocve_ventilation_setpoint
+            condition: numeric_state
+            above: -1
 
-  - type: conditional
-    conditions:
-      - entity: sensor.ithocve_fan_info
-        state: "unavailable"
-    row:
-      entity: switch.psw10
-      name: Afzuiging
-      icon: mdi:fan
+      - type: tile
+        entity: switch.psw10
+        name: Reset
+        icon: mdi:fan-off
+        visibility:
+          - entity: sensor.ithocve_fan_info
+            condition: state
+            state: unavailable
 
-  - type: conditional
-    conditions:
-      - entity: sensor.ithocve_fan_remaining_time
-        state_not: "0"
-      - entity: sensor.ithocve_fan_remaining_time
-        state_not: "unavailable"
-    row:
-      entity: sensor.ithocve_fan_remaining_time
-      name: Fan Timer
+      - type: tile
+        entity: sensor.ithocve_fan_remaining_time
+        name: Fan Timer
+        visibility:
+          - entity: sensor.ithocve_fan_remaining_time
+            <<: *v_available
+          - entity: sensor.ithocve_fan_remaining_time
+            condition: numeric_state
+            above: 0
+  
+      - type: tile
+        entity: sensor.boiler_dhw_curflow
+        name: Warm water
+        icon: mdi:shower
+        visibility:
+          - entity: sensor.boiler_dhw_curflow
+            <<: *v_available
+          - entity: sensor.boiler_dhw_curflow
+            condition: numeric_state
+            above: 0
 
-  - type: conditional
-    conditions:
-      - entity: light.badkamer_verlichting
-        state: unavailable
-    row:
-      entity: sensor.uit
-      name: Verlichting
-      icon: mdi:dome-light
+      - type: tile
+        entity: switch.badkamer_verwarming
+        name: Verwarming
+        visibility:
+          - entity: switch.badkamer_verwarming
+            condition: state
+            state: "on"
+        card_mod:
+          style:
+            ha-tile-info$: |
+              .secondary {
+                visibility: hidden;
+              }
+              .secondary:before {
+                visibility: visible;
+                content: "{{ states('sensor.badkamer_verwarming_energy_power') }}"
+              }
+            
+      - type: tile
+        entity: switch.badkamer_verwarming
+        name: Verwarming
+        icon: mdi:radiator
+        visibility:
+          - entity: switch.badkamer_verwarming
+            condition: state
+            state: "off"
 
-  - type: conditional
-    conditions:
-      - entity: light.badkamer_verlichting
-        state_not: unavailable
-    row:
-      entity: light.badkamer_verlichting
-      name: Verlichting
-      icon: mdi:dome-light
+      - type: tile
+        entity: timer.badkamer_verwarming
+        icon: mdi:radiator
+        name: Timer
+        visibility:
+          - entity: timer.badkamer_verwarming
+            <<: *v_active
+            
+      - type: tile
+        entity: input_boolean.badkamerverwarming_on_doorbell
+        name: Deurbel actief
+        visibility:
+          - entity: switch.badkamer_verwarming
+            <<: *v_available
 
-#  - type: conditional
-#    conditions:
-#      - entity: switch.badkamer_verwarming
-#        state: unavailable
-#    row:
-#      entity: sensor.uit
-#      icon: mdi:radiator
-#      name: Verwarming
 
-  - type: conditional
-    conditions:
-      - entity: switch.badkamer_verwarming
-        state: "on"
-    row:
-      type: custom:multiple-entity-row
-      entity: switch.badkamer_verwarming
-      name: Verwarming
-      icon: mdi:radiator
-      toggle: true
-      entities:
-        - entity: sensor.badkamer_verwarming_energy_power
-          name: false
-
-  - type: conditional
-    conditions:
-      - entity: switch.badkamer_verwarming
-        state: "off"
-    row:
-      type: custom:multiple-entity-row
-      entity: switch.badkamer_verwarming
-      name: Verwarming
-      icon: mdi:radiator
-      toggle: true
-      state_color: false
-      entities: []
-
-  - type: conditional
-    conditions:
-      - entity: timer.badkamer_verwarming
-        state: active
-    row:
-      entity: timer.badkamer_verwarming
-      icon: mdi:radiator
-      name: Timer
-    
-  - type: conditional
-    conditions:
-      - entity: switch.badkamer_verwarming
-        state_not: unavailable
-    row:
-      entity: input_boolean.badkamerverwarming_on_doorbell
-      name: Deurbel actief
