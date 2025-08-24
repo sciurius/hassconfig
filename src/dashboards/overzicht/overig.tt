@@ -1,15 +1,33 @@
 # Dashboard: Overzicht -- Overig               -*- hass -*-
 # WARNING: This is a generated file -- DO NOT EDIT
 
-type: entities
-title: Overig
+# To use card_mod, we must put it in a vertical-stack-in-card.
+type: custom:vertical-stack-in-card
 
-entities:
-  [
-    [% FOREACH item IN [ "bijkeuken", "kelder", "kruipruimte", "zolder", "garage", "achterkamer" ];
-   INCLUDE temphum sensor = item, label = item.ucfirst;
-   ", " UNLESS loop.last;
-   END %]
+# Mods: draw a border.
+card_mod:
+  style: |
+    ha-card {
+      border: 2px solid grey50;
+      padding: 5px;
+    }
 
-]
-  
+# The cards.
+cards:
+
+  # First, a heading card.
+  - type: heading
+    heading: Overig
+    heading_style: title
+    icon: mdi:cog-box
+
+  - type: entities
+    title: false
+    entities:
+      [
+      [% FOREACH item IN [ "bijkeuken", "kelder", "kruipruimte", "zolder", "garage", "achterkamer" ];
+      INCLUDE temphum sensor = item, label = item.ucfirst;
+      ", " UNLESS loop.last;
+      END %]
+      ]
+
