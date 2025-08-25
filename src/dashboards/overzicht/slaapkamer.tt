@@ -3,16 +3,7 @@
 
 # To use card_mod, we must put it in a vertical-stack-in-card.
 type: custom:vertical-stack-in-card
-
-# Anchors
-_anchor_v_active: &v_active
-    condition: state
-    state: active
-_anchor_v_available: &v_available
-    condition: state
-    state_not:
-      - unavailable
-      - unknown
+[% PROCESS v_anchors.tt -%]
 
 # Mods: draw a border.
 card_mod:
