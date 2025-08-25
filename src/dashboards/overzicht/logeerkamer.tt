@@ -1,27 +1,51 @@
 # Dashboard: Overzicht -- Logeerkamer       -*- hass -*-
 # WARNING: This is a generated file -- DO NOT EDIT
 
-type: entities
-title: Logeerkamer
-state_color: true
+# To use card_mod, we must put it in a vertical-stack-in-card.
+type: custom:vertical-stack-in-card
+[% PROCESS v_anchors.tt -%]
 
-entities:
+# Mods: draw a border.
+# We do not want padding for the entities, but it is
+# nice for the heading. So no padding here,
+card_mod:
+  style: |
+    ha-card {
+      border: 2px solid #D0D0D0;
+      padding: 5px;
+    }
 
-  - type: conditional
-    conditions:
-      - entity: light.logeerkamer_verlichting
-        state: unavailable
-    row:
-      entity: sensor.uit
-      name: Verlichting
-      icon: mdi:dome-light
+# The cards.
+cards:
 
-  - type: conditional
-    conditions:
-      - entity: light.logeerkamer_verlichting
-        state_not: unavailable
-    row:
-      entity: light.logeerkamer_verlichting
-      name: Verlichting
-      icon: mdi:dome-light
+  # First, a heading card.
+  - type: heading
+    heading: Logeerkamer
+    heading_style: title
+    icon: mdi:bed-empty
+    tap_action:
+      action: navigate
+      navigation_path: /lovelace-overzicht/4
 
+  # Then the tiles in a grid.
+  - type: grid
+    columns: 2
+    square: false
+    cards:
+
+      - type: tile
+        entity: light.logeerkamer_verlichting
+        name: Verlichting
+        icon: mdi:dome-light
+        visibility:
+          - entity: light.logeerkamer_verlichting
+            <<: *v_available
+
+      - type: tile
+        entity: sensor.uit
+        name: Verlichting
+        icon: mdi:dome-light
+        visibility:
+          - entity: light.logeerkamer_verlichting
+            condition: state
+            state: unavailable

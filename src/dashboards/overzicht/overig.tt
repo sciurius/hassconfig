@@ -10,7 +10,7 @@ type: custom:vertical-stack-in-card
 card_mod:
   style: |
     ha-card {
-      border: 2px solid grey50;
+      border: 2px solid #D0D0D0;
     }
 
 # The cards.
