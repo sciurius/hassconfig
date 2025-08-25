@@ -5,11 +5,12 @@
 type: custom:vertical-stack-in-card
 
 # Mods: draw a border.
+# We do not want padding for the entities, but it is
+# nice for the heading. So no padding here,
 card_mod:
   style: |
     ha-card {
       border: 2px solid grey50;
-      padding: 5px;
     }
 
 # The cards.
@@ -20,9 +21,19 @@ cards:
     heading: Overig
     heading_style: title
     icon: mdi:cog-box
+    card_mod:
+      style: |
+        ha-card {
+          padding: 5px 0px 5px 5px !important;
+        }
 
   - type: entities
     title: false
+    card_mod:
+      style: |
+        ha-card {
+          margin: 0px !important;
+        }
     entities:
       [
       [% FOREACH item IN [ "bijkeuken", "kelder", "kruipruimte", "zolder", "garage", "achterkamer" ];
