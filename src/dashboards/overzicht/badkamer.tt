@@ -90,15 +90,18 @@ cards:
               .secondary {
                 {% if (states('sensor.ithocve_fan_speed')|int) <= 0 %} display: none; {% endif %}
               }
+              .secondary:after {
+                content: "{% if (states('sensor.ithocve_ventilation_setpoint')|int) > 0 %}({{ states('sensor.ithocve_ventilation_setpoint') }}%){% endif %}"
+              }
 
-      - type: tile
-        entity: sensor.ithocve_ventilation_setpoint
-        name: Instelling
-        icon: mdi:fan
-        visibility:
-          - entity: sensor.ithocve_ventilation_setpoint
-            condition: numeric_state
-            above: -1
+     # - type: tile
+     #   entity: sensor.ithocve_ventilation_setpoint
+     #   name: Instelling
+     #   icon: mdi:fan
+     #   visibility:
+     #     - entity: sensor.ithocve_ventilation_setpoint
+     #       condition: numeric_state
+     #       above: -1
 
       - type: tile
         entity: switch.psw10

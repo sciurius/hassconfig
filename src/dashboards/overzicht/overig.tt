@@ -24,7 +24,7 @@ cards:
     card_mod:
       style: |
         ha-card {
-          padding: 5px 0px 5px 5px !important;
+          padding: 5px 5px 0px 5px !important;
         }
 
   - type: entities
@@ -33,6 +33,7 @@ cards:
       style: |
         ha-card {
           margin: 0px !important;
+          padding: 0px !important;
         }
     entities:
       [
