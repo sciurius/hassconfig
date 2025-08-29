@@ -153,3 +153,13 @@ cards:
           - entity: switch.slaapkamer_media_center
             condition: state
             state: "on"
+        card_mod:
+          style:
+            ha-tile-info$: |
+              .secondary {
+                visibility: hidden;
+              }
+              .secondary:before {
+                visibility: visible;
+                content: "{{ states('sensor.mc_state') }}";
+              }
