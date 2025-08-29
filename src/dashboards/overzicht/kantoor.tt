@@ -1,112 +1,155 @@
 # Dashboard: Overzicht -- Kantoor       -*- hass -*-
 # WARNING: This is a generated file -- DO NOT EDIT
 
-type: entities
-title: Kantoor
-state_color: true
-show_header_toggle: false
+# To use card_mod, we must put it in a vertical-stack-in-card.
+type: custom:vertical-stack-in-card
+[% PROCESS v_anchors.tt -%]
 
-entities:
+# Mods: draw a border.
+card_mod:
+  style: |
+    ha-card {
+      border: 2px solid #D0D0D0;
+      padding: 5px;
+    }
 
-  - [% INCLUDE temphum sensor = "kantoor" %]
+# The cards.
+cards:
 
-  - type: custom:template-entity-row
-    entity: binary_sensor.home_assistant_website_update_available
-    condition: >-
-      {{ is_state('binary_sensor.home_assistant_website_update_available','on') }}
-    state: >-
-      {% if ( is_state('binary_sensor.home_assistant_website_update_available','on') ) %}
-      Update available
-      {% else %}
-      Up-to-date
-      {% endif %}
-    active: >-
-      {{ is_state('binary_sensor.home_assistant_website_update_available','on') }}
-    tap_action: |
-      {
-      "action": "url",
-      "url_path": "{{ state_attr('sensor.home_assistant_website','release_notes') }}"
-      }
-    name: HASS Software
+  # First, a heading card with temp/hum badges.
+  - type: heading
+    heading: Kantoor
+    heading_style: title
+    icon: mdi:account-network
+    xxcard_mod:
+      style: "ha-card .title { font-size: 30pt; }"
 
-  - entity: sensor.systems_wan_uptime
-    type: custom:template-entity-row
-    name: WAN Up
-    icon: mdi:wan
-    color: >-
-      {{ "red" if states('sensor.systems_wan_uptime')|int<86400 else "green" }}
-    state: >-
-      {% from 'relative_time_plus.jinja' import relative_time_plus %}
-      {{ relative_time_plus(states('sensor.systems_wan_uptime'),parts=2,abbr=true,compare_date=0)|replace(" and ",", ")}}
+    badges:
 
-  - entity: sensor.home_assistant_website
-    name: Hass Software
+      - type: entity
+        entity: sensor.kantoor_temperature
 
-  - entity: sensor.nas1_volume_1_volume_used
-    type: custom:multiple-entity-row
-    name: NAS1
-    secondary_info:
-      entity: sensor.nas1_volume_1_status
-      name: Status
+      - type: entity
+        entity: sensor.kantoor_humidity
 
-  - entity: sensor.nextcloud_free_space
-    type: custom:multiple-entity-row
-    name: NextCloud
-    icon: mdi:cloud
-    unit: "GiB free"
-    secondary_info:
-      entity: sensor.nextcloud_nextcloud_system_version
-      name: Version
+    tap_action:
+      action: navigate
+      navigation_path: /lovelace-overzicht/6
+
+  - type: grid
+    columns: 2
+    square: false
+    cards:
+
+      - type: tile
+        entity: binary_sensor.home_assistant_website_update_available
+        name: HASS Software
+        visibility:
+          - entity: binary_sensor.home_assistant_website_update_available
+            condition: state
+            state: "on"
+        tap_action:
+          action: url,
+          url_path: "{{ state_attr('sensor.home_assistant_website','release_notes') }}"
+        card_mod:
+          style:
+            ha-tile-info$: |
+              .secondary {
+                visibility: hidden;
+              }
+              .secondary:before {
+                visibility: visible;
+                content: 'Update available';
+              }
+
+      - type: tile
+        entity: sensor.systems_wan_uptime
+        name: WAN Up
+        icon: mdi:wan
+        card_mod:
+          style:
+            .: |
+              ha-card {
+                {% if states('sensor.systems_wan_uptime')|int<86400 %}
+                --card-mod-icon-color: red
+                {% endif %};
+              }
+            ha-tile-info$: |
+              .secondary {
+                visibility: hidden;
+              }
+              .secondary:before {
+                visibility: visible;
+                content: "{% from 'relative_time_plus.jinja' import relative_time_plus %}{{ relative_time_plus(states('sensor.systems_wan_uptime'),parts=2,abbr=true,compare_date=0)|replace(" and ",", ")}}";
+              }
+
+      - type: tile
+        entity: sensor.home_assistant_website
+        name: Hass Software
+
+      - type: tile
+        entity: sensor.nas1_volume_1_volume_used
+        name: NAS1
+
+      - type: tile
+        entity: sensor.nextcloud_free_space
+        name: NextCloud
+        icon: mdi:cloud
+        unit: "GiB free"
     
-  - entity: sensor.www_disk_inuse
-    type: custom:template-entity-row
-    name: WWW Server
-    icon: mdi:cloud
-    color: >-
-      {{ "red" if states('sensor.www_disk_inuse')|int>=98 else
-         "orange" if states('sensor.www_disk_inuse')|int>95 else "none" }}
-    state: "{{ states('sensor.www_disk_inuse') }} %"
-    secondary_info: Disk space
+      - type: tile
+        entity: sensor.www_disk_inuse
+        name: WWW Server
+        icon: mdi:cloud
+        card_mod:
+          style:
+            .: |
+              ha-card {
+                {% if states('sensor.www_disk_inuse')|int >= 98 %}
+                --card-mod-icon-color: red
+                {% elif states('sensor.www_disk_inuse')|int >= 96 %}
+                --card-mod-icon-color: orange
+                {% endif %};
+              }
     
-  - entity: switch.radiatorfans
-    name: Radiator fans
-    icon: mdi:fan
+      - type: tile
+        entity: switch.radiatorfans
+        name: Radiator fans
+        icon: mdi:fan
 
-  - type: conditional
-    conditions:
-      - entity: timer.radiatorfans
-        state: active
-    row:
-      entity: timer.radiatorfans
-      icon: mdi:radiator
-      name: Timer
+      - type: tile
+        entity: timer.radiatorfans
+        icon: mdi:radiator
+        name: Timer
+        visibility:
+          - entity: timer.radiatorfans
+            <<: *v_active
 
-  - type: conditional
-    conditions:
-      - entity: switch.kantoorkacheltje
-        state_not: "unavailable"
-    row:
-      entity: switch.kantoorkacheltje
-      icon: mdi:heat-wave
-      name: Kantoorkacheltje
+      - type: tile
+        entity: switch.kantoorkacheltje
+        icon: mdi:heat-wave
+        name: Kantoorkacheltje
+        visibility:
+          - entity: switch.kantoorkacheltje
+            <<: *v_available
 
-  - type: conditional
-    conditions:
-      - entity: timer.kantoorkacheltje
-        state: active
-    row:
-      entity: timer.kantoorkacheltje
-      icon: mdi:heat-wave
-      name: Timer
+      - type: tile
+        entity: timer.kantoorkacheltje
+        icon: mdi:radiator
+        name: Timer
+        visibility:
+          - entity: timer.kantoorkacheltje
+            <<: *v_active
     
-  - entity: switch.psw03
-    name: Printer
-    icon: mdi:printer
+      - type: tile
+        entity: switch.psw03
+        name: Printer
+        icon: mdi:printer
 
-  - type: conditional
-    conditions:
-      - entity: switch.slaapkamer_media_center
-        state: "on"
-    row:
-      entity: light.bulb01
-      name: Media Center actief
+      - type: tile
+        entity: light.bulb01
+        name: Media Center actief
+        visibility:
+          - entity: switch.slaapkamer_media_center
+            condition: state
+            state: "on"

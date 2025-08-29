@@ -1,186 +1,207 @@
 # Dashboard: Overzicht -- Keuken      -*- hass -*-
 # WARNING: This is a generated file -- DO NOT EDIT
 
-type: entities
-title: Keuken
-state_color: true
-show_header_toggle: false
+# To use card_mod, we must put it in a vertical-stack-in-card.
+type: custom:vertical-stack-in-card
+[% PROCESS v_anchors.tt -%]
 
-entities:
+# Mods: draw a border.
+card_mod:
+  style: |
+    ha-card {
+      border: 2px solid #D0D0D0;
+      padding: 5px;
+    }
 
-  - [% INCLUDE temphum sensor = "keuken" %]
+# The cards.
+cards:
 
-  - type: custom:fold-entity-row
-    head:
-      entity: light.keuken_aanrecht_verlichting
-      name: Aanrecht
-      icon: mdi:ceiling-light-multiple-outline
-      tap_action:
-        action: call-service
-        service: mqtt.publish
-        data:
-          topic: cmnd/tasm19/add1
-          payload: 1
-    entities:
-      - entity: light.keuken_aanrecht_groot
-        name: Groot
-      - entity: light.keuken_aanrecht_klein
-        name: Klein
+  # First, a heading card with temp/hum badges.
+  - type: heading
+    heading: Keuken
+    heading_style: title
+    icon: mdi:countertop
+    xxcard_mod:
+      style: "ha-card .title { font-size: 30pt; }"
 
-  - type: custom:fold-entity-row
-    head:
-      name: Kookplaat
-      icon: mdi:wall-sconce-flat-outline
-      entity: light.keuken_kook_verlichting
-      tap_action:
-        action: call-service
-        service: mqtt.publish
-        data:
-          topic: cmnd/tasm22/add1
-          payload: 1
-    entities:
-      - entity: light.keuken_kook_links
-        name: Links
-      - entity: light.keuken_kook_rechts
-        name: Rechts
-      
-  - type: conditional
-    conditions:
-      - entity: binary_sensor.hob2hood_light
-        state: "on"
-    row:
-      type: custom:template-entity-row
-      entity: binary_sensor.hob2hood_light
-      name: Kookplaat
-      icon: mdi:radiator
-      color: >-
-        {{ "red" if states('sensor.hob2hood_fan')|int>1 else
-           "orange" if states('sensor.hob2hood_fan')|int>0 else "green" }}
-      state: >-
-        {{ states('sensor.hob2hood_fan')|int
-           if states('sensor.hob2hood_fan')|int>0
-           else states('binary_sensor.hob2hood_light')|title }}
+    badges:
 
-  - type: conditional
-    conditions:
-      - entity: switch.keuken_afzuigkap
-        state_not: unavailable
-    row:
-      entity: switch.keuken_afzuigkap
-      type: custom:template-entity-row
-      name: Afzuigkap
-      icon: mdi:fan
-      state: >-
-        {% if is_state('switch.keuken_afzuigkap','on') %}Ready{% else %}Off{% endif %}
+      - type: entity
+        entity: sensor.keuken_temperature
+
+      - type: entity
+        entity: sensor.keuken_humidity
+
+    tap_action:
+      action: navigate
+      navigation_path: /lovelace-overzicht/7
+
+  - type: grid
+    columns: 2
+    square: false
+    cards:
+
+      - type: tile
+        entity: light.keuken_aanrecht_verlichting
+        name: Aanrecht
+        icon: mdi:ceiling-light-multiple-outline
+        icon_tap_action:
+          action: call-service
+          service: mqtt.publish
+          data:
+            topic: cmnd/tasm19/add1
+            payload: 1
+
+      - type: tile
+        entity: light.keuken_kook_verlichting
+        name: Kookplaat
+        icon: mdi:wall-sconce-flat-outline
+        icon_tap_action:
+          action: call-service
+          service: mqtt.publish
+          data:
+            topic: cmnd/tasm22/add1
+            payload: 1
+
+
+#   - type: conditional
+#     conditions:
+#       - entity: binary_sensor.hob2hood_light
+#         state: "on"
+#     row:
+#       type: custom:template-entity-row
+#       entity: binary_sensor.hob2hood_light
+#       name: Kookplaat
+#       icon: mdi:radiator
+#       color: >-
+#         {{ "red" if states('sensor.hob2hood_fan')|int>1 else
+#            "orange" if states('sensor.hob2hood_fan')|int>0 else "green" }}
+#       state: >-
+#         {{ states('sensor.hob2hood_fan')|int
+#            if states('sensor.hob2hood_fan')|int>0
+#            else states('binary_sensor.hob2hood_light')|title }}
+
+      - type: tile
+        visibility:
+          - entity: switch.keuken_afzuigkap
+            <<: *v_available
+        name: Afzuigkap
+        icon: mdi:fan
+        card_mod:
+          style:
+            ha-tile-info$: |
+              .secondary {
+                visibility: hidden;
+              }
+              .secondary:before {
+                visibility: visible;
+                content: "{% if is_state('switch.keuken_afzuigkap','on') %}Ready{% else %}Off{% endif %}"
         
-  - type: conditional
-    conditions:
-      - entity: timer.keuken_afzuigkap
-        state: active
-    row:
-      entity: timer.keuken_afzuigkap
-      icon: mdi:fan
-      name: Timer
+      - type: tile
+        entity: timer.keuken_afzuigkap
+        icon: mdi:fan
+        name: Timer
+        visibility:
+          - entity: timer.keuken_afzuigkap
+            <<: *v_active
 
-  - type: conditional
-    conditions:
-      - entity: number.aeg_oven_targettemperature
-        state_not: "unavailable"
-      - entity: sensor.aeg_oven_appliancestate
-        state_not: "unavailable"
-    row:
-      entity: sensor.aeg_oven_appliancestate
-      type: custom:multiple-entity-row
-      name: Oven
-      icon: mdi:toaster-oven
-      show_state: false
-      secondary_info:
-        entity: sensor.aeg_oven_appliancestate
-        name: false
-      entities:
-        - entity: sensor.aeg_oven_targettemperature
-          name: target
-        - entity: sensor.aeg_oven_displaytemperature
-          name: temp
+      - type: tile
+        entity: sensor.aeg_oven_targettemperature
+        name: Oven
+        color: red
+        visibility:
+          - entity: sensor.aeg_oven_targettemperature
+            <<: *v_available
+          - entity: sensor.aeg_oven_appliancestate
+            condition: state
+            state: "Running"
+        card_mod:
+          style:
+            ha-tile-info$: |
+              .secondary {
+                visibility: hidden;
+              }
+              .secondary:before {
+                visibility: visible;
+                content: "{{ states('sensor.aeg_oven_displaytemperature') }} / {{ states('sensor.aeg_oven_targettemperature')|int }} °C"
 
-  - type: conditional
-    conditions:
-      - entity: sensor.aeg_oven_runningtime
-        state_not: "0.0"
-      - entity: sensor.aeg_oven_runningtime
-        state_not: "unavailable"
-      - entity: sensor.aeg_oven_runningtime
-        state_not: "unknown"
-    row:
-      type: custom:multiple-entity-row
-      entity: sensor.aeg_oven_runningtime
-      entities:
-        - entity: sensor.aeg_oven_timetoend
-          name: Stopt over
+      - type: tile
+        entity: sensor.aeg_oven_starttime
+        name: Oven start
+        visibility:
+          - entity: sensor.aeg_oven_starttime
+            <<: *v_available
+          - entity: sensor.aeg_oven_starttime
+            condition: numeric_state
+            above: 0
 
-  - type: conditional
-    conditions:
-      - entity: number.aeg_oven_starttime
-        state_not: "-1"
-      - entity: number.aeg_oven_starttime
-        state_not: "0"
-      - entity: sensor.aeg_oven_runningtime
-        state_not: "unavailable"
-      - entity: sensor.aeg_oven_runningtime
-        state_not: "unknown"
-    row:
-      type: custom:multiple-entity-row
-      entity: sensor.aeg_oven_runningtime
-      entities:
-        - entity: sensor.aeg_oven_starttime
-          name: start
+      - type: tile
+        entity: sensor.aeg_oven_runningtime
+        name: Oven
+        visibility:
+          - entity: sensor.aeg_oven_runningtime
+            <<: *v_available
+          - entity: sensor.aeg_oven_runningtime
+            condition: numeric_state
+            above: 0
 
-[%#        
-  - type: conditional
-    conditions:
-      - condition: numeric_state
-        entity: sensor.keukenboiler_energy_power
-        above: 1
-      - entity: switch.keukenboiler
-        state: "on"
-    row:
-      type: custom:multiple-entity-row
-      entity: switch.keukenboiler
-      name: Boiler
-      icon: mdi:water-boiler
-      toggle: true
-      entities:
-        - entity: sensor.keukenboiler_energy_power
-          name: false
+      - type: tile
+        entity: sensor.aeg_oven_timetoend
+        name: Stopt over
+        visibility:
+          - entity: sensor.aeg_oven_timetoend
+            <<: *v_available
+          - entity: sensor.aeg_oven_timetoend
+            condition: numeric_state
+            above: 0
 
-  - type: conditional
-    conditions:
-      - condition: numeric_state
-        entity: sensor.keukenboiler_energy_power
-        below: 1
-      - entity: switch.keukenboiler
-        state: "on"
-    row:
-      type: custom:multiple-entity-row
-      entity: switch.keukenboiler
-      name: Boiler
-      icon: mdi:water-boiler
-      toggle: true
-      state_color: false
-      entities:
-        - entity: sensor.keukenboiler_energy_power
-          name: false
 
-  - type: conditional
-    conditions:
-      - entity: switch.keukenboiler
-        state: "off"
-    row:
-      type: custom:multiple-entity-row
-      entity: switch.keukenboiler
-      name: Boiler
-      icon: mdi:water-boiler-off
-      toggle: true
-      state_color: false
+# [%#        
+#   - type: conditional
+#     conditions:
+#       - condition: numeric_state
+#         entity: sensor.keukenboiler_energy_power
+#         above: 1
+#       - entity: switch.keukenboiler
+#         state: "on"
+#     row:
+#       type: custom:multiple-entity-row
+#       entity: switch.keukenboiler
+#       name: Boiler
+#       icon: mdi:water-boiler
+#       toggle: true
+#       entities:
+#         - entity: sensor.keukenboiler_energy_power
+#           name: false
 
-%]
+#   - type: conditional
+#     conditions:
+#       - condition: numeric_state
+#         entity: sensor.keukenboiler_energy_power
+#         below: 1
+#       - entity: switch.keukenboiler
+#         state: "on"
+#     row:
+#       type: custom:multiple-entity-row
+#       entity: switch.keukenboiler
+#       name: Boiler
+#       icon: mdi:water-boiler
+#       toggle: true
+#       state_color: false
+#       entities:
+#         - entity: sensor.keukenboiler_energy_power
+#           name: false
+
+#   - type: conditional
+#     conditions:
+#       - entity: switch.keukenboiler
+#         state: "off"
+#     row:
+#       type: custom:multiple-entity-row
+#       entity: switch.keukenboiler
+#       name: Boiler
+#       icon: mdi:water-boiler-off
+#       toggle: true
+#       state_color: false
+
+# %]
