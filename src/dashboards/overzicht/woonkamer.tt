@@ -41,6 +41,16 @@ cards:
       - type: tile
         entity: climate.thermostat_hc1
         name: Thermostaat
+        card_mod:
+          style:
+            ha-tile-info$: |
+              .secondary {
+                visibility: hidden;
+              }
+              .secondary:before {
+                visibility: visible;
+                content: '{{ states("sensor.thermostat_setting") }} °C ({{ states('select.thermostat_hc1_mode')|capitalize }})';
+              }
 
       - type: tile
         entity: binary_sensor.illuminated

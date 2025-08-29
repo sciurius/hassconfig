@@ -1,82 +1,121 @@
 # Dashboard: Overzicht -- CV       -*- hass -*-
 # WARNING: This is a generated file -- DO NOT EDIT
 
-type: entities
-title: CV
-state_color: true
+# To use card_mod, we must put it in a vertical-stack-in-card.
+type: custom:vertical-stack-in-card
+[% PROCESS v_anchors.tt -%]
 
-entities:
+# Mods: draw a border.
+card_mod:
+  style: |
+    ha-card {
+      border: 2px solid #D0D0D0;
+      padding: 5px;
+    }
 
-  - type: custom:multiple-entity-row
-    entity: binary_sensor.boiler_heatingactive
-    name: Status
-    entities:
-      - entity: sensor.boiler_status_text
-        name: false
+# The cards.
+cards:
 
-  - entity: sensor.boiler_syspress
-    name: Waterdruk
+  # First, a heading card with badges.
+  - type: heading
+    heading: CV
+    heading_style: title
+    icon: mdi:heating-coil
+    xxcard_mod:
+      style: "ha-card .title { font-size: 30pt; }"
+    tap_action:
+      action: navigate
+      navigation_path: /lovelace-overzicht/8
 
-  - type: custom:multiple-entity-row
-    entity: sensor.boiler_curflowtemp
-    name: Watertemperatuur
-    secondary_info:
-      entity: sensor.boiler_heatingtemp
-      name: Instelling
+    badges:
 
-  - type: conditional
-    conditions:
-      - entity: sensor.thermostat_party_time
-        state_not: "unavailable"
-      - entity: sensor.thermostat_party_time
-        state_not: "unknown"
-      - entity: sensor.thermostat_party_time
-        state_not: "0"
-    row:
-        entity: sensor.thermostat_party_time
-        name: Party
+      - type: entity
+        entity: sensor.boiler_heatingtemp
 
-  - type: conditional
-    conditions:
-      - entity: sensor.thermostat_pause_time
-        state_not: "unavailable"
-      - entity: sensor.thermostat_pause_time
-        state_not: "unknown"
-      - entity: sensor.thermostat_pause_time
-        state_not: "0"
-    row:
-        entity: sensor.thermostat_pause_time
-        name: Pause
+      - type: entity
+        entity: sensor.boiler_curflowtemp
+
+  - type: grid
+    columns: 2
+    square: false
+    cards:
+
+      - type: tile
+        entity: binary_sensor.boiler_heatingactive
+        name: Status
+        card_mod:
+          style:
+            ha-tile-info$: |
+              .secondary {
+                visibility: hidden;
+              }
+              .secondary:before {
+                visibility: visible;
+                content: '{{ states("sensor.boiler_status_text") }}';
+              }
+
+      - type: tile
+        entity: climate.thermostat_hc1
+        name: Thermostaat
+        card_mod:
+          style:
+            ha-tile-info$: |
+              .secondary {
+                visibility: hidden;
+              }
+              .secondary:before {
+                visibility: visible;
+                content: '{{ states("sensor.thermostat_setting") }} °C ({{ states('select.thermostat_hc1_mode')|capitalize }})';
+              }
+
+      - type: tile
+        entity: sensor.boiler_syspress
+        name: Waterdruk
+        card_mod:
+          style:
+            .: |
+              ha-card {
+                {% if (states('sensor.boiler_syspress')|float) < 1.0 %}
+                --card-mod-icon-color: red
+                {% endif %};
+              }
+
+[% FOREACH i IN [ "party" "pause" ] %]
+      - type: tile
+        entity: sensor.thermostat_[% i %]_time
+        name: [% i.ucfirst %]
+        visibility:
+          - entity: sensor.thermostat_[% i %]_time
+            condition: state
+            state_not: "0"
+            <<: *v_available
+[% END %]
 
 [% FOREACH i IN [ 1 2 3 4 5 6 7 ] %]
-  - type: conditional
-    conditions:
-      - entity: sensor.thermostat_vacation_[% i %]
-        state_not: "unavailable"
-      - entity: sensor.thermostat_vacation_[% i %]
-        state_not: "unknown"
-      - entity: sensor.thermostat_vacation_[% i %]
-        state_not: "01.01.2000-01.01.2000"
-    row:
+      - type: tile
         entity: sensor.thermostat_vacation_[% i %]
         name: Vakantie[% IF i>1; " $i"; END %]
+        visibility:
+          - entity: sensor.thermostat_vacation_[% i %]
+            condition: state
+            state_not: "01.01.2000-01.01.2000"
+            <<: *v_available
 [% END %]
 
-[% IF 0 %]
-  - entity: binary_sensor.radiatorfans
-    name: Radiator fans
-    icon: mdi:fan
-
-  - type: conditional
-    conditions:
-      - entity: timer.radiatorfans
-        state: active
-    row:
-      entity: timer.radiatorfans
-      icon: mdi:radiator
-      name: Timer
+[% IF 1 %]
+      - type: tile
+        entity: timer.radiatorfans
+        name: Fans
+        icon: mdi:radiator
+        visibility:
+          - entity: timer.radiatorfans
+            <<: *v_active
 [% END %]
 
-  - type: weblink
-    url: http://phoenix.squirrel.nl:3000/d/cQ46XxeD4y/verwarming-overzicht?orgId=1
-    name: Grafieken
+      - type: tile
+        entity: sensor.uit
+        name: Grafieken
+        icon: mdi:link
+        hide_state: true
+        tap_action: url
+        url_path : http://phoenix.squirrel.nl:3000/d/cQ46XxeD4y/verwarming-overzicht?orgId=1
