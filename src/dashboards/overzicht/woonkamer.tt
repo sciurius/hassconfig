@@ -1,57 +1,88 @@
 # Dashboard: Overzicht -- Media Player: osmc       -*- hass -*-
 # WARNING: This is a generated file -- DO NOT EDIT
 
-type: entities
-title: Woonkamer
-state_color: true
-show_header_toggle: false
+# To use card_mod, we must put it in a vertical-stack-in-card.
+type: custom:vertical-stack-in-card
+[% PROCESS v_anchors.tt -%]
+
+# Mods: draw a border.
 card_mod:
   style: |
     ha-card {
-      background: lightgreen;
-      box-shadow: none;
-      color: black;
+      border: 2px solid lightgreen;
+      padding: 5px;
     }
 
-entities:
+# The cards.
+cards:
 
-  - entity: climate.thermostat_hc1
-    name: Thermostaat
+  # First, a heading card with temp/hum badges.
+  - type: heading
+    heading: Woonkamer
+    heading_style: title
+    icon: mdi:sofa
+    xxcard_mod:
+      style: "ha-card .title { font-size: 30pt; }"
 
-  - type: custom:multiple-entity-row
-    entity: binary_sensor.illuminated
-    state_color: true
-    show_state: false
-    name: Licht
-    entities:
-      - entity: sensor.achterkamer_illuminance
-        name: false
+    badges:
 
-  - entity: switch.woonkamer_sound_system
-    name: Music Center
-    icon: mdi:music-circle-outline
+      - type: entity
+        entity: sensor.thermostat_hc1_currtemp
+        icon: mdi:thermometer
+    tap_action:
+      action: navigate
+      navigation_path: /lovelace-overzicht/1
 
-  - entity: light.woonkamer_tafel
-    name: Tafel
-    icon: mdi:ceiling-light
+  - type: grid
+    columns: 2
+    square: false
+    cards:
 
-  - type: divider
+      - type: tile
+        entity: climate.thermostat_hc1
+        name: Thermostaat
 
-  - entity: sensor.sm_a320fl_battery_level
-    type: custom:multiple-entity-row
-    show_state: false
-    name: false
-    icon: mdi:battery
-    entities:
-      - entity: sensor.sm_a320fl_battery_level
-        name: Smotty
-      - entity: sensor.sm_t830_battery_level
-        name: GlaxS4
-      - entity: sensor.glaxs7_battery_level
-        name: GlaxS7
-      - entity: sensor.joni_battery_level
-        name: Joni
-      - entity: sensor.battery_tz200
-        name: TZ200
-        hide_if: unknown
+      - type: tile
+        entity: binary_sensor.illuminated
+        name: Licht
+        card_mod:
+          style:
+            ha-tile-info$: |
+              .secondary {
+                visibility: hidden;
+              }
+              .secondary:before {
+                visibility: visible;
+                content: '{{ states("sensor.achterkamer_illuminance") }} lx';
+              }
 
+      - type: tile
+        entity: switch.woonkamer_sound_system
+        name: Music Center
+        icon: mdi:music-circle-outline
+
+      - type: tile
+        entity: light.woonkamer_tafel
+        name: Tafel
+        icon: mdi:ceiling-light
+
+[% BLOCK batt -%]
+type: tile
+        entity: sensor.[% sensor %]
+        name: [% name %]
+        vertical: true
+        visibility:
+          - entity: sensor.[% sensor %]
+            <<: *v_available
+[% END -%]
+
+  - type: grid
+    columns: 4
+    square: false
+    cards:
+
+      - [% PROCESS batt name = "Smotty" sensor = "sm_a320fl_battery_level" %]
+      - [% PROCESS batt name = "GlaxS4" sensor = "sm_t830_battery_level" %]
+      - [% PROCESS batt name = "GlaxS7" sensor = "glaxs7_battery_level" %]
+      - [% PROCESS batt name = "Joni"   sensor = "joni_battery_level" %]
+      - [% PROCESS batt name = "TZ200"  sensor = "battery_tz200" %]
