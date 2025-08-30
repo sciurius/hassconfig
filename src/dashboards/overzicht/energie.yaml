@@ -10,8 +10,8 @@ entities:
   - type: custom:template-entity-row
     entity: sensor.energie_balans
     color: >-
-      {{ "lime" if (states('sensor.energie_balans')|float)>0.2 else
-         "yellow" if (states('sensor.energie_balans')|float)>0 else "none" }}
+      {{ "#4caf50" if (states('sensor.energie_balans')|float)>0.2 else
+         "#ffc107" if (states('sensor.energie_balans')|float)>0 else "none" }}
     state: >-
       {{ states('sensor.energie_balans')|round(3) }} kW
 
