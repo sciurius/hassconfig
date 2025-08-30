@@ -1,0 +1,11 @@
+[%# Standard anchors, used for visibility in tiles. -%]
+
+# Anchors. Used for visibility in tiles.
+_anchor_v_active: &v_active
+    condition: state
+    state: active
+_anchor_v_available: &v_available
+    condition: state
+    state_not:
+      - unavailable
+      - unknown
