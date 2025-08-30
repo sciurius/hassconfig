@@ -29,6 +29,14 @@ cards:
       - type: entity
         entity: sensor.thermostat_hc1_currtemp
         icon: mdi:thermometer
+        tap_action:
+          action: more-info
+      - type: entity
+        entity: light.woonkamer_tafel
+        name: Tafel
+        tap_action:
+          action: toggle
+
     tap_action:
       action: navigate
       navigation_path: /lovelace-overzicht/1
@@ -52,29 +60,29 @@ cards:
                 content: '{{ states("sensor.thermostat_setting") }} °C ({{ states('select.thermostat_hc1_mode')|capitalize }})';
               }
 
-      - type: tile
-        entity: binary_sensor.illuminated
-        name: Licht
-        card_mod:
-          style:
-            ha-tile-info$: |
-              .secondary {
-                visibility: hidden;
-              }
-              .secondary:before {
-                visibility: visible;
-                content: '{{ states("sensor.achterkamer_illuminance") }} lx';
-              }
+      # - type: tile
+      #   entity: binary_sensor.illuminated
+      #   name: Licht
+      #   card_mod:
+      #     style:
+      #       ha-tile-info$: |
+      #         .secondary {
+      #           visibility: hidden;
+      #         }
+      #         .secondary:before {
+      #           visibility: visible;
+      #           content: '{{ states("sensor.achterkamer_illuminance") }} lx';
+      #         }
 
       - type: tile
         entity: switch.woonkamer_sound_system
         name: Music Center
         icon: mdi:music-circle-outline
 
-      - type: tile
-        entity: light.woonkamer_tafel
-        name: Tafel
-        icon: mdi:ceiling-light
+      # - type: tile
+      #   entity: light.woonkamer_tafel
+      #   name: Tafel
+      #   icon: mdi:ceiling-light
 
 [% BLOCK batt -%]
 type: tile

@@ -34,6 +34,9 @@ entities:
       attribute: st
       name: Nacht
 
+  - entity: sensor.achterkamer_illuminance
+    name: Licht
+
   - type: custom:multiple-entity-row
     entity: sensor.knmi_pressure
     name: Luchtdruk
