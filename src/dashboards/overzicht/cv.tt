@@ -88,6 +88,7 @@ cards:
           - entity: sensor.thermostat_[% i %]_time
             condition: state
             state_not: "0"
+          - entity: sensor.thermostat_[% i %]_time
             <<: *v_available
 [% END %]
 
@@ -99,6 +100,7 @@ cards:
           - entity: sensor.thermostat_vacation_[% i %]
             condition: state
             state_not: "01.01.2000-01.01.2000"
+          - entity: sensor.thermostat_vacation_[% i %]
             <<: *v_available
 [% END %]
 

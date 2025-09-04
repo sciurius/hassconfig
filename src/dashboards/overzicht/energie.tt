@@ -1,4 +1,7 @@
 # Dashboard: Overzicht -- Energie       -*- hass -*-
+# WARNING: This is a generated file -- DO NOT EDIT
+
+[% PROCESS colours.tt -%]
 
 type: entities
 title: Energie
@@ -10,8 +13,8 @@ entities:
   - type: custom:template-entity-row
     entity: sensor.energie_balans
     color: >-
-      {{ "#4caf50" if (states('sensor.energie_balans')|float)>0.2 else
-         "#ffc107" if (states('sensor.energie_balans')|float)>0 else "none" }}
+      {{ "[% dash.col.green %]" if (states('sensor.energie_balans')|float)>0.2 else
+         "[% dash.col.yellow %]" if (states('sensor.energie_balans')|float)>0 else "none" }}
     state: >-
       {{ states('sensor.energie_balans')|round(3) }} kW
 
@@ -104,9 +107,9 @@ entities:
     entity: switch.extboiler
     toggle: true
     color: |
-      {% if is_state('input_boolean.extboiler_hot','on') %} green
+      {% if is_state('input_boolean.extboiler_hot','on') %} [% dash.col.green %]
       {% else %}
-        {% if (states('sensor.extboiler_energy_power')|float) > 1 %} yellow
+        {% if (states('sensor.extboiler_energy_power')|float) > 1 %} [% dash.col.yellow %]
         {% else %} none
         {% endif %}
       {% endif %}

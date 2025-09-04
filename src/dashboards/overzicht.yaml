@@ -18,10 +18,11 @@ views:
       - type: energy-distribution
         link_dashboard: false
 
+      - !include overzicht/woonkamer.yaml
+
       - !include overzicht/energie.yaml
 
       - !include overzicht/kantoor.yaml
-      - !include overzicht/woonkamer.yaml
       - !include overzicht/keuken.yaml
       - !include overzicht/cv.yaml
       - !include overzicht/slaapkamer.yaml

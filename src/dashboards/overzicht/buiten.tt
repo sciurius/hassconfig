@@ -34,8 +34,14 @@ entities:
       attribute: st
       name: Nacht
 
-  - entity: sensor.achterkamer_illuminance
+  - type: custom:multiple-entity-row
+    entity: binary_sensor.illuminated
+    state_color: true
+    show_state: false
     name: Licht
+    entities:
+      - entity: sensor.achterkamer_illuminance
+        name: false
 
   - type: custom:multiple-entity-row
     entity: sensor.knmi_pressure
