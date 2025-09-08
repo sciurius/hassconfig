@@ -63,6 +63,28 @@ cards:
             topic: cmnd/tasm22/add1
             payload: 1
 
+      - type: tile
+        entity: sensor.keukenboiler_energy_power
+        name: Boiler
+        icon: mdi:water-boiler
+        visibility:
+          - entity: sensor.keukenboiler_energy_power
+            <<: *v_available
+
+      - type: tile
+        entity: sensor.vaatwasser_energy_power
+        name: Vaatwasser
+        icon: mdi:dishwasher
+        visibility:
+          - entity: sensor.vaatwasser_energy_power
+            <<: *v_available
+
+      - type: tile
+        entity: sensor.oven_energy_power
+        name: Oven
+        visibility:
+          - entity: sensor.oven_energy_power
+            <<: *v_available
 
 #   - type: conditional
 #     conditions:
@@ -154,7 +176,6 @@ cards:
           - entity: sensor.aeg_oven_timetoend
             condition: numeric_state
             above: 0
-
 
 # [%#        
 #   - type: conditional
