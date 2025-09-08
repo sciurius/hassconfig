@@ -108,7 +108,7 @@ automation:
       entity_id: select.slaapkamer_media_center
       to: TV
       variables:
-        color: "#4caf50"
+        color: limegreen
     - platform: state
       entity_id: select.slaapkamer_media_center
       to: Video
