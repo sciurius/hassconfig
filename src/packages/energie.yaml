@@ -111,6 +111,12 @@ template:
           states('sensor.dsmr_reading_electricity_currently_delivered')|float
           }}
 
+      - name: Computers Power
+        unique_id: computers_power
+        device_class: power
+        unit_of_measurement: kW
+        state: 0.175
+
   - binary_sensor:
       - name: Energie Overschot
         unique_id: power_energie_overschot
@@ -121,3 +127,12 @@ input_boolean:
 
   extboiler_hot:
     name: ExtBoiler Hot
+
+sensor:
+  - platform: integration
+    source: sensor.computers_power
+    name: Computers Energy
+    unique_id: computers_energy
+    round: 2
+    max_sub_interval:
+      minutes: 5
