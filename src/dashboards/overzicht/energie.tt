@@ -116,12 +116,22 @@ entities:
     secondary: |
       Verbruik {{ states('sensor.extboiler_energy_today') }} kWh
 
-  - type: custom:template-entity-row
-    name: Ext Verwarming
-    entity: switch.achterkamerkacheltje
-    toggle: true
-    secondary: |
-      Verbruik {{ states('sensor.pswm03_energy_today') }} kWh
+  - type: conditional
+    conditions:
+      - condition: numeric_state
+        entity: sensor.achterkamertje)energy_today
+        above: 1
+        entity: sensor.achterkamertje)energy_today
+        state-not:
+          - unavailable
+          - unknown
+    row:
+      type: custom:template-entity-row
+      name: Ext Verwarming
+      entity: switch.achterkamerkacheltje
+      toggle: true
+      secondary: |
+        Verbruik {{ states('sensor.achterkamerkacheltje_energy_today') }} kWh
 
   - entity: sensor.growatt_temperature
     name: Omvormer
