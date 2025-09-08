@@ -48,7 +48,7 @@ logbook:
   exclude:
     entity_globs:
       - sensor.ups_pico*
-      - sensor.system_uptime
+      - sensor.*_uptime
     entities:
       - zone.home
       - sensor.thermostat_datetime
