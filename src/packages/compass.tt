@@ -1,0 +1,17 @@
+# Package: Compass	      -*- hass -*-
+# WARNING: This is a generated file -- DO NOT EDIT
+
+template:
+  - image:
+      - name: Compass
+        unique_id: compass_arrow
+        url: >-
+          {% if states('sensor.bresser51_wind_beaufort')|int > 0 %}
+          https://hass.squirrel.nl/local/compass/arrow-{{
+          states('sensor.bresser51_wind_direction_sector')
+          }}.svg
+          {% else %}
+          https://hass.squirrel.nl/local/compass/arrow-none.svg
+          {% endif %}
+        attributes:
+          direction: "{{ states('sensor.bresser51_wind_direction_name') }}"

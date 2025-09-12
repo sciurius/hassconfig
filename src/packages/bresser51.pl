@@ -208,17 +208,22 @@ template:
         state: >-
           {{ (states('sensor.bresser51_wind_direction_sector')|int) * 22.5 }}
 
-  # {% set names = "N NNE NE ENE E ESE SE SSE S SSW SW WSW W WNW NW NNW N".split() %}
+      # Map sector to symbolic naam.
+      - name: Bresser51 Wind Direction Naam
+        unique_id: bresser51_wind_direction_naam
+        icon: mdi:compass-rose
+        state: |
+          {% set names = "N NNO NO ONO O OZO ZO ZZO Z ZZW ZW WZW W WNW NW NNW N".split() %}
+          {{ names[states('sensor.bresser51_wind_direction_sector')|int] }}
 
       # Map sector to symbolic name.
       - name: Bresser51 Wind Direction Name
         unique_id: bresser51_wind_direction_name
         icon: mdi:compass-rose
         state: |
-          {% set names = "N NNO NO ONO O OZO ZO ZZO Z ZZW ZW WZW W WNW NW NNW N".split() %}
+          {% set names = "N NNE NE ENE E ESE SE SSE S SSW SW WSW W WNW NW NNW N".split() %}
           {{ names[states('sensor.bresser51_wind_direction_sector')|int] }}
 
-  # {% set names = "N NNE NE ENE E ESE SE SSE S SSW SW WSW W WNW NW NNW N".split() %}
 
       # Wind force.
       - name: Bresser51 Wind Beaufort

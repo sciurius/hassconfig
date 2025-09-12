@@ -1,0 +1,66 @@
+# Dashboard: Overzicht -- Compass       -*- hass -*-
+# WARNING: This is a generated file -- DO NOT EDIT
+
+# To use card_mod, we must put it in a vertical-stack-in-card.
+type: custom:vertical-stack-in-card
+[% PROCESS v_anchors.tt -%]
+
+# Mods: draw a border.
+card_mod:
+  style: |
+    ha-card {
+      border: 2px solid #D0D0D0;
+      padding: 5px;
+    }
+
+# The cards.
+cards:
+
+  # First, a heading card with temp/hum badges.
+  - type: heading
+    heading: Wind
+    heading_style: title
+    icon: mdi:countertop
+    xxcard_mod:
+      style: "ha-card .title { font-size: 30pt; }"
+
+    badges:
+
+      - type: entity
+        entity: sensor.bresser51_temperature
+
+      - type: entity
+        entity: sensor.bresser51_humidity
+
+    tap_action:
+      action: navigate
+      navigation_path: /lovelace-overzicht/weerstation
+
+  - type: grid
+    columns: 2
+    square: false
+    cards:
+
+      - type: tile
+        entity: image.compass
+        name: Richting
+        show_entity_picture: true
+        # state_content: direction
+        card_mod:
+          style:
+            ha-tile-info$: |
+              .primary {
+                visibility: hidden;
+              }
+              .primary:before {
+                visibility: visible;
+                content: "{% if states('sensor.bresser51_wind_beaufort')|int > 0 %}{{ states('sensor.bresser51_wind_direction_name') }}{% else %} Windstil {% endif %}";
+              }
+              .secondary {
+                visibility: hidden;
+              }
+              .secondary:before {
+                visibility: visible;
+                content: "{% if states('sensor.bresser51_wind_beaufort')|int > 0 %}{{ states('sensor.bresser51_wind_beaufort') }} Bft{% endif %}";
+              }
+
