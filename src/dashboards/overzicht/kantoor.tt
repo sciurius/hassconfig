@@ -34,7 +34,7 @@ cards:
 
     tap_action:
       action: navigate
-      navigation_path: /lovelace-overzicht/6
+      navigation_path: /lovelace-overzicht/kantoor
 
   - type: grid
     columns: 2

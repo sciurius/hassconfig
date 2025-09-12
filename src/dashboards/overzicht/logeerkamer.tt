@@ -25,7 +25,7 @@ cards:
     icon: mdi:bed-empty
     tap_action:
       action: navigate
-      navigation_path: /lovelace-overzicht/4
+      navigation_path: /lovelace-overzicht/logeerkamer
 
   # Then the tiles in a grid.
   - type: grid

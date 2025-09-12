@@ -37,7 +37,7 @@ cards:
         }
     entities:
       [
-      [% FOREACH item IN [ "bijkeuken", "kelder", "kruipruimte", "zolder", "garage", "achterkamer" ];
+      [% FOREACH item IN [ "kelder", "kruipruimte", "zolder", "garage", "achterkamer" ];
       INCLUDE temphum sensor = item, label = item.ucfirst;
       ", " UNLESS loop.last;
       END %]

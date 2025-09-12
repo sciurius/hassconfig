@@ -4,6 +4,7 @@
 # To use card_mod, we must put it in a vertical-stack-in-card.
 type: custom:vertical-stack-in-card
 [% PROCESS v_anchors.tt -%]
+[% PROCESS power_meter.tt -%]
 
 # Mods: draw a border.
 card_mod:
@@ -45,7 +46,7 @@ cards:
 
     tap_action:
       action: navigate
-      navigation_path: /lovelace-overzicht/2
+      navigation_path: /lovelace-overzicht/slaapkamer
 
   # The contents cards; 2 column grid.
   - type: grid
@@ -90,6 +91,10 @@ cards:
       # Avondlichtje.
       - type: tile
         entity: light.slaapkamer_avondlichtje
+
+      - [% INCLUDE power_meter
+           name = "Media Center" sensor = "slaapkamer_media_center"
+           icon = "television" %]
 
       # Fan on/off switch.
       # Only visible if the fan exists.

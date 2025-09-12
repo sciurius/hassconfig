@@ -265,13 +265,13 @@ views:
 
               - type: conditional
                 conditions:
-                  - entity: switch.badkamer_verwarming
+                  - entity: switch.badkamerverwarming
                     state_not: unavailable
                 card:
                   type: custom:button-card
                   template: standard
                   variables:
                     image_on: "br-kacheltje_200.png"
-                  entity: switch.badkamer_verwarming
+                  entity: switch.badkamerverwarming
                   name: Kacheltje
                   icon: mdi:radiator

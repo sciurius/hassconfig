@@ -34,7 +34,7 @@ cards:
 
     tap_action:
       action: navigate
-      navigation_path: /lovelace-overzicht/3
+      navigation_path: /lovelace-overzicht/badkamer
 
   - type: grid
     columns: 2
@@ -134,12 +134,11 @@ cards:
             above: 0
 
       - type: tile
-        entity: switch.badkamer_verwarming
+        entity: switch.badkamerverwarming
         name: Verwarming
         visibility:
-          - entity: switch.badkamer_verwarming
-            condition: state
-            state: "on"
+          - entity: switch.badkamerverwarming
+            <<: *v_available
         card_mod:
           style:
             ha-tile-info$: |
@@ -148,31 +147,22 @@ cards:
               }
               .secondary:before {
                 visibility: visible;
-                content: "{{ states('sensor.badkamer_verwarming_energy_power') }}"
+                content: "{{ states('sensor.badkamerverwarming_energy_today') }} kWh"
               }
             
       - type: tile
-        entity: switch.badkamer_verwarming
-        name: Verwarming
-        icon: mdi:radiator
-        visibility:
-          - entity: switch.badkamer_verwarming
-            condition: state
-            state: "off"
-
-      - type: tile
-        entity: timer.badkamer_verwarming
+        entity: timer.badkamerverwarming
         icon: mdi:radiator
         name: Timer
         visibility:
-          - entity: timer.badkamer_verwarming
+          - entity: timer.badkamerverwarming
             <<: *v_active
             
       - type: tile
         entity: input_boolean.badkamerverwarming_on_doorbell
         name: Deurbel actief
         visibility:
-          - entity: switch.badkamer_verwarming
+          - entity: switch.badkamerverwarming
             <<: *v_available
 
 

@@ -25,7 +25,7 @@ cards:
       style: "ha-card .title { font-size: 30pt; }"
     tap_action:
       action: navigate
-      navigation_path: /lovelace-overzicht/8
+      navigation_path: /lovelace-overzicht/cv
 
     badges:
 
@@ -43,6 +43,7 @@ cards:
       - type: tile
         entity: binary_sensor.boiler_heatingactive
         name: Status
+        icon: url("/local/compass/arrow-s.png");
         card_mod:
           style:
             ha-tile-info$: |

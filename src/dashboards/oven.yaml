@@ -93,3 +93,14 @@ views:
               - entity: binary_sensor.aeg_oven_appliancestatus
                 name: Connected
                 icon: mdi:close-network-outline
+
+      - type: entities
+        title: Energy
+        entities:
+          - entity: sensor.oven_energy_power
+            name: Power
+          - entity: sensor.oven_energy_today
+            name: Energy Today
+          - entity: sensor.oven_energy_yesterday
+            name: Energy Yesterday
+            

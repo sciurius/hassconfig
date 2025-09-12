@@ -165,7 +165,7 @@ views:
           - [% INCLUDE button name = "deurbel",
                entity = "input_boolean.${area}verwarming_on_doorbell", icon = "mdi:cog-play-outline" %]
           - [% INCLUDE button name = "kachel",
-               entity = "switch.badkamer_verwarming", icon = "mdi:heat-wave" %]
+               entity = "switch.badkamerverwarming", icon = "mdi:heat-wave" %]
           - [% INCLUDE button name = "lamp",
                entity = "light.${area}_verlichting", icon = "mdi:dome-light" %]
 

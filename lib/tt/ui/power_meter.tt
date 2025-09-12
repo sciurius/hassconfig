@@ -1,0 +1,15 @@
+# MUST BE INCLUDEd, NOT PROCESSed.
+[% BLOCK power_meter;
+DEFAULT sensor = name.lower;
+-%]
+type: tile
+        entity: sensor.[% sensor %]_energy_today
+        name: [% name %]
+[% IF icon %]        icon: mdi:[% icon %]
+[% END %]        visibility:
+          - entity: sensor.[% sensor %]_energy_today
+            condition: numeric_state
+            above: 0
+          - entity: sensor.[% sensor %]_energy_today
+            <<: *v_available
+[% END %]

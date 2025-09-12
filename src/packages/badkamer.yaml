@@ -2,7 +2,7 @@
 
 timer:
 
-  badkamer_verwarming:
+  badkamerverwarming:
     duration: "00:30:00"
     restore: true
 
@@ -27,16 +27,16 @@ automation:
 
     trigger:
 #      - platform: numeric_state
-#        entity_id: sensor.badkamer_verwarming_energy_power
+#        entity_id: sensor.badkamerverwarming_energy_power
 #        above: 5
       - platform: state
-        entity_id: switch.badkamer_verwarming
+        entity_id: switch.badkamerverwarming
         from: 'off'
         to: 'on'
 
     action:
       - service: timer.start
-        entity_id: timer.badkamer_verwarming
+        entity_id: timer.badkamerverwarming
         data: { duration: "00:30:00" }
 
   - id: Automation__Stop_Badkamerverwarming_Timer
@@ -46,16 +46,16 @@ automation:
 
     trigger:
 #      - platform: numeric_state
-#        entity_id: sensor.badkamer_verwarming_energy_power
+#        entity_id: sensor.badkamerverwarming_energy_power
 #        below: 5
 #        for: "00:02:00"
       - platform: state
-        entity_id: switch.badkamer_verwarming
+        entity_id: switch.badkamerverwarming
         to: 'off'
 
     action:
       - service: timer.cancel
-        entity_id: timer.badkamer_verwarming
+        entity_id: timer.badkamerverwarming
 
   - id: Automation__Switch_Off_Badkamerverwarming
     alias: Switch Off Badkamerverwarming
@@ -64,10 +64,10 @@ automation:
       - platform: event
         event_type: timer.finished
         event_data:
-          entity_id: timer.badkamer_verwarming
+          entity_id: timer.badkamerverwarming
     action:
       - service: switch.turn_off
-        entity_id: switch.badkamer_verwarming
+        entity_id: switch.badkamerverwarming
 
   #### NOTE: One-shot.
   - id: Automation__Doorbell_Switch_On_Badkamerverwarming
@@ -86,7 +86,7 @@ automation:
     action:
       - service: switch.turn_on
         target:
-          entity_id: switch.badkamer_verwarming
+          entity_id: switch.badkamerverwarming
       - service: input_boolean.turn_off
         target:
           entity_id: input_boolean.badkamerverwarming_on_doorbell
@@ -120,3 +120,17 @@ automation:
           topic: itho/cmd
           payload: "{\"vremotecmd\":\"timer1\"}"
 
+template:
+  - sensor:
+      - name: Badkamerverwarming status
+        unique_id: badkamerverwarming_status
+        state: >-
+          {% if states('sensor.badkamerverwarming_energy_power')|float >1500 %}
+          Hoog
+          {% elif states('sensor.badkamerverwarming_energy_power')|float >1000 %}
+          Middel
+          {% elif states('sensor.badkamerverwarming_energy_power')|float >10 %}
+          Laag
+          {% else %}
+          Uit
+          {% endif %}

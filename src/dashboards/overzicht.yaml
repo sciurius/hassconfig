@@ -11,6 +11,7 @@ views:
       - type: vertical-stack
         cards:
           - !include bresser51/compass.yaml
+          - !include overzicht/compass.yaml
           - !include overzicht/weerstation.yaml
 
       - !include overzicht/hal.yaml
@@ -24,7 +25,9 @@ views:
 
       - !include overzicht/kantoor.yaml
       - !include overzicht/keuken.yaml
-      - !include overzicht/cv.yaml
+      - !include overzicht/bijkeuken.yaml
+#      - !include overzicht/cv.yaml
+#      - !include overzicht/cv.yaml
       - !include overzicht/slaapkamer.yaml
       - !include overzicht/badkamer.yaml
 
