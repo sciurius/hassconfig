@@ -2,16 +2,29 @@
 # WARNING: This is a generated file -- DO NOT EDIT
 
 template:
-  - image:
-      - name: Compass
-        unique_id: compass_arrow
-        url: >-
+  - sensor:
+    - name: Compass
+      unique_id: compass_arrow
+      picture: >-
+        {% if states('sensor.bresser51_wind_beaufort')|int > 0 %}
+        /local/compass/arrow-{{
+        states('sensor.bresser51_wind_direction_sector')
+        }}.svg
+        {% else %}
+        /local/compass/arrow-none.svg
+        {% endif %}
+      state: >-
+        {% if states('sensor.bresser51_wind_beaufort')|int > 0 %}
+        {{ states('sensor.bresser51_wind_direction_name') }}
+        {% else %}
+        {% endif %}
+      attributes:
+        direction: >-
           {% if states('sensor.bresser51_wind_beaufort')|int > 0 %}
-          https://hass.squirrel.nl/local/compass/arrow-{{
-          states('sensor.bresser51_wind_direction_sector')
-          }}.svg
-          {% else %}
-          https://hass.squirrel.nl/local/compass/arrow-none.svg
+          {{ states('sensor.bresser51_wind_direction_name') }}
           {% endif %}
-        attributes:
-          direction: "{{ states('sensor.bresser51_wind_direction_name') }}"
+        speed_text: >-
+          {% if states('sensor.bresser51_wind_beaufort')|int > 0 %}
+          {{ states('sensor.bresser51_wind_beaufort') }} Bft,
+          {{ states('sensor.bresser51_wind_speed') }} m/s
+          {% endif %}

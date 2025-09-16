@@ -42,10 +42,10 @@ cards:
     cards:
 
       - type: tile
-        entity: image.compass
+        entity: sensor.compass
         name: Richting
         show_entity_picture: true
-        # state_content: direction
+        state_content: speed_text
         card_mod:
           style:
             ha-tile-info$: |
@@ -54,13 +54,5 @@ cards:
               }
               .primary:before {
                 visibility: visible;
-                content: "{% if states('sensor.bresser51_wind_beaufort')|int > 0 %}{{ states('sensor.bresser51_wind_direction_name') }}{% else %} Windstil {% endif %}";
+                content: "{{ state_attr('sensor.compass','direction') }}";
               }
-              .secondary {
-                visibility: hidden;
-              }
-              .secondary:before {
-                visibility: visible;
-                content: "{% if states('sensor.bresser51_wind_beaufort')|int > 0 %}{{ states('sensor.bresser51_wind_beaufort') }} Bft{% endif %}";
-              }
-
