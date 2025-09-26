@@ -6,5 +6,12 @@ conditions:
     state: Video
 
 card:
-  type: media-control
-  entity: media_player.osmc
+  type: vertical-stack
+  cards:
+    - type: media-control
+      entity: media_player.osmc
+    - type: markdown
+      text_only: true
+      show_empty: false
+      content: >-
+        {{ states("input_text.mc_video") }}
