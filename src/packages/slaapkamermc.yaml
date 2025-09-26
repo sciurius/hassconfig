@@ -11,6 +11,11 @@ input_select:
       - "Off"
       - "Offline"
 
+input_text:
+  mc_video:
+    name: Now playing
+    initial: "<>"
+
 script:
   slaapkamermc_define_sensors:
     mode: single
