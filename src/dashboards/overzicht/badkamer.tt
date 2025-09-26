@@ -4,6 +4,8 @@
 # To use card_mod, we must put it in a vertical-stack-in-card.
 type: custom:vertical-stack-in-card
 [% PROCESS v_anchors.tt -%]
+[% PROCESS colours.tt -%]
+[% PROCESS power_meter.tt -%]
 
 # Mods: draw a border.
 card_mod:
@@ -103,14 +105,14 @@ cards:
      #       condition: numeric_state
      #       above: -1
 
-      - type: tile
-        entity: switch.psw10
-        name: Reset
-        icon: mdi:fan-off
-        visibility:
-          - entity: sensor.ithocve_fan_info
-            condition: state
-            state: unavailable
+      # - type: tile
+      #   entity: switch.badkamerafzuiging
+      #   name: Reset
+      #   icon: mdi:fan-off
+      #   visibility:
+      #     - entity: sensor.ithocve_fan_info
+      #       condition: state
+      #       state: unavailable
 
       - type: tile
         entity: sensor.ithocve_fan_remaining_time
@@ -122,6 +124,8 @@ cards:
             condition: numeric_state
             above: 0
   
+      - [% INCLUDE switching_meter name = "Afzuiging" alwayson = 1 %]
+            
       - type: tile
         entity: sensor.boiler_dhw_curflow
         name: Warm water
