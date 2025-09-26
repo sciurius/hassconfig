@@ -10,14 +10,10 @@ views:
 
       - type: vertical-stack
         cards:
-          - !include bresser51/compass.yaml
           - !include overzicht/compass.yaml
           - !include overzicht/weerstation.yaml
 
       - !include overzicht/hal.yaml
-
-      - type: energy-distribution
-        link_dashboard: false
 
       - !include overzicht/woonkamer.yaml
 
@@ -72,31 +68,21 @@ views:
     cards:
       - !include overzicht/keuken.yaml
 
-  - title: CV
+  - title: Energie
     cards:
+      - type: energy-distribution
+        link_dashboard: false
+
+      - !include overzicht/energie.yaml
+
       - !include overzicht/cv.yaml
 
   - title: Buiten
     cards:
 
+      - !include bresser51/compass.yaml
       - !include overzicht/buiten.yaml
       - !include overzicht/twilight.yaml
-
-      - type: custom:compass-card
-        header: false
-        language: nl
-        indicator_sensors:
-          - sensor: sensor.bresser51_wind_direction_sector_adjusted
-            indicator:
-              type: arrow_inward
-              show: false
-              dynamic_style:
-                sensor: sensor.bresser51_wind_speed
-                bands:
-                  - from_value: 0.1
-                    show: true
-        value_sensors:
-          - sensor: sensor.bresser51_wind_beaufort
 
       - !include overzicht/weerstation.yaml
 
@@ -108,11 +94,6 @@ views:
 
   - title: Diversen
     cards:
-      - type: energy-distribution
-        link_dashboard: false
-
-      - !include overzicht/energie.yaml
-
       - !include overzicht/laders.yaml
       - !include overzicht/overig.yaml
 
