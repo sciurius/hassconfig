@@ -194,7 +194,7 @@ automation:
               {{     trigger.from_state.state|round(0) <= threshold
                  and trigger.to_state.state  |round(0) <= threshold
                  and
-                 states('sensor.boiler_heatingtemperature')|round(0) < burner_high
+                 states('sensor.boiler_heatingtemp')|round(0) < burner_high
               }}
 
             sequence:
@@ -214,7 +214,7 @@ automation:
               {{     trigger.from_state.state|round(0) > threshold
                  and trigger.to_state.state  |round(0) > threshold
                  and
-                 states('sensor.boiler_heatingtemperature')|round(0) > burner_low
+                 states('sensor.boiler_heatingtemp')|round(0) > burner_low
               }}
 
             sequence:
