@@ -118,13 +118,9 @@ cards:
 
       # Warmtedeken switch.
       # Only visible when the warmtedeken exists.
-      - type: tile
-        entity: switch.slaapkamer_warmtedeken_joan
-        icon: mdi:radiator
-        name: Deken
-        visibility:
-          - entity: switch.slaapkamer_warmtedeken_joan
-            <<: *v_available
+      - [% INCLUDE switching_meter
+           name = "Deken" sensor = "slaapkamer_warmtedeken_joan"
+           icon = "radiator" %]
 
       # Warmtedeken automation.
       # Only visible when the warmtedeken exists.
