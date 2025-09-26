@@ -1,6 +1,7 @@
 # Dashboard: Overzicht -- Energie       -*- hass -*-
 # WARNING: This is a generated file -- DO NOT EDIT
 
+[% PROCESS v_anchors.tt -%]
 [% PROCESS colours.tt -%]
 
 type: entities
@@ -119,12 +120,10 @@ entities:
   - type: conditional
     conditions:
       - condition: numeric_state
-        entity: sensor.achterkamertje)energy_today
+        entity: sensor.achterkamerkacheltje_energy_today
         above: 1
-        entity: sensor.achterkamertje)energy_today
-        state-not:
-          - unavailable
-          - unknown
+      - entity: sensor.achterkamerkacheltje_energy_today
+        <<: *v_available
     row:
       type: custom:template-entity-row
       name: Ext Verwarming
