@@ -13,3 +13,34 @@ type: tile
           - entity: sensor.[% sensor %]_energy_today
             <<: *v_available
 [% END %]
+
+[% BLOCK switching_meter;
+DEFAULT sensor = name.lower;
+-%]
+type: tile
+        entity: switch.[% sensor %]
+        name: [% name %]
+[% IF icon %]        icon: mdi:[% icon %]
+[% END %]        visibility:
+          - entity: switch.[% sensor %]
+            <<: *v_available
+        card_mod:
+          style:
+            ha-tile-info$: |
+              .secondary {
+                visibility: hidden;
+              }
+              .secondary:before {
+                visibility: visible;
+                content: "{{ states('sensor.[% sensor %]_energy_today') }} kWh"
+              }
+[% IF alwayson %]            .: |
+              ha-card {
+                {% if states('switch.[% sensor %]') == 'on' %}
+                --card-mod-icon-color:var(--state-icon-color)
+                {% else %}
+                --card-mod-icon-color:red;
+                {% endif %}
+ 
+[% END %]
+[% END %]
