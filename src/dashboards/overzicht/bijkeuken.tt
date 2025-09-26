@@ -44,6 +44,8 @@ cards:
 
       - [% INCLUDE power_meter
            name = "Vriezer"    icon = "fridge-industrial" %]
+      - [% INCLUDE switching_meter
+           name = "AirMagBread" icon = "microwave" %]
       - [% INCLUDE power_meter
            name = "Wasmachine" icon = "washing-machine" %]
       - [% INCLUDE power_meter
