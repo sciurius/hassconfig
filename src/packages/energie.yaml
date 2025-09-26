@@ -111,11 +111,19 @@ template:
           states('sensor.dsmr_reading_electricity_currently_delivered')|float
           }}
 
+      # Constant consumption: 175W
       - name: Computers Power
         unique_id: computers_power
         device_class: power
         unit_of_measurement: kW
         state: 0.175
+
+      # Constant consumption: 8.5W
+      - name: Traplift Power
+        unique_id: traplift_power
+        device_class: power
+        unit_of_measurement: kW
+        state: 0.0085
 
   - binary_sensor:
       - name: Energie Overschot
@@ -129,10 +137,19 @@ input_boolean:
     name: ExtBoiler Hot
 
 sensor:
+
   - platform: integration
     source: sensor.computers_power
     name: Computers Energy
     unique_id: computers_energy
+    round: 2
+    max_sub_interval:
+      minutes: 5
+
+  - platform: integration
+    source: sensor.traplift_power
+    name: Traplift Energy
+    unique_id: traplift_energy
     round: 2
     max_sub_interval:
       minutes: 5
