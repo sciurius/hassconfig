@@ -18,7 +18,7 @@ cards:
 
   # First, a heading card with temp/hum badges.
   - type: heading
-    heading: Wind
+    heading: Buiten
     heading_style: title
     icon: mdi:countertop
     xxcard_mod:
@@ -34,7 +34,7 @@ cards:
 
     tap_action:
       action: navigate
-      navigation_path: /lovelace-overzicht/weerstation
+      navigation_path: /lovelace-bresser51
 
   - type: grid
     columns: 2
@@ -56,3 +56,7 @@ cards:
                 visibility: visible;
                 content: "{{ state_attr('sensor.compass','direction') }}";
               }
+
+      - type: tile
+        entity: sensor.knmi_pressure
+        name: Luchtdruk
