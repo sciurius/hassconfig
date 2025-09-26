@@ -7,7 +7,7 @@ cards:
 
 - type: conditional
   conditions:
-    - entity: switch.psw10
+    - entity: switch.afzuiging
       state: "on"
 
   card:
@@ -17,9 +17,13 @@ cards:
     show_header_toggle: false
     entities:
 
-      - entity: switch.psw10
+      - type: custom:multiple-entity-row
+        entity: switch.afzuiging
         name: Master
         icon: mdi:fan-off
+        secondary_info:
+          entity: sensor.afzuiging_energy_today
+          name: Dagverbruik
 
       - entity: sensor.ithocve_temperature
         type: custom:multiple-entity-row
@@ -129,20 +133,20 @@ cards:
 
 - type: conditional
   conditions:
-    - entity: switch.psw10
+    - entity: switch.afzuiging
       state: "off"
   card:
     type: entities
     title: Badkamerafzuiging
     show_header_toggle: false
     entities:
-      - entity: switch.psw10
+      - entity: switch.afzuiging
         name: Master
         icon: mdi:fan-off
 
 - type: conditional
   conditions:
-    - entity: switch.psw10
+    - entity: switch.afzuiging
       state: unavailable
   card:
     type: markdown
