@@ -68,8 +68,10 @@ cards:
            name = "Boiler" sensor = "keukenboiler" icon = "water-boiler" %]
       - [% INCLUDE power_meter
            name = "Vaatwasser" icon = "dishwasher" %]
-      - [% INCLUDE power_meter
+      - [% INCLUDE switching_meter
            name = "Koffie" sensor = "koffiespul" icon = "coffee-maker-outline" %]
+      - [% INCLUDE switching_meter
+           name = "Koelkast" icon = "fridge" alwayson = 1 %]
       - [% INCLUDE power_meter name = "Oven" icon = "toaster-oven" %]
 
 #   - type: conditional
