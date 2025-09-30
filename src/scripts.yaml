@@ -3,7 +3,7 @@ smotty_notify:
   variables:
     message: Message
   sequence:
-  - service: notify.mobile_app_sm_a320fl
+  - service: notify.mobile_app_sm_a366b
     data:
       message: '{{ message }}'
       data:
@@ -16,7 +16,7 @@ smotty_alarm:
   variables:
     message: Message
   sequence:
-  - service: notify.mobile_app_sm_a320fl
+  - service: notify.mobile_app_sm_a366b
     data:
       message: '{{ message }}'
       data:

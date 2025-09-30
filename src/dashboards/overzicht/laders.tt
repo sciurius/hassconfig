@@ -39,9 +39,10 @@ type: tile
             <<: *v_available
 [% END -%]
 
-      - [% PROCESS batt name = "Smotty" sensor = "sm_a320fl_battery_level" %]
+      - [% PROCESS batt name = "Largo"  sensor = "sm_a366b_battery_level" %]
       - [% PROCESS batt name = "GlaxS4" sensor = "sm_t830_battery_level" %]
       - [% PROCESS batt name = "GlaxS7" sensor = "sm_t733_battery_level" %]
       - [% PROCESS batt name = "Joni"   sensor = "joni_battery_level" %]
       - [% PROCESS batt name = "Zenny"  sensor = "zenny_battery_level" %]
+      - [% PROCESS batt name = "Smotty" sensor = "sm_a320fl_battery_level" %]
       - [% PROCESS batt name = "TZ200"  sensor = "battery_tz200" %]

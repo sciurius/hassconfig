@@ -97,7 +97,7 @@ notify:
   - platform: group
     name: Johan TTS
     services:
-      - service: mobile_app_sm_a320fl
+      - service: mobile_app_sm_a366b
         data:
           message: TTS
           data:

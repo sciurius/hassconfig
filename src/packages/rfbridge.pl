@@ -72,7 +72,7 @@ script:
 
     mode: queued
     sequence:
-      - service: notify.mobile_app_sm_a320fl
+      - service: notify.mobile_app_sm_a366b
         data:
           message: TTS
           data:
@@ -140,7 +140,7 @@ script:
 
     mode: queued
     sequence:
-      - service: notify.mobile_app_sm_a320fl
+      - service: notify.mobile_app_sm_a366b
         data:
           message: TTS
           data:

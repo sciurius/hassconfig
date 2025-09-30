@@ -97,7 +97,9 @@ automation:
     - service: light.turn_off
       data: {}
       target:
-        entity_id: light.slaapkamermc_signals
+        entity_id:
+          - light.woonkamer_heks
+          - light.bulb01
     mode: single
 
   - alias: Media Center State
