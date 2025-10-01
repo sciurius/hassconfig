@@ -46,3 +46,31 @@ type: tile
       - [% PROCESS batt name = "Zenny"  sensor = "zenny_battery_level" %]
       - [% PROCESS batt name = "Smotty" sensor = "sm_a320fl_battery_level" %]
       - [% PROCESS batt name = "TZ200"  sensor = "battery_tz200" %]
+
+      - type: tile
+        entity: timer.scootlader
+        name: Scootmobiel
+        icon: mdi:battery
+        vertical: false
+        visibility:
+          - entity: switch.scootlader
+            <<: *v_available
+        tap_action:
+          action: perform-action
+          perform_action: switch.toggle
+          target:
+            entity_id: switch.scootlader
+
+      - type: tile
+        entity: timer.fietslader
+        name: Fietslader
+        icon: mdi:battery
+        vertical: false
+        visibility:
+          - entity: switch.fietslader
+            <<: *v_available
+        tap_action:
+          action: perform-action
+          perform_action: switch.toggle
+          target:
+            entity_id: switch.fietslader

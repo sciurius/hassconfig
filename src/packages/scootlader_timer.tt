@@ -1,0 +1,20 @@
+# Scootlader (Timer)               -*- hass -*-
+# WARNING: This is a generated file -- DO NOT EDIT
+
+[% INCLUDE switchoff_timer name = "Scootlader" type = "switch"
+   duration = "03:00:00" %]
+
+  - id: Automation__Start_Scootladerverlichting_timer
+    alias: "Start Scootlader timer."
+    description: "Start Scootlader timer."
+    mode: queued
+
+    trigger:
+      - platform: state
+        entity_id: switch.scootlader
+        from: 'off'
+        to: 'on'
+
+    action:
+      - service: script.start_scootlader_timer
+
