@@ -40,9 +40,13 @@ cards:
 
       - type: entity
         entity: sensor.slaapkamer_temperature
+        tap_action:
+          action: more-info
 
       - type: entity
         entity: sensor.slaapkamer_humidity
+        tap_action:
+          action: more-info
 
     tap_action:
       action: navigate

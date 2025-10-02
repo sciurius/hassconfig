@@ -30,9 +30,13 @@ cards:
 
       - type: entity
         entity: sensor.badkamer_temperature
+        tap_action:
+          action: more-info
 
       - type: entity
         entity: sensor.badkamer_humidity
+        tap_action:
+          action: more-info
 
     tap_action:
       action: navigate

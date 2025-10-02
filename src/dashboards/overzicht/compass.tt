@@ -28,9 +28,13 @@ cards:
 
       - type: entity
         entity: sensor.bresser51_temperature
+        tap_action:
+          action: more-info
 
       - type: entity
         entity: sensor.bresser51_humidity
+        tap_action:
+          action: more-info
 
     tap_action:
       action: navigate
