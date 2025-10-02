@@ -1,0 +1,21 @@
+[%
+DEFAULT sensor     = name.lower;
+DEFAULT badges     = [ "temp", "hum" ];
+DEFAULT tempsensor = sensor _ "_temperature";
+DEFAULT humsensor  = sensor _ "_humidity";
+sensors = { temp => tempsensor, hum => humsensor };
+-%]
+type: heading
+    heading: [% name %]
+    heading_style: title
+    icon: mdi:[% icon %]
+
+[% IF badges %]    badges:
+[% FOR badge IN badges; %]
+      - type: entity
+        entity: sensor.[% ${"${badge}sensor"} %]
+        tap_action:
+          action: more-info
+
+[%- END -%]
+[%- END -%]

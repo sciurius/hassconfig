@@ -17,23 +17,15 @@ card_mod:
 cards:
 
   # First, a heading card with badges.
-  - type: heading
-    heading: CV
-    heading_style: title
-    icon: mdi:heating-coil
-    xxcard_mod:
-      style: "ha-card .title { font-size: 30pt; }"
+  - [% INCLUDE heading_card.tt
+       name       = "CV"
+       icon       = "heating_coil"
+       badges     = [ "temp", "cur" ]
+       tempsensor = "boiler_heatingtemp"
+       cursensor  = "boiler_curflowtemp" %]
     tap_action:
       action: navigate
       navigation_path: /lovelace-overzicht/cv
-
-    badges:
-
-      - type: entity
-        entity: sensor.boiler_heatingtemp
-
-      - type: entity
-        entity: sensor.boiler_curflowtemp
 
   - type: grid
     columns: 2

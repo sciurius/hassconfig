@@ -17,20 +17,10 @@ card_mod:
 cards:
 
   # First, a heading card with temp/hum badges.
-  - type: heading
-    heading: Woonkamer
-    heading_style: title
-    icon: mdi:sofa
-    xxcard_mod:
-      style: "ha-card .title { font-size: 30pt; }"
-
-    badges:
-
-      - type: entity
-        entity: sensor.thermostat_hc1_currtemp
-        icon: mdi:thermometer
-        tap_action:
-          action: more-info
+  - [% INCLUDE heading_card.tt name = "Woonkamer"
+                               icon = "sofa"
+                               tempsensor = "thermostat_hc1_currtemp"
+                               badges = [ "temp" ] %]
       - type: entity
         entity: light.woonkamer_tafel
         name: Tafel

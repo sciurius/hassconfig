@@ -19,25 +19,7 @@ card_mod:
 cards:
 
   # First, a heading card with temp/hum badges.
-  - type: heading
-    heading: Badkamer
-    heading_style: title
-    icon: mdi:bathtub
-    xxcard_mod:
-      style: "ha-card .title { font-size: 30pt; }"
-
-    badges:
-
-      - type: entity
-        entity: sensor.badkamer_temperature
-        tap_action:
-          action: more-info
-
-      - type: entity
-        entity: sensor.badkamer_humidity
-        tap_action:
-          action: more-info
-
+  - [% INCLUDE heading_card.tt name = "Badkamer" icon = "bathtub" %]
     tap_action:
       action: navigate
       navigation_path: /lovelace-overzicht/badkamer

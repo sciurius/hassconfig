@@ -20,34 +20,7 @@ cards:
   # First, a heading card with temp/hum badges.
   # This one also had a conditional badge for the MC, but now
   # we use funcion-dependent icons.
-  - type: heading
-    heading: Slaapkamer
-    heading_style: title
-    icon: mdi:bed
-    xxcard_mod:
-      style: "ha-card .title { font-size: 30pt; }"
-
-    badges:
-
-      # - type: entity
-      #   show_state: true
-      #   show_icon: false
-      #   entity: sensor.mc_state
-      #   visibility:
-      #     - condition: state
-      #       entity: switch.slaapkamer_media_center
-      #       state: "on"
-
-      - type: entity
-        entity: sensor.slaapkamer_temperature
-        tap_action:
-          action: more-info
-
-      - type: entity
-        entity: sensor.slaapkamer_humidity
-        tap_action:
-          action: more-info
-
+  - [% INCLUDE heading_card.tt name = "Slaapkamer" icon = "bed" %]
     tap_action:
       action: navigate
       navigation_path: /lovelace-overzicht/slaapkamer

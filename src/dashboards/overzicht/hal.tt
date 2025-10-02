@@ -18,25 +18,7 @@ card_mod:
 cards:
 
   # First, a heading card with temp/hum badges.
-  - type: heading
-    heading: Hal
-    heading_style: title
-    icon: mdi:coat-rack
-    xxcard_mod:
-      style: "ha-card .title { font-size: 30pt; }"
-
-    badges:
-
-      - type: entity
-        entity: sensor.hal_temperature
-        tap_action:
-          action: more-info
-
-      - type: entity
-        entity: sensor.hal_humidity
-        tap_action:
-          action: more-info
-
+  - [% INCLUDE heading_card.tt name = "Hal" icon = "coat-rack" %]
     tap_action:
       action: navigate
       navigation_path: /lovelace-overzicht/hal

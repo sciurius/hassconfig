@@ -18,28 +18,7 @@ card_mod:
 cards:
 
   # First, a heading card with temp/hum badges.
-  - type: heading
-    heading: Kantoor
-    heading_style: title
-    icon: mdi:account-network
-    xxcard_mod:
-      style: "ha-card .title { font-size: 30pt; }"
-
-    badges:
-
-      - type: entity
-        entity: sensor.kantoor_temperature
-        tap_action:
-          action: more-info
-
-      - type: entity
-        entity: sensor.kantoor_humidity
-        tap_action:
-          action: more-info
-
-    tap_action:
-      action: navigate
-      navigation_path: /lovelace-overzicht/kantoor
+  - [% INCLUDE heading_card.tt name = "kantoor" icon = "account-network" %]
 
   - type: grid
     columns: 2
