@@ -1,24 +1,18 @@
 # Dashboard: Overzicht -- Kantoor       -*- hass -*-
 # WARNING: This is a generated file -- DO NOT EDIT
 
-# To use card_mod, we must put it in a vertical-stack-in-card.
-type: custom:vertical-stack-in-card
 [% PROCESS v_anchors.tt -%]
 [% PROCESS colours.tt -%]
 
-# Mods: draw a border.
-card_mod:
-  style: |
-    ha-card {
-      border: 2px solid [% dash.grey %];
-      padding: 5px;
-    }
+[% INCLUDE stack.tt %]
 
 # The cards.
 cards:
 
   # First, a heading card with temp/hum badges.
-  - [% INCLUDE heading_card.tt name = "kantoor" icon = "account-network" %]
+  - [% INCLUDE heading_card.tt
+       name = "kantoor"
+       icon = "account-network" %]
 
   - type: grid
     columns: 2
@@ -40,32 +34,23 @@ cards:
             ha-tile-info$: |
               .secondary {
                 visibility: hidden;
+                display: inline;
               }
               .secondary:before {
                 visibility: visible;
                 content: 'Update available';
               }
 
-      - type: tile
+      - type: custom:mushroom-template-card
         entity: sensor.systems_wan_uptime
-        name: WAN Up
+        primary: WAN Up
         icon: mdi:wan
-        card_mod:
-          style:
-            .: |
-              ha-card {
-                {% if states('sensor.systems_wan_uptime')|int<86400 %}
-                --card-mod-icon-color: red
-                {% endif %};
-              }
-            ha-tile-info$: |
-              .secondary {
-                visibility: hidden;
-              }
-              .secondary:before {
-                visibility: visible;
-                content: "{% from 'relative_time_plus.jinja' import relative_time_plus %}{{ relative_time_plus(states('sensor.systems_wan_uptime'),parts=2,abbr=true,compare_date=0)|replace(" and ",", ")}}";
-              }
+        color: |
+          {{ 'red' if states('sensor.systems_wan_uptime')|int<86400
+             else 'var(--state-icon-color)' }}
+        secondary: |
+          {% from 'relative_time_plus.jinja' import relative_time_plus %}
+          {{ relative_time_plus(states('sensor.systems_wan_uptime'),parts=2,abbr=true,compare_date=0)|replace(" and ",", ")}}
 
       - type: tile
         entity: sensor.home_assistant_website
@@ -81,20 +66,15 @@ cards:
         icon: mdi:cloud
         unit: "GiB free"
     
-      - type: tile
+      - type: custom:mushroom-template-card
         entity: sensor.www_disk_inuse
-        name: WWW Server
+        primary: WWW Server
+        secondary: "{{ states('sensor.www_disk_inuse') }} %"
         icon: mdi:cloud
-        card_mod:
-          style:
-            .: |
-              ha-card {
-                {% if states('sensor.www_disk_inuse')|int >= 98 %}
-                --card-mod-icon-color: red
-                {% elif states('sensor.www_disk_inuse')|int >= 96 %}
-                --card-mod-icon-color: orange
-                {% endif %};
-              }
+        color: |
+          {% if states('sensor.www_disk_inuse')|int >= 98 %} red
+          {% elif states('sensor.www_disk_inuse')|int >= 96 %} orange
+          {% else %} var(--state-icon-color) {% endif %}
     
       - type: tile
         entity: switch.radiatorfans
@@ -130,21 +110,13 @@ cards:
         name: Printer
         icon: mdi:printer
 
-      - type: tile
+      - type: custom:mushroom-template-card
         entity: light.bulb01
-        name: Media Center actief
+        primary: Media Center actief
+        secondary: "{{ states('sensor.mc_state') }}"
+        icon: mdi:television
+        color: "rgb({{ state_attr('light.bulb01','rgb_color')|join(',') }})"
         visibility:
           - entity: switch.slaapkamer_media_center
             condition: state
             state: "on"
-        card_mod:
-          style:
-            ha-tile-info$: |
-              .secondary {
-                visibility: hidden;
-              }
-              .secondary:before {
-                visibility: visible;
-                content: "{{ states('sensor.mc_state') }}";
-              }
-          

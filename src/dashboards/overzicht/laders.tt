@@ -1,28 +1,18 @@
 # Dashboard: Overzicht -- Laders       -*- hass -*-
 # WARNING: This is a generated file -- DO NOT EDIT
 
-# To use card_mod, we must put it in a vertical-stack-in-card.
-type: custom:vertical-stack-in-card
 [% PROCESS v_anchors.tt -%]
 
-# Mods: draw a border.
-card_mod:
-  style: |
-    ha-card {
-      border: 2px solid lightgreen;
-      padding: 5px;
-    }
+[% INCLUDE stack.tt color = 'lightgreen' %]
 
 # The cards.
 cards:
 
   # First, a heading card with temp/hum badges.
-  - type: heading
-    heading: Laders
-    heading_style: title
-    icon: mdi:power-plug-battery
-    xxcard_mod:
-      style: "ha-card .title { font-size: 30pt; }"
+  - [% INCLUDE heading_card.tt
+       name   = "Laders"
+       icon   = "power-plug-battery"
+       badges = [] %]
 
   - type: grid
     columns: 2

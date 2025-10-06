@@ -98,8 +98,7 @@ automation:
       data: {}
       target:
         entity_id:
-          - light.woonkamer_heks
-          - light.bulb01
+          - light.slaapkamermc_signals
     mode: single
 
   - alias: Media Center State
@@ -134,6 +133,12 @@ automation:
         brightness_pct: 60
       target:
         entity_id: light.woonkamer_heks
+    - service: light.turn_on
+      data:
+        color_name: '{{ color }}'
+        brightness_pct: 60
+      target:
+        entity_id: light.woonkamer_wand_l
     - service: light.turn_on
       data:
         color_name: '{{ color }}'

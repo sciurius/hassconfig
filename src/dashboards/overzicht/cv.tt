@@ -1,17 +1,9 @@
 # Dashboard: Overzicht -- CV       -*- hass -*-
 # WARNING: This is a generated file -- DO NOT EDIT
 
-# To use card_mod, we must put it in a vertical-stack-in-card.
-type: custom:vertical-stack-in-card
 [% PROCESS v_anchors.tt -%]
 
-# Mods: draw a border.
-card_mod:
-  style: |
-    ha-card {
-      border: 2px solid #D0D0D0;
-      padding: 5px;
-    }
+[% INCLUDE stack.tt %]
 
 # The cards.
 cards:
@@ -20,12 +12,10 @@ cards:
   - [% INCLUDE heading_card.tt
        name       = "CV"
        icon       = "heating_coil"
-       badges     = [ "temp", "cur" ]
-       tempsensor = "boiler_heatingtemp"
-       cursensor  = "boiler_curflowtemp" %]
-    tap_action:
-      action: navigate
-      navigation_path: /lovelace-overzicht/cv
+       badges     = [ "temperature", "current" ]
+       temperature_entity = "boiler_heatingtemp"
+       current_entity     = "boiler_curflowtemp"
+       navigate   = "/lovelace-overzicht/cv" %]
 
   - type: grid
     columns: 2
@@ -41,6 +31,7 @@ cards:
             ha-tile-info$: |
               .secondary {
                 visibility: hidden;
+                display: inline;
               }
               .secondary:before {
                 visibility: visible;
@@ -55,6 +46,7 @@ cards:
             ha-tile-info$: |
               .secondary {
                 visibility: hidden;
+                display: inline;
               }
               .secondary:before {
                 visibility: visible;

@@ -1,18 +1,10 @@
 # Dashboard: Overzicht -- Slaapkamer                     -*- hass -*-
 # New design based on tile cards.
 
-# To use card_mod, we must put it in a vertical-stack-in-card.
-type: custom:vertical-stack-in-card
 [% PROCESS v_anchors.tt -%]
 [% PROCESS power_meter.tt -%]
 
-# Mods: draw a border.
-card_mod:
-  style: |
-    ha-card {
-      border: 2px solid orange;
-      padding: 5px;
-    }
+[% INCLUDE stack.tt %]
 
 # The cards.
 cards:
@@ -20,10 +12,10 @@ cards:
   # First, a heading card with temp/hum badges.
   # This one also had a conditional badge for the MC, but now
   # we use funcion-dependent icons.
-  - [% INCLUDE heading_card.tt name = "Slaapkamer" icon = "bed" %]
-    tap_action:
-      action: navigate
-      navigation_path: /lovelace-overzicht/slaapkamer
+  - [% INCLUDE heading_card.tt
+       name     = "Slaapkamer"
+       icon     = "bed"
+       navigate = "/lovelace-overzicht/slaapkamer" %]
 
   # The contents cards; 2 column grid.
   - type: grid

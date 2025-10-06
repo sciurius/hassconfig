@@ -1,31 +1,19 @@
 # Dashboard: Overzicht -- Logeerkamer       -*- hass -*-
 # WARNING: This is a generated file -- DO NOT EDIT
 
-# To use card_mod, we must put it in a vertical-stack-in-card.
-type: custom:vertical-stack-in-card
 [% PROCESS v_anchors.tt -%]
 
-# Mods: draw a border.
-# We do not want padding for the entities, but it is
-# nice for the heading. So no padding here,
-card_mod:
-  style: |
-    ha-card {
-      border: 2px solid #D0D0D0;
-      padding: 5px;
-    }
+[% INCLUDE stack.tt %]
 
 # The cards.
 cards:
 
   # First, a heading card.
-  - type: heading
-    heading: Logeerkamer
-    heading_style: title
-    icon: mdi:bed-empty
-    tap_action:
-      action: navigate
-      navigation_path: /lovelace-overzicht/logeerkamer
+  - [% INCLUDE heading_card.tt
+       name      = "Logeerkamer"
+       icon      = "bed-empty"
+       badges    = []
+       navigatie = "/lovelace-overzicht/logeerkamer" %]
 
   # Then the tiles in a grid.
   - type: grid

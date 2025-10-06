@@ -92,6 +92,7 @@ light:
     entities:
       - light.bulb01
       - light.woonkamer_heks
+      - light.woonkamer_wand_l
 
 notify:
   - platform: group

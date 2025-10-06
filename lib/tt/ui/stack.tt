@@ -1,0 +1,17 @@
+[% # -*- mode: tt; indent-tabs-mode: nil -*-
+# MUST BE INCLUDEd, NOT PROCESSed.
+
+DEFAULT color = '#D0D0D0';
+
+-%]
+
+# To use card_mod, we need the stack card.
+type: custom:vertical-stack-in-card
+
+# Mods: draw a border.
+card_mod:
+  style: |
+    ha-card {
+      border: 2px solid [% color %];
+      padding: 5px;
+    }

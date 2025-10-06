@@ -1,46 +1,43 @@
+# -*- mode: tt; indent-tabs-mode: nil -*-
 # MUST BE INCLUDEd, NOT PROCESSed.
+
 [% BLOCK power_meter;
-DEFAULT sensor = name.lower;
+   DEFAULT sensor = name.lower;
+   sensor = "sensor." _ sensor _ "_energy_today";
 -%]
-type: tile
-        entity: sensor.[% sensor %]_energy_today
-        name: [% name %]
-[% IF icon %]        icon: mdi:[% icon %]
-[% END %]        visibility:
-          - entity: sensor.[% sensor %]_energy_today
+type: custom:mushroom-template-card
+        entity: [% sensor %]
+[%- IF icon %]
+        icon: mdi:[% icon %][% END %]
+        primary: [% name %]
+        secondary: "{{ states('[% sensor %]')|round(2) }} kWh"
+        visibility:
+          - entity: [% sensor %]
             condition: numeric_state
             above: 0
-          - entity: sensor.[% sensor %]_energy_today
+          - entity: [% sensor %]
             <<: *v_available
-[% END %]
+[% END -%]
 
-[% BLOCK switching_meter;
-DEFAULT sensor = name.lower;
+[%- BLOCK switching_meter;
+   DEFAULT sensor = name.lower;
+   switch = "switch." _ sensor
+   sensor = "sensor." _ sensor _ "_energy_today";
 -%]
-type: tile
-        entity: switch.[% sensor %]
-        name: [% name %]
-[% IF icon %]        icon: mdi:[% icon %]
-[% END %]        visibility:
-          - entity: switch.[% sensor %]
+type: custom:mushroom-template-card
+        entity: [% switch %]
+[%- IF icon %]
+        icon: mdi:[% icon %][% END %]
+        primary: [% name %]
+        secondary: "{{ states('[% sensor %]')|round(2) }} kWh"
+        icon_tap_action:
+          action: toggle
+        visibility:
+          - entity: [% switch %]
             <<: *v_available
-        card_mod:
-          style:
-            ha-tile-info$: |
-              .secondary {
-                visibility: hidden;
-              }
-              .secondary:before {
-                visibility: visible;
-                content: "{{ states('sensor.[% sensor %]_energy_today') }} kWh"
-              }
-[% IF alwayson %]            .: |
-              ha-card {
-                {% if states('switch.[% sensor %]') == 'on' %}
-                --card-mod-icon-color:var(--state-icon-color)
-                {% else %}
-                --card-mod-icon-color:red;
-                {% endif %}
- 
-[% END %]
-[% END %]
+[%- IF alwayson %]
+        color: "{{ 'var(--state-inactive-color)' if is_state('[% switch %]','on') else 'red' }}"
+[%- ELSE %]
+        color: "var(--state-{{ '' if is_state('[% switch %]','on') else 'in' }}active-color)"
+[%- END -%]
+[% END -%]

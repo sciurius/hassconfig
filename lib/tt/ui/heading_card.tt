@@ -1,21 +1,28 @@
 [%
-DEFAULT sensor     = name.lower;
-DEFAULT badges     = [ "temp", "hum" ];
-DEFAULT tempsensor = sensor _ "_temperature";
-DEFAULT humsensor  = sensor _ "_humidity";
-sensors = { temp => tempsensor, hum => humsensor };
+DEFAULT entity     = name.lower;
+DEFAULT badges     = [ "temperature", "humidity" ];
+DEFAULT temperature_entity = "sensor." _ entity _ "_temperature";
+DEFAULT humidity_entity    = "sensor." _ entity _ "_humidity";
 -%]
 type: heading
     heading: [% name %]
     heading_style: title
-    icon: mdi:[% icon %]
+[% IF icon %]    icon: mdi:[% icon %]
+[%- END %]
 
 [% IF badges %]    badges:
-[% FOR badge IN badges; %]
+[%   FOR badge IN badges;
+     ent = ${"${badge}_entity"};
+     op = "more-info";
+     IF ent.match('^(light|switch)\.'); op = "toggle"; END %]
       - type: entity
-        entity: sensor.[% ${"${badge}sensor"} %]
+        name: [% badge.ucfirst %]
+        entity: [% ent %]
         tap_action:
-          action: more-info
-
-[%- END -%]
+          action: [% op %]
+[%-  END %]
+[%- END %]
+[% IF navigate %]    tap_action:
+      action: navigate
+      navigation_path: [% navigate %]
 [%- END -%]

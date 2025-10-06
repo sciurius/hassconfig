@@ -1,26 +1,16 @@
 # Dashboard: Overzicht -- Overig               -*- hass -*-
 # WARNING: This is a generated file -- DO NOT EDIT
 
-# To use card_mod, we must put it in a vertical-stack-in-card.
-type: custom:vertical-stack-in-card
-
-# Mods: draw a border.
-# We do not want padding for the entities, but it is
-# nice for the heading. So no padding here,
-card_mod:
-  style: |
-    ha-card {
-      border: 2px solid #D0D0D0;
-    }
+[% INCLUDE stack.tt %]
 
 # The cards.
 cards:
 
   # First, a heading card.
-  - type: heading
-    heading: Overig
-    heading_style: title
-    icon: mdi:cog-box
+  - [% INCLUDE heading_card.tt
+       name   = "Overig"
+       icon   = "cog-box"
+       badges = [] %]
     card_mod:
       style: |
         ha-card {

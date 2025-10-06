@@ -1,31 +1,23 @@
 # Dashboard: Overzicht -- Hal       -*- hass -*-
 # WARNING: This is a generated file -- DO NOT EDIT
 
-# To use card_mod, we must put it in a vertical-stack-in-card.
-type: custom:vertical-stack-in-card
 [% PROCESS v_anchors.tt -%]
 [% PROCESS colours.tt -%]
 
-# Mods: draw a border.
-card_mod:
-  style: |
-    ha-card {
-      border: 2px solid [% dash.col.grey %];
-      padding: 5px;
-    }
+[% INCLUDE stack.tt %]
 
 # The cards.
 cards:
 
   # First, a heading card with temp/hum badges.
-  - [% INCLUDE heading_card.tt name = "Hal" icon = "coat-rack" %]
-    tap_action:
-      action: navigate
-      navigation_path: /lovelace-overzicht/hal
+  - [% INCLUDE heading_card.tt
+       name     = "Hal"
+       icon     = "coat-rack"
+       navigate = "/lovelace-overzicht/hal" %]
 
   - type: grid
-    columns: 2
     square: false
+    columns: 2
     cards:
 
       - type: tile
@@ -35,6 +27,74 @@ cards:
       - type: tile
         entity: input_select.doorbell_mode
         name: Deurbel
+
+      - type: custom:mushroom-template-card
+        entity: cover.otolift
+        icon: >-
+          {% if is_state('sensor.otolift_on','Up') %}
+          mdi:arrow-up-bold-outline
+          {% elif is_state('sensor.otolift_on','Down') %}
+          mdi:arrow-down-bold-outline
+          {% else %}
+          mdi:elevator-passenger-outline
+          {% endif %}
+        color: >-
+          {% if is_state('sensor.otolift_on','Up') %} red
+          {% elif is_state('sensor.otolift_on','Down') %} red
+          {% else %} var(--state-icon-color) {% endif %}
+        name: Traplift
+        primary: >-
+          {% if is_state('sensor.otolift_on','Up') %} Going Up
+          {% elif is_state('sensor.otolift_on','Down') %} Going Down
+          {% else %} Traplift {% endif %}
+        secondary:
+        card_mod:
+          style: |
+            ha-state-icon {
+              {% if is_state('sensor.otolift_on', 'Stopped') %}
+              {% else %} animation: blink-animation 1s steps(1,start) infinite; {% endif %}
+            }
+            @keyframes blink-animation {
+              50% { visibility: hidden; }
+            }
+ 
+      - type: custom:mushroom-cover-card
+        entity: cover.otolift
+        primary_info: none
+        secondary_info: none
+        icon: mdi:elevator-passenger-outline
+        fill_container: true
+        show_buttons_control: true
+        layout: horizontal
+        icon_type: none
+
+      # - type: custom:mushroom-cover-card
+      #   entity: cover.otolift
+      #   primary_info: none
+      #   secondary_info: none
+      #   icon: mdi:elevator-passenger-outline
+      #   fill_container: true
+      #   show_buttons_control: true
+      #   layout: horizontal
+      #   tap_action:
+      #     action: more-info
+      #   card_mod:
+      #     style:
+      #       mushroom-shape-icon$: |
+      #         .shape {
+      #           --shape-color: #d0d0d000;
+      #         }
+      #       .: |
+      #         ha-state-icon {
+      #         {% if is_state('sensor.otolift_on', 'Stopped') %}
+      #         {% else %}
+      #         color: red;
+      #         animation: blink-animation 1s steps(1,start) infinite;
+      #         {% endif %}
+      #         }
+      #         @keyframes blink-animation {
+      #           50% { visibility: hidden; }
+      #         }
 
       # - type: tile
       #   entity: sensor.otolift_on
@@ -73,103 +133,103 @@ cards:
       #         action: call-service
       #         service: script.otolift_up
 
-  - type: conditional
-    conditions:
-      - condition: state
-        entity: sensor.otolift_on
-        state: Stopped
-    card:
-      type: entities
-      entities:
-      - entity: sensor.otolift_on
-        name: Traplift
-        extend_paper_buttons_row:
-          hide_state: true
-          buttons:
-            - name: Omhoog
-              icon: mdi:arrow-up-bold-outline
-              layout: icon
-              tap_action:
-                action: call-service
-                service: script.otolift_up
-              styles:
-                icon:
-                  color: "[% dash.col.grey160 %]"
-            - name: Omlaag
-              icon: mdi:arrow-down-bold-outline
-              layout: icon
-              tap_action:
-                action: call-service
-                service: script.otolift_down
-              styles:
-                icon:
-                  color: "[% dash.col.grey160 %]"
+  # - type: conditional
+  #   conditions:
+  #     - condition: state
+  #       entity: sensor.otolift_on
+  #       state: Stopped
+  #   card:
+  #     type: entities
+  #     entities:
+  #     - entity: sensor.otolift_on
+  #       name: Traplift
+  #       extend_paper_buttons_row:
+  #         hide_state: true
+  #         buttons:
+  #           - name: Omhoog
+  #             icon: mdi:arrow-up-bold-outline
+  #             layout: icon
+  #             tap_action:
+  #               action: call-service
+  #               service: script.otolift_up
+  #             styles:
+  #               icon:
+  #                 color: "[% dash.col.grey160 %]"
+  #           - name: Omlaag
+  #             icon: mdi:arrow-down-bold-outline
+  #             layout: icon
+  #             tap_action:
+  #               action: call-service
+  #               service: script.otolift_down
+  #             styles:
+  #               icon:
+  #                 color: "[% dash.col.grey160 %]"
 
-  - type: conditional
-    conditions:
-      - condition: state
-        entity: sensor.otolift_on
-        state: Up
-    card:
-      type: entities
-      entities:
-      - entity: sensor.otolift_on
-        name: Traplift
-        extend_paper_buttons_row:
-          hide_state: true
-          buttons:
-            - name: Omhoog
-              icon: mdi:arrow-up-bold-outline
-              layout: icon
-              tap_action:
-                action: call-service
-                service: script.otolift_stop
-              styles:
-                button:
-                  animation: blink 1s linear infinite
-                icon:
-                  color: red
-            - name: Omlaag
-              icon: mdi:arrow-down-bold-outline
-              layout: icon
-              tap_action:
-                action: call-service
-                service: script.otolift_stop
-              styles:
-                icon:
-                  color: "[% dash.col.grey160 %]"
+  # - type: conditional
+  #   conditions:
+  #     - condition: state
+  #       entity: sensor.otolift_on
+  #       state: Up
+  #   card:
+  #     type: entities
+  #     entities:
+  #     - entity: sensor.otolift_on
+  #       name: Traplift
+  #       extend_paper_buttons_row:
+  #         hide_state: true
+  #         buttons:
+  #           - name: Omhoog
+  #             icon: mdi:arrow-up-bold-outline
+  #             layout: icon
+  #             tap_action:
+  #               action: call-service
+  #               service: script.otolift_stop
+  #             styles:
+  #               button:
+  #                 animation: blink 1s linear infinite
+  #               icon:
+  #                 color: red
+  #           - name: Omlaag
+  #             icon: mdi:arrow-down-bold-outline
+  #             layout: icon
+  #             tap_action:
+  #               action: call-service
+  #               service: script.otolift_stop
+  #             styles:
+  #               icon:
+  #                 color: "[% dash.col.grey160 %]"
 
-  - type: conditional
-    conditions:
-      - condition: state
-        entity: sensor.otolift_on
-        state: Down
-    card:
-      type: entities
-      entities:
-      - entity: sensor.otolift_on
-        name: Traplift
-        extend_paper_buttons_row:
-          hide_state: true
-          buttons:
-            - name: Omhoog
-              icon: mdi:arrow-up-bold-outline
-              layout: icon
-              tap_action:
-                action: call-service
-                service: script.otolift_stop
-              styles:
-                icon:
-                  color: "[% dash.col.grey160 %]"
-            - name: Omlaag
-              icon: mdi:arrow-down-bold-outline
-              layout: icon
-              tap_action:
-                action: call-service
-                service: script.otolift_stop
-              styles:
-                button:
-                  animation: blink 1s linear infinite
-                icon:
-                  color: red
+  # - type: conditional
+  #   conditions:
+  #     - condition: state
+  #       entity: sensor.otolift_on
+  #       state: Down
+  #   card:
+  #     type: entities
+  #     entities:
+  #     - entity: sensor.otolift_on
+  #       name: Traplift
+  #       extend_paper_buttons_row:
+  #         hide_state: true
+  #         buttons:
+  #           - name: Omhoog
+  #             icon: mdi:arrow-up-bold-outline
+  #             layout: icon
+  #             tap_action:
+  #               action: call-service
+  #               service: script.otolift_stop
+  #             styles:
+  #               icon:
+  #                 color: "[% dash.col.grey160 %]"
+  #           - name: Omlaag
+  #             icon: mdi:arrow-down-bold-outline
+  #             layout: icon
+  #             tap_action:
+  #               action: call-service
+  #               service: script.otolift_stop
+  #             styles:
+  #               button:
+  #                 animation: blink 1s linear infinite
+  #               icon:
+  #                 color: red
 

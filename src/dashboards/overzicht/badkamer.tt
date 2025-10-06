@@ -1,28 +1,20 @@
 # Dashboard: Overzicht -- Badkamer       -*- hass -*-
 # WARNING: This is a generated file -- DO NOT EDIT
 
-# To use card_mod, we must put it in a vertical-stack-in-card.
-type: custom:vertical-stack-in-card
 [% PROCESS v_anchors.tt -%]
 [% PROCESS colours.tt -%]
 [% PROCESS power_meter.tt -%]
 
-# Mods: draw a border.
-card_mod:
-  style: |
-    ha-card {
-      border: 2px solid lightblue;
-      padding: 5px;
-    }
+[% INCLUDE stack.tt color = 'lightblue' %]
 
 # The cards.
 cards:
 
   # First, a heading card with temp/hum badges.
-  - [% INCLUDE heading_card.tt name = "Badkamer" icon = "bathtub" %]
-    tap_action:
-      action: navigate
-      navigation_path: /lovelace-overzicht/badkamer
+  - [% INCLUDE heading_card.tt
+       name     = "Badkamer"
+       icon     = "bathtub"
+       navigate = "/lovelace-overzicht/badkamer" %]
 
   - type: grid
     columns: 2
@@ -123,22 +115,10 @@ cards:
             condition: numeric_state
             above: 0
 
-      - type: tile
-        entity: switch.badkamerverwarming
-        name: Verwarming
-        visibility:
-          - entity: switch.badkamerverwarming
-            <<: *v_available
-        card_mod:
-          style:
-            ha-tile-info$: |
-              .secondary {
-                visibility: hidden;
-              }
-              .secondary:before {
-                visibility: visible;
-                content: "{{ states('sensor.badkamerverwarming_energy_today') }} kWh"
-              }
+      - [% INCLUDE switching_meter
+                   name = "Verwarming"
+                   icon = "heat-wave"
+                   sensor = "badkamerverwarming" %]
             
       - type: tile
         entity: timer.badkamerverwarming

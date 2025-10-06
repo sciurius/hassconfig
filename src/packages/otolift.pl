@@ -106,6 +106,16 @@ template:
           {% endif %}
         icon: mdi:elevator-passenger-outline
 
+  - cover:
+      - name: Otolift
+        device_class: garage
+        open_cover:
+          action: script.otolift_up
+        close_cover:
+          action: script.otolift_down
+        stop_cover:
+          action: script.otolift_stop
+
 automation:
 
 [% automation %]

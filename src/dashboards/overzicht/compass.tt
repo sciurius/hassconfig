@@ -1,66 +1,66 @@
 # Dashboard: Overzicht -- Compass       -*- hass -*-
 # WARNING: This is a generated file -- DO NOT EDIT
 
-# To use card_mod, we must put it in a vertical-stack-in-card.
-type: custom:vertical-stack-in-card
-[% PROCESS v_anchors.tt -%]
+[% device              = "bresser51";
+   wind_beaufort       = "sensor." _ device _ "_wind_beaufort";
+   wind_speed          = "sensor." _ device _ "_wind_speed";
+   wind_direction      = "sensor." _ device _ "_wind_direction_sector";
+   wind_direction_name = "sensor." _ device _ "_wind_direction_name";
+-%]
 
-# Mods: draw a border.
-card_mod:
-  style: |
-    ha-card {
-      border: 2px solid #D0D0D0;
-      padding: 5px;
-    }
+[% INCLUDE stack.tt %]
 
 # The cards.
 cards:
 
   # First, a heading card with temp/hum badges.
-  - type: heading
-    heading: Buiten
-    heading_style: title
-    icon: mdi:countertop
-    xxcard_mod:
-      style: "ha-card .title { font-size: 30pt; }"
+  - [% INCLUDE heading_card.tt
+       name     = "Buiten"
+       icon     = "countertop"
+       entity   = device
+       navigate = "/lovelace-" _ device %]
 
-    badges:
-
-      - type: entity
-        entity: sensor.bresser51_temperature
-        tap_action:
-          action: more-info
-
-      - type: entity
-        entity: sensor.bresser51_humidity
-        tap_action:
-          action: more-info
-
-    tap_action:
-      action: navigate
-      navigation_path: /lovelace-bresser51
-
+  # Then the grid with the content cards.
   - type: grid
     columns: 2
     square: false
     cards:
 
-      - type: tile
+      - type: custom:mushroom-template-card
         entity: sensor.compass
-        name: Richting
-        show_entity_picture: true
-        state_content: speed_text
-        card_mod:
-          style:
-            ha-tile-info$: |
-              .primary {
-                visibility: hidden;
-              }
-              .primary:before {
-                visibility: visible;
-                content: "{{ state_attr('sensor.compass','direction') }}";
-              }
+        primary: >-
+          {% if states('[% wind_beaufort %]')|int > 0 %}
+          {{ states('[% wind_direction_name %]') }}
+          {% else %} Wind {% endif %}
+        picture: >-
+          {% if states('[% wind_beaufort %]')|int > 0 %}
+          /local/compass/arrow-{{ states('[% wind_direction %]') }}.svg
+          {% else %} /local/compass/arrow-none.svg {% endif %}
+        secondary: >-
+          {% if states('[% wind_beaufort %]')|int > 0 %}
+          {{ states('[% wind_beaufort %]') }} Bft,
+          {{ states('[% wind_speed %]') }} m/s
+          {% else %} Calm {% endif %}
 
       - type: tile
         entity: sensor.knmi_pressure
         name: Luchtdruk
+
+      - type: tile
+        name: Voelt als
+        entity: sensor.bresser51_wind_chill
+
+[% FOR i IN [ 168, 24, 1 ] %]
+      - type: custom:mushroom-template-card
+        primary: [% i %] uur
+        icon: mdi:weather-rainy
+        color: var(--state-icon-color)
+        secondary: "{{ states('sensor.bresser51_rain_[% i %]h') }} mm"
+        tap_action:
+          action: more-info
+          entity: sensor.bresser51_rain_[% i %]h
+        visibility:
+          - entity: sensor.bresser51_rain_[% i %]h
+            condition: numeric_state
+            above: 0
+[% END %]

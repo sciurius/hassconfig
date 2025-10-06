@@ -1,75 +1,36 @@
 # Dashboard: Overzicht -- Media Player: osmc       -*- hass -*-
 # WARNING: This is a generated file -- DO NOT EDIT
 
-# To use card_mod, we must put it in a vertical-stack-in-card.
-type: custom:vertical-stack-in-card
 [% PROCESS v_anchors.tt -%]
 
-# Mods: draw a border.
-card_mod:
-  style: |
-    ha-card {
-      border: 2px solid lightgreen;
-      padding: 5px;
-    }
+[% INCLUDE stack.tt color = "lightgreen" %]
 
 # The cards.
 cards:
 
   # First, a heading card with temp/hum badges.
-  - [% INCLUDE heading_card.tt name = "Woonkamer"
-                               icon = "sofa"
-                               tempsensor = "thermostat_hc1_currtemp"
-                               badges = [ "temp" ] %]
-      - type: entity
-        entity: light.woonkamer_tafel
-        name: Tafel
-        tap_action:
-          action: toggle
-
-    tap_action:
-      action: navigate
-      navigation_path: /lovelace-overzicht/woonkamer
+  - [% INCLUDE heading_card.tt
+       name = "Woonkamer"
+       icon = "sofa"
+       badges = [ "temperature", "light" ]
+       temperature_entity = "sensor.thermostat_hc1_currtemp"
+       light_entity = "light.woonkamer_tafel"
+       navigate = "/lovelace-overzicht/woonkamer" %]
 
   - type: grid
     columns: 2
     square: false
     cards:
 
-      - type: tile
+      - type: custom:mushroom-template-card
         entity: climate.thermostat_hc1
-        name: Thermostaat
-        card_mod:
-          style:
-            ha-tile-info$: |
-              .secondary {
-                visibility: hidden;
-              }
-              .secondary:before {
-                visibility: visible;
-                content: '{{ states("sensor.thermostat_setting") }} °C ({{ states('select.thermostat_hc1_mode')|capitalize }})';
-              }
-
-      # - type: tile
-      #   entity: binary_sensor.illuminated
-      #   name: Licht
-      #   card_mod:
-      #     style:
-      #       ha-tile-info$: |
-      #         .secondary {
-      #           visibility: hidden;
-      #         }
-      #         .secondary:before {
-      #           visibility: visible;
-      #           content: '{{ states("sensor.achterkamer_illuminance") }} lx';
-      #         }
+        icon: mdi:thermostat
+        color: green
+        primary: Thermostaat
+        secondary: '{{ states("sensor.thermostat_setting") }} °C ({{ states("select.thermostat_hc1_mode")|capitalize }})'
 
       - type: tile
         entity: switch.woonkamer_sound_system
         name: Music Center
         icon: mdi:music-circle-outline
 
-      # - type: tile
-      #   entity: light.woonkamer_tafel
-      #   name: Tafel
-      #   icon: mdi:ceiling-light
