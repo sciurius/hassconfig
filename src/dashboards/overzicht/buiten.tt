@@ -1,206 +1,211 @@
 # Dashboard: Overzicht -- Buiten       -*- hass -*-
 # WARNING: This is a generated file -- DO NOT EDIT
 
-type: entities
-title: Buiten
-state_color: true
+[% INCLUDE section.tt
+       name     = "Buiten"
+       icon     = "weather-partly-cloudy"
+       badges   = []
+       navigate = "/lovelace-overzicht/buiten" %]
 
-entities:
+    cards: []
 
-  - entity: weather.knmi_home
-    name: KNMI
-
-  - [% INCLUDE temphum sensor = "buiten" %]
-
-  - type: conditional
-    conditions:
-      - entity: binary_sensor.day_period
-        state: "on"
-    row:
-      type: attribute
-      entity: binary_sensor.day_period
-      state_color: true
-      attribute: st
-      name: Daglicht
-
-  - type: conditional
-    conditions:
-      - entity: binary_sensor.day_period
-        state: "off"
-    row:
-      type: attribute
-      entity: binary_sensor.day_period
-      state_color: false
-      attribute: st
-      name: Nacht
-
-  - type: custom:multiple-entity-row
-    entity: binary_sensor.illuminated
-    state_color: true
-    show_state: false
-    name: Licht
+  - type: entities
     entities:
-      - entity: sensor.achterkamer_illuminance
-        name: false
 
-  - type: custom:multiple-entity-row
-    entity: sensor.knmi_pressure
-    name: Luchtdruk
-    format: precision0
-    secondary_info: KNMI
+      - entity: weather.knmi_home
+        name: KNMI
 
-  - type: conditional
-    conditions:
-      - entity: binary_sensor.pollen
-        state: 'on'
-    row:
-      entity: sensor.tomorrow_io_home_weed_pollen_index
-      type: custom:multiple-entity-row
-      show_state: false
-      name: Pollen
-      secondary_info: Tomorrow.io
-      entities:
-        - entity: sensor.tomorrow_io_home_tree_pollen_index
-          hide_if: none
-        - entity: sensor.tomorrow_io_home_grass_pollen_index
-          hide_if: none
-        - entity: sensor.tomorrow_io_home_weed_pollen_index
-          hide_if: none
+      - [% INCLUDE temphum sensor = "buiten" %]
 
-  - type: conditional
-    conditions:
-      - entity: binary_sensor.pollen_kleenex
-        state: 'on'
-    row:
-      entity: sensor.kleenex_weed_pollen
-      type: custom:multiple-entity-row
-      show_state: false
-      name: Pollen
-      secondary_info: Kleenex.NL
-      entities:
-        - entity: sensor.kleenex_tree_pollen
-          hide_if: none
-          name: Bomen
-          unit: false
-        - entity: sensor.kleenex_grass_pollen
-          hide_if: none
-          name: Gras
-          unit: false
-        - entity: sensor.kleenex_weed_pollen
-          hide_if: none
-          name: Kruiden
-          unit: false
+      - type: conditional
+        conditions:
+          - entity: binary_sensor.day_period
+            state: "on"
+        row:
+          type: attribute
+          entity: binary_sensor.day_period
+          state_color: true
+          attribute: st
+          name: Daglicht
 
-  - type: conditional
-    conditions:
-      - entity: sensor.noorderdiep_valthermond_air_quality_index
-        state_not: unavailable
-    row:
-      entity: sensor.noorderdiep_valthermond_air_quality_index
-      type: custom:multiple-entity-row
-      name: Luchtkwaliteit
-      secondary_info: Valthermond
-      entities:
-        - entity: sensor.noorderdiep_valthermond_dominant_pollutant
-          name: false
+      - type: conditional
+        conditions:
+          - entity: binary_sensor.day_period
+            state: "off"
+        row:
+          type: attribute
+          entity: binary_sensor.day_period
+          state_color: false
+          attribute: st
+          name: Nacht
 
-  - type: conditional
-    conditions:
-      - entity: sensor.stookwijzer_advice_code
-        state_not: 'off'
-    row:
-      entity: sensor.stookwijzer_advice_code
-      name: Stookwijzer
-      type: custom:template-entity-row
-      icon: mdi:air-filter
-      color: >-
-        {{ "red" if states('sensor.stookwijzer_advice_code') == "code_red" else
-           "orange" if states('sensor.stookwijzer_advice_code') == "code_orange" else "none" }}
-      state: >-
-        {{ "Slecht" if states('sensor.stookwijzer_advice_code') == "code_red" else
-           "Matig" if states('sensor.stookwijzer_advice_code') == "code_orange" else "Ok" }}
-        
+      - type: custom:multiple-entity-row
+        entity: binary_sensor.illuminated
+        state_color: true
+        show_state: false
+        name: Licht
+        entities:
+          - entity: sensor.achterkamer_illuminance
+            name: false
 
-  - entity: light.buitenverlichting_achter
-    name: Achterkant
-    hold_action:
-      action: call-service
-      service: script.start_buitenverlichting_achter_timer
-      
-  - type: conditional
-    conditions:
-      - entity: timer.buitenverlichting_achter
-        state: active
-    row:
-      entity: timer.buitenverlichting_achter
-      icon: mdi:outdoor-lamp
-      name: Timer
+      - type: custom:multiple-entity-row
+        entity: sensor.knmi_pressure
+        name: Luchtdruk
+        format: precision0
+        secondary_info: KNMI
 
-  - type: conditional
-    conditions:
-      - entity: light.balkonkerstverlichting
-        state_not: unknown
-      - entity: light.balkonkerstverlichting
-        state_not: unavailable
-    row:
-      entity: light.balkonkerstverlichting
-      name: Balkon (Kerst)
-      icon: mdi:string-lights
+      - type: conditional
+        conditions:
+          - entity: binary_sensor.pollen
+            state: 'on'
+        row:
+          entity: sensor.tomorrow_io_home_weed_pollen_index
+          type: custom:multiple-entity-row
+          show_state: false
+          name: Pollen
+          secondary_info: Tomorrow.io
+          entities:
+            - entity: sensor.tomorrow_io_home_tree_pollen_index
+              hide_if: none
+            - entity: sensor.tomorrow_io_home_grass_pollen_index
+              hide_if: none
+            - entity: sensor.tomorrow_io_home_weed_pollen_index
+              hide_if: none
 
-  - type: conditional
-    conditions:
-      - entity: sensor.apk_expiration_near
-        state_not: nog_lang_niet
-    row:
-      entity: sensor.apk_expiration
-      name: APK verloopt
+      - type: conditional
+        conditions:
+          - entity: binary_sensor.pollen_kleenex
+            state: 'on'
+        row:
+          entity: sensor.kleenex_weed_pollen
+          type: custom:multiple-entity-row
+          show_state: false
+          name: Pollen
+          secondary_info: Kleenex.NL
+          entities:
+            - entity: sensor.kleenex_tree_pollen
+              hide_if: none
+              name: Bomen
+              unit: false
+            - entity: sensor.kleenex_grass_pollen
+              hide_if: none
+              name: Gras
+              unit: false
+            - entity: sensor.kleenex_weed_pollen
+              hide_if: none
+              name: Kruiden
+              unit: false
 
-  - type: custom:multiple-entity-row
-    entity: binary_sensor.lighting
-    name: Duisterlicht
-    entities:
-      - entity: binary_sensor.day_time
-        name: Dag
-      - entity: binary_sensor.darkness
-        name: Donker
+      - type: conditional
+        conditions:
+          - entity: sensor.noorderdiep_valthermond_air_quality_index
+            state_not: unavailable
+        row:
+          entity: sensor.noorderdiep_valthermond_air_quality_index
+          type: custom:multiple-entity-row
+          name: Luchtkwaliteit
+          secondary_info: Valthermond
+          entities:
+            - entity: sensor.noorderdiep_valthermond_dominant_pollutant
+              name: false
 
-  - type: custom:template-entity-row
-    entity: sensor.afvalwijzer_today
-    name: Afval
-    icon: mdi:recycle
-    active: true
-    color: "#ffc107"
-    condition: >
-      {{ ( not
-         is_state('sensor.afvalwijzer_today','geen') )
-         and ( now() < today_at("17:00") )
-         and is_state('input_boolean.afval_dismiss','off')
-      }}
-    state: >-
-      {{ states('sensor.afvalwijzer_today').capitalize()
-      }}
-    hold_action:
-      action: call-service
-      service: input_boolean.turn_on
-      target:
-        entity_id: input_boolean.afval_dismiss
+      - type: conditional
+        conditions:
+          - entity: sensor.stookwijzer_advice_code
+            state_not: 'off'
+        row:
+          entity: sensor.stookwijzer_advice_code
+          name: Stookwijzer
+          type: custom:template-entity-row
+          icon: mdi:air-filter
+          color: >-
+            {{ "red" if states('sensor.stookwijzer_advice_code') == "code_red" else
+               "orange" if states('sensor.stookwijzer_advice_code') == "code_orange" else "none" }}
+          state: >-
+            {{ "Slecht" if states('sensor.stookwijzer_advice_code') == "code_red" else
+               "Matig" if states('sensor.stookwijzer_advice_code') == "code_orange" else "Ok" }}
 
-  - type: custom:template-entity-row
-    entity: sensor.afvalwijzer_tomorrow
-    name: Afval (morgen)
-    icon: mdi:recycle
-    active: false
-    state: >-
-      {{
-      states('sensor.afvalwijzer_tomorrow').capitalize()
-      }}
-    condition: >-
-      {{ not
-         is_state('sensor.afvalwijzer_tomorrow','geen')
-         and is_state('input_boolean.afval_dismiss','off')
-      }}
-    hold_action:
-      action: input_boolean.turn_on
-      target:
-        entity_id: input_boolean.afval_dismiss
+
+      - entity: light.buitenverlichting_achter
+        name: Achterkant
+        hold_action:
+          action: call-service
+          service: script.start_buitenverlichting_achter_timer
+
+      - type: conditional
+        conditions:
+          - entity: timer.buitenverlichting_achter
+            state: active
+        row:
+          entity: timer.buitenverlichting_achter
+          icon: mdi:outdoor-lamp
+          name: Timer
+
+      - type: conditional
+        conditions:
+          - entity: light.balkonkerstverlichting
+            state_not: unknown
+          - entity: light.balkonkerstverlichting
+            state_not: unavailable
+        row:
+          entity: light.balkonkerstverlichting
+          name: Balkon (Kerst)
+          icon: mdi:string-lights
+
+      - type: conditional
+        conditions:
+          - entity: sensor.apk_expiration_near
+            state_not: nog_lang_niet
+        row:
+          entity: sensor.apk_expiration
+          name: APK verloopt
+
+      - type: custom:multiple-entity-row
+        entity: binary_sensor.lighting
+        name: Duisterlicht
+        entities:
+          - entity: binary_sensor.day_time
+            name: Dag
+          - entity: binary_sensor.darkness
+            name: Donker
+
+      - type: custom:template-entity-row
+        entity: sensor.afvalwijzer_today
+        name: Afval
+        icon: mdi:recycle
+        active: true
+        color: "#ffc107"
+        condition: >
+          {{ ( not
+             is_state('sensor.afvalwijzer_today','geen') )
+             and ( now() < today_at("17:00") )
+             and is_state('input_boolean.afval_dismiss','off')
+          }}
+        state: >-
+          {{ states('sensor.afvalwijzer_today').capitalize()
+          }}
+        hold_action:
+          action: call-service
+          service: input_boolean.turn_on
+          target:
+            entity_id: input_boolean.afval_dismiss
+
+      - type: custom:template-entity-row
+        entity: sensor.afvalwijzer_tomorrow
+        name: Afval (morgen)
+        icon: mdi:recycle
+        active: false
+        state: >-
+          {{
+          states('sensor.afvalwijzer_tomorrow').capitalize()
+          }}
+        condition: >-
+          {{ not
+             is_state('sensor.afvalwijzer_tomorrow','geen')
+             and is_state('input_boolean.afval_dismiss','off')
+          }}
+        hold_action:
+          action: input_boolean.turn_on
+          target:
+            entity_id: input_boolean.afval_dismiss
 

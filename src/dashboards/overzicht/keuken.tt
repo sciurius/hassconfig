@@ -1,23 +1,13 @@
 # Dashboard: Overzicht -- Keuken      -*- hass -*-
 # WARNING: This is a generated file -- DO NOT EDIT
 
-[% PROCESS v_anchors.tt -%]
 [% PROCESS power_meter.tt -%]
 
-[% INCLUDE stack.tt %]
-
-# The cards.
-cards:
-
-  # First, a heading card with temp/hum badges.
-  - [% INCLUDE heading_card.tt
+[% INCLUDE section.tt
        name     = "Keuken"
        icon     = "countertop"
        navigate = "/lovelace-overzicht/keuken" %]
 
-  - type: grid
-    columns: 2
-    square: false
     cards:
 
       - type: tile
@@ -51,23 +41,6 @@ cards:
       - [% INCLUDE switching_meter
            name = "Koelkast" icon = "fridge" alwayson = 1 %]
       - [% INCLUDE power_meter name = "Oven" icon = "toaster-oven" %]
-
-#   - type: conditional
-#     conditions:
-#       - entity: binary_sensor.hob2hood_light
-#         state: "on"
-#     row:
-#       type: custom:template-entity-row
-#       entity: binary_sensor.hob2hood_light
-#       name: Kookplaat
-#       icon: mdi:radiator
-#       color: >-
-#         {{ "red" if states('sensor.hob2hood_fan')|int>1 else
-#            "orange" if states('sensor.hob2hood_fan')|int>0 else "green" }}
-#       state: >-
-#         {{ states('sensor.hob2hood_fan')|int
-#            if states('sensor.hob2hood_fan')|int>0
-#            else states('binary_sensor.hob2hood_light')|title }}
 
       - type: tile
         visibility:
@@ -144,54 +117,3 @@ cards:
           - entity: sensor.aeg_oven_timetoend
             condition: numeric_state
             above: 0
-
-# [%#        
-#   - type: conditional
-#     conditions:
-#       - condition: numeric_state
-#         entity: sensor.keukenboiler_energy_power
-#         above: 1
-#       - entity: switch.keukenboiler
-#         state: "on"
-#     row:
-#       type: custom:multiple-entity-row
-#       entity: switch.keukenboiler
-#       name: Boiler
-#       icon: mdi:water-boiler
-#       toggle: true
-#       entities:
-#         - entity: sensor.keukenboiler_energy_power
-#           name: false
-
-#   - type: conditional
-#     conditions:
-#       - condition: numeric_state
-#         entity: sensor.keukenboiler_energy_power
-#         below: 1
-#       - entity: switch.keukenboiler
-#         state: "on"
-#     row:
-#       type: custom:multiple-entity-row
-#       entity: switch.keukenboiler
-#       name: Boiler
-#       icon: mdi:water-boiler
-#       toggle: true
-#       state_color: false
-#       entities:
-#         - entity: sensor.keukenboiler_energy_power
-#           name: false
-
-#   - type: conditional
-#     conditions:
-#       - entity: switch.keukenboiler
-#         state: "off"
-#     row:
-#       type: custom:multiple-entity-row
-#       entity: switch.keukenboiler
-#       name: Boiler
-#       icon: mdi:water-boiler-off
-#       toggle: true
-#       state_color: false
-
-# %]
-

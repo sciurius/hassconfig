@@ -1,0 +1,133 @@
+# Dashboard: Overzicht -- Computers       -*- hass -*-
+# WARNING: This is a generated file -- DO NOT EDIT
+
+[% INCLUDE section.tt
+       name   = "Computers"
+       icon   = "laptop"
+       badges = [] %]
+
+    cards: []
+
+  - type: entities
+
+    entities:
+
+      - type: custom:multiple-entity-row
+        entity: sensor.systems_phoenix_temperature
+        secondary_info:
+          name: NVMe0
+          entity: sensor.phoenix_nvme0_temperature
+        name: Phoenix
+
+      - type: custom:multiple-entity-row
+        entity: sensor.systems_srv1_temperature
+        show_state: false
+        secondary_info:
+          name: UPS
+          entity: sensor.ups_pico_battery_level
+        entities:
+          - entity: sensor.systems_srv1_gpu_temperature
+            name: GPU
+          - entity: sensor.systems_srv1_temperature
+            name: CPU
+        name: Server1
+
+      - entity: sensor.systems_nas1_temperature
+        name: Server2 (NAS1)
+
+      - type: conditional
+        conditions:
+          - entity: sensor.t520_cpu_temperature
+            state_not: "unavailable"
+          - entity: sensor.t520_cpu_temperature
+            state_not: "unknown"
+        row:
+            entity: sensor.t520_cpu_temperature
+            name: Server3 (HASS)
+
+      - type: conditional
+        conditions:
+          - entity: sensor.systems_srv4_temperature
+            state_not: "unavailable" 
+          - entity: sensor.systems_srv4_temperature
+            state_not: "unknown"
+        row:
+            type: custom:multiple-entity-row
+            entity: sensor.systems_srv4_temperature
+            show_state: false
+            entities:
+              - entity: sensor.systems_srv4_gpu_temperature
+                name: GPU
+              - entity: sensor.systems_srv4_temperature
+                name: CPU
+            name: Server4
+
+      - type: conditional
+        conditions:
+          - entity: switch.srv5
+            state_not: "unknown"
+          - entity: switch.srv5
+            state_not: "unavailable"
+        row:
+          entity: switch.srv5
+          name: Server5 (HAXX)
+
+      - type: conditional
+        conditions:
+          - entity: sensor.rpi_cpu_temperature
+            state_not: "unavailable" 
+          - entity: sensor.rpi_cpu_temperature
+            state_not: "unknown"
+        row:
+            entity: sensor.rpi_cpu_temperature
+            name: Server5 (HAXX)
+
+      - type: conditional
+        conditions:
+          - entity: sensor.mc_state
+            state_not: "unavailable" 
+          - entity: sensor.systems_mc_temperature
+            state_not: "unavailable" 
+          - entity: sensor.systems_mc_temperature
+            state_not: "unknown"
+        row:
+            type: custom:multiple-entity-row
+            entity: sensor.systems_mc_temperature
+            show_state: false
+            secondary_info:
+              entity: sensor.mc_state
+              name: false
+            entities:
+              - entity: sensor.systems_mc_gpu_temperature
+                name: GPU
+              - entity: sensor.systems_mc_temperature
+                name: CPU
+            name: Media Center
+
+      - type: conditional
+        conditions:
+          - entity: sensor.systems_mc621_temperature
+            state_not: "unavailable" 
+          - entity: sensor.systems_mc621_temperature
+            state_not: "unknown"
+        row:
+            type: custom:multiple-entity-row
+            entity: sensor.systems_mc621_temperature
+            show_state: false
+            name: MC621
+            entities:
+              - entity: sensor.systems_mc621_gpu_temperature
+                name: GPU
+              - entity: sensor.systems_mc621_temperature
+                name: CPU
+
+      - type: conditional
+        conditions:
+          - entity: sensor.systems_maccho_temperature
+            state_not: "unavailable" 
+          - entity: sensor.systems_maccho_temperature
+            state_not: "unknown"
+        row:
+            entity: sensor.systems_maccho_temperature
+            name: Maccho
+

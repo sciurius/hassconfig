@@ -3,13 +3,7 @@
 
 [% PROCESS v_anchors.tt -%]
 
-[% INCLUDE stack.tt %]
-
-# The cards.
-cards:
-
-  # First, a heading card with badges.
-  - [% INCLUDE heading_card.tt
+[% INCLUDE section.tt
        name       = "CV"
        icon       = "heating_coil"
        badges     = [ "temperature", "current" ]
@@ -17,9 +11,6 @@ cards:
        current_entity     = "boiler_curflowtemp"
        navigate   = "/lovelace-overzicht/cv" %]
 
-  - type: grid
-    columns: 2
-    square: false
     cards:
 
       - type: tile

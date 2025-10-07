@@ -1,26 +1,12 @@
 # Dashboard: Overzicht -- Slaapkamer                     -*- hass -*-
 # New design based on tile cards.
 
-[% PROCESS v_anchors.tt -%]
 [% PROCESS power_meter.tt -%]
 
-[% INCLUDE stack.tt %]
-
-# The cards.
-cards:
-
-  # First, a heading card with temp/hum badges.
-  # This one also had a conditional badge for the MC, but now
-  # we use funcion-dependent icons.
-  - [% INCLUDE heading_card.tt
+[% INCLUDE section.tt
        name     = "Slaapkamer"
        icon     = "bed"
        navigate = "/lovelace-overzicht/slaapkamer" %]
-
-  # The contents cards; 2 column grid.
-  - type: grid
-    columns: 2
-    square: false
 
     cards:
 

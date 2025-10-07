@@ -1,6 +1,8 @@
 # -*- mode: tt; indent-tabs-mode: nil -*-
 # MUST BE INCLUDEd, NOT PROCESSed.
 
+[% PROCESS v_anchors.tt -%]
+
 [% BLOCK power_meter;
    DEFAULT sensor = name.lower;
    sensor = "sensor." _ sensor _ "_energy_today";

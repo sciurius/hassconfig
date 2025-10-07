@@ -4,133 +4,69 @@
 [% PROCESS v_anchors.tt -%]
 [% PROCESS colours.tt -%]
 
-type: entities
-title: Energie
-state_color: true
-show_header_toggle: false
+[% INCLUDE section.tt
+   name     = "Energie"
+   icon     = "lightning-bolt"
+   badges   = [ "balans" ]
+   balans_entity = "sensor.energie_balans"
+   navigate = "/lovelace-overzicht/energie"
+   %]
 
-entities:
+    cards:
 
-  - type: custom:template-entity-row
-    entity: sensor.energie_balans
-    color: >-
-      {{ "[% dash.col.green %]" if (states('sensor.energie_balans')|float)>0.2 else
-         "[% dash.col.yellow %]" if (states('sensor.energie_balans')|float)>0 else "none" }}
-    state: >-
-      {{ states('sensor.energie_balans')|round(3) }} kW
+      - type: custom:mushroom-template-card
+        entity: sensor.energie_balans
+        icon: mdi:lightning-bolt
+        primary: Balans
+        secondary: "{{ states('sensor.energie_balans')|round(3) }} kW"
+        color: >-
+          {{ "[% dash.col.green %]" if (states('sensor.energie_balans')|float)>0.2 else
+             "[% dash.col.yellow %]" if (states('sensor.energie_balans')|float)>0 else "none" }}
+       
+      - type: tile
+        entity: sensor.energy_generated
+        name: Solar
+        icon: mdi:solar-power
 
-  - type: custom:multiple-entity-row
-    entity: sensor.energy_generated
-    name: Zonnepanelen
-    icon: mdi:solar-power
-    format: kilo
-    unit: kWh
-    secondary_info: PVOutput
+      - type: tile
+        entity: sensor.dsmr_day_consumption_electricity_merged
+        icon: mdi:tray-arrow-down
+        name: Gebruikt
 
-  - type: custom:multiple-entity-row
-    entity: sensor.dsmr_day_consumption_electricity_merged
-    name: Energie gebruikt
-    format: precision1
+      - type: tile
+        entity: sensor.dsmr_day_consumption_electricity_returned_merged
+        icon: mdi:tray-arrow-up
+        name: Geleverd
 
-  - type: custom:multiple-entity-row
-    entity: sensor.dsmr_day_consumption_electricity_returned_merged
-    name: Energie geleverd
-    format: precision1
+      - type: tile
+        entity: sensor.dsmr_day_consumption_gas
+        name: Gas
 
-  - type: custom:multiple-entity-row
-    entity: sensor.dsmr_day_consumption_gas
-    name: Gas
-    format: precision1
+      - type: custom:mushroom-template-card
+        icon: mdi:water-boiler
+        primary: Ext Boiler
+        entity: switch.extboiler
+        color: |
+          {% if is_state('input_boolean.extboiler_hot','on') %} [% dash.col.green %]
+          {% elif (states('sensor.extboiler_energy_power')|float) > 1 %} [% dash.col.yellow %]
+          {% else %}             {% endif %}
+        secondary: |
+          {{ states('sensor.extboiler_energy_today') }} kWh
 
-  - type: conditional
-    conditions:
-      - condition: numeric_state
-        entity: sensor.extboiler_energy_power
-        above: 1
-      - entity: switch.extboiler
-        state: "xxon"
-    row:
-      type: custom:multiple-entity-row
-      entity: switch.extboiler
-      name: Ext Boiler
-      icon: mdi:water-boiler
-      secondary_info:
-        entity: sensor.extboiler_energy_today
-        name: Verbruik
-      toggle: true
-      entities:
-        - entity: sensor.extboiler_energy_power
-          name: false
+      - type: custom:mushroom-template-card
+        icon: mdi:radiator
+        primary: Ext Kachel
+        entity: switch.achterkamerkacheltje
+        secondary: |
+          {{ states('sensor.achterkamerkacheltje_energy_today') }} kWh
+        visibility:
+          - condition: numeric_state
+            entity: sensor.achterkamerkacheltje_energy_today
+            above: 1
+          - entity: switch.achterkamerkacheltje
+            <<: *v_available
 
-  - type: conditional
-    conditions:
-      - condition: numeric_state
-        entity: sensor.extboiler_energy_power
-        below: 1
-      - entity: switch.extboiler
-        state: "xxon"
-    row:
-      type: custom:multiple-entity-row
-      entity: switch.extboiler
-      name: Ext Boiler
-      icon: mdi:water-boiler
-      toggle: true
-      state_color: false
-      secondary_info:
-        entity: input_boolean.extboiler_hot
-        name: Hot
-      entities:
-        - entity: sensor.extboiler_energy_power
-          name: false
+      - type: tile
+        name: Omvormer
+        entity: sensor.growatt_temperature
 
-  - type: conditional
-    conditions:
-      - entity: switch.extboiler
-        state: "xxoff"
-    row:
-      type: custom:multiple-entity-row
-      entity: switch.extboiler
-      name: Ext Boiler
-      icon: mdi:water-boiler-off
-      toggle: true
-      state_color: false
-      secondary_info:
-        entity: sensor.extboiler_energy_today
-        name: Verbruik
-#        name: Hot
- 
-#        entity: input_boolean.extboiler_hot
-#        name: Hot
-
-  - type: custom:template-entity-row
-    icon: mdi:water-boiler
-    name: Ext Boiler
-    entity: switch.extboiler
-    toggle: true
-    color: |
-      {% if is_state('input_boolean.extboiler_hot','on') %} [% dash.col.green %]
-      {% else %}
-        {% if (states('sensor.extboiler_energy_power')|float) > 1 %} [% dash.col.yellow %]
-        {% else %} none
-        {% endif %}
-      {% endif %}
-    secondary: |
-      Verbruik {{ states('sensor.extboiler_energy_today') }} kWh
-
-  - type: conditional
-    conditions:
-      - condition: numeric_state
-        entity: sensor.achterkamerkacheltje_energy_today
-        above: 1
-      - entity: sensor.achterkamerkacheltje_energy_today
-        <<: *v_available
-    row:
-      type: custom:template-entity-row
-      name: Ext Verwarming
-      entity: switch.achterkamerkacheltje
-      toggle: true
-      secondary: |
-        Verbruik {{ states('sensor.achterkamerkacheltje_energy_today') }} kWh
-
-  - entity: sensor.growatt_temperature
-    name: Omvormer

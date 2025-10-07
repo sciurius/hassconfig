@@ -1,15 +1,7 @@
 # Dashboard: Overzicht -- Media Player: osmc       -*- hass -*-
 # WARNING: This is a generated file -- DO NOT EDIT
 
-[% PROCESS v_anchors.tt -%]
-
-[% INCLUDE stack.tt color = "lightgreen" %]
-
-# The cards.
-cards:
-
-  # First, a heading card with temp/hum badges.
-  - [% INCLUDE heading_card.tt
+[% INCLUDE section.tt
        name = "Woonkamer"
        icon = "sofa"
        badges = [ "temperature", "light" ]
@@ -17,9 +9,6 @@ cards:
        light_entity = "light.woonkamer_tafel"
        navigate = "/lovelace-overzicht/woonkamer" %]
 
-  - type: grid
-    columns: 2
-    square: false
     cards:
 
       - type: custom:mushroom-template-card

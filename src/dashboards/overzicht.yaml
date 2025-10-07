@@ -10,8 +10,7 @@ views:
 
 #      - type: vertical-stack
 #        cards:
-      - !include overzicht/compass.yaml
-#          - !include overzicht/weerstation.yaml
+      - !include overzicht/weerstation.yaml
 
       - !include overzicht/hal.yaml
 

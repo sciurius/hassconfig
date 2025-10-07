@@ -1,24 +1,13 @@
 # Dashboard: Overzicht -- Badkamer       -*- hass -*-
 # WARNING: This is a generated file -- DO NOT EDIT
 
-[% PROCESS v_anchors.tt -%]
-[% PROCESS colours.tt -%]
 [% PROCESS power_meter.tt -%]
 
-[% INCLUDE stack.tt color = 'lightblue' %]
-
-# The cards.
-cards:
-
-  # First, a heading card with temp/hum badges.
-  - [% INCLUDE heading_card.tt
+[% INCLUDE section.tt
        name     = "Badkamer"
        icon     = "bathtub"
        navigate = "/lovelace-overzicht/badkamer" %]
 
-  - type: grid
-    columns: 2
-    square: false
     cards:
 
       - type: tile
@@ -74,24 +63,6 @@ cards:
                 content: "{% if (states('sensor.ithocve_ventilation_setpoint')|int) > 0 %}({{ states('sensor.ithocve_ventilation_setpoint') }}%){% endif %}"
               }
 
-     # - type: tile
-     #   entity: sensor.ithocve_ventilation_setpoint
-     #   name: Instelling
-     #   icon: mdi:fan
-     #   visibility:
-     #     - entity: sensor.ithocve_ventilation_setpoint
-     #       condition: numeric_state
-     #       above: -1
-
-      # - type: tile
-      #   entity: switch.badkamerafzuiging
-      #   name: Reset
-      #   icon: mdi:fan-off
-      #   visibility:
-      #     - entity: sensor.ithocve_fan_info
-      #       condition: state
-      #       state: unavailable
-
       - type: tile
         entity: sensor.ithocve_fan_remaining_time
         name: Fan Timer
@@ -102,7 +73,10 @@ cards:
             condition: numeric_state
             above: 0
   
-      - [% INCLUDE switching_meter name = "Afzuiging" alwayson = 1 %]
+      - [% INCLUDE switching_meter
+           name = "Afzuiging"
+           icon = "fan"
+           alwayson = 1 %]
             
       - type: tile
         entity: sensor.boiler_dhw_curflow

@@ -10,7 +10,7 @@ type: heading
 [% IF icon %]    icon: mdi:[% icon %]
 [%- END %]
 
-[% IF badges %]    badges:
+[% IF NOT badges.empty %]    badges:
 [%   FOR badge IN badges;
      ent = ${"${badge}_entity"};
      op = "more-info";
@@ -25,4 +25,7 @@ type: heading
 [% IF navigate %]    tap_action:
       action: navigate
       navigation_path: [% navigate %]
+[%- END -%]
+[% IF textsize %]    card_mod:
+      style: "ha-card .title { font-size: [% textsize %]; }"
 [%- END -%]

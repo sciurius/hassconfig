@@ -3,20 +3,11 @@
 
 [% PROCESS v_anchors.tt -%]
 
-[% INCLUDE stack.tt color = 'lightgreen' %]
-
-# The cards.
-cards:
-
-  # First, a heading card with temp/hum badges.
-  - [% INCLUDE heading_card.tt
+[% INCLUDE section.tt
        name   = "Laders"
        icon   = "power-plug-battery"
        badges = [] %]
 
-  - type: grid
-    columns: 2
-    square: false
     cards:
 
 [% BLOCK batt -%]

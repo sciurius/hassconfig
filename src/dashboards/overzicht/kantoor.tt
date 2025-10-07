@@ -2,21 +2,11 @@
 # WARNING: This is a generated file -- DO NOT EDIT
 
 [% PROCESS v_anchors.tt -%]
-[% PROCESS colours.tt -%]
 
-[% INCLUDE stack.tt %]
-
-# The cards.
-cards:
-
-  # First, a heading card with temp/hum badges.
-  - [% INCLUDE heading_card.tt
-       name = "kantoor"
+[% INCLUDE section.tt
+       name = "Kantoor"
        icon = "account-network" %]
 
-  - type: grid
-    columns: 2
-    square: false
     cards:
 
       - type: tile

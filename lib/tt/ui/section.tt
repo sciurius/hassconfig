@@ -1,0 +1,74 @@
+[% # -*- mode: tt; indent-tabs-mode: nil -*-
+# MUST BE INCLUDEd, NOT PROCESSed.
+
+section_colors = {
+badkamer     => "lightblue",
+bijkeuken    => "plum",
+bresser51    => "lavender",
+buiten       => "cornflowerblue",
+energie      => "darkseagreen",
+hal          => "moccasin",
+kantoor      => "wheat",
+keuken       =>  "lightpink",
+laders       => "aquamarine",
+slaapkamer   => "orange",
+woonkamer    => "lightgreen",
+};
+
+# Parameters:
+DEFAULT entity     = name.lower;
+DEFAULT badges     = [ "temperature", "humidity" ];
+DEFAULT temperature_entity = "sensor." _ entity _ "_temperature";
+DEFAULT humidity_entity    = "sensor." _ entity _ "_humidity";
+DEFAULT color      = section_colors.$entity || '#D0D0D0';
+-%]
+
+# To use card_mod, we need the stack card.
+type: custom:vertical-stack-in-card
+#type: custom:stack-in-card
+
+# Mods: draw a border.
+card_mod:
+  style: |
+    ha-card {
+      /* border: 2px solid [% color %]; */
+      background: [% color %];
+      padding: 5px;
+    }
+
+cards:
+
+  # First, a heading card.
+  - type: heading
+    heading: [% name %]
+    heading_style: title
+[% IF icon %]    icon: mdi:[% icon %]
+[%- END %]
+[% IF navigate %]    tap_action:
+      action: navigate
+      navigation_path: [% navigate %]
+[%- END -%]
+[% IF textsize %]    card_mod:
+      style: "ha-card .title { font-size: [% textsize %]; }"
+[%- END -%]
+
+[% IF NOT badges.empty %]
+    badges:
+[%   FOR badge IN badges;
+     ent = ${"${badge}_entity"};
+     op = "more-info";
+     IF ent.match('^(light|switch)\.'); op = "toggle"; END %]
+      - type: entity
+        name: [% badge.ucfirst %]
+        entity: [% ent %]
+        tap_action:
+          action: [% op %]
+[%-  END %]
+[%- END %]
+
+  # Then, a grid.
+  - type: grid
+    columns: 2
+    square: false
+
+    # Cards follow.

@@ -3,22 +3,12 @@
 
 [% PROCESS v_anchors.tt -%]
 
-[% INCLUDE stack.tt %]
-
-# The cards.
-cards:
-
-  # First, a heading card.
-  - [% INCLUDE heading_card.tt
+[% INCLUDE section.tt
        name      = "Logeerkamer"
        icon      = "bed-empty"
        badges    = []
        navigatie = "/lovelace-overzicht/logeerkamer" %]
 
-  # Then the tiles in a grid.
-  - type: grid
-    columns: 2
-    square: false
     cards:
 
       - type: tile

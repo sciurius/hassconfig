@@ -1,4 +1,4 @@
-# Dashboard: Overzicht -- Compass       -*- hass -*-
+# Dashboard: Overzicht -- Weerstation       -*- hass -*-
 # WARNING: This is a generated file -- DO NOT EDIT
 
 [% device              = "bresser51";
@@ -8,22 +8,12 @@
    wind_direction_name = "sensor." _ device _ "_wind_direction_name";
 -%]
 
-[% INCLUDE stack.tt %]
-
-# The cards.
-cards:
-
-  # First, a heading card with temp/hum badges.
-  - [% INCLUDE heading_card.tt
-       name     = "Buiten"
+[% INCLUDE section.tt
+       name     = "Weerstation"
        icon     = "countertop"
        entity   = device
        navigate = "/lovelace-" _ device %]
 
-  # Then the grid with the content cards.
-  - type: grid
-    columns: 2
-    square: false
     cards:
 
       - type: custom:mushroom-template-card
