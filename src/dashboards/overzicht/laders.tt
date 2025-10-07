@@ -27,6 +27,7 @@ type: tile
       - [% PROCESS batt name = "Zenny"  sensor = "zenny_battery_level" %]
       - [% PROCESS batt name = "Smotty" sensor = "sm_a320fl_battery_level" %]
       - [% PROCESS batt name = "TZ200"  sensor = "battery_tz200" %]
+      - [% PROCESS batt name = "Irmby"  sensor = "irmby_battery_level" %]
 
       - type: tile
         entity: timer.scootlader
