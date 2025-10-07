@@ -107,6 +107,12 @@
         icon: mdi:television
         color: "rgb({{ state_attr('light.bulb01','rgb_color')|join(',') }})"
         visibility:
-          - entity: switch.slaapkamer_media_center
-            condition: state
-            state: "on"
+          - condition: or
+            conditions:
+              - entity: light.bulb01
+                condition: state
+                state: "on"
+              - entity: switch.slaapkamer_media_center
+                condition: state
+                state: "on"
+                
