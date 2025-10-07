@@ -74,18 +74,24 @@
       # Warmtedeken switch.
       # Only visible when the warmtedeken exists.
       - [% INCLUDE switching_meter
-           name = "Deken" sensor = "slaapkamer_warmtedeken_joan"
+           name = "\"Deken {% if is_state('automation.scheduled_switch_on_warmtedeken','on') %} (auto) {% endif %}\""
+           sensor = "slaapkamer_warmtedeken_joan"
            icon = "radiator" %]
+        tap_action:
+          action: perform-action
+          perform_action: automation.toggle
+          target:
+              entity_id: automation.scheduled_switch_on_warmtedeken
 
-      # Warmtedeken automation.
-      # Only visible when the warmtedeken exists.
-      - type: tile
-        entity: automation.scheduled_switch_on_warmtedeken
-        name: Deken auto
-        color: false
-        visibility:
-          - entity: switch.slaapkamer_warmtedeken_joan
-            <<: *v_available
+#     # Warmtedeken automation.
+#      # Only visible when the warmtedeken exists.
+#      - type: tile
+#        entity: automation.scheduled_switch_on_warmtedeken
+#        name: Deken auto
+#        color: false
+#        visibility:
+#          - entity: switch.slaapkamer_warmtedeken_joan
+#            <<: *v_available
 
       # Warmtedeken timer.
       # Only visible when the timer is running.
