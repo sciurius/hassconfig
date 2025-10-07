@@ -27,41 +27,34 @@
             condition: state
             state: unavailable
 
-      - type: tile
+      - type: custom:mushroom-template-card
         entity: sensor.ithocve_fan_speed_status
-        name: Afzuiging
-        icon: mdi:fan
+        primary: Afzuiging
         visibility:
           - entity: sensor.ithocve_fan_speed_status
             condition: numeric_state
             above: 0
-        card_mod:
-          style:
-            .: |
-              ha-card {
-                {% if states('sensor.ithocve_fan_info') == 'auto' %}
-                --card-mod-icon:mdi:fan-auto
-                {% elif states('sensor.ithocve_fan_info') == 'high' %}
-                --card-mod-icon:mdi:fan-speed-3
-                {% elif states('sensor.ithocve_fan_info') == 'low' %}
-                --card-mod-icon:mdi:fan-speed-1
-                {% elif states('sensor.ithocve_fan_info') == 'timer 1' %}
-                --card-mod-icon:mdi:fan-clock
-                {% elif states('sensor.ithocve_fan_info') == 'timer 2' %}
-                --card-mod-icon:mdi:fan-clock
-                {% elif states('sensor.ithocve_fan_info') == 'timer 3' %}
-                --card-mod-icon:mdi:fan-clock
-                {% else %}
-                --card-mod-icon:mdi:fan
-                {% endif %};
-              }
-            ha-tile-info$: |
-              .secondary {
-                {% if (states('sensor.ithocve_fan_speed')|int) <= 0 %} display: none; {% endif %}
-              }
-              .secondary:after {
-                content: "{% if (states('sensor.ithocve_ventilation_setpoint')|int) > 0 %}({{ states('sensor.ithocve_ventilation_setpoint') }}%){% endif %}"
-              }
+        icon: |
+          {% if states('sensor.ithocve_fan_info') == 'auto' %}
+          mdi:fan-auto
+          {% elif states('sensor.ithocve_fan_info') == 'high' %}
+          mdi:fan-speed-3
+          {% elif states('sensor.ithocve_fan_info') == 'low' %}
+          mdi:fan-speed-1
+          {% elif states('sensor.ithocve_fan_info') == 'timer 1' %}
+          mdi:fan-clock
+          {% elif states('sensor.ithocve_fan_info') == 'timer 2' %}
+          mdi:fan-clock
+          {% elif states('sensor.ithocve_fan_info') == 'timer 3' %}
+          mdi:fan-clock
+          {% else %}
+          mdi:fan
+          {% endif %};
+        secondary: |
+          {% if (states('sensor.ithocve_fan_speed')|int) > 0 %}
+          {{ states('sensor.ithocve_fan_speed_status') }}
+          {% if (states('sensor.ithocve_ventilation_setpoint')|int) > 0 %}({{ states('sensor.ithocve_ventilation_setpoint') }}%){% endif %}
+          {% endif %}
 
       - type: tile
         entity: sensor.ithocve_fan_remaining_time
