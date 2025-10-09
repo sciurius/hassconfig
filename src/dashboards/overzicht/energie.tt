@@ -54,7 +54,9 @@
           {{ states('sensor.extboiler_energy_today') }} kWh
 
       - type: custom:mushroom-template-card
-        icon: mdi:radiator
+        icon: >-
+          {% if is_state('switch.extboiler','on') %} mdi:radiator
+          {% else %} mdi:radiator-off {% endif %}
         primary: Ext Kachel
         entity: switch.achterkamerkacheltje
         secondary: |
