@@ -6,8 +6,6 @@
        icon     = "coat-rack"
        navigate = "/lovelace-overzicht/hal" %]
 
-    cards:
-
       - type: tile
         entity: light.hal_hoek
         name: Verlichting

@@ -8,8 +8,6 @@
        icon     = "countertop"
        navigate = "/lovelace-overzicht/keuken" %]
 
-    cards:
-
       - type: tile
         entity: light.keuken_aanrecht_verlichting
         name: Aanrecht

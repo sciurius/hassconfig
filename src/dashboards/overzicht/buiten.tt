@@ -6,8 +6,7 @@
        icon     = "weather-partly-cloudy"
        badges   = []
        navigate = "/lovelace-overzicht/buiten" %]
-
-    cards: []
+       []
 
   - type: entities
     entities:

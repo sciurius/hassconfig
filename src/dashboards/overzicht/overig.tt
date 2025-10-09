@@ -6,8 +6,6 @@
        icon   = "cog-box"
        badges = [] %]
 
-    cards:
-
       [% FOREACH item IN [ "kelder", "kruipruimte", "zolder", "garage", "achterkamer" ] %]
       - type: custom:mushroom-template-card
         primary: [% item.ucfirst %]

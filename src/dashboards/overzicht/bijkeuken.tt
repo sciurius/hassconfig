@@ -7,8 +7,6 @@
        name     = "Bijkeuken"
        icon     = "countertop" %]
 
-    cards:
-
       - [% INCLUDE power_meter
            name = "Vriezer"    icon = "fridge-industrial" %]
       - [% INCLUDE switching_meter

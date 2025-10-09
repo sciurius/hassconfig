@@ -8,8 +8,6 @@
        icon     = "bathtub"
        navigate = "/lovelace-overzicht/badkamer" %]
 
-    cards:
-
       - type: tile
         entity: light.badkamer_verlichting
         name: Verlichting

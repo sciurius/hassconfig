@@ -5,8 +5,7 @@
        name   = "Computers"
        icon   = "laptop"
        badges = [] %]
-
-    cards: []
+       []
 
   - type: entities
 

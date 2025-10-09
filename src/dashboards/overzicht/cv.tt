@@ -11,8 +11,6 @@
        current_entity     = "boiler_curflowtemp"
        navigate   = "/lovelace-overzicht/cv" %]
 
-    cards:
-
       - type: tile
         entity: binary_sensor.boiler_heatingactive
         name: Status

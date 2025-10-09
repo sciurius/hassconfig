@@ -8,8 +8,6 @@
        icon   = "power-plug-battery"
        badges = [] %]
 
-    cards:
-
 [% BLOCK batt -%]
 type: tile
         entity: sensor.[% sensor %]

@@ -7,8 +7,6 @@
        name = "Kantoor"
        icon = "account-network" %]
 
-    cards:
-
       - type: tile
         entity: binary_sensor.home_assistant_website_update_available
         name: HASS Software

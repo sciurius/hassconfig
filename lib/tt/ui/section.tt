@@ -72,3 +72,4 @@ cards:
     square: false
 
     # Cards follow.
+    cards:

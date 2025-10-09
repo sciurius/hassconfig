@@ -8,8 +8,6 @@
        icon     = "bed"
        navigate = "/lovelace-overzicht/slaapkamer" %]
 
-    cards:
-
       # Media center tile.
       # Switches on/off the media center.
       # The icon changes with the media function selected.

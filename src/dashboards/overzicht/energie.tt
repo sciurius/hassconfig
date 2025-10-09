@@ -12,8 +12,6 @@
    navigate = "/lovelace-overzicht/energie"
    %]
 
-    cards:
-
       - type: custom:mushroom-template-card
         entity: sensor.energie_balans
         icon: mdi:lightning-bolt
@@ -43,7 +41,9 @@
         name: Gas
 
       - type: custom:mushroom-template-card
-        icon: mdi:water-boiler
+        icon: >-
+          {% if is_state('switch.extboiler','on') %} mdi:water-boiler
+          {% else %} mdi:water-boiler-off {% endif %}
         primary: Ext Boiler
         entity: switch.extboiler
         color: |

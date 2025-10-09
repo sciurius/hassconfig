@@ -9,8 +9,6 @@
        light_entity = "light.woonkamer_tafel"
        navigate = "/lovelace-overzicht/woonkamer" %]
 
-    cards:
-
       - type: custom:mushroom-template-card
         entity: climate.thermostat_hc1
         icon: mdi:thermostat

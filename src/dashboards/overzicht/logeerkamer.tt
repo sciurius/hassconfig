@@ -9,8 +9,6 @@
        badges    = []
        navigatie = "/lovelace-overzicht/logeerkamer" %]
 
-    cards:
-
       - type: tile
         entity: light.logeerkamer_verlichting
         name: Verlichting
