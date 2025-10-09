@@ -1,57 +1,109 @@
 # Dashboard: Overzicht -- Buiten       -*- hass -*-
 # WARNING: This is a generated file -- DO NOT EDIT
 
+[% PROCESS v_anchors.tt -%]
+
 [% INCLUDE section.tt
        name     = "Buiten"
        icon     = "weather-partly-cloudy"
-       badges   = []
+       sensor   = "bresser51"
        navigate = "/lovelace-overzicht/buiten" %]
-       []
+
+      - type: custom:mushroom-template-card
+        primary: >-
+          {% if is_state('binary_sensor.day_period','on') %} Daglicht
+          {% else %} Nacht {% endif %}
+        secondary: >-
+          {{ state_attr('binary_sensor.day_period','st') }}
+        icon: >-
+          {% if is_state('binary_sensor.day_period','on') %} mdi:weather-sunny
+          {% else %} mdi:weather-night {% endif %}
+        color: >-
+          {% if is_state('binary_sensor.illuminated','on') %}
+          var(--state-active-color)
+          {% else %} var(--state-inactive-color) {% endif %}
+
+      - type: custom:mushroom-template-card
+        primary: Licht
+        icon: mdi:weather-sunny
+        secondary: >-
+          {{ states('sensor.achterkamer_illuminance') }} lx
+        color: >-
+          {% if is_state('binary_sensor.illuminated','on') %}
+          var(--state-active-color)
+          {% else %} var(--state-inactive-color) {% endif %}
+
+      - type: tile
+        entity: weather.knmi_home
+        name: KNMI
+
+      - type: tile
+        entity: sensor.knmi_pressure
+        name: Luchtdruk
+
+      - type: custom:mushroom-template-card
+        entity: sensor.stookwijzer_advice_code
+        primary: Stookwijzer
+        icon: mdi:air-filter
+        color: >-
+          {{ "red" if states('sensor.stookwijzer_advice_code') == "code_red" else
+          "orange" if states('sensor.stookwijzer_advice_code') == "code_orange" else "none" }}
+        secondary: >-
+          {{ "Slecht" if states('sensor.stookwijzer_advice_code') == "code_red" else
+          "Matig" if states('sensor.stookwijzer_advice_code') == "code_orange" else "Ok" }}
+
+      - type: tile
+        entity: timer.buitenverlichting_achter
+        icon: mdi:outdoor-lamp
+        name: Achterkant
+        icon_tap_action:
+          action: perform-action
+          perform_action: light.toggle
+          target:
+            entity_id: light.buitenverlichting_achter
+        icon_hold_action:
+          action: call-service
+          service: script.start_buitenverlichting_achter_timer
+        visibility:
+          - entity: timer.buitenverlichting_achter
+            state: active
+
+      - type: custom:mushroom-template-card
+        icon: mdi:outdoor-lamp
+        primary: Achterkant
+        secondary: >-
+          {% if is_state('timer.buitenverlichting_achter','idle') %} Off
+          {% else %} {{ states('timer.buitenverlichting_achter') }} {% endif %}
+        icon_tap_action:
+          action: perform-action
+          perform_action: light.toggle
+          target:
+            entity_id: light.buitenverlichting_achter
+        icon_hold_action:
+          action: call-service
+          service: script.start_buitenverlichting_achter_timer
+        visibility:
+          - entity: timer.buitenverlichting_achter
+            state_not: active
+
+      - type: tile
+        entity: light.balkonkerstverlichting
+        name: Balkon (Kerst)
+        icon: mdi:string-lights
+        visibility:
+          - entity: light.balkonkerstverlichting
+            <<: *v_available
+
+      - type: tile
+        entity: sensor.toyota_53xdsr_apk_expiration
+        name: APK verloopt
+        visibility:
+          - entity: sensor.apk_expiration_near
+            state_not: nog_lang_niet
+
 
   - type: entities
     entities:
-
-      - entity: weather.knmi_home
-        name: KNMI
-
-      - [% INCLUDE temphum sensor = "buiten" %]
-
-      - type: conditional
-        conditions:
-          - entity: binary_sensor.day_period
-            state: "on"
-        row:
-          type: attribute
-          entity: binary_sensor.day_period
-          state_color: true
-          attribute: st
-          name: Daglicht
-
-      - type: conditional
-        conditions:
-          - entity: binary_sensor.day_period
-            state: "off"
-        row:
-          type: attribute
-          entity: binary_sensor.day_period
-          state_color: false
-          attribute: st
-          name: Nacht
-
-      - type: custom:multiple-entity-row
-        entity: binary_sensor.illuminated
-        state_color: true
-        show_state: false
-        name: Licht
-        entities:
-          - entity: sensor.achterkamer_illuminance
-            name: false
-
-      - type: custom:multiple-entity-row
-        entity: sensor.knmi_pressure
-        name: Luchtdruk
-        format: precision0
-        secondary_info: KNMI
 
       - type: conditional
         conditions:
@@ -108,56 +160,6 @@
             - entity: sensor.noorderdiep_valthermond_dominant_pollutant
               name: false
 
-      - type: conditional
-        conditions:
-          - entity: sensor.stookwijzer_advice_code
-            state_not: 'off'
-        row:
-          entity: sensor.stookwijzer_advice_code
-          name: Stookwijzer
-          type: custom:template-entity-row
-          icon: mdi:air-filter
-          color: >-
-            {{ "red" if states('sensor.stookwijzer_advice_code') == "code_red" else
-               "orange" if states('sensor.stookwijzer_advice_code') == "code_orange" else "none" }}
-          state: >-
-            {{ "Slecht" if states('sensor.stookwijzer_advice_code') == "code_red" else
-               "Matig" if states('sensor.stookwijzer_advice_code') == "code_orange" else "Ok" }}
-
-
-      - entity: light.buitenverlichting_achter
-        name: Achterkant
-        hold_action:
-          action: call-service
-          service: script.start_buitenverlichting_achter_timer
-
-      - type: conditional
-        conditions:
-          - entity: timer.buitenverlichting_achter
-            state: active
-        row:
-          entity: timer.buitenverlichting_achter
-          icon: mdi:outdoor-lamp
-          name: Timer
-
-      - type: conditional
-        conditions:
-          - entity: light.balkonkerstverlichting
-            state_not: unknown
-          - entity: light.balkonkerstverlichting
-            state_not: unavailable
-        row:
-          entity: light.balkonkerstverlichting
-          name: Balkon (Kerst)
-          icon: mdi:string-lights
-
-      - type: conditional
-        conditions:
-          - entity: sensor.apk_expiration_near
-            state_not: nog_lang_niet
-        row:
-          entity: sensor.apk_expiration
-          name: APK verloopt
 
       - type: custom:multiple-entity-row
         entity: binary_sensor.lighting
