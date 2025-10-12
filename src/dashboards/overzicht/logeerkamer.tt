@@ -7,6 +7,7 @@
        name      = "Logeerkamer"
        icon      = "bed-empty"
        badges    = []
+       columns   = 1
        navigatie = "/lovelace-overzicht/logeerkamer" %]
 
       - type: tile
@@ -25,3 +26,13 @@
           - entity: light.logeerkamer_verlichting
             condition: state
             state: unavailable
+
+      - type: custom:stack-in-card
+        mode: horizontal
+        keep:
+          border_radius: true
+        cards:
+          - type: tile
+            entity: light.logeerkamer_verlichting
+          - type: tile
+            entity: light.logeerkamer_verlichting
