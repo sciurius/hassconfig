@@ -11,7 +11,7 @@ type: custom:mushroom-template-card
         entity: [% sensor %]
 [%- IF icon %]
         icon: mdi:[% icon %][% END %]
-        primary: [% name %]
+        color: var(--state-icon-color)
         secondary: "{{ states('[% sensor %]')|round(2) }} kWh"
         visibility:
           - entity: [% sensor %]
@@ -38,7 +38,7 @@ type: custom:mushroom-template-card
           - entity: [% switch %]
             <<: *v_available
 [%- IF alwayson %]
-        color: "{{ 'var(--state-inactive-color)' if is_state('[% switch %]','on') else 'red' }}"
+        color: "{{ 'var(--state-icon-color)' if is_state('[% switch %]','on') else 'red' }}"
 [%- ELSE %]
         color: "var(--state-{{ '' if is_state('[% switch %]','on') else 'in' }}active-color)"
 [%- END -%]
