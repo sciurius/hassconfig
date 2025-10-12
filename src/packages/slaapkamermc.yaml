@@ -136,12 +136,6 @@ automation:
     - service: light.turn_on
       data:
         color_name: '{{ color }}'
-        brightness_pct: 60
-      target:
-        entity_id: light.woonkamer_wand_l
-    - service: light.turn_on
-      data:
-        color_name: '{{ color }}'
         brightness_pct: 30
       target:
         entity_id: light.bulb01
