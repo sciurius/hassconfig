@@ -92,7 +92,6 @@ light:
     entities:
       - light.bulb01
       - light.woonkamer_heks
-      - light.woonkamer_wand_l
 
 notify:
   - platform: group
@@ -215,15 +214,15 @@ command_line:
       value_template: "{{ value | multiply(0.001) | round(1) }}"
       scan_interval: 120
 
-  # CPU temperature when running on RPi4.
-  - sensor:
-      name: RPi CPU Temperature
-      unique_id: sensor_rpi_cpu_temperature
-      command: "cat /sys/class/thermal/thermal_zone0/temp"
-      device_class: temperature
-      unit_of_measurement: "°C"
-      value_template: "{{ value | multiply(0.001) | round(1) }}"
-      scan_interval: 120
+#  # CPU temperature when running on RPi4.
+#  - sensor:
+#      name: RPi CPU Temperature
+#      unique_id: sensor_rpi_cpu_temperature
+#      command: "cat /sys/class/thermal/thermal_zone0/temp"
+#      device_class: temperature
+#      unit_of_measurement: "°C"
+#      value_template: "{{ value | multiply(0.001) | round(1) }}"
+#      scan_interval: 120
 
 template:
   - sensor:
