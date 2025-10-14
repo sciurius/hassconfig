@@ -108,10 +108,11 @@
 
       - type: tile
         entity: sensor.aeg_oven_timetoend
+        # Note that the sensor seems to stop at 1.
         name: Stopt over
         visibility:
           - entity: sensor.aeg_oven_timetoend
             <<: *v_available
           - entity: sensor.aeg_oven_timetoend
             condition: numeric_state
-            above: 0
+            above: 1
