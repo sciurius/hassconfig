@@ -53,6 +53,9 @@
         secondary: |
           {{ states('sensor.extboiler_energy_today') }} kWh
 
+      - type: tile
+        entity: automation.energiebalans_off
+
       - type: custom:mushroom-template-card
         icon: >-
           {% if is_state('switch.extboiler','on') %} mdi:radiator
