@@ -9,6 +9,15 @@
        sensor   = "bresser51"
        navigate = "/lovelace-overzicht/buiten" %]
 
+      - type: clock
+        show_seconds: true
+        clock_size: medium
+        no_background: true
+
+      - type: tile
+        entity: weather.knmi_home
+        name: KNMI
+
       - type: custom:mushroom-template-card
         primary: >-
           {% if is_state('binary_sensor.day_period','on') %} Daglicht
@@ -32,10 +41,6 @@
           {% if is_state('binary_sensor.illuminated','on') %}
           var(--state-active-color)
           {% else %} var(--state-inactive-color) {% endif %}
-
-      - type: tile
-        entity: weather.knmi_home
-        name: KNMI
 
       - type: tile
         entity: sensor.knmi_pressure
