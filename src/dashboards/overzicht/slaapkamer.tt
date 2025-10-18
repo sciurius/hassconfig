@@ -8,38 +8,29 @@
        icon     = "bed"
        navigate = "/lovelace-overzicht/slaapkamer" %]
 
+
       # Media center tile.
       # Switches on/off the media center.
       # The icon changes with the media function selected.
-      - type: tile
+      - type: custom:mushroom-template-card
         entity: switch.slaapkamer_media_center
-        name: Media Center
-        icon: mdi:television
-        card_mod:
-         style:
-            .: |
-              ha-card {
-                {% if states('sensor.mc_state') == 'TV' %}
-                --card-mod-icon:mdi:television-box;
-                --card-mod-icon-color:#4caf50;
-                {% elif states('sensor.mc_state') == 'Video' %}
-                --card-mod-icon:mdi:movie-open;
-                --card-mod-icon-color:blue;
-                {% elif states('sensor.mc_state') == 'ChromeCast' %}
-                --card-mod-icon:mdi:cast-connected;
-                --card-mod-icon-color:purple;
-                {% elif is_state('switch.slaapkamer_media_center','on') %}
-                --card-mod-icon:mdi:television-off;
-                --card-mod-icon-color:red;
-                {% else %}
-                --card-mod-icon:mdi:television;
-                --card-mod-icon-color:grey;
-                {% endif %};
-              }
-            ha-tile-info$: |
-              .secondary:after {
-                content: '{%if has_value("sensor.mc_state") and states("sensor.mc_state") != "Off" %} - {{ states("sensor.mc_state") }}{% endif %}';
-              }
+        primary: Media Center
+        secondary: >-
+          {{ states("sensor.mc_state") }}
+        color: |-
+          {% if   is_state('sensor.mc_state', 'TV') %} #4caf50
+          {% elif is_state('sensor.mc_state', 'Video') %} blue
+          {% elif is_state('sensor.mc_state', 'ChromeCast') %} purple
+          {% elif is_state('switch.slaapkamer_media_center','on') %} red
+          {% else %} var(--state-inactive-color)
+          {% endif %}
+        icon: |-
+          {% if   is_state('sensor.mc_state', 'TV') %} mdi:television-box
+          {% elif is_states('sensor.mc_state', 'Video') %} mdi:movie-open
+          {% elif is_states('sensor.mc_state', 'ChromeCast') %} mdi:cast-connected
+          {% elif is_state('switch.slaapkamer_media_center','on') %} mdi:television-off
+          {% else %} mdi:television
+          {% endif %}
 
       # Avondlichtje.
       - type: tile
