@@ -83,7 +83,7 @@ button_card_templates:
 title: Joan
 theme: default
 
-[% INCLUDE kiosk %]
+[% INCLUDE kiosk.tt %]
 
 views:
   - type: custom:vertical-layout

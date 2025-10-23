@@ -1,5 +1,5 @@
 # Sample responsive layout,             -*- hass -*-
-[% INCLUDE kiosk %]
+[% INCLUDE kiosk.tt %]
 
 views:
   - theme: Backend-selected

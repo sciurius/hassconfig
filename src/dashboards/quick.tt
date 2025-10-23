@@ -92,7 +92,7 @@ IF style; THEN; "  styles: { $style },\n"; END;
    
 title: Quick Access
 
-[% INCLUDE kiosk %]
+[% INCLUDE kiosk.tt %]
 
 views:
   - title: Quick Access
