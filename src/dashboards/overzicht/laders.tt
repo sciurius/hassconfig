@@ -8,6 +8,7 @@
        icon   = "power-plug-battery"
        badges = [] %]
 
+[%# Sensor controlled -%]
 [% BLOCK batt -%]
 type: tile
         entity: sensor.[% sensor %]
@@ -17,40 +18,31 @@ type: tile
           - entity: sensor.[% sensor %]
             <<: *v_available
 [% END -%]
-
-      - [% PROCESS batt name = "Largo"  sensor = "sm_a366b_battery_level" %]
-      - [% PROCESS batt name = "GlaxS4" sensor = "sm_t830_battery_level" %]
-      - [% PROCESS batt name = "GlaxS7" sensor = "sm_t733_battery_level" %]
-      - [% PROCESS batt name = "Joni"   sensor = "joni_battery_level" %]
-      - [% PROCESS batt name = "Zenny"  sensor = "zenny_battery_level" %]
-      - [% PROCESS batt name = "Smotty" sensor = "sm_a320fl_battery_level" %]
-      - [% PROCESS batt name = "TZ200"  sensor = "battery_tz200" %]
-      - [% PROCESS batt name = "Irmby"  sensor = "irmby_battery_level" %]
-
-      - type: tile
-        entity: timer.scootlader
-        name: Scootmobiel
+[%# Timer controlled -%]
+[% BLOCK timed;
+   DEFAULT timer = switch -%]
+type: tile
+        entity: timer.[% timer %]
+        name: [% name %]
         icon: mdi:battery
         vertical: false
         visibility:
-          - entity: switch.scootlader
+          - entity: switch.[% switch %]
             <<: *v_available
         tap_action:
           action: perform-action
           perform_action: switch.toggle
           target:
-            entity_id: switch.scootlader
+            entity_id: switch.[% switch %]
+[% END -%]
 
-      - type: tile
-        entity: timer.fietslader
-        name: Fietslader
-        icon: mdi:battery
-        vertical: false
-        visibility:
-          - entity: switch.fietslader
-            <<: *v_available
-        tap_action:
-          action: perform-action
-          perform_action: switch.toggle
-          target:
-            entity_id: switch.fietslader
+      - [% INCLUDE batt  name = "Largo"  sensor = "sm_a366b_battery_level" %]
+      - [% INCLUDE batt  name = "GlaxS4" sensor = "sm_t830_battery_level" %]
+      - [% INCLUDE batt  name = "GlaxS7" sensor = "sm_t733_battery_level" %]
+      - [% INCLUDE batt  name = "Joni"   sensor = "joni_battery_level" %]
+      - [% INCLUDE batt  name = "Zenny"  sensor = "zenny_battery_level" %]
+      - [% INCLUDE batt  name = "Smotty" sensor = "sm_a320fl_battery_level" %]
+      - [% INCLUDE batt  name = "TZ200"  sensor = "battery_tz200" %]
+      - [% INCLUDE batt  name = "Irmby"  sensor = "irmby_battery_level" %]
+      - [% INCLUDE timed name = "Scoot"  switch = "scootlader" %]
+      - [% INCLUDE timed name = "Fiets"  switch = "fietslader" %]
