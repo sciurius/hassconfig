@@ -2,6 +2,7 @@
 # WARNING: This is a generated file -- DO NOT EDIT
 
 [% PROCESS v_anchors.tt -%]
+[% PROCESS colours.tt -%]
 
 [% INCLUDE section.tt
        name     = "Buiten"
@@ -51,11 +52,11 @@
         primary: Stookwijzer
         icon: mdi:air-filter
         color: >-
-          {{ "red" if states('sensor.stookwijzer_advice_code') == "code_red" else
-          "orange" if states('sensor.stookwijzer_advice_code') == "code_orange" else "none" }}
+          {{ "red" if is_state('sensor.stookwijzer_advice_code',"code_red") else
+          "orange" if is_state('sensor.stookwijzer_advice_code',"code_orange") else "[% dash.col.green %]" }}
         secondary: >-
-          {{ "Slecht" if states('sensor.stookwijzer_advice_code') == "code_red" else
-          "Matig" if states('sensor.stookwijzer_advice_code') == "code_orange" else "Ok" }}
+          {{ "Slecht" if is_state('sensor.stookwijzer_advice_code',"code_red") else
+          "Matig" if is_state('sensor.stookwijzer_advice_code',"code_orange") else "Ok" }}
 
       - type: tile
         entity: timer.buitenverlichting_achter
