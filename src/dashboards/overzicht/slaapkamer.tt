@@ -26,8 +26,8 @@
           {% endif %}
         icon: |-
           {% if   is_state('sensor.mc_state', 'TV') %} mdi:television-box
-          {% elif is_states('sensor.mc_state', 'Video') %} mdi:movie-open
-          {% elif is_states('sensor.mc_state', 'ChromeCast') %} mdi:cast-connected
+          {% elif is_state('sensor.mc_state', 'Video') %} mdi:movie-open
+          {% elif is_state('sensor.mc_state', 'ChromeCast') %} mdi:cast-connected
           {% elif is_state('switch.slaapkamer_media_center','on') %} mdi:television-off
           {% else %} mdi:television
           {% endif %}
