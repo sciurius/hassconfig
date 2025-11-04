@@ -18,7 +18,7 @@
         entity: sensor.compass
         primary: >-
           {% if states('[% wind_beaufort %]')|int > 0 %}
-          {{ states('[% wind_direction_name %]') }}
+          {{ states('[% wind_direction_name %]') | replace('S','Z') | replace('E','O') }}
           {% else %} Wind {% endif %}
         picture: >-
           {% if states('[% wind_beaufort %]')|int > 0 %}
