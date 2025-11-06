@@ -2,6 +2,7 @@
 # WARNING: This is a generated file -- DO NOT EDIT
 
 [% PROCESS v_anchors.tt -%]
+[% PROCESS colours.tt -%]
 
 [% INCLUDE section.tt
        name   = "Laders"
@@ -44,5 +45,43 @@ type: tile
       - [% INCLUDE batt  name = "Smotty" sensor = "sm_a320fl_battery_level" %]
       - [% INCLUDE batt  name = "TZ200"  sensor = "battery_tz200" %]
       - [% INCLUDE batt  name = "Irmby"  sensor = "irmby_battery_level" %]
+      - type: custom:mushroom-template-card
+        entity: sensor.ups_pico_battery_level
+        primary: UPS Srv1
+        color: >-
+          {% if   states(entity)|int >= 4 %} [% dash.col.green %]
+          {% elif states(entity)|int >= 3 %} orange
+          {% else                         %} red
+          {% endif %}
+        icon: >-
+          {% set charging = "-charging" if is_state('sensor.ups_pico_charger','Connected') else "" %}
+          {% if   states(entity)|int >= 5 %} mdi:battery{{ charging }}-high
+          {% elif states(entity)|int >= 4 %} mdi:battery{{ charging }}-medium
+          {% elif states(entity)|int >= 3 %} mdi:battery{{ charging }}-low
+          {% else                         %} mdi:battery{{ charging }}-outline
+          {% endif %}
+        secondary: "{{ states(entity) }} V"
+        vertical: false
+        visibility:
+          - entity: sensor.ups_pico_battery_level
+            <<: *v_available
       - [% INCLUDE timed name = "Scoot"  switch = "scootlader" %]
       - [% INCLUDE timed name = "Fiets"  switch = "fietslader" %]
+
+      - type: custom:mushroom-template-card
+        entity: binary_sensor.bresser51_battery
+        primary: Weerstation
+        color: >-
+          {% if   is_state(entity,'off') %} [% dash.col.green %]
+          {% else                        %} red
+          {% endif %}
+        icon: >-
+          {% if   is_state(entity,'off') %} mdi:battery-medium
+          {% else                        %} mdi:battery-alert-variant-outline
+          {% endif %}
+        secondary: >-
+          {{ "Ok" if is_state(entity,'off') else "Empty" }}
+        vertical: false
+        visibility:
+          - entity: binary_sensor.bresser51_battery
+            <<: *v_available

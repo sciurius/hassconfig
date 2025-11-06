@@ -89,6 +89,8 @@
           action: call-service
           service: script.start_buitenverlichting_achter_timer
         visibility:
+          - entity: light.balkonkerstverlichting
+            <<: *v_available
           - entity: timer.buitenverlichting_achter
             state_not: active
 
@@ -107,116 +109,185 @@
           - entity: sensor.apk_expiration_near
             state_not: nog_lang_niet
 
+      - type: conditional
+        conditions:
+          - entity: sensor.noorderdiep_valthermond_air_quality_index
+            state_not: unavailable
+        card:
+          type: custom:mushroom-template-card
+          entity: sensor.noorderdiep_valthermond_air_quality_index
+          icon: mdi:air-filter
+          color: >-
+            {% if   states(entity)|int <=  50 %} [% dash.col.green %]
+            {% elif states(entity)|int <= 100 %} [% dash.col.yellow %]
+            {% elif states(entity)|int <= 150 %} orange
+            {% elif states(entity)|int <= 200 %} red
+            {% elif states(entity)|int <= 300 %} purple
+            {% else                           %} brown
+            {% endif %}
+          primary: Luchtkwaliteit
+          secondary: >
+            {{ states('sensor.noorderdiep_valthermond_dominant_pollutant') }}
+            {{ states(entity) }}
 
-  - type: grid
-    columns: 1
-    square: false
-    cards:
-      - type: entities
-        entities:
-
-          - type: conditional
-            conditions:
-              - entity: binary_sensor.pollen
-                state: 'on'
-            row:
-              entity: sensor.tomorrow_io_home_weed_pollen_index
-              type: custom:multiple-entity-row
-              show_state: false
-              name: Pollen
-              secondary_info: Tomorrow.io
-              entities:
-                - entity: sensor.tomorrow_io_home_tree_pollen_index
-                  hide_if: none
-                - entity: sensor.tomorrow_io_home_grass_pollen_index
-                  hide_if: none
-                - entity: sensor.tomorrow_io_home_weed_pollen_index
-                  hide_if: none
-
-          - type: conditional
-            conditions:
-              - entity: binary_sensor.pollen_kleenex
-                state: 'on'
-            row:
-              entity: sensor.kleenex_weed_pollen
-              type: custom:multiple-entity-row
-              show_state: false
-              name: Pollen
-              secondary_info: Kleenex.NL
-              entities:
-                - entity: sensor.kleenex_tree_pollen
-                  hide_if: none
-                  name: Bomen
-                  unit: false
-                - entity: sensor.kleenex_grass_pollen
-                  hide_if: none
-                  name: Gras
-                  unit: false
-                - entity: sensor.kleenex_weed_pollen
-                  hide_if: none
-                  name: Kruiden
-                  unit: false
-
-          - type: conditional
-            conditions:
-              - entity: sensor.noorderdiep_valthermond_air_quality_index
-                state_not: unavailable
-            row:
-              entity: sensor.noorderdiep_valthermond_air_quality_index
-              type: custom:multiple-entity-row
-              name: Luchtkwaliteit
-              secondary_info: Valthermond
-              entities:
-                - entity: sensor.noorderdiep_valthermond_dominant_pollutant
-                  name: false
-
-
-          - type: custom:multiple-entity-row
-            entity: binary_sensor.lighting
-            name: Duisterlicht
-            entities:
-              - entity: binary_sensor.day_time
-                name: Dag
-              - entity: binary_sensor.darkness
-                name: Donker
-
-          - type: custom:template-entity-row
+      - type: conditional
+        conditions:
+          - condition: state
             entity: sensor.afvalwijzer_today
-            name: Afval
+            state_not: "geen"
+          - condition: state
+            entity: input_boolean.afval_dismiss
+            state: "off"
+          - condition: state
+            entity: binary_sensor.before_1700
+            state: "on"
+        card:
+            type: custom:mushroom-template-card
+            entity: sensor.afvalwijzer_today
+            primary: Afval
             icon: mdi:recycle
             active: true
-            color: "#ffc107"
-            condition: >
-              {{ ( not
-                 is_state('sensor.afvalwijzer_today','geen') )
-                 and ( now() < today_at("17:00") )
-                 and is_state('input_boolean.afval_dismiss','off')
-              }}
-            state: >-
-              {{ states('sensor.afvalwijzer_today').capitalize()
-              }}
+            color: "[% dash.col.yellow %]"
+            secondary: >-
+              {{ states(entity).capitalize() }}
             hold_action:
               action: call-service
               service: input_boolean.turn_on
               target:
                 entity_id: input_boolean.afval_dismiss
 
-          - type: custom:template-entity-row
+      - type: conditional
+        conditions:
+          - condition: state
             entity: sensor.afvalwijzer_tomorrow
-            name: Afval (morgen)
+            state_not: "geen"
+          - condition: state
+            entity: input_boolean.afval_dismiss
+            state: "off"
+        card:
+            type: custom:mushroom-template-card
+            entity: sensor.afvalwijzer_tomorrow
+            primary: Afval (morgen)
             icon: mdi:recycle
-            active: false
-            state: >-
-              {{
-              states('sensor.afvalwijzer_tomorrow').capitalize()
-              }}
-            condition: >-
-              {{ not
-                 is_state('sensor.afvalwijzer_tomorrow','geen')
-                 and is_state('input_boolean.afval_dismiss','off')
-              }}
+            color: [% dash.col.default %]
+            active: true
+            secondary: >-
+              {{ states(entity).capitalize() }}
             hold_action:
-              action: input_boolean.turn_on
+              action: call-service
+              service: input_boolean.turn_on
               target:
                 entity_id: input_boolean.afval_dismiss
+
+  # - type: grid
+  #   columns: 1
+  #   square: false
+  #   cards:
+  #     - type: entities
+  #       entities:
+
+  #         - type: conditional
+  #           conditions:
+  #             - entity: binary_sensor.pollen
+  #               state: 'on'
+  #           row:
+  #             entity: sensor.tomorrow_io_home_weed_pollen_index
+  #             type: custom:multiple-entity-row
+  #             show_state: false
+  #             name: Pollen
+  #             secondary_info: Tomorrow.io
+  #             entities:
+  #               - entity: sensor.tomorrow_io_home_tree_pollen_index
+  #                 hide_if: none
+  #               - entity: sensor.tomorrow_io_home_grass_pollen_index
+  #                 hide_if: none
+  #               - entity: sensor.tomorrow_io_home_weed_pollen_index
+  #                 hide_if: none
+
+  #         - type: conditional
+  #           conditions:
+  #             - entity: binary_sensor.pollen_kleenex
+  #               state: 'on'
+  #           row:
+  #             entity: sensor.kleenex_weed_pollen
+  #             type: custom:multiple-entity-row
+  #             show_state: false
+  #             name: Pollen
+  #             secondary_info: Kleenex.NL
+  #             entities:
+  #               - entity: sensor.kleenex_tree_pollen
+  #                 hide_if: none
+  #                 name: Bomen
+  #                 unit: false
+  #               - entity: sensor.kleenex_grass_pollen
+  #                 hide_if: none
+  #                 name: Gras
+  #                 unit: false
+  #               - entity: sensor.kleenex_weed_pollen
+  #                 hide_if: none
+  #                 name: Kruiden
+  #                 unit: false
+
+  #         # - type: conditional
+  #         #   conditions:
+  #         #     - entity: sensor.noorderdiep_valthermond_air_quality_index
+  #         #       state_not: unavailable
+  #         #   row:
+  #         #     entity: sensor.noorderdiep_valthermond_air_quality_index
+  #         #     type: custom:multiple-entity-row
+  #         #     name: Luchtkwaliteit
+  #         #     secondary_info: Valthermond
+  #         #     entities:
+  #         #       - entity: sensor.noorderdiep_valthermond_dominant_pollutant
+  #         #         name: false
+
+
+  #         # - type: custom:multiple-entity-row
+  #         #   entity: binary_sensor.lighting
+  #         #   name: Duisterlicht
+  #         #   entities:
+  #         #     - entity: binary_sensor.day_time
+  #         #       name: Dag
+  #         #     - entity: binary_sensor.darkness
+  #         #       name: Donker
+
+  #         # - type: custom:template-entity-row
+  #         #   entity: sensor.afvalwijzer_today
+  #         #   name: Afval
+  #         #   icon: mdi:recycle
+  #         #   active: true
+  #         #   color: "#ffc107"
+  #         #   condition: >
+  #         #     {{ ( not
+  #         #        is_state('sensor.afvalwijzer_today','geen') )
+  #         #        and ( now() < today_at("17:00") )
+  #         #        and is_state('input_boolean.afval_dismiss','off')
+  #         #     }}
+  #         #   state: >-
+  #         #     {{ states('sensor.afvalwijzer_today').capitalize()
+  #         #     }}
+  #         #   hold_action:
+  #         #     action: call-service
+  #         #     service: input_boolean.turn_on
+  #         #     target:
+  #         #       entity_id: input_boolean.afval_dismiss
+
+  #         # - type: custom:template-entity-row
+  #         #   entity: sensor.afvalwijzer_tomorrow
+  #         #   name: Afval (morgen)
+  #         #   icon: mdi:recycle
+  #         #   active: false
+  #         #   state: >-
+  #         #     {{
+  #         #     states('sensor.afvalwijzer_tomorrow').capitalize()
+  #         #     }}
+  #         #   condition: >-
+  #         #     {{ not
+  #         #        is_state('sensor.afvalwijzer_tomorrow','geen')
+  #         #        and is_state('input_boolean.afval_dismiss','off')
+  #         #     }}
+  #         #   hold_action:
+  #         #     action: input_boolean.turn_on
+  #         #     target:
+  #         #       entity_id: input_boolean.afval_dismiss
 

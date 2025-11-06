@@ -1,132 +1,74 @@
 # Dashboard: Overzicht -- Computers       -*- hass -*-
 # WARNING: This is a generated file -- DO NOT EDIT
 
+[% PROCESS v_anchors.tt -%]
+[% PROCESS colours.tt -%]
+
+[%# System with two (CPU/GPU) sensors. -%]
+[% BLOCK sys2 -%]
+[% DEFAULT second = "${sensor}_gpu" limit = 50 -%]
+type: custom:mushroom-template-card
+        entity: sensor.[% sensor %]_temperature
+        icon: mdi:thermometer
+        color: >
+          {{ "[% dash.col.default %]" if states(entity)|int < [% limit %] else "red" }}
+        primary: [% name %]
+        secondary: >
+          {{ states(entity) }}
+          [% IF second != "none" %] / {{ states('sensor.[% second %]_temperature') }} [% END %]
+          °C
+        visibility:
+          - entity: sensor.[% sensor %]_temperature
+            <<: *v_available
+[% END -%]
+
+[%# System with a single temp sensor. -%]
+[% BLOCK sys1; INCLUDE sys2 second = "none"; END -%]
+
 [% INCLUDE section.tt
-       name    = "Computers"
-       icon    = "laptop"
-       badges  = []
-       columns = 1 %]
+       name     = "Computers"
+       icon     = "laptop"
+       navigate = "/lovelace-overzicht/computers"
+       badges   = []
+       columns  = 2 %]
 
-      - type: entities
+    cards:
 
-        entities:
+      - [% INCLUDE sys2 name = "Phoenix"
+           sensor = "systems_phoenix", second = "phoenix_nvme0" %]
+      - [% INCLUDE sys2 name = "Server1" sensor = "systems_srv1" %]
 
-          - type: custom:multiple-entity-row
-            entity: sensor.systems_phoenix_temperature
-            secondary_info:
-              name: NVMe0
-              entity: sensor.phoenix_nvme0_temperature
-            name: Phoenix
+      - [% INCLUDE sys2 name = "Server4" sensor = "systems_srv4" %]
 
-          - type: custom:multiple-entity-row
-            entity: sensor.systems_srv1_temperature
-            show_state: false
-            secondary_info:
-              name: UPS
-              entity: sensor.ups_pico_battery_level
-            entities:
-              - entity: sensor.systems_srv1_gpu_temperature
-                name: GPU
-              - entity: sensor.systems_srv1_temperature
-                name: CPU
-            name: Server1
+      - [% INCLUDE sys1 name = "NAS1"    sensor = "systems_nas1" %]
+      - [% INCLUDE sys1 name = "NAS2"    sensor = "systems_nas2" %]
+      - [% INCLUDE sys1 name = "HASS"    sensor = "t520_cpu" limit = 51 %]
+      - [% INCLUDE sys1 name = "MacCho"  sensor = "systems_maccho" %]
 
-          - entity: sensor.systems_nas1_temperature
-            name: Server2 (NAS1)
+      # Only shown on the hAXX system.
+      - [% INCLUDE sys1 name = "HAXX"    sensor = "rpi_cpu" %]
 
-          - type: conditional
-            conditions:
-              - entity: sensor.t520_cpu_temperature
-                state_not: "unavailable"
-              - entity: sensor.t520_cpu_temperature
-                state_not: "unknown"
-            row:
-                entity: sensor.t520_cpu_temperature
-                name: Server3 (HASS)
+      - type: custom:mushroom-template-card
+        entity: sensor.ups_pico_battery_level
+        primary: UPS Srv1
+        color: >-
+          {% if   states(entity)|int >= 4 %} [% dash.col.green %]
+          {% elif states(entity)|int >= 3 %} orange
+          {% else                         %} red
+          {% endif %}
+        icon: >-
+          {% set charging = "-charging" if is_state('sensor.ups_pico_charger','Connected') else "" %}
+          {% if   states(entity)|int >= 5 %} mdi:battery{{ charging }}-high
+          {% elif states(entity)|int >= 4 %} mdi:battery{{ charging }}-medium
+          {% elif states(entity)|int >= 3 %} mdi:battery{{ charging }}-low
+          {% else                         %} mdi:battery{{ charging }}-outline
+          {% endif %}
+        secondary: "{{ states(entity) }} V"
+        vertical: false
+        visibility:
+          - entity: sensor.ups_pico_battery_level
+            <<: *v_available
 
-          - type: conditional
-            conditions:
-              - entity: sensor.systems_srv4_temperature
-                state_not: "unavailable" 
-              - entity: sensor.systems_srv4_temperature
-                state_not: "unknown"
-            row:
-                type: custom:multiple-entity-row
-                entity: sensor.systems_srv4_temperature
-                show_state: false
-                entities:
-                  - entity: sensor.systems_srv4_gpu_temperature
-                    name: GPU
-                  - entity: sensor.systems_srv4_temperature
-                    name: CPU
-                name: Server4
-
-          - type: conditional
-            conditions:
-              - entity: switch.srv5
-                state_not: "unknown"
-              - entity: switch.srv5
-                state_not: "unavailable"
-            row:
-              entity: switch.srv5
-              name: Server5 (HAXX)
-
-          - type: conditional
-            conditions:
-              - entity: sensor.rpi_cpu_temperature
-                state_not: "unavailable" 
-              - entity: sensor.rpi_cpu_temperature
-                state_not: "unknown"
-            row:
-                entity: sensor.rpi_cpu_temperature
-                name: Server5 (HAXX)
-
-          - type: conditional
-            conditions:
-              - entity: sensor.mc_state
-                state_not: "unavailable" 
-              - entity: sensor.systems_mc_temperature
-                state_not: "unavailable" 
-              - entity: sensor.systems_mc_temperature
-                state_not: "unknown"
-            row:
-                type: custom:multiple-entity-row
-                entity: sensor.systems_mc_temperature
-                show_state: false
-                secondary_info:
-                  entity: sensor.mc_state
-                  name: false
-                entities:
-                  - entity: sensor.systems_mc_gpu_temperature
-                    name: GPU
-                  - entity: sensor.systems_mc_temperature
-                    name: CPU
-                name: Media Center
-
-          - type: conditional
-            conditions:
-              - entity: sensor.systems_mc621_temperature
-                state_not: "unavailable" 
-              - entity: sensor.systems_mc621_temperature
-                state_not: "unknown"
-            row:
-                type: custom:multiple-entity-row
-                entity: sensor.systems_mc621_temperature
-                show_state: false
-                name: MC621
-                entities:
-                  - entity: sensor.systems_mc621_gpu_temperature
-                    name: GPU
-                  - entity: sensor.systems_mc621_temperature
-                    name: CPU
-
-          - type: conditional
-            conditions:
-              - entity: sensor.systems_maccho_temperature
-                state_not: "unavailable" 
-              - entity: sensor.systems_maccho_temperature
-                state_not: "unknown"
-            row:
-                entity: sensor.systems_maccho_temperature
-                name: Maccho
+      - [% INCLUDE sys2 name = "Kodi"   sensor = "systems_mc" %]
+      - [% INCLUDE sys2 name = "MC621"  sensor = "systems_mc621" %]
 

@@ -43,8 +43,20 @@ views:
           - entity: sensor.bresser51_time
             name: Tijdstip
             format: datetime
-          - entity: binary_sensor.bresser51_battery
-            name: Batterij
+      - type: custom:mushroom-template-card
+        entity: binary_sensor.bresser51_battery
+        primary: Batterij
+        color: >-
+          {% if   is_state(entity,'off') %} green
+          {% else                        %} red
+          {% endif %}
+        icon: >-
+          {% if   is_state(entity,'off') %} mdi:battery-medium
+          {% else                        %} mdi:battery-alert-variant-outline
+          {% endif %}
+        secondary: >-
+          {{ "Ok" if is_state(entity,'off') else "Leeg" }}
+        vertical: false
       - type: entities
         title: Wind
         entities:

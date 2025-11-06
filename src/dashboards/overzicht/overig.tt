@@ -2,14 +2,16 @@
 # WARNING: This is a generated file -- DO NOT EDIT
 
 [% INCLUDE section.tt
-       name   = "Overig"
-       icon   = "cog-box"
-       badges = [] %]
+       name     = "Overig"
+       icon     = "cog-box"
+       navigate = "/lovelace-overzicht/overig"
+       badges   = [] %]
 
       [% FOREACH item IN [ "kelder", "kruipruimte", "zolder", "garage", "achterkamer" ] %]
       - type: custom:mushroom-template-card
         primary: [% item.ucfirst %]
         icon: mdi:thermometer-water
+        color: var(--state-icon-color)
         entity: sensor.[% item %]_temperature
         secondary: >-
           {{ states('sensor.[% item %]_temperature')|round(1) }} °C -

@@ -20,6 +20,11 @@ input_boolean:
   afval_dismiss:
     name: Dismiss afval signal
 
+template:
+  - binary_sensor:
+      - name: before 1700
+        state: '{{ now() < today_at("17:00") }}'
+    
 # Re-enable afval notifications at midnight.
 automation:
   - id: '164191467263x'

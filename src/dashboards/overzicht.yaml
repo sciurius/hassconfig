@@ -4,6 +4,7 @@ title: Overzicht
 views:
 
   - title: Home
+    path: home
     cards:
 
       - !include overzicht/buiten.yaml
@@ -35,16 +36,19 @@ views:
       - !include overzicht/osmc.yaml
 
   - title: Woonkamer
+    path: woonkamer
     cards:
       - !include overzicht/woonkamer.yaml
       - !include overzicht/woonkamer_verlichting.yaml
       - !include overzicht/woonkamer_overig.yaml
 
   - title: Slaapkamer
+    path: slaapkamer
     cards:
       - !include overzicht/slaapkamer.yaml
-
+    
   - title: Badkamer
+    path: badkamer
     cards:
       - !include overzicht/badkamer.yaml
       - !include badkamerafzuiging/itho.yaml
@@ -52,22 +56,32 @@ views:
       - !include badkamerverwarming/doorbell.yaml
 
   - title: Logeerkamer
+    path: logeerkamer
     cards:
       - !include overzicht/logeerkamer.yaml
 
   - title: Hal
+    path: hal
     cards:
       - !include overzicht/hal.yaml
 
   - title: Kantoor
+    path: kantoor
     cards:
       - !include overzicht/kantoor.yaml
 
   - title: Keuken
+    path: keuken
     cards:
       - !include overzicht/keuken.yaml
 
+  - title: Bijkeuken
+    path: bijkeuken
+    cards:
+      - !include overzicht/bijkeuken.yaml
+
   - title: Energie
+    path: energie
     cards:
       - type: energy-distribution
         link_dashboard: false
@@ -77,6 +91,7 @@ views:
       - !include overzicht/cv.yaml
 
   - title: Buiten
+    path: buiten
     cards:
 
       - !include bresser51/compass.yaml
@@ -91,15 +106,16 @@ views:
         timeFormat: '24h'
         language: nl
 
-  - title: Diversen
+  - title: Overig
+    path: overig
     cards:
-      - !include overzicht/laders.yaml
       - !include overzicht/overig.yaml
 
+  - title: Computers
+    path: computers
+    cards:
       - !include overzicht/computers.yaml
+      - !include overzicht/laders.yaml
       - !include overzicht/picky.yaml
       - !include overzicht/osmc.yaml
 
-  - title: Experiment
-    sections:
-      - !include overzicht/experiment.yaml

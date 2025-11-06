@@ -7,7 +7,7 @@ entities:
 [% sensors = [ "air_quality_index" "dominant_pollutant"
 	       "humidity" "nitrogen_dioxide" "pressure" "temperature"
 	       "pm10" "pm2_5" ] -%]
-[% FOREACH area IN [ "Valtherweg" "Noorderdiep_Valthermond" ];
+[% FOREACH area IN [ "Noorderdiep_Valthermond" ];
    FOREACH sensor IN sensors -%]
   - type: conditional
     conditions:
@@ -27,3 +27,14 @@ entities:
   - type: divider
 [% END;
    END %]
+
+[%#
+
+  0- 50 Green Good
+ 51-100 Yellow Moderate
+101-150 Orange Unhealthy (for some)
+151-200 Red Unhealthy
+201-300 Purple Very unhealthy
+301-500 Brown Hazardous
+
+%]

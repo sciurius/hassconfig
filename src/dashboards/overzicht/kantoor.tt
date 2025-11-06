@@ -5,7 +5,8 @@
 
 [% INCLUDE section.tt
        name = "Kantoor"
-       icon = "account-network" %]
+       icon = "account-network"
+       navigate = "/lovelace-overzicht/kantoor" %]
 
       - type: tile
         entity: binary_sensor.home_assistant_website_update_available

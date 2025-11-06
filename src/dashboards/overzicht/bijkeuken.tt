@@ -5,7 +5,8 @@
 
 [% INCLUDE section.tt
        name     = "Bijkeuken"
-       icon     = "countertop" %]
+       icon     = "countertop"
+       navigate = "/lovelace-overzicht/bijkeuken" %]
 
       - [% INCLUDE power_meter
            name = "Vriezer"    icon = "fridge-industrial" %]
