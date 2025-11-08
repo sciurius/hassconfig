@@ -70,5 +70,5 @@ type: custom:mushroom-template-card
             <<: *v_available
 
       - [% INCLUDE sys2 name = "Kodi"   sensor = "systems_mc" %]
-      - [% INCLUDE sys2 name = "MC621"  sensor = "systems_mc621" %]
+      - [% INCLUDE sys2 name = "MC621"  sensor = "systems_mc621" limit = 55 %]
 

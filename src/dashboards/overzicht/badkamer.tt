@@ -2,28 +2,15 @@
 # WARNING: This is a generated file -- DO NOT EDIT
 
 [% PROCESS power_meter.tt -%]
+[% PROCESS colours.tt -%]
 
 [% INCLUDE section.tt
        name     = "Badkamer"
        icon     = "bathtub"
        navigate = "/lovelace-overzicht/badkamer" %]
 
-      - type: tile
-        entity: light.badkamer_verlichting
-        name: Verlichting
-        icon: mdi:dome-light
-        visibility:
-          - entity: light.badkamer_verlichting
-            <<: *v_available
-
-      - type: tile
-        entity: sensor.uit
-        name: Verlichting
-        icon: mdi:dome-light
-        visibility:
-          - entity: light.badkamer_verlichting
-            condition: state
-            state: unavailable
+      - [% INCLUDE maybelight.tt
+           entity = "light.badkamer_verlichting" %]
 
       - type: custom:mushroom-template-card
         entity: sensor.ithocve_fan_speed_status
@@ -32,22 +19,26 @@
           - entity: sensor.ithocve_fan_speed_status
             condition: numeric_state
             above: 0
-        icon: |
-          {% if states('sensor.ithocve_fan_info') == 'auto' %}
+        icon: >-
+          {% if   is_state('sensor.ithocve_fan_info','auto') %}
           mdi:fan-auto
-          {% elif states('sensor.ithocve_fan_info') == 'high' %}
+          {% elif is_state('sensor.ithocve_fan_info','high') %}
           mdi:fan-speed-3
-          {% elif states('sensor.ithocve_fan_info') == 'low' %}
+          {% elif is_state('sensor.ithocve_fan_info','low') %}
           mdi:fan-speed-1
-          {% elif states('sensor.ithocve_fan_info') == 'timer 1' %}
+          {% elif is_state('sensor.ithocve_fan_info','timer 1') %}
           mdi:fan-clock
-          {% elif states('sensor.ithocve_fan_info') == 'timer 2' %}
+          {% elif is_state('sensor.ithocve_fan_info','timer 2') %}
           mdi:fan-clock
-          {% elif states('sensor.ithocve_fan_info') == 'timer 3' %}
+          {% elif is_state('sensor.ithocve_fan_info','timer 3') %}
           mdi:fan-clock
           {% else %}
           mdi:fan
-          {% endif %};
+          {% endif %}
+        color: >-
+          {{ "[% dash.col.default %]"
+             if (states('sensor.ithocve_fan_speed')|int) > 0
+             else "[% dash.col.inactive %]" }}
         secondary: |
           {% if (states('sensor.ithocve_fan_speed')|int) > 0 %}
           {{ states('sensor.ithocve_fan_speed_status') }}

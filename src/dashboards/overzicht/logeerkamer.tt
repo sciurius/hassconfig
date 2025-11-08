@@ -7,21 +7,7 @@
        name      = "Logeerkamer"
        icon      = "bed-empty"
        badges    = []
-       navigatie = "/lovelace-overzicht/logeerkamer" %]
+       navigate  = "/lovelace-overzicht/logeerkamer" %]
 
-      - type: tile
-        entity: light.logeerkamer_verlichting
-        name: Verlichting
-        icon: mdi:dome-light
-        visibility:
-          - entity: light.logeerkamer_verlichting
-            <<: *v_available
-
-      - type: tile
-        entity: sensor.uit
-        name: Verlichting
-        icon: mdi:dome-light
-        visibility:
-          - entity: light.logeerkamer_verlichting
-            condition: state
-            state: unavailable
+      - [% INCLUDE maybelight.tt
+           entity = "light.logeerkamer_verlichting" %]
