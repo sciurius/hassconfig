@@ -69,6 +69,11 @@ type: custom:mushroom-template-card
           - entity: sensor.ups_pico_battery_level
             <<: *v_available
 
-      - [% INCLUDE sys2 name = "Kodi"   sensor = "systems_mc" %]
+      - [% INCLUDE sys2 name = "Kodi"   sensor = "systems_mc"    limit = 60 %]
+          - entity: switch.slaapkamer_media_center
+            state: "on"
+
       - [% INCLUDE sys2 name = "MC621"  sensor = "systems_mc621" limit = 55 %]
+          - entity: switch.slaapkamer_media_center
+            state: "on"
 
