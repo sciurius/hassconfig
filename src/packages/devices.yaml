@@ -140,10 +140,12 @@ script:
           for_each:
             - switch.slaapkamer_media_center
             - switch.woonkamer_sound_system
-            - switch.keuken_afzuigkap
             - switch.radiatorfans
             - switch.pswm01
             - switch.pswm02
+            - switch.pswm03
+            - switch.pswm10
+            - switch.pswm12
           sequence:
             - service: switch.turn_off
               target:

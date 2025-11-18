@@ -149,8 +149,6 @@ views:
                entity = "light.${area}_kook_links" %]
           - [% INCLUDE button name = "kookplaat",
                entity = "light.${area}_kook_rechts" %]
-          - [% INCLUDE button name = "afzuigkap",
-              entity = "switch.${area}_afzuigkap" %]
 
           [% area = "slaapkamer" %]
           - [% INCLUDE button name = "deken",
@@ -160,6 +158,7 @@ views:
           - [% INCLUDE button name = "lichtje",
                entity = "light.${area}_avondlichtje",
                style = "icon: [ width: 50% ]" %]
+          - [% INCLUDE blank %]
 
           [% area = "badkamer" %]
           - [% INCLUDE button name = "deurbel",

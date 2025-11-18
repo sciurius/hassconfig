@@ -21,6 +21,7 @@ http:
     
 notify:
 
+  # With notification.
   - platform: signal_messenger
     name: default
     url: !secret signal_messenger
@@ -28,6 +29,7 @@ notify:
     recipients:
       - !secret signal_recipient1
 
+  # Without notification.
   - platform: signal_messenger
     name: info
     url: !secret signal_messenger

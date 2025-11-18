@@ -16,62 +16,55 @@
       - type: tile
         entity: light.hal_hoek
         name: Verlichting
-        grip_options:
+        grid_options:
           columns: 6
 
       - type: tile
         entity: input_select.doorbell_mode
         name: Deurbel
-        grip_options:
+        grid_options:
           columns: 6
 
-  - type: grid
-    columns: 1
-    square: false
-    cards:
-      - type: custom:stack-in-card
-        mode: horizontal
-        keep:
-          border_radius: true
-        grip_options:
-          columns: 12
-        cards:
-          - type: custom:mushroom-template-card
-            entity: cover.otolift
-            icon: >-
-              {% if is_state('sensor.otolift_on','Up') %}
-              mdi:arrow-up-bold-outline
-              {% elif is_state('sensor.otolift_on','Down') %}
-              mdi:arrow-down-bold-outline
-              {% else %}
-              mdi:elevator-passenger-outline
-              {% endif %}
-            color: >-
-              {% if is_state('sensor.otolift_on','Up') %} red
-              {% elif is_state('sensor.otolift_on','Down') %} red
-              {% else %} var(--state-icon-color) {% endif %}
-            name: Traplift
-            primary: >-
-              {% if is_state('sensor.otolift_on','Up') %} Going Up
-              {% elif is_state('sensor.otolift_on','Down') %} Going Down
-              {% else %} Traplift {% endif %}
-            secondary:
-            card_mod:
-              style: |
-                ha-state-icon {
-                  {% if is_state('sensor.otolift_on', 'Stopped') %}
-                  {% else %} animation: blink-animation 1s steps(1,start) infinite; {% endif %}
-                }
-                @keyframes blink-animation {
-                  50% { visibility: hidden; }
-                }
+      - type: custom:mushroom-template-card
+        entity: cover.otolift
+        icon: >-
+          {% if is_state('sensor.otolift_on','Up') %}
+          mdi:arrow-up-bold-outline
+          {% elif is_state('sensor.otolift_on','Down') %}
+          mdi:arrow-down-bold-outline
+          {% else %}
+          mdi:elevator-passenger-outline
+          {% endif %}
+        color: >-
+          {% if is_state('sensor.otolift_on','Up') %} red
+          {% elif is_state('sensor.otolift_on','Down') %} red
+          {% else %} var(--state-icon-color) {% endif %}
+        name: Traplift
+        primary: >-
+          {% if is_state('sensor.otolift_on','Up') %} Going Up
+          {% elif is_state('sensor.otolift_on','Down') %} Going Down
+          {% else %} Traplift {% endif %}
+        secondary:
+        card_mod:
+          style: |
+            ha-state-icon {
+              {% if is_state('sensor.otolift_on', 'Stopped') %}
+              {% else %} animation: blink-animation 1s steps(1,start) infinite; {% endif %}
+            }
+            @keyframes blink-animation {
+              50% { visibility: hidden; }
+            }
+        grid_options:
+          columns: 6
 
-          - type: custom:mushroom-cover-card
-            entity: cover.otolift
-            primary_info: none
-            secondary_info: none
-            icon: mdi:elevator-passenger-outline
-            fill_container: true
-            show_buttons_control: true
-            layout: horizontal
-            icon_type: none
+      - type: custom:mushroom-cover-card
+        entity: cover.otolift
+        primary_info: none
+        secondary_info: none
+        icon: mdi:elevator-passenger-outline
+        fill_container: true
+        show_buttons_control: true
+        layout: horizontal
+        icon_type: none
+        grid_options:
+          columns: 6
