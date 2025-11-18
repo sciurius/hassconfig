@@ -7,8 +7,8 @@
        name       = "CV"
        icon       = "heating_coil"
        badges     = [ "temperature", "current" ]
-       temperature_entity = "boiler_heatingtemp"
-       current_entity     = "boiler_curflowtemp"
+       temperature_entity = "sensor.boiler_heatingtemp"
+       current_entity     = "sensor.boiler_curflowtemp"
        navigate   = "/lovelace-overzicht/cv" %]
 
       - type: tile
