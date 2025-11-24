@@ -2,7 +2,7 @@
 
 title: Growatt
 views:
-  - title: Growayy
+  - title: Growatt
     cards:
       - type: entities
         title: General
