@@ -69,11 +69,16 @@
         entity: switch.radiatorfans
         name: Radiator fans
         icon: mdi:fan
+        visibility:
+          - entity: timer.radiatorfans
+            condition: state
+            state_not: active
 
       - type: tile
         entity: timer.radiatorfans
         icon: mdi:radiator
-        name: Timer
+        name: Radiator fans
+        icon: mdi:fan
         visibility:
           - entity: timer.radiatorfans
             <<: *v_active
