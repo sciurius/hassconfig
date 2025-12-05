@@ -234,16 +234,13 @@ template:
       state: >-
         {{ ((states('sensor.nextcloud_nextcloud_system_freespace')|int(0))/1073741824)|int }}
 
-switch:
-  
-  - platform: template
+  - switch:
 
-    switches:
-      radiatorfans:
-        unique_id: switch_radiatorfans
-        friendly_name: Radiator Fans
-        availability_template: '{{ false }}'
-        # value_template: "{{ is_state('switch.source', 'on') }}"
+      - unique_id: switch_radiatorfans
+        name: Radiator Fans
+        default_entity_id: switch.radiatorfans
+        availability: '{{ false }}'
+        # state: "{{ is_state('switch.source', 'on') }}"
         turn_on:
           # service: switch.turn_on
           # target:
