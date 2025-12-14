@@ -91,4 +91,10 @@ lovelace-oven:
   show_in_sidebar: true
   filename: dashboards/oven.yaml
   
+lovelace-smotty:
+  mode: yaml
+  title: Smotty
+  icon: mdi:script
+  show_in_sidebar: true
+  filename: dashboards/smotty.yaml
   
