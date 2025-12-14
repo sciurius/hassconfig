@@ -1,0 +1,263 @@
+# Dashboard: Smotty       -*- hass -*-
+# WARNING: This is a generated file -- DO NOT EDIT
+
+title: Buiten
+
+# Why does kiosk.tt not work?
+kiosk_mode:
+  hide_header: true
+  hide_sidebar: true
+
+[% device              = "bresser51";
+   wind_beaufort       = "sensor." _ device _ "_wind_beaufort";
+   wind_speed          = "sensor." _ device _ "_wind_speed";
+   wind_direction      = "sensor." _ device _ "_wind_direction_sector";
+   wind_direction_name = "sensor." _ device _ "_wind_direction_name";
+-%]
+
+views:
+  - type: sections
+    max-columns: 2
+    sections:
+
+      - type: grid
+        cards:
+
+          - type: custom:bubble-card
+            card_type: climate
+            columns: 2
+            entity: climate.thermostat_hc1
+            sub_button:
+              - name: HVAC modes menu
+                select_attribute: hvac_modes
+                state_background: false
+                show_arrow: false
+            name: Woonkamer
+            grid_options:
+              columns: 12
+              rows: 1
+
+#           - type: custom:compass-card
+#             columns: 2
+#             language: nl
+#             indicator_sensors:
+#               - sensor: sensor.bresser51_wind_direction_sector_adjusted
+#                 indicator:
+#                   image: arrow_inward
+#                   show: false
+#                   dynamic_style:
+#                     sensor: sensor.bresser51_wind_speed
+#                     bands:
+#                       - from_value: 0.1
+#                         show: true
+#             value_sensors:
+#               - sensor: sensor.bresser51_wind_beaufort
+#             grid_options:
+#               columns: 6
+#               rows: 2
+
+#           - type: custom:mini-graph-card
+#             hours_to_show: 24
+#             graph: line
+#             points_per_hour: 1
+#             hour24: true
+# #            height: 60
+#             entities:
+#               - entity: sensor.bresser51_temperature
+#             name: Temperatuur
+#             show:
+#               name: false
+#               icon: false
+#               points: false
+#             grid_options:
+#               columns: 6
+#               rows: 1
+#             [%# PROCESS cardmod %]
+
+#           - type: custom:mini-graph-card
+#             hours_to_show: 24
+#             graph: line
+#             points_per_hour: 1
+#             hour24: true
+#             height: 60
+#             entities:
+#               - entity: sensor.bresser51_humidity
+#             name: Vochtigheid
+#             show:
+#               name: false
+#               icon: false
+#               points: false
+#             grid_options:
+#               columns: 6
+#               rows: 1
+#             [%# PROCESS cardmod %]
+
+          - type: clock
+            show_seconds: true
+            clock_size: large
+            no_background: false
+            grid_options:
+              columns: 12
+              rows: auto
+
+          - type: custom:button-card
+            entity: [% wind_beaufort %]
+            layout: icon_state
+            show_state: true
+            show_icon: false
+            show_name: false
+            show_entity_picture: true
+            section_mode: true
+            show_label: false
+            state:
+              - value: 0
+                state_display: "Windstil"
+                entity_picture: /local/compass/arrow-none.svg
+                label: ""
+              - value: 0
+                operator: ">"
+                state_display: >-
+                  [[[ return "<b>" +
+                      states['[% wind_beaufort %]'].state + " <small>Bft,</small> " +
+                      states['[% wind_speed %]'].state +
+                      " <small>m/s</small>" +
+                      "</b>"; ]]]
+                entity_picture: >-
+                  [[[ return "/local/compass/arrow-"
+                        + states['[% wind_direction %]'].state + ".svg"; ]]]
+                label: >-
+                  [[[ return states['[% wind_direction_name %]'].state
+                        .replace("S","Z").replace("E","O"); ]]]
+            styles:
+              state:
+                - font-size: 30px
+            grid_options:
+              columns: 12
+              rows: auto
+
+          - type: custom:button-card
+            entity: sensor.bresser51_temperature
+            icon: false
+            show_state: true
+            show_icon: false
+            show_name: false
+            section_mode: true
+            # state_display: "-10.1 °C" # for testing
+            styles:
+              state:
+                - font-size: 40px
+                - font-weight: bold
+            grid_options:
+              columns: 6
+              rows: 1
+
+          - type: custom:button-card
+            entity: sensor.bresser51_humidity
+            icon: false
+            show_state: true
+            show_icon: false
+            show_name: false
+            section_mode: true
+            styles:
+              state:
+                - font-size: 40px
+                - font-weight: bold
+            grid_options:
+              columns: 6
+              rows: 1
+
+          - type: markdown
+            content: >-
+              # <center>voelt als {{ states('sensor.bresser51_wind_chill') }} °C</center>
+            text_only: true
+
+          - type: markdown
+            content: >-
+              # <center>
+              <ha-icon icon="mdi:gauge"></ha-icon>
+              {{ states('sensor.knmi_pressure')|int }} hPa</center>
+            text_only: true
+
+[% BLOCK cardmod -%]
+card_mod:
+              style: |
+                .name {
+                  font-size: 10px;
+                }
+                .header {
+                  padding-bottom: 0px;
+                }
+                .states {
+                  padding-bottom: 0px;
+                  font-size: 16px;
+                  font-weight: bold;
+                  /*color: black;*/
+                }
+                /*.states::before {
+                  content: "X";
+                  font-size: 26px;
+                  color: red;
+                }*/
+                ha-card {
+                  height: 100px !important;
+                  padding-top: 4px !important;
+                }
+                /*.states.flex .state .state__uom.ellipsis {
+                  color: black;
+                }*/
+                /*.states.flex .state .state__value.ellipsis::before {
+                  content: "X";
+                }*/
+                ha-card.flex {
+                  max-height: 100px !important;
+                  padding: 0px;
+                }
+[% END %]
+
+
+          # - type: custom:mushroom-template-card
+          #   entity: sensor.compass
+          #   primary: >-
+          #     {% if states('[% wind_beaufort %]')|int > 0 %}
+          #     {{ states('[% wind_direction_name %]') | replace('S','Z') | replace('E','O') }}
+          #     {% else %} Wind {% endif %}
+          #   picture: >-
+          #     {% if states('[% wind_beaufort %]')|int > 0 %}
+          #     /local/compass/arrow-{{ states('[% wind_direction %]') }}.svg
+          #     {% else %} /local/compass/arrow-none.svg {% endif %}
+          #   secondary: >-
+          #     {% if states('[% wind_beaufort %]')|int > 0 %}
+          #     {{ states('[% wind_beaufort %]') }} Bft,
+          #     {{ states('[% wind_speed %]') }} m/s
+          #     {% else %} Calm {% endif %}
+
+          # - type: tile
+          #   entity: sensor.knmi_pressure
+          #   name: Luchtdruk
+
+          - type: statistics-graph
+            chart_type: bar
+            period: day
+            entities:
+              - sensor.bresser51_rain
+            stat_types:
+              - change
+            days_to_show: 7
+            hide_legend: true
+            grid_options:
+              rows: 2
+              columns: 6
+
+          - type: statistics-graph
+            chart_type: bar
+            period: hour
+            entities:
+              - sensor.bresser51_rain
+            stat_types:
+              - change
+            days_to_show: 1
+            hide_legend: true
+            grid_options:
+              rows: 2
+              columns: 6
+
