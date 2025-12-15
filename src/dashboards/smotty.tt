@@ -15,6 +15,42 @@ kiosk_mode:
    wind_direction_name = "sensor." _ device _ "_wind_direction_name";
 -%]
 
+# Template for the APEX charts.
+apexcharts_card_templates:
+  apex_chart:
+    graph_span: 144h
+    header:
+      show: false
+    span:
+      start: day
+    apex_config:
+      chart:
+        type: line
+        locales:
+          - name: nl
+            options:
+              days: [ "zondag", "maandag", "dinsdag", "woensdag",
+                      "donderdag", "vrijdag", "zaterdag" ]
+              shortDays: [ "Z", "M", "D", "W", "D", "V", "Z" ]
+        defaultLocale: nl
+      xaxis:
+        type: datetime
+    yaxis:
+      - min: 0
+        decimals: 0
+        apex_config:
+          forceNiceScale: false
+    series:
+      - entity: sensor.bresser51_rain
+        name: Neerslag
+        type: column
+        color: lightblue
+        statistics:
+          type: change
+          period: day
+          align: start
+
+
 views:
   - type: sections
     max-columns: 2
@@ -243,85 +279,47 @@ card_mod:
           #   name: Luchtdruk
 
           - type: custom:apexcharts-card
+
+            # Section options cannot go in the template.
             section_mode: true
             grid_options:
               columns: 6
               rows: auto
+            config_templates: apex_chart
+
             graph_span: 144h
-            header:
-              show: false
             span:
-              start: day
               offset: '-7d'
             apex_config:
-              chart:
-                type: line
-                locales:
-                  - name: nl
-                    options:
-                      shortDays: [ "Z", "M", "D", "W", "D", "V", "Z" ]
-                defaultLocale: nl
               xaxis:
-                type: datetime
                 labels:
                   format: ddd
-            yaxis:
-              - min: 0
-                decimals: 0
-                apex_config:
-                  forceNiceScale: false
+
             series:
-              - entity: sensor.bresser51_rain
-                name: Neerslag
-                type: column
-                color: lightblue
-                statistics:
-                  type: change
+              - statistics:
                   period: day
-                  align: start
+
           - type: custom:apexcharts-card
+            # Section options cannot go in the template.
             section_mode: true
             grid_options:
               columns: 6
               rows: auto
+            config_templates: apex_chart
+
             graph_span: 24h
-            header:
-              title: Vandaag
-              show: false
-              disable_actions: true
-            span:
-              start: day
             now:
               show: true
             apex_config:
-              chart:
-                type: line
-                locales:
-                  - name: nl
-                    options:
-                      days: [ "zondag", "maandag", "dinsdag", "woensdag",
-                              "donderdag", "vrijdag", "zaterdag" ]
-                defaultLocale: nl
               xaxis:
-                stepSize: 12
-                type: datetime
-                dateTimeUTC: false
+                tickAmount: 2
                 labels:
-                  format: HH
-#                labels:
- #                 formatter: "EVAL:function(v,t,o){ return 'Vandaag'; }"
-            yaxis:
-              - min: 0
-                decimals: 0
-                apex_config:
-                  forceNiceScale: false
+                  datetimeFormatter:
+                    year: HH
+                    month: HH
+                    day: HH
+                    hour: HH
             series:
-              - entity: sensor.bresser51_rain
-                name: Neerslag
-                type: column
-                color: lightblue
-                statistics:
-                  type: change
+              - statistics:
                   period: hour
-                  align: start
 
