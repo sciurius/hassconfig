@@ -119,10 +119,10 @@ views:
                 state_display: >-
                   [[[
                       var d = states['[% wind_direction_name %]'].state;
-                      if      ( d == 'N' ) d = 'Noordelijk'
-                      else if ( d == 'E' ) d = 'Oostelijk'
-                      else if ( d == 'S' ) d = 'Zuidelijk'
-                      else if ( d == 'W' ) d = 'Westelijk'
+                      if      ( d == 'N' ) d = 'Noord'
+                      else if ( d == 'E' ) d = 'Oost'
+                      else if ( d == 'S' ) d = 'Zuid'
+                      else if ( d == 'W' ) d = 'West'
                       else
                         d = d.replaceAll("S","Z").replaceAll("E","O");
                       
