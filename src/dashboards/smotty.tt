@@ -117,17 +117,24 @@ views:
               - value: 0
                 operator: ">"
                 state_display: >-
-                  [[[ return "<b>" +
+                  [[[
+                      var d = states['[% wind_direction_name %]'].state;
+                      if      ( d == 'N' ) d = 'Noordelijk'
+                      else if ( d == 'E' ) d = 'Oostelijk'
+                      else if ( d == 'S' ) d = 'Zuidelijk'
+                      else if ( d == 'W' ) d = 'Westelijk'
+                      else
+                        d = d.replaceAll("S","Z").replaceAll("E","O");
+                      
+                      return "<b>" +
                       states['[% wind_beaufort %]'].state + " <small>Bft,</small> " +
                       states['[% wind_speed %]'].state +
                       " <small>m/s</small>" +
-                      "</b>"; ]]]
+                      "</b>" +
+                      "<br/>" + d; ]]]
                 entity_picture: >-
                   [[[ return "/local/compass/arrow-"
                         + states['[% wind_direction %]'].state + ".svg"; ]]]
-                label: >-
-                  [[[ return states['[% wind_direction_name %]'].state
-                        .replace("S","Z").replace("E","O"); ]]]
             styles:
               state:
                 - font-size: 30px
