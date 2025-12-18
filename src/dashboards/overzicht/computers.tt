@@ -32,8 +32,6 @@ type: custom:mushroom-template-card
        badges   = []
        columns  = 2 %]
 
-    cards:
-
       - [% INCLUDE sys2 name = "Phoenix"
            sensor = "systems_phoenix", second = "phoenix_nvme0" %]
       - [% INCLUDE sys2 name = "Server1" sensor = "systems_srv1" %]
