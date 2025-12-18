@@ -13,8 +13,13 @@ kiosk_mode:
    wind_speed          = "sensor." _ device _ "_wind_speed";
    wind_direction      = "sensor." _ device _ "_wind_direction_sector";
    wind_direction_name = "sensor." _ device _ "_wind_direction_name";
+   charts              = "std"; # or "mgc" or "apex"; combine
+#   charts              = "std apex mgc"; # combine
+   col_inside          = "green";
+   col_outside         = "blue";
 -%]
 
+[% IF charts.search("apex") %]
 # Template for the APEX charts.
 apexcharts_card_templates:
   apex_chart:
@@ -49,7 +54,7 @@ apexcharts_card_templates:
           type: change
           period: day
           align: start
-
+[% END %]
 
 views:
   - type: sections
@@ -59,6 +64,7 @@ views:
       - type: grid
         cards:
 
+[% IF 0 %]
           - type: custom:bubble-card
             card_type: climate
             columns: 2
@@ -72,7 +78,8 @@ views:
             grid_options:
               columns: 12
               rows: 1
-
+[% END %]
+[% IF 0 %]
 #           - type: custom:compass-card
 #             columns: 2
 #             language: nl
@@ -127,6 +134,7 @@ views:
 #               columns: 6
 #               rows: 1
 #             [%# PROCESS cardmod %]
+[% END %]
 
           - type: clock
             show_seconds: true
@@ -135,6 +143,47 @@ views:
             grid_options:
               columns: 12
               rows: auto
+            card_mod:
+              style: |
+                ha-card {
+                  background: [% col_inside %];
+                }
+
+          - type: custom:button-card
+            entity: sensor.thermostat_hc1_currtemp
+            icon: false
+            show_state: true
+            show_icon: false
+            show_name: false
+            section_mode: true
+            # state_display: "-10.1 °C" # for testing
+            styles:
+              card:
+                - background-color: [% col_inside %]
+              state:
+                - font-size: 40px
+                - font-weight: bold
+            grid_options:
+              columns: 6
+              rows: 1
+
+          - type: custom:button-card
+            entity: sensor.bresser51_humidity
+            icon: false
+            show_state: true
+            show_icon: false
+            show_name: false
+            section_mode: true
+            state_display: "--"
+            styles:
+              card:
+                - background-color: [% col_inside %]
+              state:
+                - font-size: 40px
+                - font-weight: bold
+            grid_options:
+              columns: 6
+              rows: 1
 
           - type: custom:button-card
             entity: [% wind_beaufort %]
@@ -172,6 +221,8 @@ views:
                   [[[ return "/local/compass/arrow-"
                         + states['[% wind_direction %]'].state + ".svg"; ]]]
             styles:
+              card:
+                - background: [% col_outside %]
               state:
                 - font-size: 30px
             grid_options:
@@ -187,6 +238,8 @@ views:
             section_mode: true
             # state_display: "-10.1 °C" # for testing
             styles:
+              card:
+                - background-color: [% col_outside %]
               state:
                 - font-size: 40px
                 - font-weight: bold
@@ -202,6 +255,8 @@ views:
             show_name: false
             section_mode: true
             styles:
+              card:
+                - background-color: [% col_outside %]
               state:
                 - font-size: 40px
                 - font-weight: bold
@@ -211,15 +266,12 @@ views:
 
           - type: markdown
             content: >-
-              # <center>voelt als {{ states('sensor.bresser51_wind_chill') }} °C</center>
-            text_only: true
-
-          - type: markdown
-            content: >-
-              # <center>
+              <h1><center>voelt als {{ states('sensor.bresser51_wind_chill') }} °C</br>
               <ha-icon icon="mdi:gauge"></ha-icon>
-              {{ states('sensor.knmi_pressure')|int }} hPa</center>
-            text_only: true
+              {{ states('sensor.knmi_pressure')|int }} hPa</center></h1>
+#            text_only: true
+            card_mod:
+              style: "ha-card { background: blue }"
 
 [% BLOCK cardmod -%]
 card_mod:
@@ -257,7 +309,7 @@ card_mod:
                 }
 [% END %]
 
-
+[% IF 0 %]
           # - type: custom:mushroom-template-card
           #   entity: sensor.compass
           #   primary: >-
@@ -277,7 +329,8 @@ card_mod:
           # - type: tile
           #   entity: sensor.knmi_pressure
           #   name: Luchtdruk
-
+[% END %]
+[% IF charts.search("apex") %]
           - type: custom:apexcharts-card
 
             # Section options cannot go in the template.
@@ -306,7 +359,6 @@ card_mod:
               columns: 6
               rows: auto
             config_templates: apex_chart
-
             graph_span: 24h
             now:
               show: true
@@ -319,7 +371,71 @@ card_mod:
                     month: HH
                     day: HH
                     hour: HH
+
             series:
               - statistics:
                   period: hour
+[% END %]
+[% IF charts.search("std") %]
+          - type: statistics-graph
+            chart_type: bar
+            period: day
+            entities:
+              - sensor.bresser51_rain
+            stat_types:
+              - change
+            days_to_show: 7
+            hide_legend: true
+            grid_options:
+              rows: 2
+              columns: 6
 
+          - type: statistics-graph
+            chart_type: bar
+            period: hour
+            entities:
+              - sensor.bresser51_rain
+            stat_types:
+              - change
+            days_to_show: 1
+            hide_legend: true
+            grid_options:
+              rows: 2
+              columns: 6
+[% END %]
+[% IF charts.search("mgc") %]
+          - type: custom:mini-graph-card
+            section_mode: true
+            graph: line
+            days_to_show: 7
+            entities:
+              - sensor.bresser51_rain
+            name: Neerslag (week)
+            show:
+              graph: bar
+              icon: false
+              legend: false
+            aggregate_func: diff
+            group_by: day
+            grid_options:
+              rows: 2
+              columns: 6
+
+          - type: custom:mini-graph-card
+            chart_type: bar
+            period: hour
+            name: Neerslag (dag)
+            entities:
+              - sensor.bresser51_rain
+            show:
+              graph: bar
+              icon: false
+              legend: false
+            days_to_show: 1
+            aggregate_func: diff
+            group_by: hour
+            hide_legend: true
+            grid_options:
+              rows: 2
+              columns: 6
+[% END %]
