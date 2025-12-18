@@ -7,8 +7,9 @@
 [% INCLUDE section.tt
    name     = "Energie"
    icon     = "lightning-bolt"
-   badges   = [ "balans" ]
+   badges   = [ "flowtemp", "balans" ]
    balans_entity = "sensor.energie_balans"
+   flowtemp_entity = "sensor.boiler_curflowtemp"
    navigate = "/lovelace-overzicht/energie"
    %]
 
