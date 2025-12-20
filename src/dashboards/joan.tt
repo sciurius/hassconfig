@@ -275,3 +275,16 @@ views:
                   entity: switch.badkamerverwarming
                   name: Kacheltje
                   icon: mdi:radiator
+
+              - type: conditional
+                conditions:
+                  - entity: light.balkonkerstverlichting
+                    state_not: unavailable
+                card:
+                  type: custom:button-card
+                  template: standard
+                  variables:
+                    image_on: "lr-kerst_200.png"
+                  entity: light.balkonkerstverlichting
+                  name: Kerst
+                  icon: mdi:string-lights
