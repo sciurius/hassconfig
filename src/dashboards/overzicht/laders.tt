@@ -15,6 +15,8 @@ type: tile
         entity: sensor.[% sensor %]
         name: [% name %]
         vertical: false
+        grid_options:
+          columns: 4
         visibility:
           - entity: sensor.[% sensor %]
             <<: *v_available
@@ -43,6 +45,7 @@ type: tile
       - [% INCLUDE batt  name = "Joni"   sensor = "joni_battery_level" %]
       - [% INCLUDE batt  name = "Zenny"  sensor = "zenny_battery_level" %]
       - [% INCLUDE batt  name = "Smotty" sensor = "sm_a320fl_battery_level" %]
+      - [% INCLUDE batt  name = "Tracky" sensor = "sm_a520f_battery_level" %]
       - [% INCLUDE batt  name = "TZ200"  sensor = "battery_tz200" %]
       - [% INCLUDE batt  name = "Irmby"  sensor = "irmby_battery_level" %]
       - type: custom:mushroom-template-card
