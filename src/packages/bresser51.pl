@@ -103,7 +103,7 @@ input_number:
 
   bresser51_rain_offset:
     name: Rain Correction
-    initial: 1776.8
+    initial: 3668
     min: 0.0
     max: 9999999.9
     step: 0.1
@@ -241,6 +241,15 @@ template:
           {{ ( 3.6 * (states('sensor.bresser51_wind_speed') | float) ) | round(1) }}
         availability: "{{ states('sensor.bresser51_wind_speed') != 'unknown' }}"
         unit_of_measurement: "km/h"
+        icon: mdi:weather-windy
+
+      # Combined, for convenience
+      - name: Bresser51 Wind and Speed
+        unique_id: bresser51_wind_and_speed
+        state: >-
+          {{ states('sensor.bresser51_wind_direction_name') }}
+          {{ states('sensor.bresser51_wind_beaufort') }}
+        availability: "{{ states('sensor.bresser51_wind_speed') != 'unknown' }}"
         icon: mdi:weather-windy
 
       # Wind Chill (Feels like) temperature.
