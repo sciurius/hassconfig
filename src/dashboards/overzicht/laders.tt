@@ -68,8 +68,6 @@ type: tile
         visibility:
           - entity: sensor.ups_pico_battery_level
             <<: *v_available
-      - [% INCLUDE timed name = "Scoot"  switch = "scootlader" %]
-      - [% INCLUDE timed name = "Fiets"  switch = "fietslader" %]
 
       - type: custom:mushroom-template-card
         entity: binary_sensor.bresser51_battery
@@ -88,3 +86,6 @@ type: tile
         visibility:
           - entity: binary_sensor.bresser51_battery
             <<: *v_available
+
+      - [% INCLUDE timed name = "Scoot"  switch = "scootlader" %]
+      - [% INCLUDE timed name = "Fiets"  switch = "fietslader" %]
