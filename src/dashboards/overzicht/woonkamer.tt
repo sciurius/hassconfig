@@ -1,6 +1,8 @@
 # Dashboard: Overzicht -- Media Player: osmc       -*- hass -*-
 # WARNING: This is a generated file -- DO NOT EDIT
 
+[% PROCESS v_anchors.tt %]
+
 [% INCLUDE section.tt
        name = "Woonkamer"
        icon = "sofa"
@@ -20,4 +22,11 @@
         entity: switch.woonkamer_sound_system
         name: Music Center
         icon: mdi:music-circle-outline
+
+      - type: tile
+        entity: light.binnenkerstverlichting1
+        name: Kerstverlichting
+        visibility:
+          - entity: light.binnenkerstverlichting1
+            <<: *v_available
 

@@ -85,6 +85,7 @@ light:
       - light.keuken_kook_rechts
       - light.morning_lights
       - light.balkonkerstverlichting
+      - light.binnenkerstverlichting1
    
   - name: SlaapkamerMC Signals
     platform: group
