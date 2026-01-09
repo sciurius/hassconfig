@@ -1,0 +1,50 @@
+[% # -*- mode: tt; indent-tabs-mode: nil -*-
+# MUST BE INCLUDEd, NOT PROCESSed.
+
+DEFAULT icon = "battery";
+DEFAULT timer = switch;
+
+-%]
+type: tile
+        entity: timer.[% timer %]
+        name: [% name %]
+        icon: mdi:[% icon %]
+        vertical: false
+        visibility:
+          - entity: switch.[% switch %]
+            <<: *v_available
+          - entity: timer.[% switch %]
+            condition: state
+            state: active
+        icon_tap_action:
+          action: perform-action
+          perform_action: switch.toggle
+          target:
+            entity_id: switch.[% switch %]
+        tap_action:
+          action: perform-action
+          perform_action: switch.toggle
+          target:
+            entity_id: switch.[% switch %]
+
+      - type: tile
+        entity: switch.[% switch %]
+        name: [% name %]
+        icon: mdi:[% icon %]
+        vertical: false
+        visibility:
+          - entity: switch.[% switch %]
+            <<: *v_available
+          - entity: switch.[% switch %]
+            condition: state
+            state_not: 'on'
+        icon_tap_action:
+          action: perform-action
+          perform_action: switch.toggle
+          target:
+            entity_id: switch.[% switch %]
+        tap_action:
+          action: perform-action
+          perform_action: switch.toggle
+          target:
+            entity_id: switch.[% switch %]

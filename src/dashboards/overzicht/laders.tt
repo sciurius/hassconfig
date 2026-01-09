@@ -21,23 +21,6 @@ type: tile
           - entity: sensor.[% sensor %]
             <<: *v_available
 [% END -%]
-[%# Timer controlled -%]
-[% BLOCK timed;
-   DEFAULT timer = switch -%]
-type: tile
-        entity: timer.[% timer %]
-        name: [% name %]
-        icon: mdi:battery
-        vertical: false
-        visibility:
-          - entity: switch.[% switch %]
-            <<: *v_available
-        tap_action:
-          action: perform-action
-          perform_action: switch.toggle
-          target:
-            entity_id: switch.[% switch %]
-[% END -%]
 
       - [% INCLUDE batt  name = "Largo"  sensor = "sm_a366b_battery_level" %]
       - [% INCLUDE batt  name = "GlaxS4" sensor = "sm_t830_battery_level" %]
@@ -87,5 +70,5 @@ type: tile
           - entity: binary_sensor.bresser51_battery
             <<: *v_available
 
-      - [% INCLUDE timed name = "Scoot"  switch = "scootlader" %]
-      - [% INCLUDE timed name = "Fiets"  switch = "fietslader" %]
+      - [% INCLUDE timed.tt name = "Scoot"  switch = "scootlader" %]
+      - [% INCLUDE timed.tt name = "Fiets"  switch = "fietslader" %]

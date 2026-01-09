@@ -20,3 +20,8 @@
           action: more-info
           entity: sensor.[% item %]_humidity
       [% END %]
+
+      - type: tile
+        name: Omvormer
+        entity: sensor.growatt_temperature
+

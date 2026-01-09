@@ -1,7 +1,7 @@
 # Buitnverlichting (Timer)               -*- hass -*-
 # WARNING: This is a generated file -- DO NOT EDIT
 
-[% INCLUDE switchoff_timer name = "Buitenverlichting Achter" type = "light" %]
+[% INCLUDE switchoff_timer.tt name = "Buitenverlichting Achter" type = "light" %]
 
   - id: Automation__Start_Buitenverlichting_Achter_timer
     alias: "Start Buitenverlichting Achter timer."

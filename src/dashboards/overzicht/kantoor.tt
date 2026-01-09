@@ -82,21 +82,10 @@
           - entity: timer.radiatorfans
             <<: *v_active
 
-      - type: tile
-        entity: switch.kantoorkacheltje
-        icon: mdi:heat-wave
-        name: Kantoorkacheltje
-        visibility:
-          - entity: switch.kantoorkacheltje
-            <<: *v_available
-
-      - type: tile
-        entity: timer.kantoorkacheltje
-        icon: mdi:radiator
-        name: Timer
-        visibility:
-          - entity: timer.kantoorkacheltje
-            <<: *v_active
+      - [% INCLUDE timed.tt
+           name   = "Kantoorkacheltje"
+           switch = "kantoorkacheltje"
+           icon   = "heat-wave" -%]
     
       - type: tile
         entity: switch.psw03

@@ -1,4 +1,4 @@
-[% INCLUDE switchoff_timer name = "Radiatorfans"
+[% INCLUDE switchoff_timer.tt name = "Radiatorfans"
            type = "switch"
            duration = "00:20:00" %]
 

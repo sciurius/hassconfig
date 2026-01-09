@@ -1,7 +1,7 @@
 # Scootlader (Timer)               -*- hass -*-
 # WARNING: This is a generated file -- DO NOT EDIT
 
-[% INCLUDE switchoff_timer name = "Fietslader" type = "switch"
+[% INCLUDE switchoff_timer.tt name = "Fietslader" type = "switch"
    duration = "03:00:00" %]
 
   - id: Automation__Start_Fietslader_timer

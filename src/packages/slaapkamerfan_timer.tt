@@ -1,7 +1,7 @@
 # Slaapkamer Fan (Timer)               -*- hass -*-
 # WARNING: This is a generated file -- DO NOT EDIT
 
-[% INCLUDE switchoff_timer name = "Slaapkamer Fan"
+[% INCLUDE switchoff_timer.tt name = "Slaapkamer Fan"
            type = "switch"
            duration = "00:30:00" %]
 
