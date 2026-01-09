@@ -1,0 +1,82 @@
+[%#  Switch-Off timer			-*- tt -*-
+
+Arguments:
+
+name	   A name for the timer, e.g. "Keuken Afzuigkap".
+type	   The type of the associated device, e.g. "switch" or "light".
+	   Defaults to "switch".
+duration   Duration of the count down timer. Defaults to 15 minutes.
+increment  Increment the timer when it is already running.
+timer	   A name for the timer, defaults to an id derived from the name.
+switch	   The switch to turn off, if not the same as the timer.
+
+-%][%-
+   DEFAULT type      = "switch";
+   DEFAULT duration  = "00:15:00";
+   DEFAULT increment = "00:15:00";
+   DEFAULT timer     = name.lower.replace(" ","_");
+   DEFAULT switch    = timer;
+   -%]
+timer:
+
+  [% timer %]:
+    duration: "[% duration %]"
+    restore: true
+
+script:
+
+  start_[% timer %]_timer:
+
+    alias: Start [% name %] Timer
+    description: >-
+      Starts the [% timer %] timer for [% duration %].
+      If it is already running, increment with [% increment %].
+    sequence:
+      - service: timer.start
+        data:
+          duration: >-
+            {% set f = state_attr('timer.[% timer %]','finishes_at') %}
+            {{ "[% duration %]" if f == None else
+               ( (as_datetime(f) - now() + as_timedelta("[% increment %]")).total_seconds() )|int }}
+        target:
+          entity_id: timer.[% timer %]
+    mode: queued
+
+  stop_[% timer %]_timer:
+
+    alias: Stop [% name %] Timer
+    description: >-
+      Stops (cancels) the [% timer %] timer.
+    sequence:
+      - service: timer.cancel
+        target:
+          entity_id: timer.[% timer %]
+    mode: queued
+
+automation:
+
+  - id: Automation__Stop_[% name.replace(" ","_") %]_timer
+    alias: "Stop [% name %] timer."
+    description: "Stop [% name %] timer."
+    mode: queued
+
+    trigger:
+      - platform: state
+        entity_id: [% type %].[% switch %]
+        to: 'off'
+
+    action:
+      - service: timer.cancel
+        entity_id: timer.[% timer %]
+
+  - id: Automation__Switch_Off_[% name.replace(" ","_") %]
+    alias: Switch Off [% name %]
+    description: Switch Off [% name %]
+    trigger:
+      - platform: event
+        event_type: timer.finished
+        event_data:
+          entity_id: timer.[% timer %]
+    action:
+      - service: [% type %].turn_off
+        entity_id: [% type %].[% switch %]
