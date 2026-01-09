@@ -1,0 +1,255 @@
+# Energie                      -*- hass -*-
+# WARNING: This is a generated file -- DO NOT EDIT
+
+[%-
+
+# Load of heater, in Watts.
+load_heater = 600;
+# Load of boiler, in Watts.
+load_boiler = 2300;
+# Floor space, in Watts.
+load_floor = 200
+
+# Sensor mapping.
+heater = "achterkamerkacheltje";
+boiler = "exsboiler";
+
+-%]
+
+automation:
+
+  - id: Automation__EnergieBalans
+    alias: EnergieBalans
+    description: "Schakel belastingen aan bij energieoverschot"
+    mode: single
+
+    # Based on a suggestion from TheFes.
+    triggers:
+
+      - id: all_off
+        trigger: numeric_state
+        entity_id: sensor.energie_overschot
+        above: 0
+        below: [% load_heater %]
+        for: "00:01:00"
+
+      - id: heater_on
+        trigger: numeric_state
+        entity_id: sensor.energie_overschot
+        above: [% load_heater %]
+        below: [% load_boiler %]
+        for: "00:01:00"
+
+      - id: boiler_on
+        trigger: numeric_state
+        entity_id: sensor.energie_overschot
+        above: [% load_boiler %]
+        below: [% load_boiler + load_heater %]
+        for: "00:01:00"
+
+      - id: all_on
+        trigger: numeric_state
+        entity_id: sensor.energie_overschot
+        above: [% load_boiler + load_heater %]
+        for: "00:01:00"
+
+    actions:
+      - choose:
+
+        # Insufficient energy, switch all off.
+        - conditions:
+           - condition: trigger
+             id: all_off
+          sequence:
+          - action: switch.turn_off
+            target:
+              entity_id:
+                - switch.[% heater %]
+                - switch.[% boiler %]
+
+        # Sufficient energy for heater, but not for boiler.
+        - conditions:
+           - condition: trigger
+             id: heater_on
+           - condition: state
+             entity_id: input_boolean.[% heater %]_enabled
+             state: "on"
+          sequence:
+          - action: switch.turn_on
+            target:
+              entity_id:
+                - switch.[% heater %]
+          - action: switch.turn_off
+            target:
+              entity_id:
+                - switch.[% boiler %]
+
+        # Sufficient energy for boiler, but not for both.
+        - conditions:
+            - condition: trigger
+              id: boiler_on
+            - condition: state
+              entity_id:
+                - input_boolean.[% boiler %]_enabled
+              state: "on"
+          sequence:
+          - action: switch.turn_on
+            target:
+              entity_id:
+                - switch.[% boiler %]
+          - action: switch.turn_off
+            target:
+              entity_id:
+                - switch.[% heater %]
+
+        # Sufficient energy for both.
+        - conditions:
+            - condition: trigger
+              id: all_on
+          sequence:
+            - if:
+                - condition: state
+                  entity_id: input_boolean.[% boiler %]_enabled
+                  state: "on"
+              then:
+                - action: switch.turn_on
+                  target:
+                    entity_id: switch.[% boiler %]
+            - if:
+                - condition: state
+                  entity_id: input_boolean.[% heater %]_enabled
+                  state: "on"
+              then:
+                - action: switch.turn_on
+                  target:
+                    entity_id: switch.[% heater %]
+
+  - id: Automation__ExsBoiler_Hot
+    alias: ExsBoiler Hot
+    mode: single
+    triggers:
+      - trigger: numeric_state
+        entity_id: sensor.exsboiler_energy_power
+        below: 10
+    conditions:
+      - condition: state
+        entity_id: switch.exsboiler
+        state: "on"
+    actions:
+      - action: input_boolean.turn_on
+        entity_id: input_boolean.exsboiler_hot
+        
+  - id: Automation__ExsBoiler_Cold
+    alias: ExsBoiler Cold
+    mode: single
+    triggers:
+      - trigger: numeric_state
+        entity_id: sensor.exsboiler_energy_power
+        above: 100
+    actions:
+      - action: input_boolean.turn_off
+        entity_id: input_boolean.exsboiler_hot
+
+  - triggers:
+      - trigger: time
+        at: "00:00:00"
+    actions:
+      - action: input_boolean.turn_off
+        entity_id: input_boolean.exsboiler_hot
+
+  - id: Automation__ExsBoiler_Enabled
+    alias: "ExsBoiler Enabled"
+    mode: single
+    triggers:
+      - trigger: state
+        entity_id: input_boolean.[% boiler %]_enabled
+        to: "off"
+    actions:
+      - action: switch.turn_off
+        entity_id: switch.[% boiler %]
+
+  - id: Automation__ExsHeater_Enabled
+    alias: "ExsHeater Enabled"
+    mode: single
+    triggers:
+      - trigger: state
+        entity_id: input_boolean.[% heater %]_enabled
+        to: "off"
+    actions:
+      - action: switch.turn_off
+        entity_id: switch.[% heater %]
+
+template:
+
+  - sensor:
+      - name: Energie balans
+        unique_id: power_energie_balans
+        device_class: power
+        unit_of_measurement: kW
+        state: >-
+          {{
+          states('sensor.dsmr_reading_electricity_currently_returned')|float
+          -
+          states('sensor.dsmr_reading_electricity_currently_delivered')|float
+          }}
+
+      - name: Energie Overschot
+        unique_id: power_energie_overschot
+        unit_of_measurement: W
+        state: >-
+          {{
+          ( states('sensor.energie_balans')|float
+            +
+            states('sensor.achterkamerkacheltje_energy_power')|float
+            +
+            states('sensor.exsboiler_energy_power')|float ) * 1000
+          }}
+          
+      # Constant consumption: 175W
+      - name: Computers Power
+        unique_id: computers_power
+        device_class: power
+        unit_of_measurement: kW
+        state: 0.175
+
+      # Constant consumption: 8.5W
+      - name: Traplift Power
+        unique_id: traplift_power
+        device_class: power
+        unit_of_measurement: kW
+        state: 0.0085
+
+  - binary_sensor:
+      - name: Energie Overschot
+        unique_id: power_energie_overschot
+        device_class: power
+        state: "{{ states('sensor.energie_balans')|float > 0}}"
+
+input_boolean:
+
+  [% heater %]_enabled:
+    name: EXS Heater
+
+  [% boiler %]_enabled:
+    name: EXS Boiler
+
+  exsboiler_hot:
+    name: Exs Boiler Hot
+
+sensor:
+
+  - platform: integration
+    source: sensor.computers_power
+    name: Computers Energy
+    unique_id: computers_energy
+    round: 2
+    max_sub_interval:
+      minutes: 5
+
+  - platform: integration
+    source: sensor.traplift_power
+    name: Traplift Energy
+    unique_id: traplift_energy
+    round: 2
+    max_sub_interval:
+      minutes: 5

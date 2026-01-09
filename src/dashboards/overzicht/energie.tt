@@ -7,8 +7,7 @@
 [% INCLUDE section.tt
    name     = "Energie"
    icon     = "lightning-bolt"
-   badges   = [ "flowtemp", "balans" ]
-   balans_entity = "sensor.energie_balans"
+   badges   = [ "flowtemp" ]
    flowtemp_entity = "sensor.boiler_curflowtemp"
    navigate = "/lovelace-overzicht/energie"
    %]
@@ -40,39 +39,4 @@
       - type: tile
         entity: sensor.dsmr_day_consumption_gas
         name: Gas
-
-      - type: custom:mushroom-template-card
-        icon: >-
-          {% if is_state('switch.extboiler','on') %} mdi:water-boiler
-          {% else %} mdi:water-boiler-off {% endif %}
-        primary: Ext Boiler
-        entity: switch.extboiler
-        color: |
-          {% if is_state('input_boolean.extboiler_hot','on') %} [% dash.col.green %]
-          {% elif (states('sensor.extboiler_energy_power')|float) > 1 %} [% dash.col.yellow %]
-          {% else %}             {% endif %}
-        secondary: |
-          {{ states('sensor.extboiler_energy_today') }} kWh
-
-      - type: tile
-        entity: automation.energiebalans_off
-
-      - type: custom:mushroom-template-card
-        icon: >-
-          {% if is_state('switch.extboiler','on') %} mdi:radiator
-          {% else %} mdi:radiator-off {% endif %}
-        primary: Ext Kachel
-        entity: switch.achterkamerkacheltje
-        secondary: |
-          {{ states('sensor.achterkamerkacheltje_energy_today') }} kWh
-        visibility:
-          - condition: numeric_state
-            entity: sensor.achterkamerkacheltje_energy_today
-            above: 1
-          - entity: switch.achterkamerkacheltje
-            <<: *v_available
-
-      - type: tile
-        name: Omvormer
-        entity: sensor.growatt_temperature
 

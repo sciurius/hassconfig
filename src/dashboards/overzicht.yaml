@@ -18,6 +18,7 @@ views:
       - !include overzicht/woonkamer.yaml
 
       - !include overzicht/energie.yaml
+      - !include overzicht/energie_balans.yaml
 
       - !include overzicht/kantoor.yaml
       - !include overzicht/keuken.yaml
@@ -87,6 +88,7 @@ views:
         link_dashboard: false
 
       - !include overzicht/energie.yaml
+      - !include overzicht/energie_balans.yaml
 
       - !include overzicht/cv.yaml
 
