@@ -22,40 +22,58 @@ boiler = "exsboiler";
         primary: Exs Boiler
         entity: switch.[% boiler %]
         color: |
-          {% if is_state('input_boolean.exs_boiler','on') %}  [% dash.col.default %]
-          {% else %}[% dash.col.inactive %]{% endif %}
+          {% if is_state('input_boolean.[% boiler %]_enabled','on') %}
+            {% if is_state('input_boolean.[% boiler %]_hot','on') %}
+              [% dash.col.green %]
+            {% else %}
+              {% if is_state('switch.[% boiler %]','on') %}
+                [% dash.col.active %]
+              {% else %}
+                [% dash.col.default %]
+              {% endif %}
+            {% endif %}
+          {% else %}
+            [% dash.col.inactive %]
+          {% endif %}
         secondary: |
           {{ states('sensor.[% boiler %]_energy_today') }} kWh
         hold_action:
           action: perform-action
           perform_action: input_boolean.toggle
           target:
-            entity_id: input_boolean.exs_boiler
+            entity_id: input_boolean.[% boiler %]_enabled
         icon_hold_action:
           action: perform-action
           perform_action: input_boolean.toggle
           target:
-            entity_id: input_boolean.exs_boiler
+            entity_id: input_boolean.[% boiler %]_enabled
 
       - type: custom:mushroom-template-card
         icon: mdi:radiator
         primary: Exs Kachel
         entity: switch.[% heater %]
         color: |
-          {% if is_state('input_boolean.exs_heater','on') %}  [% dash.col.default %]
-          {% else %}[% dash.col.inactive %]{% endif %}
+          {% if is_state('input_boolean.[% heater %]_enabled','on') %}
+            {% if is_state('switch.[% heater %]','on') %}
+              [% dash.col.active %]
+            {% else %}
+              [% dash.col.default %]
+            {% endif %}
+          {% else %}
+            [% dash.col.inactive %]
+          {% endif %}
         secondary: |
           {{ states('sensor.[% heater %]_energy_today') }} kWh
         hold_action:
           action: perform-action
           perform_action: input_boolean.toggle
           target:
-            entity_id: input_boolean.exs_heater
+            entity_id: input_boolean.[% heater %]_enabled
         icon_hold_action:
           action: perform-action
           perform_action: input_boolean.toggle
           target:
-            entity_id: input_boolean.exs_heater
+            entity_id: input_boolean.[% heater %]_enabled
         visibility:
           - entity: switch.[% heater %]
             <<: *v_available

@@ -88,19 +88,30 @@ automation:
         - conditions:
             - condition: trigger
               id: boiler_on
-            - condition: state
-              entity_id:
-                - input_boolean.[% boiler %]_enabled
-              state: "on"
           sequence:
-          - action: switch.turn_on
-            target:
-              entity_id:
-                - switch.[% boiler %]
-          - action: switch.turn_off
-            target:
-              entity_id:
-                - switch.[% heater %]
+            - if:
+                - condition: state
+                  entity_id: input_boolean.[% boiler %]_enabled
+                  state: "on"
+                - condition: state
+                  entity_id: input_boolean.[% boiler %]_hot
+                  state: "off"
+              then:
+                - action: switch.turn_on
+                  target:
+                    entity_id: switch.[% boiler %]
+                - action: switch.turn_off
+                  target:
+                    entity_id: switch.[% heater %]
+              else:
+                - if:
+                    - condition: state
+                      entity_id: input_boolean.[% heater %]_enabled
+                      state: "on"
+                  then:
+                    - action: switch.turn_on
+                      target:
+                        entity_id: switch.[% heater %]
 
         # Sufficient energy for both.
         - conditions:
@@ -111,6 +122,9 @@ automation:
                 - condition: state
                   entity_id: input_boolean.[% boiler %]_enabled
                   state: "on"
+                - condition: state
+                  entity_id: input_boolean.[% boiler %]_hot
+                  state: "off"
               then:
                 - action: switch.turn_on
                   target:
@@ -124,6 +138,7 @@ automation:
                   target:
                     entity_id: switch.[% heater %]
 
+  # If the boiler is completely heated up, register it.
   - id: Automation__ExsBoiler_Hot
     alias: ExsBoiler Hot
     mode: single
@@ -133,30 +148,22 @@ automation:
         below: 10
     conditions:
       - condition: state
-        entity_id: switch.exsboiler
+        entity_id: switch.[% boiler %]
         state: "on"
     actions:
       - action: input_boolean.turn_on
-        entity_id: input_boolean.exsboiler_hot
-        
-  - id: Automation__ExsBoiler_Cold
-    alias: ExsBoiler Cold
-    mode: single
-    triggers:
-      - trigger: numeric_state
-        entity_id: sensor.exsboiler_energy_power
-        above: 100
-    actions:
-      - action: input_boolean.turn_off
-        entity_id: input_boolean.exsboiler_hot
+        entity_id: input_boolean.[% boiler %]_hot
 
-  - triggers:
+  # Reset the boiler state at midnight.
+  - id: Automation__ExsBoiler_Reset
+    triggers:
       - trigger: time
         at: "00:00:00"
     actions:
       - action: input_boolean.turn_off
-        entity_id: input_boolean.exsboiler_hot
+        entity_id: input_boolean.[% boiler %]_hot
 
+  # Turn off when disabled.
   - id: Automation__ExsBoiler_Enabled
     alias: "ExsBoiler Enabled"
     mode: single
@@ -168,6 +175,7 @@ automation:
       - action: switch.turn_off
         entity_id: switch.[% boiler %]
 
+  # Turn off when disabled.
   - id: Automation__ExsHeater_Enabled
     alias: "ExsHeater Enabled"
     mode: single
@@ -200,9 +208,9 @@ template:
           {{
           ( states('sensor.energie_balans')|float
             +
-            states('sensor.achterkamerkacheltje_energy_power')|float
+            states('sensor.[% heater %]_energy_power')|float
             +
-            states('sensor.exsboiler_energy_power')|float ) * 1000
+            states('sensor.[% boiler %]_energy_power')|float ) * 1000
           }}
           
       # Constant consumption: 175W
@@ -233,8 +241,8 @@ input_boolean:
   [% boiler %]_enabled:
     name: EXS Boiler
 
-  exsboiler_hot:
-    name: Exs Boiler Hot
+  [% boiler %]_hot:
+    name: EXS Boiler Hot
 
 sensor:
 
