@@ -1,7 +1,8 @@
 # Kantoorkacheltje (Timer)               -*- hass -*-
 # WARNING: This is a generated file -- DO NOT EDIT
 
-[% INCLUDE switchoff_timer.tt name = "Kantoorkacheltje"
+[% INCLUDE switchoff_timer.tt
+           name = "Kantoorkacheltje"
            type = "switch"
            duration = "00:60:00" %]
 

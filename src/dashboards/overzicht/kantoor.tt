@@ -83,7 +83,7 @@
             <<: *v_active
 
       - [% INCLUDE timed.tt
-           name   = "Kantoorkacheltje"
+           name   = "Kacheltje"
            switch = "kantoorkacheltje"
            icon   = "heat-wave" -%]
     

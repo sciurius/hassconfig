@@ -11,11 +11,11 @@ type: tile
         icon: mdi:[% icon %]
         vertical: false
         visibility:
-          - entity: switch.[% switch %]
-            <<: *v_available
           - entity: timer.[% switch %]
             condition: state
             state: active
+          - entity: switch.[% switch %]
+            <<: *v_available
         icon_tap_action:
           action: perform-action
           perform_action: switch.toggle
@@ -33,11 +33,11 @@ type: tile
         icon: mdi:[% icon %]
         vertical: false
         visibility:
+          - entity: timer.[% switch %]
+            condition: state
+            state_not: active
           - entity: switch.[% switch %]
             <<: *v_available
-          - entity: switch.[% switch %]
-            condition: state
-            state_not: 'on'
         icon_tap_action:
           action: perform-action
           perform_action: switch.toggle
