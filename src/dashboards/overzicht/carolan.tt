@@ -1,0 +1,34 @@
+# Dashboard: Overzicht -- Carolan       -*- hass -*-
+# WARNING: This is a generated file -- DO NOT EDIT
+
+[% PROCESS v_anchors.tt -%]
+[% PROCESS colours.tt -%]
+
+[% INCLUDE section.tt
+       name   = "Auto"
+       icon   = "car-hatchback"
+       badges = [] %]
+
+[%# Sensor controlled -%]
+
+      - type: tile
+        name: Brandstof
+        entity: sensor.carolan_fuel_level
+
+      - type: tile
+        name: Dag
+        icon: mdi:map-marker-distance
+        entity: sensor.carolan_current_day_statistics
+      - type: tile
+        name: Week
+        icon: mdi:map-marker-distance
+        entity: sensor.carolan_current_week_statistics
+      - type: tile
+        name: Maand
+        icon: mdi:map-marker-distance
+        entity: sensor.carolan_current_month_statistics
+      - type: tile
+        name: Jaar
+        icon: mdi:map-marker-distance
+        entity: sensor.carolan_current_year_statistics
+
