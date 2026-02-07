@@ -11,24 +11,50 @@
 
 [%# Sensor controlled -%]
 
-      - type: tile
-        name: Brandstof
+      - type: custom:mushroom-template-card
         entity: sensor.carolan_fuel_level
+        primary: Carolan
+        color: >-
+          {% if   states(entity)|int >= 30 %} [% dash.col.green %]
+          {% elif states(entity)|int >= 15 %} orange
+          {% else                         %} red
+          {% endif %}
+        icon: mdi:gas-station
+        secondary: >-
+          {{ states(entity)|int }} %
+        visibility:
+          - entity: sensor.carolan_fuel_level
+            <<: *v_available
 
       - type: tile
         name: Dag
         icon: mdi:map-marker-distance
         entity: sensor.carolan_current_day_statistics
+        visibility:
+          - entity: sensor.carolan_current_day_statistics
+            <<: *v_available
+
       - type: tile
         name: Week
         icon: mdi:map-marker-distance
         entity: sensor.carolan_current_week_statistics
+        visibility:
+          - entity: sensor.carolan_current_week_statistics
+            <<: *v_available
+
       - type: tile
         name: Maand
         icon: mdi:map-marker-distance
         entity: sensor.carolan_current_month_statistics
+        visibility:
+          - entity: sensor.carolan_current_month_statistics
+            <<: *v_available
+
       - type: tile
         name: Jaar
         icon: mdi:map-marker-distance
         entity: sensor.carolan_current_year_statistics
+        visibility:
+          - entity: sensor.carolan_current_year_statistics
+            <<: *v_available
 

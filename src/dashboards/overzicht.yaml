@@ -36,6 +36,8 @@ views:
       - !include overzicht/picky.yaml
       - !include overzicht/osmc.yaml
 
+      - !include overzicht/carolan.yaml
+
   - title: Woonkamer
     path: woonkamer
     cards:
@@ -91,6 +93,12 @@ views:
       - !include overzicht/energie_balans.yaml
 
       - !include overzicht/cv.yaml
+
+  - title: Auto
+    path: carolan
+    cards:
+
+      - !include overzicht/carolan.yaml
 
   - title: Buiten
     path: buiten

@@ -2,12 +2,13 @@
 # MUST BE INCLUDEd, NOT PROCESSed.
 
 section_colors = {
+auto         => "cornflowerblue",
 badkamer     => "lightblue",
 bijkeuken    => "plum",
 bresser51    => "lavender",
 buiten       => "cornflowerblue",
 energie      => "darkseagreen",
-"energie balans" => "darkseagreen",
+"energie overschot" => "darkseagreen",
 hal          => "moccasin",
 kantoor      => "wheat",
 keuken       =>  "lightpink",
