@@ -4,7 +4,7 @@
 [%-
 
 # Load of heater, in Watts.
-load_heater = 600;
+load_heater = 800;
 # Load of boiler, in Watts.
 load_boiler = 2300;
 # Floor space, in Watts.
@@ -29,7 +29,6 @@ automation:
       - id: all_off
         trigger: numeric_state
         entity_id: sensor.energie_overschot
-        above: 0
         below: [% load_heater %]
         for: "00:01:00"
 
@@ -54,6 +53,17 @@ automation:
         for: "00:01:00"
 
     actions:
+
+      - action: notify.info
+        data:
+          message: >-
+            Trigger {{ trigger.id }},
+            overschot {{ states('sensor.energie_overschot') }} W,
+            heater {{ states('switch.[% heater %]') }}
+            ({{ states('sensor.[% heater %]_energy_power')|float }}),
+            boiler {{ states('switch.[% boiler %]') }}
+            ({{ states('sensor.[% boiler %]_energy_power')|float }}).
+
       - choose:
 
         # Insufficient energy, switch all off.
@@ -206,11 +216,11 @@ template:
         unit_of_measurement: W
         state: >-
           {{
-          ( states('sensor.energie_balans')|float
+          ( states('sensor.energie_balans')|float * 1000
             +
-            states('sensor.[% heater %]_energy_power')|float
+            states('sensor.achterkamerkacheltje_energy_power')|float
             +
-            states('sensor.[% boiler %]_energy_power')|float ) * 1000
+            states('sensor.exsboiler_energy_power')|float ) |float(2)
           }}
           
       # Constant consumption: 175W
