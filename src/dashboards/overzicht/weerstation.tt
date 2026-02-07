@@ -34,9 +34,16 @@
         entity: sensor.knmi_pressure
         name: Luchtdruk
 
-      - type: tile
-        name: Voelt als
-        entity: sensor.bresser51_wind_chill
+      - type: custom:mushroom-template-card
+        primary: Voelt als
+        icon: >-
+          {% if states('sensor.bresser51_wind_chill')|float < 0 %}
+          mdi:thermometer-low
+          {% else %}
+          mdi:thermometer
+          {% endif %}
+        color: var(--state-icon-color)
+        secondary: "{{ states('sensor.bresser51_wind_chill') }} °C"
 
 [% FOR i IN [ 168, 24, 1 ] %]
       - type: custom:mushroom-template-card
