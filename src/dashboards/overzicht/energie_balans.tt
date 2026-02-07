@@ -10,10 +10,11 @@ boiler = "exsboiler";
 -%]
 
 [% INCLUDE section.tt
-   name     = "Energie Balans"
+   name     = "Energie Overschot"
    icon     = "lightning-bolt"
-   badges   = [ "balans" ]
-   balans_entity = "sensor.energie_balans"
+   badges   = [ "overschot", "auto" ]
+   overschot_entity = "sensor.energie_overschot"
+   auto_entity = "automation.energiebalans"
    navigate = "/lovelace-overzicht/energie"
    %]
 
