@@ -5,11 +5,10 @@ sensor:
   - platform: afvalwijzer
     provider: mijnafvalwijzer
     postal_code: 7875EB
-    street_number:  6
+    house_number:  6
     suffix: ''                       # (optional, default = '')
     exclude_pickup_today: true
     default_label: Geen
-    id: 'afvalwijzer_bo'
     exclude_list: ''                 # (optional, default = '') comma separated list of wast types (case ignored). F.e. "papier, gft"
 
 # This input boolean is used to suppress the display in the UI.

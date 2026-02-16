@@ -22,11 +22,12 @@ notify:
 
   # With notification.
   - platform: signal_messenger
-    name: default
+    name: warning
     url: !secret signal_messenger
     number: !secret signal_sender_number
     recipients:
       - !secret signal_recipient1
+      - !secret signal_recipient2
 
   # Without notification.
   - platform: signal_messenger
@@ -75,7 +76,7 @@ frontend:
   themes: !include_dir_merge_named themes
   extra_module_url:
     # Keep the hacstag updated from Settings > Dashboards > Resources!
-    - /hacsfiles/lovelace-card-mod/card-mod.js?hacstag=190927524420
+    - /hacsfiles/lovelace-card-mod/card-mod.js?hacstag=190927524421
 
 # Assistant needs this, even if we don't use it.
 tts:

@@ -98,7 +98,7 @@ automation:
         entity_id: sensor.growatt_temperature
         above: 60
     action:
-      - action: notify.default
+      - action: notify.warning
         data:
           message: "Growatt Omvormer → {{ states('sensor.growatt_temperature') }} °C"
       - action: notify.info
@@ -127,7 +127,7 @@ automation:
         above: 250
         for: "00:05:00"
     action:
-      - action: notify.default
+      - action: notify.warning
         data:
           message: "Netspanning hoog: {{ trigger.to_state.state }} V ({{ trigger.id }})"
       - action: notify.info

@@ -148,7 +148,7 @@ automation:
       - service: notify.notify
         data:
           message: CV Pressure low!
-      - action: notify.default
+      - action: notify.warn
         data:
           message: CV Pressure low!
 
@@ -202,7 +202,7 @@ automation:
                 data:
                   topic: ems-esp/boiler/heatingtemp
                   payload: "{{ burner_high }}"
-              - action: notify.default
+              - action: notify.info
                 data:
                   message: >-
                     CV: Chill {{ trigger.to_state.state|round(1) }},
@@ -222,7 +222,7 @@ automation:
                 data:
                   topic: ems-esp/boiler/heatingtemp
                   payload: "{{ burner_low }}"
-              - action: notify.default
+              - action: notify.info
                 data:
                   message: >-
                     CV: Chill {{ trigger.to_state.state|round(1) }},
@@ -304,7 +304,7 @@ automation:
   #       for: "00:05:00"
   #
   #   action:
-  #     - action: notify.default
+  #     - action: notify.info
   #       data:
   #         message: >-
   #           CV: Return temperature
@@ -324,7 +324,7 @@ automation:
         entity_id: sensor.ems_esp_shower_duration
 
     action:
-      - action: notify.default
+      - action: notify.info
         data:
           message: >
             Shower: {{

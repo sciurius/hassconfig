@@ -77,7 +77,7 @@ automation:
         entity_id: sensor.www_disk_inuse
         above: 98
     action:
-      - action: notify.default
+      - action: notify.warn
         data:
           message: "WWW system vol: {{ trigger.to_state.state }} %"
     mode: single
