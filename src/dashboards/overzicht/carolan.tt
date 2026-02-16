@@ -26,6 +26,43 @@
           - entity: sensor.carolan_fuel_level
             <<: *v_available
 
+      - type: custom:mushroom-template-card
+        entity: binary_sensor.carolan_driverseat_lock
+        primary: Portieren
+        icon: >-
+          {% if (    is_state('binary_sensor.carolan_driverseat_lock',   'off')
+                 and is_state('binary_sensor.carolan_passengerseat_lock','off')
+                 and is_state('binary_sensor.carolan_leftrearseat_lock', 'off')
+                 and is_state('binary_sensor.carolan_rightrearseat_lock','off')
+                 and is_state('binary_sensor.carolan_trunk_lock',        'off') ) %}
+          mdi:car-door-lock
+          {% else %}
+          mdi:car-door
+          {% endif %}
+        color: >-
+          {% if (    is_state('binary_sensor.carolan_driverseat_lock',   'off')
+                 and is_state('binary_sensor.carolan_passengerseat_lock','off')
+                 and is_state('binary_sensor.carolan_leftrearseat_lock', 'off')
+                 and is_state('binary_sensor.carolan_rightrearseat_lock','off')
+                 and is_state('binary_sensor.carolan_trunk_lock',        'off') ) %}
+          [% dash.col.green %]
+          {% else %}
+          [% dash.col.default %]
+          {% endif %}
+        secondary: >-
+          {% if (    is_state('binary_sensor.carolan_driverseat_lock',   'off')
+                 and is_state('binary_sensor.carolan_passengerseat_lock','off')
+                 and is_state('binary_sensor.carolan_leftrearseat_lock', 'off')
+                 and is_state('binary_sensor.carolan_rightrearseat_lock','off')
+                 and is_state('binary_sensor.carolan_trunk_lock',        'off') ) %}
+          Gesloten
+          {% else %}
+          Open
+          {% endif %}
+        visibility:
+          - entity: binary_sensor.carolan_driverseat_lock
+            <<: *v_available
+
       - type: tile
         name: Dag
         icon: mdi:map-marker-distance
@@ -58,3 +95,12 @@
           - entity: sensor.carolan_current_year_statistics
             <<: *v_available
 
+[% FOREACH i IN [ "driverseat", "passengerseat", "rightrearseat", "leftrearseat","hood", "trunk" ];
+FOREACH j IN [ "lock", "door", "window" ] %]
+      - type: tile
+        name: [% i | ucfirst %]
+        entity: binary_sensor.carolan_[% i %]_[% j %]
+        visibility:
+          - entity: binary_sensor.carolan_[% i %]_[% j %]
+            <<: *v_available
+[% END; END %]
