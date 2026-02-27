@@ -54,6 +54,16 @@
                 {% endif %};
               }
 
+      - type: custom:mushroom-template-card
+        entity: input_boolean.emsgw_return_temp_high
+        primary: Return Temperature
+        secondary: "{{ states('sensor.boiler_rettemp') }} °C"
+        color: red
+        visibility:
+          - entity: entity
+            condition: state
+            state: true
+
 [% FOREACH i IN [ "party" "pause" ] %]
       - type: tile
         entity: sensor.thermostat_[% i %]_time
