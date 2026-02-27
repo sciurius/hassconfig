@@ -148,7 +148,7 @@ automation:
       - service: notify.notify
         data:
           message: CV Pressure low!
-      - action: notify.warn
+      - action: notify.warning
         data:
           message: CV Pressure low!
 
