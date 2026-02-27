@@ -1,0 +1,33 @@
+# Dashboard: Overzicht -- Carolan       -*- hass -*-
+# WARNING: This is a generated file -- DO NOT EDIT
+
+[% PROCESS v_anchors.tt -%]
+[% PROCESS colours.tt -%]
+
+[% INCLUDE section.tt
+       name   = "Auto Portieren"
+       icon   = "car-hatchback"
+       color  = "cornflowerblue"
+       badges = [] %]
+
+[%# Sensor controlled -%]
+
+[% FOREACH i IN [ "driverseat", "passengerseat", "rightrearseat", "leftrearseat" ];
+FOREACH j IN [ "lock", "door", "window" ] %]
+      - type: tile
+        name: [% i | ucfirst %]
+        entity: binary_sensor.carolan_[% i %]_[% j %]
+        visibility:
+          - entity: binary_sensor.carolan_[% i %]_[% j %]
+            <<: *v_available
+[% END %]
+      - type: heading
+[% END %]
+[% FOREACH i IN [ "trunk", "trunk_lock", "hood" ] %]
+      - type: tile
+        name: [% i | ucfirst %]
+        entity: binary_sensor.carolan_[% i %]
+        visibility:
+          - entity: binary_sensor.carolan_[% i %]
+            <<: *v_available
+[% END %]

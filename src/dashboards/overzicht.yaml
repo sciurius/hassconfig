@@ -99,6 +99,7 @@ views:
     cards:
 
       - !include overzicht/carolan.yaml
+      - !include overzicht/carolan/doors.yaml
 
   - title: Buiten
     path: buiten
