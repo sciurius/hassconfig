@@ -1,6 +1,6 @@
 [% # -*- mode: tt; indent-tabs-mode: nil -*-
 # MUST BE INCLUDEd, NOT PROCESSed.
-# THIS VARIANT IS FOR USE WITHOUT SECTIONS.
+# THIS VARIANT IS FOR USE WITHIN SECTIONS.
 
 section_colors = {
 auto         => "cornflowerblue",
@@ -24,55 +24,41 @@ DEFAULT badges     = [ "temperature", "humidity" ];
 DEFAULT temperature_entity = "sensor." _ entity _ "_temperature";
 DEFAULT humidity_entity    = "sensor." _ entity _ "_humidity";
 DEFAULT color      = section_colors.$entity || '#D0D0D0';
-DEFAULT columns    = 2;
+DEFAULT columns    = 1;
 -%]
 
-# To use card_mod, we need the stack card.
-type: custom:vertical-stack-in-card
-
-# Mods: draw a border.
-card_mod:
-  style: |
-    ha-card {
-      /* border: 2px solid [% color %]; */
-      background: [% color %];
-      padding: 5px;
-    }
-
+type: grid
+background:
+  color: [% color %]
+  opacity: 100
+  
 cards:
 
   # First, a heading card.
-  - type: heading
-    heading: [% name %]
-    heading_style: title
-[% IF icon %]    icon: mdi:[% icon %]
+      - type: heading
+        heading: [% name %]
+        heading_style: title
+[% IF icon %]        icon: mdi:[% icon %]
 [%- END %]
-[% IF navigate %]    tap_action:
-      action: navigate
-      navigation_path: [% navigate %]
+[% IF navigate %]        tap_action:
+          action: navigate
+          navigation_path: [% navigate %]
 [%- END -%]
-[% IF textsize %]    card_mod:
-      style: "ha-card .title { font-size: [% textsize %]; }"
+[% IF textsize %]        card_mod:
+          style: "ha-card .title { font-size: [% textsize %]; }"
 [%- END -%]
 
 [% IF NOT badges.empty %]
-    badges:
+        badges:
 [%   FOR badge IN badges;
      ent = ${"${badge}_entity"};
      op = "more-info";
      IF ent.match('^(light|switch)\.'); op = "toggle"; END %]
-      - type: entity
-        name: [% badge.ucfirst %]
-        entity: [% ent %]
-        tap_action:
-          action: [% op %]
+          - type: entity
+            name: [% badge.ucfirst %]
+            entity: [% ent %]
+            tap_action:
+              action: [% op %]
 [%-  END %]
 [%- END %]
 
-  # Then, a grid.
-  - type: grid
-    columns: [% columns %]
-    square: false
-
-    # Cards follow.
-    cards:

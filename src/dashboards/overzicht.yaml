@@ -5,7 +5,7 @@ views:
 
   - title: Home
     path: home
-    cards:
+    cards:          # change this to `sections` if using sections
 
       - !include overzicht/buiten.yaml
 
