@@ -18,8 +18,8 @@
         entity: sensor.carolan_fuel_level
         primary: Carolan
         color: >-
-          {% if   states(entity)|int >= 30 %} [% dash.col.green %]
-          {% elif states(entity)|int >= 15 %} orange
+          {% if   states('sensor.carolan_fuel_range')|int >= 100 %} [% dash.col.green %]
+          {% elif states('sensor.carolan_fuel_range')|int >= 40 %} orange
           {% else                         %} red
           {% endif %}
         icon: mdi:gas-station
