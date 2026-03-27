@@ -27,7 +27,7 @@ notify:
     number: !secret signal_sender_number
     recipients:
       - !secret signal_recipient1
-      - !secret signal_recipient2
+#      - !secret signal_recipient2
 
   # Without notification.
   - platform: signal_messenger
