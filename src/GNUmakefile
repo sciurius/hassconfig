@@ -14,7 +14,9 @@ TCFG      := $(shell mktemp)
 
 # Tools.
 INSTALL   := install -m 0644
-TPAGE     := tpage --include_path=${TTLIB} --include_path=${TTLIB}/ui
+SECTIONS  := cards
+TPOPTS    :=
+TPAGE     := tpage --define sections=${SECTIONS} ${TPOPTS} --include_path=${TTLIB} --include_path=${TTLIB}/ui
 PERL      := perl -Mlib=${PLLIB}
 
 default :: publish

@@ -1,11 +1,18 @@
+# WARNING: This is a generated file -- DO NOT EDIT
 # Dashboard: Overzicht                 -*- hass -*-
+
+[%-
+# We can use real sections, or sections emulated with grids.
+# The real sections support grid_options, the emulated ones
+# flow.
+-%]
 
 title: Overzicht
 views:
 
   - title: Home
     path: home
-    cards:          # change this to `sections` if using sections
+    [% sections %]:
 
       - !include overzicht/buiten.yaml
 
@@ -40,19 +47,19 @@ views:
 
   - title: Woonkamer
     path: woonkamer
-    cards:
+    [% sections %]:
       - !include overzicht/woonkamer.yaml
       - !include overzicht/woonkamer_verlichting.yaml
       - !include overzicht/woonkamer_overig.yaml
 
   - title: Slaapkamer
     path: slaapkamer
-    cards:
+    [% sections %]:
       - !include overzicht/slaapkamer.yaml
     
   - title: Badkamer
     path: badkamer
-    cards:
+    [% sections %]:
       - !include overzicht/badkamer.yaml
       - !include badkamerafzuiging/itho.yaml
       - !include badkamerafzuiging/itho-graph.yaml
@@ -60,32 +67,32 @@ views:
 
   - title: Logeerkamer
     path: logeerkamer
-    cards:
+    [% sections %]:
       - !include overzicht/logeerkamer.yaml
 
   - title: Hal
     path: hal
-    cards:
+    [% sections %]:
       - !include overzicht/hal.yaml
 
   - title: Kantoor
     path: kantoor
-    cards:
+    [% sections %]:
       - !include overzicht/kantoor.yaml
 
   - title: Keuken
     path: keuken
-    cards:
+    [% sections %]:
       - !include overzicht/keuken.yaml
 
   - title: Bijkeuken
     path: bijkeuken
-    cards:
+    [% sections %]:
       - !include overzicht/bijkeuken.yaml
 
   - title: Energie
     path: energie
-    cards:
+    [% sections %]:
       - type: energy-distribution
         link_dashboard: false
 
@@ -96,14 +103,15 @@ views:
 
   - title: Auto
     path: carolan
-    cards:
+    [% sections %]:
 
       - !include overzicht/carolan.yaml
+      - !include overzicht/carolan/status.yaml
       - !include overzicht/carolan/doors.yaml
 
   - title: Buiten
     path: buiten
-    cards:
+    [% sections %]:
 
       - !include bresser51/compass.yaml
       - !include overzicht/buiten.yaml
@@ -119,12 +127,12 @@ views:
 
   - title: Overig
     path: overig
-    cards:
+    [% sections %]:
       - !include overzicht/overig.yaml
 
   - title: Computers
     path: computers
-    cards:
+    [% sections %]:
       - !include overzicht/computers.yaml
       - !include overzicht/laders.yaml
       - !include overzicht/picky.yaml

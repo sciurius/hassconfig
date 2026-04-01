@@ -1,6 +1,5 @@
 [% # -*- mode: tt; indent-tabs-mode: nil -*-
 # MUST BE INCLUDEd, NOT PROCESSed.
-# THIS VARIANT IS FOR USE WITHOUT SECTIONS.
 
 section_colors = {
 auto         => "cornflowerblue",
@@ -25,7 +24,8 @@ DEFAULT temperature_entity = "sensor." _ entity _ "_temperature";
 DEFAULT humidity_entity    = "sensor." _ entity _ "_humidity";
 DEFAULT color      = section_colors.$entity || '#D0D0D0';
 DEFAULT columns    = 2;
--%]
+
+IF sections == "cards"; indent = "" -%]
 
 # To use card_mod, we need the stack card.
 type: custom:vertical-stack-in-card
@@ -39,40 +39,52 @@ card_mod:
       padding: 5px;
     }
 
+[%- ELSE;
+  indent = "    ";
+  DEFAULT columns    = 1;
+-%]
+
+type: grid
+background:
+  color: [% color %]
+  opacity: 100
+  
+[% END %]
 cards:
 
-  # First, a heading card.
-  - type: heading
-    heading: [% name %]
-    heading_style: title
-[% IF icon %]    icon: mdi:[% icon %]
+[% indent %]  # First, a heading card.
+[% indent %]  - type: heading
+[% indent %]    heading: [% name %]
+[% indent %]    heading_style: title
+[% IF icon %][% indent %]    icon: mdi:[% icon %]
 [%- END %]
-[% IF navigate %]    tap_action:
-      action: navigate
-      navigation_path: [% navigate %]
+[% IF navigate %][% indent %]    tap_action:
+[% indent %]      action: navigate
+[% indent %]      navigation_path: [% navigate %]
 [%- END -%]
-[% IF textsize %]    card_mod:
-      style: "ha-card .title { font-size: [% textsize %]; }"
+[% IF textsize %][% indent %]    card_mod:
+[% indent %]      style: "ha-card .title { font-size: [% textsize %]; }"
 [%- END -%]
 
 [% IF NOT badges.empty %]
-    badges:
+[% indent %]    badges:
 [%   FOR badge IN badges;
      ent = ${"${badge}_entity"};
      op = "more-info";
      IF ent.match('^(light|switch)\.'); op = "toggle"; END %]
-      - type: entity
-        name: [% badge.ucfirst %]
-        entity: [% ent %]
-        tap_action:
-          action: [% op %]
+[% indent %]      - type: entity
+[% indent %]        name: [% badge.ucfirst %]
+[% indent %]        entity: [% ent %]
+[% indent %]        tap_action:
+[% indent %]          action: [% op %]
 [%-  END %]
 [%- END %]
-
+[% IF sections == "cards" %]
   # Then, a grid.
   - type: grid
-    columns: [% columns %]
+    columns: 2
     square: false
 
     # Cards follow.
     cards:
+[%- END %]
