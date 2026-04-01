@@ -4,7 +4,6 @@
 [% INCLUDE section.tt
        name     = "Hal"
        icon     = "coat-rack"
-       columns  = 1
        navigate = "/lovelace-overzicht/hal" %]
 
       - type: tile
