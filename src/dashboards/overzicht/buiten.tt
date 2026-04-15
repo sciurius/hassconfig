@@ -95,6 +95,22 @@
             state_not: active
 
       - type: tile
+        entity: device_tracker.tracker_joan
+        name: Joan
+        icon: mdi:radar
+        visibility:
+          - entity: device_tracker.tracker_joan
+            <<: *v_available
+
+      - type: tile
+        entity: device_tracker.sm_a366b
+        name: Johan
+        icon: mdi:radar
+        visibility:
+          - entity: device_tracker.sm_a366b
+            <<: *v_available
+
+      - type: tile
         entity: light.balkonkerstverlichting
         name: Balkon (Kerst)
         icon: mdi:string-lights
