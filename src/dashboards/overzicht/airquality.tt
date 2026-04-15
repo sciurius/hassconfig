@@ -12,7 +12,9 @@ entities:
   - type: conditional
     conditions:
       - entity: sensor.[% area.lower %]_[% sensor %]
-        state_not: unavailable
+        state_not:
+          - unavailable
+          - unknown
     row:
 [% IF loop.first -%]
       type: custom:multiple-entity-row
