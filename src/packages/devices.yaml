@@ -229,12 +229,21 @@ command_line:
 
 template:
   - sensor:
-      name: Nextcloud Free Space
-      unique_id: nextcloud_free_space
-      unit_of_measurement: "GiB"
-      state: >-
-        {{ ((states('sensor.nextcloud_nextcloud_system_freespace')|int(0))/1073741824)|int }}
 
+      - name: Nextcloud Free Space
+        unique_id: nextcloud_free_space
+        unit_of_measurement: "GiB"
+        state: >-
+          {{ ((states('sensor.nextcloud_nextcloud_system_freespace')|int(0))/1073741824)|int }}
+
+
+#      - name: a36_a36_battery
+#        unique_id: a36_a36_battery
+#        unit_of_measurement: "%"
+#        state: >-
+#          {{ state_attr("device_tracker.a36_a36","battery_level") }}
+#        device_class: battery
+      
   - switch:
 
       - unique_id: switch_radiatorfans
