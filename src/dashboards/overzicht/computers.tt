@@ -71,7 +71,7 @@ type: custom:mushroom-template-card
           - entity: switch.slaapkamer_media_center
             state: "on"
 
-      - [% INCLUDE sys2 name = "MC621"  sensor = "systems_mc621" limit = 55 %]
+      - [% INCLUDE sys2 name = "MC621"  sensor = "systems_mc621" limit = 56 %]
           - entity: switch.slaapkamer_media_center
             state: "on"
 
