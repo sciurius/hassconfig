@@ -124,6 +124,9 @@ views:
       - type: custom:sun-card
         timeFormat: '24h'
         language: nl
+      - !include overzicht/trackerjoan.yaml
+#      - !include overzicht/trackerjohan.yaml
+
 
   - title: Overig
     path: overig
