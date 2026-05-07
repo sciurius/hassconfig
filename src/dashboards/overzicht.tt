@@ -127,7 +127,6 @@ views:
       - !include overzicht/trackerjoan.yaml
 #      - !include overzicht/trackerjohan.yaml
 
-
   - title: Overig
     path: overig
     [% sections %]:

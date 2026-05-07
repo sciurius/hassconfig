@@ -76,6 +76,9 @@
           {% else %}
           {{ states(entity) }}
           {% endif %}
+        tap_action:
+          action: navigate
+          navigation_path: /lovelace-trackerjoan/trackercarolan
         visibility:
           - entity: device_tracker.carolan_parking_location
             <<: *v_available

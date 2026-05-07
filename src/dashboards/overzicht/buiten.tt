@@ -94,10 +94,21 @@
           - entity: timer.buitenverlichting_achter
             state_not: active
 
-      - type: tile
+      - type: custom:mushroom-template-card
+        icon: >-
+          {% if is_state('sensor.tracker_joan_wifi_zone','0') %} mdi:radar
+          {% else %} mdi:power-sleep
+          {% endif %}
         entity: device_tracker.tracker_joan
-        name: Joan
-        icon: mdi:radar
+        primary: Joan
+        secondary: >-
+          {% if state_attr('device_tracker.tracker_joan', 'speed' )|float(0) > 0 %}
+          {{ state_attr('device_tracker.tracker_joan', 'speed' )|float }} km/h
+          {% else %}{{ states('device_tracker.tracker_joan')|capitalize }}
+          {% endif %}
+        tap_action:
+          action: navigate
+          navigation_path: /lovelace-trackerjoan
         visibility:
           - entity: device_tracker.tracker_joan
             <<: *v_available
