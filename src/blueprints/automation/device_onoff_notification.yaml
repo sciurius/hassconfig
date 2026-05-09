@@ -1,0 +1,41 @@
+blueprint:
+  name: Device On/Off Notification
+  description: Send a notification when a device turns on or off.
+  domain: automation
+  input:
+    dev_ent:
+      name: Entity ID of the device
+      selector:
+        entity:
+    friendly_name:
+      name: Name (leave empty to use entity friendly name)
+      default: ""
+
+variables:
+  fn: !input friendly_name
+
+trigger:
+  - platform: state
+    entity_id: !input dev_ent
+
+condition:
+  - condition: template
+    value_template: "{{ trigger.from_state.state != trigger.to_state.state }}"
+    
+action:
+  - service: notify.send_message
+    enabled: false
+    data:
+      message: >-
+        {{ fn if fn else trigger.to_state.attributes.friendly_name }}
+        ({{ trigger.from_state.state }} → {{ trigger.to_state.state }})
+        {% if trigger.from_state.state == 'unavailable' -%}
+        available ({{ trigger.to_state.state.upper() }})
+        {% elif trigger.to_state.state == 'unavailable' -%}
+        {{ trigger.to_state.state.upper() }}
+        {% else -%}
+        switched {{ trigger.to_state.state.upper() }}
+        {% endif %}
+      disable_notification: true
+
+mode: single

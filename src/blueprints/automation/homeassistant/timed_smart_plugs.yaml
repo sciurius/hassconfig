@@ -1,0 +1,35 @@
+blueprint:
+  name: Timed Smart Plugs
+  description: Turn off smart plugs after a certain amount of time
+  domain: automation
+  input:
+    smart_plug:
+      name: Smart Plug
+      selector:
+        entity:
+          domain: switch
+    off_delay:
+      name: Wait time
+      description: Time to leave the plug on
+      default: 30
+      selector:
+        number:
+          min: 1
+          max: 1440
+          unit_of_measurement: minutes
+
+mode: restart
+max_exceeded: silent
+
+trigger:
+  platform: state
+  from: "off"
+  to: "on"
+  entity_id: !input smart_plug
+
+action:
+  - delay: 
+      minutes: !input off_delay
+  - service: switch.turn_off
+    entity_id: !input smart_plug
+
