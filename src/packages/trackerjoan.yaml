@@ -1,0 +1,24 @@
+automation:
+
+  - id: tracker_joan_getting_near
+    alias: Joan getting near
+    description: "Tracker Joan enters Home zone"
+    mode: single
+
+    triggers:
+      - trigger: zone
+        entity_id: device_tracker.tracker_joan
+        zone: zone.home
+        event: enter
+
+    actions:
+      - action: notify.mobile_app_sm_a366b
+        metadata: {}
+        data:
+          message: TTS
+          data:
+            tts_text: Joan is getting near
+            priority: high
+            ttl: 0
+            media_stream: alarm_stream_max
+            importance: high
