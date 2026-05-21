@@ -11,6 +11,7 @@ type: custom:mushroom-template-card
         entity: [% sensor %]
 [%- IF icon %]
         icon: mdi:[% icon %][% END %]
+        primary: [% name %]
         color: var(--state-icon-color)
         secondary: "{{ states('[% sensor %]')|round(2) }} kWh"
         visibility:
