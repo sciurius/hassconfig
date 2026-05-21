@@ -98,9 +98,16 @@ lovelace-smotty:
   show_in_sidebar: true
   filename: dashboards/smotty.yaml
   
-lovelace-trackerjoan:
+lovelace-trackers:
   mode: yaml
-  title: Tracker Joan
+  title: Trackers
   icon: mdi:radar
   show_in_sidebar: false
-  filename: dashboards/trackerjoan.yaml
+  filename: dashboards/trackers.yaml
+
+lovelace-ovz2:
+  mode: yaml
+  title: Overzicht2
+  icon: mdi:script
+  show_in_sidebar: false
+  filename: dashboards/overzicht2.yaml
