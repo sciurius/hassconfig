@@ -108,7 +108,7 @@
           {% endif %}
         tap_action:
           action: navigate
-          navigation_path: /lovelace-trackerjoan
+          navigation_path: /lovelace-trackers
         visibility:
           - entity: device_tracker.tracker_joan
             <<: *v_available
