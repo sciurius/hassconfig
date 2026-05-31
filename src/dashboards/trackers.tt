@@ -1,0 +1,285 @@
+# Dashboard: Tracker Joan --        -*- hass -*-
+# WARNING: This is a generated file -- DO NOT EDIT
+
+[% PROCESS v_anchors.tt -%]
+
+title: Trackers
+views:
+
+  - type: panel
+    title: Tracker Joan
+    path: trackerjoan
+    cards:
+
+    - type: vertical-stack
+      cards:
+        - type: horizontal-stack
+          cards:
+
+#          - type: custom:alert-ticker-card
+#            cycle_animation: fold
+#            ha_theme: true
+#            cycle_interval: 5
+#            clear_message: ''
+#            test_mode: false
+#            show_when_clear: false
+#            card_height: 56
+#            alerts:
+#              - entity: device_tracker.tracker_joan
+#                operator: '='
+#                state: Near
+#                overlay_mode: true
+#                message: Joan is getting near
+#                priority: 1
+#                theme: notification
+#                icon: ''
+#                auto_dismiss_after: 30
+
+          - type: custom:mushroom-template-card
+            icon: mdi:radar
+            entity: device_tracker.tracker_joan
+            primary: >-
+              {% if is_state('sensor.tracker_joan_joan_geofence_name','unknown') %}
+              Joan
+              {% else %}
+              {{ states('sensor.tracker_joan_joan_geofence_name') }}
+              {% endif %}
+              
+            secondary: >-
+              {% if state_attr('device_tracker.tracker_joan', 'speed' )|float(0) > 0 %}
+              {{ state_attr('device_tracker.tracker_joan', 'speed' )|float }} km/h
+              {% else %}{{ states('device_tracker.tracker_joan')|capitalize }}
+              {% endif %}
+            visibility:
+              - entity: device_tracker.tracker_joan
+                <<: *v_available
+
+          - type: custom:mushroom-template-card
+            icon: mdi:power-sleep
+            entity: sensor.tracker_joan_wifi_zone
+            primary: Joan
+            secondary: Powersave
+            visibility:
+              - entity: sensor.tracker_joan_wifi_zone
+                <<: *v_available
+              - entity: sensor.tracker_joan_wifi_zone
+                condition: state
+                state_not: "0"
+
+          - type: tile
+            entity: button.tracker_joan_refresh_location
+            name: Refresh
+            hide_state: true
+            visibility:
+              - entity: binary_sensor.tracker_joan_is_online
+                condition: state
+                state: "on"
+ 
+          - type: tile
+            entity: button.tracker_joan_activate_super_live
+            name: Super Live
+            hide_state: true
+            visibility:
+              - entity: binary_sensor.tracker_joan_is_online
+                condition: state
+                state: "on"
+ 
+          - type: tile
+            entity: button.tracker_joan_ring
+            name: Ring
+            hide_state: true
+            visibility:
+              - entity: binary_sensor.tracker_joan_is_online
+                condition: state
+                state: "on"
+
+          - type: tile
+            entity: button.tracker_joan_vibrate
+            name: Vibrate
+            hide_state: true
+            visibility:
+              - entity: binary_sensor.tracker_joan_is_online
+                condition: state
+                state: "on"
+
+          - type: tile
+            entity: select.tracker_joan_update_rate
+            name: Update
+            visibility:
+              - entity: binary_sensor.tracker_joan_is_online
+                condition: state
+                state: "on"
+
+# Map is ok but the chart used is too faint.
+#          - type: map
+#            entities:
+#              - entity: device_tracker.tracker_joan
+#                label_mode: name
+#                name: Joan
+#              - entity: zone.home
+#            theme_mode: auto
+#            hours_to_show: 2
+#            grid_options:
+#              columns: full
+#              rows: 8
+
+# Custom map card uses OSM, which is better.
+# v1,14 has problems. Use 1.13.1 or 1.15+
+        -   type: custom:map-card
+            zoom: 15
+            focus_entity: device_tracker.tracker_joan
+            # refocus makes the map zoom in max.
+            # focus_follow: refocus
+            entities:
+              - entity: device_tracker.tracker_joan
+                display: icon
+                icon: mdi:heart
+                color: red
+                size: 24
+                z_index_offset: 20
+                history_start: 12 hours ago
+                circle:
+                  source: config
+                  color: purple
+                  radius: 1
+              - entity: zone.home
+                z_index_offset: 0
+                size: 24
+            theme_mode: auto
+            # Fix OSM Error 403r.
+            tile_layer_options:
+              referrerPolicy: "origin-when-cross-origin" 
+            card_size: 12
+
+[%
+t0 = [
+"button.tracker_joan_activate_super_live",
+"button.tracker_joan_refresh_location",
+"button.tracker_joan_ring",
+"button.tracker_joan_vibrate",
+"select.tracker_joan_update_rate",
+"device_tracker.tracker_joan",
+"binary_sensor.tracker_joan_is_online",
+"binary_sensor.tracker_joan_valid_signal",
+"sensor.tracker_joan_cell_tower_id",
+"sensor.tracker_joan_battery",
+"sensor.tracker_joan_gps_satellites",
+"sensor.tracker_joan_gsm_strength",
+"sensor.tracker_joan_last_message_received",
+"sensor.tracker_joan_last_sensor_mode",
+"sensor.tracker_joan_last_update_rate",
+"sensor.tracker_joan_sensor_mode",
+"sensor.tracker_joan_phone_call_available",
+"sensor.tracker_joan_phone_call_max",
+"sensor.tracker_joan_phone_call_usage",
+"sensor.tracker_joan_sms_available",
+"sensor.tracker_joan_sos_phone_number",
+"sensor.tracker_joan_next_charge",
+"sensor.tracker_joan_subscription_expiration_date",
+"sensor.tracker_joan_subscription_remaining_days",
+];
+%]
+        - type: grid
+          columns: 6
+          square: false
+          cards:
+
+          - type: tile
+            entity: binary_sensor.tracker_joan_is_online
+            name: Online
+
+          - type: tile
+            entity: binary_sensor.tracker_joan_valid_signal
+            name: Signal
+
+          - type: tile
+            entity: sensor.tracker_joan_battery
+            name: Battery
+
+          - type: tile
+            entity: sensor.tracker_joan_gps_satellites
+            name: Satellites
+
+          - type: tile
+            entity: sensor.tracker_joan_gsm_strength
+            name: GSM
+
+          - type: tile
+            entity: sensor.tracker_joan_subscription_expiration_date
+            name: Expiration
+
+  - type: sections
+    title: Tracker Johan
+    path: trackerjohan
+    sections:
+
+      - type: grid
+        column_span: 3
+        cards:
+# Custom map card uses OSM, which is better.
+# v1,14 has problems. Use 1.13.1 or 1.15+
+          - type: custom:map-card
+            zoom: 15
+            focus_entity: device_tracker.sm_a366b
+            # refocus makes the map zoom in max.
+            # focus_follow: refocus
+            entities:
+              - entity: device_tracker.sm_a366b
+                display: icon
+                icon: mdi:account-circle
+                color: red
+                size: 24
+                z_index_offset: 20
+                history_start: 12 hours ago
+                circle:
+                  source: config
+                  color: purple
+                  radius: 1
+              - entity: zone.home
+                z_index_offset: 0
+                size: 24
+            theme_mode: auto
+            # Fix OSM Error 403r.
+            tile_layer_options:
+              referrerPolicy: "origin-when-cross-origin" 
+            grid_options:
+              columns: full
+              rows: 8
+
+  - type: sections
+    title: Tracker Carolan
+    path: trackercarolan
+    sections:
+
+      - type: grid
+        column_span: 3
+        cards:
+# Custom map card uses OSM, which is better.
+# v1,14 has problems. Use 1.13.1 or 1.15+
+          - type: custom:map-card
+            zoom: 15
+            focus_entity: device_tracker.carolan_parking_location
+            # refocus makes the map zoom in max.
+            # focus_follow: refocus
+            entities:
+              - entity: device_tracker.carolan_parking_location
+                display: icon
+                icon: mdi:car
+                color: red
+                size: 24
+                z_index_offset: 20
+                history_start: 12 hours ago
+                circle:
+                  source: config
+                  color: purple
+                  radius: 1
+              - entity: zone.home
+                z_index_offset: 0
+                size: 24
+            theme_mode: auto
+            # Fix OSM Error 403r.
+            tile_layer_options:
+              referrerPolicy: "origin-when-cross-origin" 
+            grid_options:
+              columns: full
+              rows: 8
