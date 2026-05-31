@@ -1,5 +1,7 @@
 # Dashboard - Badkamerafzuiging - itho-graph          -*- hass -*-
 
+[% device = "itho_cve_s" %]
+
 type: custom:mini-graph-card
 name: Afzuiging (4 uur)
 hours_to_show: 4
@@ -23,7 +25,7 @@ color_thresholds:
     color: "#ff0000"
 
 entities:
-  - entity: sensor.ithocve_fan_speed_status
+  - entity: sensor.[% device %]_speed_status
     name: Afzuiging
     y_axis: secondary
     color: blue

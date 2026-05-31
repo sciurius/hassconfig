@@ -12,6 +12,7 @@ views:
 
   - title: Home
     path: home
+    max_columns: 3
     [% sections %]:
 
       - !include overzicht/buiten.yaml
@@ -61,7 +62,7 @@ views:
     path: badkamer
     [% sections %]:
       - !include overzicht/badkamer.yaml
-      - !include badkamerafzuiging/itho.yaml
+      - !include badkamerafzuiging/itho_cve_s.yaml
       - !include badkamerafzuiging/itho-graph.yaml
       - !include badkamerverwarming/doorbell.yaml
 
@@ -102,6 +103,7 @@ views:
       - !include overzicht/cv.yaml
 
   - title: Auto
+    subview: true
     path: carolan
     [% sections %]:
 

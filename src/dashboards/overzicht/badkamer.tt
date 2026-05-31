@@ -4,6 +4,8 @@
 [% PROCESS power_meter.tt -%]
 [% PROCESS colours.tt -%]
 
+[% device = "itho_cve_s" %]
+
 [% INCLUDE section.tt
        name     = "Badkamer"
        icon     = "bathtub"
@@ -12,54 +14,54 @@
       - [% INCLUDE maybelight.tt
            entity = "light.badkamer_verlichting" %]
 
+      - [% INCLUDE switching_meter
+           name = "Afzuiging"
+           icon = "fan"
+           alwayson = 1 %]
+            
       - type: custom:mushroom-template-card
-        entity: sensor.ithocve_fan_speed_status
+        entity: sensor.[% device %]_speed_status
         primary: Afzuiging
         visibility:
-          - entity: sensor.ithocve_fan_speed_status
+          - entity: sensor.[% device %]_speed_status
             condition: numeric_state
-            above: 0
+            above: -1
         icon: >-
-          {% if   is_state('sensor.ithocve_fan_info','auto') %}
+          {% if   is_state('sensor.[% device %]_fan_info','auto') %}
           mdi:fan-auto
-          {% elif is_state('sensor.ithocve_fan_info','high') %}
+          {% elif is_state('sensor.[% device %]_fan_info','high') %}
           mdi:fan-speed-3
-          {% elif is_state('sensor.ithocve_fan_info','low') %}
+          {% elif is_state('sensor.[% device %]_fan_info','low') %}
           mdi:fan-speed-1
-          {% elif is_state('sensor.ithocve_fan_info','timer 1') %}
+          {% elif is_state('sensor.[% device %]_fan_info','timer 1') %}
           mdi:fan-clock
-          {% elif is_state('sensor.ithocve_fan_info','timer 2') %}
+          {% elif is_state('sensor.[% device %]_fan_info','timer 2') %}
           mdi:fan-clock
-          {% elif is_state('sensor.ithocve_fan_info','timer 3') %}
+          {% elif is_state('sensor.[% device %]_fan_info','timer 3') %}
           mdi:fan-clock
           {% else %}
           mdi:fan
           {% endif %}
         color: >-
           {{ "[% dash.col.default %]"
-             if (states('sensor.ithocve_fan_speed')|int) > 0
+             if (states('sensor.[% device %]_fan_speed')|int) > 0
              else "[% dash.col.inactive %]" }}
         secondary: |
-          {% if (states('sensor.ithocve_fan_speed')|int) > 0 %}
-          {{ states('sensor.ithocve_fan_speed_status') }}
-          {% if (states('sensor.ithocve_ventilation_setpoint')|int) > 0 %}({{ states('sensor.ithocve_ventilation_setpoint') }}%){% endif %}
+          {% if (states('sensor.[% device %]_fan_speed')|int) > 0 %}
+          {{ states('sensor.[% device %]_speed_status') }}
+          {% if (states('sensor.[% device %]_ventilation_setpoint')|int) > 0 %}({{ states('sensor.[% device %]_ventilation_setpoint') }}%){% endif %}
           {% endif %}
 
       - type: tile
-        entity: sensor.ithocve_fan_remaining_time
+        entity: sensor.[% device %]_fan_remaining_time
         name: Fan Timer
         visibility:
-          - entity: sensor.ithocve_fan_remaining_time
+          - entity: sensor.[% device %]_fan_remaining_time
             <<: *v_available
-          - entity: sensor.ithocve_fan_remaining_time
+          - entity: sensor.[% device %]_fan_remaining_time
             condition: numeric_state
             above: 0
   
-      - [% INCLUDE switching_meter
-           name = "Afzuiging"
-           icon = "fan"
-           alwayson = 1 %]
-            
       - type: tile
         entity: sensor.boiler_dhw_curflow
         name: Warm water

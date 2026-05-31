@@ -3,5 +3,5 @@
 views:
   - title: Home
     cards:
-      - !include badkamerafzuiging/itho.yaml
+      - !include badkamerafzuiging/itho_cve_s.yaml
       - !include badkamerafzuiging/itho-graph.yaml

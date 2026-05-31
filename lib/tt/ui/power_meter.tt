@@ -29,8 +29,10 @@ type: custom:mushroom-template-card
 -%]
 type: custom:mushroom-template-card
         entity: [% switch %]
+[%- IF icon.match('{%') %]
+        icon: "[% icon %]"[%- ELSE -%]
 [%- IF icon %]
-        icon: mdi:[% icon %][% END %]
+        icon: "mdi:[% icon %]"[% END; END %]
         primary: [% name %]
         secondary: "{{ states('[% sensor %]')|round(2) }} kWh"
         icon_tap_action:
