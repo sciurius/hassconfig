@@ -5,6 +5,11 @@
 # We can use real sections, or sections emulated with grids.
 # The real sections support grid_options, the emulated ones
 # flow.
+
+media_small  = '"(max-width:  700px)"';
+media_medium = '"(max-width: 1000px)"';
+media_large  = '"(min-width: 1001px)"';
+
 -%]
 
 title: Overzicht
@@ -12,7 +17,17 @@ views:
 
   - title: Home
     path: home
-    max_columns: 3
+    type: custom:masonry-layout
+#    type: custom:grid-layout
+    layout:
+      max_cols: 3
+      grid-template-columns: 34% 33% 33%
+#      mediaquery:
+#        [% media_small %]:
+#          grid-template-columns: 100%
+#        [% media_medium %]:
+#          grid-template-columns: 50% 50%
+
     [% sections %]:
 
       - !include overzicht/buiten.yaml
@@ -21,25 +36,35 @@ views:
 #        cards:
       - !include overzicht/weerstation.yaml
 
-      - !include overzicht/hal.yaml
+      - type: vertical-stack
+        cards:
+        - !include overzicht/woonkamer.yaml
+        - !include overzicht/hal.yaml
 
-      - !include overzicht/woonkamer.yaml
-
-      - !include overzicht/energie.yaml
-      - !include overzicht/energie_balans.yaml
+      - type: vertical-stack
+        cards:
+        - !include overzicht/energie.yaml
+        - !include overzicht/energie_balans.yaml
 
       - !include overzicht/kantoor.yaml
-      - !include overzicht/keuken.yaml
-      - !include overzicht/bijkeuken.yaml
+      - type: vertical-stack
+        cards:
+        - !include overzicht/keuken.yaml
+        - !include overzicht/bijkeuken.yaml
 #      - !include overzicht/cv.yaml
 #      - !include overzicht/cv.yaml
-      - !include overzicht/slaapkamer.yaml
-      - !include overzicht/badkamer.yaml
 
-      - !include overzicht/logeerkamer.yaml
-      - !include overzicht/overig.yaml
+      - type: vertical-stack
+        cards:
+        - !include overzicht/slaapkamer.yaml
+        - !include overzicht/badkamer.yaml
+        - !include overzicht/logeerkamer.yaml
 
-      - !include overzicht/computers.yaml
+      - type: vertical-stack
+        cards:
+        - !include overzicht/overig.yaml
+        - !include overzicht/computers.yaml
+
       - !include overzicht/laders.yaml
       - !include overzicht/picky.yaml
       - !include overzicht/osmc.yaml
