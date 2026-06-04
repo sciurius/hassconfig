@@ -27,17 +27,17 @@
             condition: numeric_state
             above: -1
         icon: >-
-          {% if   is_state('sensor.[% device %]_fan_info','auto') %}
+          {% if   is_state('select.[% device %]_fan_info','auto') %}
           mdi:fan-auto
-          {% elif is_state('sensor.[% device %]_fan_info','high') %}
+          {% elif is_state('select.[% device %]_fan_info','high') %}
           mdi:fan-speed-3
-          {% elif is_state('sensor.[% device %]_fan_info','low') %}
+          {% elif is_state('select.[% device %]_fan_info','low') %}
           mdi:fan-speed-1
-          {% elif is_state('sensor.[% device %]_fan_info','timer 1') %}
+          {% elif is_state('select.[% device %]_fan_info','timer 1') %}
           mdi:fan-clock
-          {% elif is_state('sensor.[% device %]_fan_info','timer 2') %}
+          {% elif is_state('select.[% device %]_fan_info','timer 2') %}
           mdi:fan-clock
-          {% elif is_state('sensor.[% device %]_fan_info','timer 3') %}
+          {% elif is_state('select.[% device %]_fan_info','timer 3') %}
           mdi:fan-clock
           {% else %}
           mdi:fan
@@ -48,7 +48,7 @@
              else "[% dash.col.inactive %]" }}
         secondary: |
           {% if (states('sensor.[% device %]_fan_speed')|int) > 0 %}
-          {{ states('sensor.[% device %]_speed_status') }}
+          {{ states('sensor.[% device %]_fan_speed') }} rpm
           {% if (states('sensor.[% device %]_ventilation_setpoint')|int) > 0 %}({{ states('sensor.[% device %]_ventilation_setpoint') }}%){% endif %}
           {% endif %}
 

@@ -49,13 +49,6 @@ lovelace-kpnitv:
   show_in_sidebar: true
   filename: dashboards/kpnitv.yaml
   
-lovelace-badkamerafzuiging:
-  mode: yaml
-  title: Badkamerafzuiging
-  icon: mdi:fan
-  show_in_sidebar: true
-  filename: dashboards/badkamerafzuiging.yaml
-  
 lovelace-slaapkamerremote:
   mode: yaml
   title: Afstandsbediening

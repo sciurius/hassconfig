@@ -95,7 +95,7 @@ automation:
     alias: Badkamer fan on humidity
     description: Switch fan on when humidity increases fast
     mode: single
-    trigger:
+    triggers:
       - platform: numeric_state
         entity_id: sensor.douche
         above: 3
@@ -107,18 +107,17 @@ automation:
           entity_id: sensor.badkamer_temperature
           above: 17.0
           below: 17.6
-    action:
-#      - service: input_number.set_value
-#        target:
-#          entity_id: input_number.ithocve_fan_speed
-#        data:
-#          value: 100
-      - service: mqtt.publish
+    actions:
+      - action: button.press
         metadata: {}
+        target:
+          entity_id: button.itho_cve_s_timer_1
+        data: {}
+      - action: notify.info
         data:
-          qos: "0"
-          topic: itho/cmd
-          payload: "{\"vremotecmd\":\"timer1\"}"
+          message: >-
+            Afzuiging timer triggered by humidity increase
+            {{ states('sensor.douche') }}
 
 template:
   - sensor:

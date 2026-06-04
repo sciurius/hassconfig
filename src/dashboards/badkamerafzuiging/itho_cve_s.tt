@@ -30,6 +30,19 @@ cards:
       - entity: fan.[% device %]
         name: CVE-S
 
+      - entity: sensor.[% device %]_fan_speed
+        type: custom:multiple-entity-row
+        name: Afzuiging
+        show_state: false
+        entities:
+          - entity: sensor.[% device %]_fan_info
+            name: false
+          - entity: sensor.[% device %]_fan_speed
+            name: false
+        secondary_info:
+          entity: sensor.[% device %]_fan_setpoint
+          name: instelling
+
       - entity: sensor.[% device %]_temperature
         type: custom:multiple-entity-row
         name: Temperatuur
@@ -74,9 +87,9 @@ cards:
             name: Vochtdrempel
             icon: mdi:ray-vertex
 
-      - entity: sensor.[% device %]_fan_info
-        name: Mode
-        icon: mdi:fan
+#      - entity: sensor.[% device %]_fan_info
+#        name: Mode
+#        icon: mdi:fan
 
       - entity: number.[% device %]_fan_demand
         name: Fan Speed
@@ -94,35 +107,12 @@ cards:
       #     entity: sensor.[% device %]_fan_setpoint
       #     name: Instelling
 
-#      - entity: sensor.[% device %]_state_percent
-#        type: custom:multiple-entity-row
-#        name: Speed control
-#        entities:
-#          - entity: sensor.[% device %]_state
-#            name: false
 
-#      - entity: input_number.[% device %]_fan_speed
-#        name: Speed
-#        icon: mdi:ray-vertex
-
-      - entity: sensor.[% device %]_fan_speed
-        type: custom:multiple-entity-row
-        name: Afzuiging
-        show_state: false
-        entities:
-          - entity: sensor.[% device %]_fan_info
-            name: false
-          - entity: sensor.[% device %]_fan_speed
-            name: false
-        secondary_info:
-          entity: sensor.[% device %]_ventilation_setpoint
-          name: instelling
-
-      - entity: sensor.[% device %]_fan_setpoint
-        name: Fan Setpoint
-
-      - entity: sensor.[% device %]_ventilation_setpoint
-        name: Ventilation Setpoint
+#      - entity: sensor.[% device %]_fan_setpoint
+#        name: Fan Setpoint
+#
+#      - entity: sensor.[% device %]_ventilation_setpoint
+#        name: Ventilation Setpoint
 
       # - entity: sensor.[% device %]_speed_status
       #   name: Speed Status
@@ -135,8 +125,6 @@ cards:
       #     entity: sensor.[% device %]_remaining_time
       #     name: Fan Timer
 
-      # - entity: input_select.[% device %]_fan_mode
-      #   name: Presets
 
 
 - type: conditional
