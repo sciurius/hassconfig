@@ -206,6 +206,27 @@
               target:
                 entity_id: input_boolean.afval_dismiss
 
+      - type: custom:mushroom-template-card
+        primary: Pollen
+        secondary: >-
+          {{ states('sensor.kleenex_pollen_radar_home_trees') }}
+          {{ states('sensor.kleenex_pollen_radar_home_grass') }}
+          {{ states('sensor.kleenex_pollen_radar_home_weeds') }}
+        icon: mdi:flower-pollen
+        color: [% dash.col.default %]
+        visibility:
+          - condition: or
+            conditions:
+              - condition: state
+                entity: sensor.kleenex_pollen_radar_home_trees_level
+                state_not: low
+              - condition: state
+                entity: sensor.kleenex_pollen_radar_home_weeds_level
+                state_not: low
+              - condition: state
+                entity: sensor.kleenex_pollen_radar_home_grass_level
+                state_not: low
+
   # - type: grid
   #   columns: 1
   #   square: false
@@ -215,42 +236,24 @@
 
   #         - type: conditional
   #           conditions:
-  #             - entity: binary_sensor.pollen
-  #               state: 'on'
-  #           row:
-  #             entity: sensor.tomorrow_io_home_weed_pollen_index
-  #             type: custom:multiple-entity-row
-  #             show_state: false
-  #             name: Pollen
-  #             secondary_info: Tomorrow.io
-  #             entities:
-  #               - entity: sensor.tomorrow_io_home_tree_pollen_index
-  #                 hide_if: none
-  #               - entity: sensor.tomorrow_io_home_grass_pollen_index
-  #                 hide_if: none
-  #               - entity: sensor.tomorrow_io_home_weed_pollen_index
-  #                 hide_if: none
-
-  #         - type: conditional
-  #           conditions:
   #             - entity: binary_sensor.pollen_kleenex
   #               state: 'on'
   #           row:
-  #             entity: sensor.kleenex_weed_pollen
+  #             entity: sensor.kleenex_pollen_radar_home_weeds
   #             type: custom:multiple-entity-row
   #             show_state: false
   #             name: Pollen
   #             secondary_info: Kleenex.NL
   #             entities:
-  #               - entity: sensor.kleenex_tree_pollen
+  #               - entity: sensor.kleenex_pollen_radar_home_trees
   #                 hide_if: none
   #                 name: Bomen
   #                 unit: false
-  #               - entity: sensor.kleenex_grass_pollen
+  #               - entity: sensor.kleenex_pollen_radar_home_grass
   #                 hide_if: none
   #                 name: Gras
   #                 unit: false
-  #               - entity: sensor.kleenex_weed_pollen
+  #               - entity: sensor.kleenex_pollen_radar_home_weeds
   #                 hide_if: none
   #                 name: Kruiden
   #                 unit: false

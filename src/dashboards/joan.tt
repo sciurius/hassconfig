@@ -131,17 +131,17 @@ views:
           - type: markdown
             content: ' '
           - type: custom:button-card
-            entity: sensor.kleenex_tree_pollen
+            entity: sensor.kleenex_pollen_radar_home_weeds
             template: pollen
             variables:
               levels : [ 10, 96, 208, 704 ]
           - type: custom:button-card
-            entity: sensor.kleenex_grass_pollen
+            entity: sensor.kleenex_pollen_radar_home_grass
             template: pollen
             variables:
               levels : [ 3, 30, 61, 342 ]
           - type: custom:button-card
-            entity: sensor.kleenex_weed_pollen
+            entity: sensor.kleenex_pollen_radar_home_trees
             template: pollen
             variables:
               levels : [ 2, 21, 78, 267 ]

@@ -5,8 +5,8 @@ state_color: true
 entities:
 
 [% sensors = [ "air_quality_index" "dominant_pollutant"
-	       "humidity" "nitrogen_dioxide" "pressure" "temperature"
-	       "pm10" "pm2_5" ] -%]
+               "humidity" "nitrogen_dioxide" "pressure" "temperature"
+               "pm10" "pm2_5" ] -%]
 [% FOREACH area IN [ "Noorderdiep_Valthermond" ];
    FOREACH sensor IN sensors -%]
   - type: conditional
@@ -29,6 +29,31 @@ entities:
   - type: divider
 [% END;
    END %]
+
+  - type: conditional
+    conditions:
+      - entity: binary_sensor.pollen_kleenex
+        state: 'on'
+    row:
+      entity: sensor.kleenex_pollen_radar_home_weeds
+      type: custom:multiple-entity-row
+      show_state: false
+      name: Pollen
+      secondary_info: Kleenex.NL
+      entities:
+        - entity: sensor.kleenex_pollen_radar_home_trees
+          hide_if: none
+          name: Bomen
+          unit: false
+        - entity: sensor.kleenex_pollen_radar_home_grass
+          hide_if: none
+          name: Gras
+          unit: false
+        - entity: sensor.kleenex_pollen_radar_home_weeds
+          hide_if: none
+          name: Kruiden
+          unit: false
+
 
 [%#
 
