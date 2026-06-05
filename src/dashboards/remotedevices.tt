@@ -1,5 +1,10 @@
 #                       -*- hass -*-
 
+[% ircontrol = "script";
+   irdevice  = "tasm11";
+   irtopic   = "cmnd/" _ irdevice _ "/irsend";
+%]
+
 button_card_templates:
 
   button:
@@ -21,7 +26,7 @@ button_card_templates:
     show_icon: false
     tap_action:
       action: call-service
-      service: pyscript.ircontrol
+      service: [% ircontrol %].ircontrol
       service_data:
         device:  '[[[ return variables.device  ]]]'
         command: '[[[ return variables.command ]]]'

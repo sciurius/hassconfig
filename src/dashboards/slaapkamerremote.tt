@@ -1,6 +1,11 @@
 # Dashboard: slaapkamerremote -- Slaapkamer       -*- hass -*-
 # WARNING: This is a generated file -- DO NOT EDIT
 
+[% ircontrol = "script";
+   irdevice  = "tasm11";
+   irtopic   = "cmnd/" _ irdevice _ "/irsend";
+%]
+
 button_card_templates:
 
   activity:
@@ -39,13 +44,13 @@ button_card_templates:
     show_name: true
     tap_action:
       action: call-service
-      service: pyscript.ircontrol
+      service: [% ircontrol %].ircontrol
       service_data:
         command: '[[[ return variables.command ]]]'
         device:  '[[[ return variables.device  ]]]'
     hold_action:
       action: call-service
-      service: pyscript.ircontrol
+      service: [% ircontrol %].ircontrol
       service_data:
         command: '[[[ return variables.command ]]]'
         device:  '[[[ return variables.device  ]]]'
@@ -69,13 +74,13 @@ button_card_templates:
     show_name: false
     tap_action:
       action: call-service
-      service: pyscript.ircontrol
+      service: [% ircontrol %].ircontrol
       service_data:
         command: '[[[ return variables.command ]]]'
         device:  '[[[ return variables.device  ]]]'
     hold_action:
       action: call-service
-      service: pyscript.ircontrol
+      service: [% ircontrol %].ircontrol
       service_data:
         command: '[[[ return variables.command ]]]'
         device:  '[[[ return variables.device  ]]]'
@@ -95,13 +100,13 @@ button_card_templates:
     show_name: false
     tap_action:
       action: call-service
-      service: pyscript.ircontrol
+      service: [% ircontrol %].ircontrol
       service_data:
         command: '[[[ return variables.command ]]]'
         device:  '[[[ return variables.device  ]]]'
     hold_action:
       action: call-service
-      service: pyscript.ircontrol
+      service: [% ircontrol %].ircontrol
       service_data:
         command: '[[[ return variables.command ]]]'
         device:  '[[[ return variables.device  ]]]'
@@ -121,13 +126,13 @@ button_card_templates:
     show_name: false
     tap_action:
       action: call-service
-      service: pyscript.ircontrol
+      service: [% ircontrol %].ircontrol
       service_data:
         command: '[[[ return variables.command ]]]'
         device:  '[[[ return variables.device  ]]]'
     hold_action:
       action: call-service
-      service: pyscript.ircontrol
+      service: [% ircontrol %].ircontrol
       service_data:
         command: '[[[ return variables.command ]]]'
         device:  '[[[ return variables.device  ]]]'
@@ -203,13 +208,15 @@ button_card_templates:
         - width: 25%
     show_name: false
     tap_action:
-      multi-calls: |
-        [[[
-        hass.callService( "script", "channel_tv" );
-        setTimeout(() => {
-            hass.callService( "script", "channel_" + variables.channel );
-        }, 500);
-        ]]]
+      action: call-service
+      service: '[[[ return "[% ircontrol %].channel_" + variables.channel ]]]'
+#      multi-calls: |
+#        [[[
+#        hass.callService( "script", "channel_tv" );
+#        setTimeout(() => {
+#            hass.callService( "script", "channel_" + variables.channel );
+#        }, 500);
+#        ]]]
     hold_action:
       multi-calls: |
         [[[

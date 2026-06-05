@@ -1,0 +1,547 @@
+# Slaapkamer IR Remote                    -*- hass -*-
+
+[% ircontrol = "script";
+   irdevice  = "tasm11";
+   irtopic   = "cmnd/" _ irdevice _ "/irsend";
+%]
+
+# automation:
+
+#   - id: slaapkamer_mc_powered_on
+#     alias: Slaapkamer MC powered on
+#     description: >-
+#       Initial volume is too loud, so when MC becomes available
+#       turn it down a bit.
+#     trigger:
+#       - platform: state
+#         entity_id:
+#           - switch.slaapkamer_media_center
+#         from: "off"
+#         to: "on"
+#     action:
+#       # Wait for things to become responsive.
+#       - delay: 30
+#       # Send some volume down commands.
+#       - repeat:
+#           count: 10
+#           sequence:
+#             - service: remote.send_command
+#               data:
+#                 entity_id: remote.slaapkamer
+#                 device: audio
+#                 command: voldown
+#     mode: single
+
+# Helpers to keep track of switchable devices status.
+# The audio amplifier, video player and HDMI switch are always on.
+
+input_boolean:
+
+  kiosk_mode:
+    name: Kiosk mode
+  slaapkamer_tv:
+    name: TV is on
+  slaapkamer_stb:
+    name: SetTop box is on
+  slaapkamer_audio:
+    name: Audio is on
+
+# Scripts.
+
+script:
+
+  activity_tv:
+
+    sequence:
+
+      # Register activity, will be adjusted later.
+      - service: input_select.select_option
+        target:
+          entity_id: input_select.mc
+        data:
+          option: TV
+
+      # Power on TV, unless already on.
+      - if:
+          - condition: state
+            entity_id: input_boolean.slaapkamer_tv
+            state: "off"
+        then:
+          - service: [% ircontrol %].ircontrol
+            data:
+              device: tv
+              # power toggles, key_0 etc wakes up.
+              command: key_0
+          - service: input_boolean.turn_on
+            target:
+              entity_id: input_boolean.slaapkamer_tv
+
+      # Power on STB, unless already on.
+      - if:
+          - condition: state
+            entity_id: input_boolean.slaapkamer_stb
+            state: "off"
+        then:
+          - service: [% ircontrol %].ircontrol
+            data:
+              device: stb
+              command: power
+          - service: input_boolean.turn_on
+            target:
+              entity_id: input_boolean.slaapkamer_stb
+
+      # Power on Audio, unless already on.
+      - if:
+          - condition: state
+            entity_id: input_boolean.slaapkamer_audio
+            state: "off"
+        then:
+          - service: [% ircontrol %].ircontrol
+            data:
+              device: audio
+              command: power
+          - service: input_boolean.turn_on
+            target:
+              entity_id: input_boolean.slaapkamer_audio
+
+      # Set HDMI switch to TV input.
+      - service: [% ircontrol %].ircontrol
+        data:
+          device: hdmiswitch
+          command: input1
+
+  activity_video:
+
+    sequence:
+
+      # Register activity, will be adjusted later.
+      - service: input_select.select_option
+        target:
+          entity_id: input_select.mc
+        data:
+          option: Video
+
+      # Power on TV, unless already on.
+      - if:
+          - condition: state
+            entity_id: input_boolean.slaapkamer_tv
+            state: "off"
+        then:
+          - service: [% ircontrol %].ircontrol
+            data:
+              device: tv
+              # power toggles, key_0 etc wakes up.
+              command: key_0
+          - service: input_boolean.turn_on
+            target:
+              entity_id: input_boolean.slaapkamer_tv
+
+      # Power off STB, if on.
+      - if:
+          - condition: state
+            entity_id: input_boolean.slaapkamer_stb
+            state: "on"
+        then:
+          - service: [% ircontrol %].ircontrol
+            data:
+              device: stb
+              command: power
+          - service: input_boolean.turn_off
+            target:
+              entity_id: input_boolean.slaapkamer_stb
+
+      # Power on Audio, unless already on.
+      - if:
+          - condition: state
+            entity_id: input_boolean.slaapkamer_audio
+            state: "off"
+        then:
+          - service: [% ircontrol %].ircontrol
+            data:
+              device: audio
+              command: power
+          - service: input_boolean.turn_on
+            target:
+              entity_id: input_boolean.slaapkamer_audio
+
+      # Set HDMI switch to Video input.
+      - service: [% ircontrol %].ircontrol
+        data:
+          device: hdmiswitch
+          command: input2
+
+  activity_chromecast:
+
+    sequence:
+
+      # Register activity, will be adjusted later.
+      - service: input_select.select_option
+        target:
+          entity_id: input_select.mc
+        data:
+          option: ChromeCast
+
+      # Power on TV, unless already on.
+      - if:
+          - condition: state
+            entity_id: input_boolean.slaapkamer_tv
+            state: "off"
+        then:
+          - service: [% ircontrol %].ircontrol
+            data:
+              device: tv
+              # power toggles, key_0 etc wakes up.
+              command: key_0
+          - service: input_boolean.turn_on
+            target:
+              entity_id: input_boolean.slaapkamer_tv
+
+      # Power off STB, if on.
+      - if:
+          - condition: state
+            entity_id: input_boolean.slaapkamer_stb
+            state: "on"
+        then:
+          - service: [% ircontrol %].ircontrol
+            data:
+              device: stb
+              command: power
+          - service: input_boolean.turn_off
+            target:
+              entity_id: input_boolean.slaapkamer_stb
+
+      # Power on Audio, unless already on.
+      - if:
+          - condition: state
+            entity_id: input_boolean.slaapkamer_audio
+            state: "off"
+        then:
+          - service: [% ircontrol %].ircontrol
+            data:
+              device: audio
+              command: power
+          - service: input_boolean.turn_on
+            target:
+              entity_id: input_boolean.slaapkamer_audio
+
+      # Set HDMI switch to ChromeCast input.
+      - service: [% ircontrol %].ircontrol
+        data:
+          device: hdmiswitch
+          command: input3
+
+  activity_off:
+
+    sequence:
+
+      # Power off TV if on.
+      - if:
+          - condition: state
+            entity_id: input_boolean.slaapkamer_tv
+            state: "on"
+        then:
+          - service: [% ircontrol %].ircontrol
+            data:
+              device: tv
+              command: power
+          - service: input_boolean.turn_off
+            target:
+              entity_id: input_boolean.slaapkamer_tv
+
+      # Power off STB if on.
+      - if:
+          - condition: state
+            entity_id: input_boolean.slaapkamer_stb
+            state: "on"
+        then:
+          - service: [% ircontrol %].ircontrol
+            data:
+              device: stb
+              command: power
+          - service: input_boolean.turn_off
+            target:
+              entity_id: input_boolean.slaapkamer_stb
+
+      # Power off Audio.
+      - if:
+          - condition: state
+            entity_id: input_boolean.slaapkamer_audio
+            state: "on"
+        then:
+          - service: [% ircontrol %].ircontrol
+            data:
+              device: audio
+              command: power
+          - service: input_boolean.turn_off
+            target:
+              entity_id: input_boolean.slaapkamer_audio
+
+  activity_reset:
+    # Force boolean states off.
+    sequence:
+      - service: input_boolean.turn_off
+        target:
+          entity_id: input_boolean.slaapkamer_tv
+      - service: input_boolean.turn_off
+        target:
+          entity_id: input_boolean.slaapkamer_stb
+      - service: input_boolean.turn_off
+        target:
+          entity_id: input_boolean.slaapkamer_audio
+
+  channel_npo1:
+    sequence:
+      - service: [% ircontrol %].ircontrol
+        data:
+          device: stb
+          command: key_0 key_0 key_0 key_1
+
+  channel_npo2:
+    sequence:
+      - service: [% ircontrol %].ircontrol
+        data:
+          device: stb
+          command: key_0 key_0 key_0 key_2
+
+  channel_npo3:
+    sequence:
+      - service: [% ircontrol %].ircontrol
+        data:
+          device: stb
+          command: key_0 key_0 key_0 key_3
+
+  channel_rtl4:
+    sequence:
+      - service: [% ircontrol %].ircontrol
+        data:
+          device: stb
+          command: key_0 key_0 key_0 key_4
+
+  channel_bbc1:
+    sequence:
+      - service: [% ircontrol %].ircontrol
+        data:
+          device: stb
+          command: key_0 key_0 key_2 key_6
+
+  channel_bbc2:
+    sequence:
+      - service: [% ircontrol %].ircontrol
+        data:
+          device: stb
+          command: key_0 key_0 key_2 key_7
+
+  channel_een:
+    sequence:
+      - service: [% ircontrol %].ircontrol
+        data:
+          device: stb
+          command: key_0 key_0 key_2 key_9
+
+  channel_canvas:
+    sequence:
+      - service: [% ircontrol %].ircontrol
+        data:
+          device: stb
+          command: key_0 key_0 key_3 key_0
+
+  channel_rtvdrenthe:
+    sequence:
+      - service: [% ircontrol %].ircontrol
+        data:
+          device: stb
+          command: key_0 key_5 key_0 key_3
+
+  channel_subtitles:
+    sequence:
+      - service: [% ircontrol %].ircontrol
+        data:
+          device: stb
+          command: text
+      - delay: 1
+      - service: [% ircontrol %].ircontrol
+        data:
+          device: stb
+          command: key_8 key_8 key_8
+
+  channel_tv:
+    sequence:
+      - service: [% ircontrol %].ircontrol
+        data:
+          device: stb
+          command: tv
+
+  ircontrol:
+    variables:
+      device: tv
+      command: power
+    sequence:
+      - repeat:
+          for_each: "{{ command.split(' ') }}"
+          sequence:
+            - action: mqtt.publish
+              data:
+                qos: "0"
+                retain: false
+                topic: [% irtopic %]
+                payload: "{{ state_attr('sensor.ircontrol_' + device, repeat.item) }}"
+            - action: notify.info
+              data:
+                message: "IR command {{ repeat.item }} to device {{ device }}"
+
+# Sending direct commands to Kodi.
+rest_command:
+  kodicmd:
+    url: http://osmc.squirrel.nl:80/jsonrpc
+    # url: http://phoenix.squirrel.nl:8084/jsonrpc
+    method: post
+    content_type: application/json
+    username: osmc
+    password: osmc
+    payload: |
+      {"jsonrpc": "2.0", "id": 1, "method": "{{ cmd }}", "params":{}}
+    
+# Template sensors for the devices, with IR key sequences as attributes.
+      
+template:
+
+  - sensor:
+
+    # HDMI Switch: Marmitek Connect 621
+    - name: ircontrol_hdmiswitch
+      state: ir38
+      attributes:
+        arc:     '{"Protocol":"NEC", "Bits":32,"Data":"0x40BFE916","DataLSB":"0x2FD9768","Repeat":0}'
+        ch_20:   '{"Protocol":"NEC", "Bits":32,"Data":"0x40BF33CC","DataLSB":"0x2FDCC33","Repeat":0}'
+        ch_51:   '{"Protocol":"NEC", "Bits":32,"Data":"0x40BFF906","DataLSB":"0x2FD9F60","Repeat":0}'
+        ch_71:   '{"Protocol":"NEC", "Bits":32,"Data":"0x40BF19E6","DataLSB":"0x2FD9867","Repeat":0}'
+        ch_auto: '{"Protocol":"NEC", "Bits":32,"Data":"0x40BFD32C","DataLSB":"0x2FDCB34","Repeat":0}'
+        in_auto: '{"Protocol":"NEC", "Bits":32,"Data":"0x40BF9B64","DataLSB":"0x2FDD926","Repeat":0}'
+        input1:  '{"Protocol":"NEC", "Bits":32,"Data":"0x40BF7B84","DataLSB":"0x2FDDE21","Repeat":0}'
+        input2:  '{"Protocol":"NEC", "Bits":32,"Data":"0x40BF5BA4","DataLSB":"0x2FDDA25","Repeat":0}'
+        input3:  '{"Protocol":"NEC", "Bits":32,"Data":"0x40BFDB24","DataLSB":"0x2FDDB24","Repeat":0}'
+        input4:  '{"Protocol":"NEC", "Bits":32,"Data":"0x40BFAA55","DataLSB":"0x2FD55AA","Repeat":0}'
+
+    # TV: Philips 43PFS5525
+    - name: ircontrol_tv
+      state: ir38
+      attributes:
+        blue:             '{"Protocol":"RC6", "Bits":20,"Data":"0x70","DataLSB":"0x0E","Repeat":0}'
+        channel_down:     '{"Protocol":"RC6", "Bits":20,"Data":"0x21","DataLSB":"0x84","Repeat":0}'
+        channel_list:     '{"Protocol":"RC6", "Bits":20,"Data":"0xD2","DataLSB":"0x4B","Repeat":0}'
+        channel_up:       '{"Protocol":"RC6", "Bits":20,"Data":"0x20","DataLSB":"0x04","Repeat":0}'
+        closed_captions:  '{"Protocol":"RC6", "Bits":20,"Data":"0x46","DataLSB":"0x62","Repeat":0}'
+        cursor_down:      '{"Protocol":"RC6", "Bits":20,"Data":"0x59","DataLSB":"0x9A","Repeat":0}'
+        cursor_left:      '{"Protocol":"RC6", "Bits":20,"Data":"0x5A","DataLSB":"0x5A","Repeat":0}'
+        cursor_right:     '{"Protocol":"RC6", "Bits":20,"Data":"0x5B","DataLSB":"0xDA","Repeat":0}'
+        cursor_up:        '{"Protocol":"RC6", "Bits":20,"Data":"0x58","DataLSB":"0x1A","Repeat":0}'
+        exit:             '{"Protocol":"RC6", "Bits":20,"Data":"0x9F","DataLSB":"0xF9","Repeat":0}'
+        fast_forward:     '{"Protocol":"RC6", "Bits":20,"Data":"0x28","DataLSB":"0x14","Repeat":0}'
+        green:            '{"Protocol":"RC6", "Bits":20,"Data":"0x6E","DataLSB":"0x76","Repeat":0}'
+        guide:            '{"Protocol":"RC6", "Bits":20,"Data":"0xCC","DataLSB":"0x33","Repeat":0}'
+        info:             '{"Protocol":"RC6", "Bits":20,"Data":"0x0F","DataLSB":"0xF0","Repeat":0}'
+        key_0:            '{"Protocol":"RC6", "Bits":20,"Data":"0x00","DataLSB":"0x00","Repeat":0}'
+        key_1:            '{"Protocol":"RC6", "Bits":20,"Data":"0x01","DataLSB":"0x80","Repeat":0}'
+        key_2:            '{"Protocol":"RC6", "Bits":20,"Data":"0x02","DataLSB":"0x40","Repeat":0}'
+        key_3:            '{"Protocol":"RC6", "Bits":20,"Data":"0x03","DataLSB":"0xC0","Repeat":0}'
+        key_4:            '{"Protocol":"RC6", "Bits":20,"Data":"0x04","DataLSB":"0x20","Repeat":0}'
+        key_5:            '{"Protocol":"RC6", "Bits":20,"Data":"0x05","DataLSB":"0xA0","Repeat":0}'
+        key_6:            '{"Protocol":"RC6", "Bits":20,"Data":"0x06","DataLSB":"0x60","Repeat":0}'
+        key_7:            '{"Protocol":"RC6", "Bits":20,"Data":"0x07","DataLSB":"0xE0","Repeat":0}'
+        key_8:            '{"Protocol":"RC6", "Bits":20,"Data":"0x08","DataLSB":"0x10","Repeat":0}'
+        key_9:            '{"Protocol":"RC6", "Bits":20,"Data":"0x09","DataLSB":"0x90","Repeat":0}'
+        menu:             '{"Protocol":"RC6", "Bits":20,"Data":"0x54","DataLSB":"0x2A","Repeat":0}'
+        mute:             '{"Protocol":"RC6", "Bits":20,"Data":"0x0D","DataLSB":"0xB0","Repeat":0}'
+        next_source:      '{"Protocol":"RC6", "Bits":20,"Data":"0x38","DataLSB":"0x1C","Repeat":0}'
+        ok:               '{"Protocol":"RC6", "Bits":20,"Data":"0x5C","DataLSB":"0x3A","Repeat":0}'
+        option:           '{"Protocol":"RC6", "Bits":20,"Data":"0x40","DataLSB":"0x02","Repeat":0}'
+        pause:            '{"Protocol":"RC6", "Bits":20,"Data":"0x30","DataLSB":"0x0C","Repeat":0}'
+        play:             '{"Protocol":"RC6", "Bits":20,"Data":"0x32","DataLSB":"0x4C","Repeat":0}'
+        power:            '{"Protocol":"RC6", "Bits":20,"Data":"0x0C","DataLSB":"0x30","Repeat":0}'
+        previous_channel: '{"Protocol":"RC6", "Bits":20,"Data":"0x0A","DataLSB":"0x50","Repeat":0}'
+        record:           '{"Protocol":"RC6", "Bits":20,"Data":"0x37","DataLSB":"0xEC","Repeat":0}'
+        red:              '{"Protocol":"RC6", "Bits":20,"Data":"0x6D","DataLSB":"0xB6","Repeat":0}'
+        rewind:           '{"Protocol":"RC6", "Bits":20,"Data":"0x2B","DataLSB":"0xD4","Repeat":0}'
+        settings:         '{"Protocol":"RC6", "Bits":20,"Data":"0xBF","DataLSB":"0xFD","Repeat":0}'
+        standby:          '{"Protocol":"RC6", "Bits":20,"Data":"0x3D","DataLSB":"0xBC","Repeat":0}'
+        stop:             '{"Protocol":"RC6", "Bits":20,"Data":"0x31","DataLSB":"0x8C","Repeat":0}'
+        subtitles:        '{"Protocol":"RC6", "Bits":20,"Data":"0x4B","DataLSB":"0xD2","Repeat":0}'
+        teletext:         '{"Protocol":"RC6", "Bits":20,"Data":"0xF1","DataLSB":"0x8F","Repeat":0}'
+        volume_down:      '{"Protocol":"RC6", "Bits":20,"Data":"0x11","DataLSB":"0x88","Repeat":0}'
+        volume_up:        '{"Protocol":"RC6", "Bits":20,"Data":"0x10","DataLSB":"0x08","Repeat":0}'
+        white:            '{"Protocol":"RC6", "Bits":20,"Data":"0x71","DataLSB":"0x8E","Repeat":0}'
+        yellow:           '{"Protocol":"RC6", "Bits":20,"Data":"0x6F","DataLSB":"0xF6","Repeat":0}'
+
+    # Audio amplifier: SMSL AD18
+    - name: ircontrol_audio
+      state: ir38
+      attributes:
+        a_left:      '{"Protocol":"NEC", "Bits":32,"Data":"0xC03F","DataLSB":"0x03FC","Repeat":0}'
+        a_right:     '{"Protocol":"NEC", "Bits":32,"Data":"0xA05F","DataLSB":"0x05FA","Repeat":0}'
+        b_down:      '{"Protocol":"NEC", "Bits":32,"Data":"0x609F","DataLSB":"0x06F9","Repeat":0}'
+        b_enter:     '{"Protocol":"NEC", "Bits":32,"Data":"0x20DF","DataLSB":"0x04FB","Repeat":0}'
+        b_fn:        '{"Protocol":"NEC", "Bits":32,"Data":"0x10EF","DataLSB":"0x08F7","Repeat":0}'
+        b_input:     '{"Protocol":"NEC", "Bits":32,"Data":"0xE01F","DataLSB":"0x07F8","Repeat":0}'
+        b_left:      '{"Protocol":"NEC", "Bits":32,"Data":"0xC03F","DataLSB":"0x03FC","Repeat":0}'
+        b_mute:      '{"Protocol":"NEC", "Bits":32,"Data":"0x906F","DataLSB":"0x09F6","Repeat":0}'
+        b_power:     '{"Protocol":"NEC", "Bits":32,"Data":"0x807F","DataLSB":"0x01FE","Repeat":0}'
+        b_right:     '{"Protocol":"NEC", "Bits":32,"Data":"0xA05F","DataLSB":"0x05FA","Repeat":0}'
+        b_up:        '{"Protocol":"NEC", "Bits":32,"Data":"0x40BF","DataLSB":"0x02FD","Repeat":0}'
+        c_down:      '{"Protocol":"NEC", "Bits":32,"Data":"0x609F","DataLSB":"0x06F9","Repeat":0}'
+        c_enter:     '{"Protocol":"NEC", "Bits":32,"Data":"0x20DF","DataLSB":"0x04FB","Repeat":0}'
+        c_fn:        '{"Protocol":"NEC", "Bits":32,"Data":"0x10EF","DataLSB":"0x08F7","Repeat":0}'
+        c_left:      '{"Protocol":"NEC", "Bits":32,"Data":"0xC03F","DataLSB":"0x03FC","Repeat":0}'
+        c_mode:      '{"Protocol":"NEC", "Bits":32,"Data":"0xE01F","DataLSB":"0x07F8","Repeat":0}'
+        c_mute:      '{"Protocol":"NEC", "Bits":32,"Data":"0x906F","DataLSB":"0x09F6","Repeat":0}'
+        c_power:     '{"Protocol":"NEC", "Bits":32,"Data":"0x807F","DataLSB":"0x01FE","Repeat":0}'
+        c_right:     '{"Protocol":"NEC", "Bits":32,"Data":"0xA05F","DataLSB":"0x05FA","Repeat":0}'
+        c_up:        '{"Protocol":"NEC", "Bits":32,"Data":"0x40BF","DataLSB":"0x02FD","Repeat":0}'
+        fn:          '{"Protocol":"NEC", "Bits":32,"Data":"0x10EF","DataLSB":"0x08F7","Repeat":0}'
+        input:       '{"Protocol":"NEC", "Bits":32,"Data":"0xE01F","DataLSB":"0x07F8","Repeat":0}'
+        mute:        '{"Protocol":"NEC", "Bits":32,"Data":"0x906F","DataLSB":"0x09F6","Repeat":0}'
+        power:       '{"Protocol":"NEC", "Bits":32,"Data":"0x807F","DataLSB":"0x01FE","Repeat":0}'
+        settings:    '{"Protocol":"NEC", "Bits":32,"Data":"0x20DF","DataLSB":"0x04FB","Repeat":0}'
+        volume_down: '{"Protocol":"NEC", "Bits":32,"Data":"0x609F","DataLSB":"0x06F9","Repeat":0}'
+        volume_up:   '{"Protocol":"NEC", "Bits":32,"Data":"0x40BF","DataLSB":"0x02FD","Repeat":0}'
+
+    # SetTopBox: Arris 2952 / 5202 -- NOTE: 56Khz
+    - name: ircontrol_stb
+      state: ir56
+      attributes:
+        back:         '56,320,640,640,640,320,320,640,640,640,640,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,640,640,320,320,640,320,320,640,320,85000'
+        blue:         '56,320,640,640,640,320,320,640,640,640,640,320,320,320,320,320,320,320,320,320,320,320,320,320,320,640,640,320,320,320,320,320,320,320,320,640,85000'
+        channel_down: '56,320,640,640,640,320,320,640,640,640,640,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,640,320,320,320,320,640,320,320,640,85000'
+        channel_up:   '56,320,640,640,640,320,320,640,640,640,640,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,640,320,320,640,320,320,640,640,320,85000'
+        down:         '56,320,640,640,640,320,320,640,640,640,640,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,640,320,320,640,640,640,320,85000'
+        fast_forward: '56,320,640,640,640,320,320,640,640,640,640,320,320,320,320,320,320,320,320,320,320,320,320,320,320,640,640,320,320,640,640,320,320,640,85000'
+        green:        '56,320,640,640,640,320,320,640,640,640,640,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,640,320,320,320,320,320,320,640,640,85000'
+        guide:        '56,320,640,640,640,320,320,640,640,640,640,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,640,640,640,320,320,640,640,85000'
+        key_0:        '56,320,640,640,640,320,320,640,640,640,640,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,640,640,640,640,640,85000'
+        key_1:        '56,320,640,640,640,320,320,640,640,640,640,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,640,640,320,85000'
+        key_2:        '56,320,640,640,640,320,320,640,640,640,640,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,640,640,640,85000'
+        key_3:        '56,320,640,640,640,320,320,640,640,640,640,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,640,320,320,640,320,85000'
+        key_4:        '56,320,640,640,640,320,320,640,640,640,640,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,640,640,320,320,640,85000'
+        key_5:        '56,320,640,640,640,320,320,640,640,640,640,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,640,640,640,640,320,85000'
+        key_6:        '56,320,640,640,640,320,320,640,640,640,640,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,640,320,320,640,640,85000'
+        key_7:        '56,320,640,640,640,320,320,640,640,640,640,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,640,320,320,320,320,640,320,85000'
+        key_8:        '56,320,640,640,640,320,320,640,640,640,640,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,640,640,320,320,320,320,640,85000'
+        key_9:        '56,320,640,640,640,320,320,640,640,640,640,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,640,640,320,320,640,640,320,85000'
+        left:         '56,320,640,640,640,320,320,640,640,640,640,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,640,320,320,320,320,640,640,85000'
+        menu:         '56,320,640,640,640,320,320,640,640,640,640,320,320,320,320,320,320,320,320,320,320,320,320,320,320,640,640,640,320,320,640,640,640,320,85000'
+        mute:         '56,320,640,640,640,320,320,640,640,640,640,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,640,320,320,640,320,320,320,320,640,85000'
+        ok:           '56,320,640,640,640,320,320,640,640,640,640,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,640,320,320,320,320,320,320,640,320,85000'
+        play_pause:   '56,320,640,640,640,320,320,640,640,640,640,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,640,320,320,640,640,320,320,640,320,85000'
+        power:        '56,320,640,640,640,320,320,640,640,640,640,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,640,640,640,320,320,640,320,85000'
+        radio:        '56,320,640,640,640,320,320,640,640,640,640,320,320,320,320,320,320,320,320,320,320,320,320,320,320,640,640,640,640,640,320,320,640,320,85000'
+        record:       '56,320,640,640,640,320,320,640,640,640,640,320,320,320,320,320,320,320,320,320,320,320,320,320,320,640,640,320,320,320,320,640,320,320,640,320,85000'
+        red:          '56,320,640,640,640,320,320,640,640,640,640,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,640,320,320,320,320,640,640,640,320,85000'
+        rewind:       '56,320,640,640,640,320,320,640,640,640,640,320,320,320,320,320,320,320,320,320,320,320,320,320,320,640,640,320,320,320,320,320,320,640,640,320,85000'
+        right:        '56,320,640,640,640,320,320,640,640,640,640,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,640,640,320,320,320,320,320,320,640,85000'
+        source:       '56,320,640,640,640,320,320,640,640,640,640,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,640,640,320,320,320,320,640,640,320,85000'
+        stop:         '56,320,640,640,640,320,320,640,640,640,640,320,320,320,320,320,320,320,320,320,320,320,320,320,320,640,640,320,320,320,320,640,640,640,85000'
+        text:         '56,320,640,640,640,320,320,640,640,640,640,320,320,320,320,320,320,320,320,320,320,320,320,320,320,640,640,640,640,320,320,640,640,320,85000'
+        tv:           '56,320,640,640,640,320,320,640,640,640,640,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,640,640,640,640,320,320,640,85000'
+        up:           '56,320,640,640,640,320,320,640,640,640,640,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,640,320,320,640,320,320,640,85000'
+        volume_down:  '56,320,640,640,640,320,320,640,640,640,640,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,640,320,320,640,640,640,640,85000'
+        volume_up:    '56,320,640,640,640,320,320,640,640,640,640,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,640,640,640,320,320,320,320,640,320,85000'
+        yellow:       '56,320,640,640,640,320,320,640,640,640,640,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,640,320,320,320,320,320,320,320,320,640,320,85000'
