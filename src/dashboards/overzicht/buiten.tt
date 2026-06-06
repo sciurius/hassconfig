@@ -209,9 +209,12 @@
       - type: custom:mushroom-template-card
         primary: Pollen
         secondary: >-
-          {{ states('sensor.kleenex_pollen_radar_home_trees') }}
-          {{ states('sensor.kleenex_pollen_radar_home_grass') }}
-          {{ states('sensor.kleenex_pollen_radar_home_weeds') }}
+          {{ "B" +
+             states('sensor.kleenex_pollen_radar_home_trees_level')|truncate(1,true,"",0)|upper }}
+          {{ "G" +
+             states('sensor.kleenex_pollen_radar_home_grass_level')|truncate(1,true,"",0)|upper }}
+          {{ "K" +
+             states('sensor.kleenex_pollen_radar_home_weeds_level')|truncate(1,true,"",0)|upper }}
         icon: >-
           {% if is_state('sensor.pollen_max','sensor.kleenex_pollen_radar_home_trees') %}
           mdi:tree
