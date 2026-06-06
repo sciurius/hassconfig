@@ -212,8 +212,30 @@
           {{ states('sensor.kleenex_pollen_radar_home_trees') }}
           {{ states('sensor.kleenex_pollen_radar_home_grass') }}
           {{ states('sensor.kleenex_pollen_radar_home_weeds') }}
-        icon: mdi:flower-pollen
-        color: [% dash.col.default %]
+        icon: >-
+          {% if is_state('sensor.pollen_max','sensor.kleenex_pollen_radar_home_trees') %}
+          mdi:tree
+          {% else %}
+          {% if is_state('sensor.pollen_max','sensor.kleenex_pollen_radar_home_grass') %}
+          mdi:grass
+          {% else %}
+          mdi:flower-pollen
+          {% endif %}
+          {% endif %}
+        color: >-
+          {% if is_state(states('sensor.pollen_max')+'_level','very-high') %}
+          red
+          {% else %}
+          {% if is_state(states('sensor.pollen_max')+'_level','high') %}
+          orange
+          {% else %}
+          {% if is_state(states('sensor.pollen_max')+'_level','moderate') %}
+          yellow
+          {% else %}
+          [% dash.col.default %]
+          {% endif %}
+          {% endif %}
+          {% endif %}
         visibility:
           - condition: or
             conditions:

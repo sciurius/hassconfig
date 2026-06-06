@@ -6,31 +6,46 @@ sensor:                 ################
 # Returns the state of select.tv_slaapkamer as a string.
 # This makes it a read-only sensor.
 
-- name: "MC State"
-  state: "{{ states('select.slaapkamer_media_center') }}"
+  - name: "MC State"
+    state: "{{ states('select.slaapkamer_media_center') }}"
 
 # sensor.apk_expiration_near
 # Return the expiration date if it is within 60 days.
 
-- name: "APK Expiration Near"
-  state: >
-    {% if
-       ((as_timestamp(strptime(states('sensor.toyota_53xdsr_apk_expiration'),
-                               '%Y-%m-%d')) / 86400) | int )
-       -
-       ((as_timestamp(strptime(states('sensor.date'),
-                               '%Y-%m-%d')) / 86400) | int )
-       < 60 %}
-    {{ states('sensor.toyota_53xdsr_apk_expiration') }}
-    {% else %} nog_lang_niet {% endif %}
+  - name: "APK Expiration Near"
+    state: >
+      {% if
+         ((as_timestamp(strptime(states('sensor.toyota_53xdsr_apk_expiration'),
+                                 '%Y-%m-%d')) / 86400) | int )
+         -
+         ((as_timestamp(strptime(states('sensor.date'),
+                                 '%Y-%m-%d')) / 86400) | int )
+         < 60 %}
+      {{ states('sensor.toyota_53xdsr_apk_expiration') }}
+      {% else %} nog_lang_niet {% endif %}
 
 # For testing and development
-- name: Dummy
-  state: "0"
+  - name: Dummy
+    state: "0"
 
-- name: Uit
-  state: "Uit"
+  - name: Uit
+    state: "Uit"
 
+  - name: "Pollen Max"
+    state: >-
+      {% set ns = namespace( maxv = -1, found = false ) %}
+      {% set pollen = [ 'sensor.kleenex_pollen_radar_home_trees',
+                        'sensor.kleenex_pollen_radar_home_grass',
+                        'sensor.kleenex_pollen_radar_home_weeds' ] %}
+      {% set lvl = { "low":1, "moderate":2, "high":3, "very-high":4 } %}
+      {% for el in pollen %}
+        {% if lvl[states(el+"_level")] > ns.maxv %}
+          {% set ns.maxv = lvl[states(el+"_level")] %}
+          {% set ns.found = el %}
+        {% endif %}
+      {%endfor%}
+      {{ ns.found }}
+      
 binary_sensor:          ################
 
 # binary_sensor.pollen
