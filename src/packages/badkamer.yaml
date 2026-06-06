@@ -108,11 +108,17 @@ automation:
           above: 17.0
           below: 17.6
     actions:
-      - action: button.press
+#      - action: button.press
+#        metadata: {}
+#        target:
+#          entity_id: button.itho_cve_s_timer_1
+#        data: {}
+      - service: mqtt.publish
         metadata: {}
-        target:
-          entity_id: button.itho_cve_s_timer_1
-        data: {}
+        data:
+          qos: "0"
+          topic: itho/cmd
+          payload: "{\"vremotecmd\":\"timer1\"}"
       - action: notify.info
         data:
           message: >-

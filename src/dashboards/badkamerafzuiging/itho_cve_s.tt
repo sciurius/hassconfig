@@ -117,13 +117,13 @@ cards:
       # - entity: sensor.[% device %]_speed_status
       #   name: Speed Status
 
-      # - type: conditional
-      #   conditions:
-      #     - entity: sensor.[% device %]_remaining_time
-      #       state_not: "0"
-      #   row:
-      #     entity: sensor.[% device %]_remaining_time
-      #     name: Fan Timer
+      - type: conditional
+        conditions:
+          - entity: sensor.[% device %]_remaining_time
+            state_not: "0"
+        row:
+          entity: sensor.[% device %]_remaining_time
+          name: Fan Timer
 
 
 

@@ -53,12 +53,12 @@
           {% endif %}
 
       - type: tile
-        entity: sensor.[% device %]_fan_remaining_time
+        entity: sensor.[% device %]_remaining_time
         name: Fan Timer
         visibility:
-          - entity: sensor.[% device %]_fan_remaining_time
+          - entity: sensor.[% device %]_remaining_time
             <<: *v_available
-          - entity: sensor.[% device %]_fan_remaining_time
+          - entity: sensor.[% device %]_remaining_time
             condition: numeric_state
             above: 0
   
