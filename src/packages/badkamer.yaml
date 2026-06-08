@@ -12,12 +12,6 @@ input_boolean:
     name: Switch on badkamerverwarming on doorbell
     icon: mdi:doorbell
 
-sensor:
-  - name: Douche
-    platform: derivative
-    source: sensor.badkamer_humidity
-    unit_time: min
-
 automation:
 
   - id: Automation__Start_Badkamerverwarming_Timer
@@ -90,40 +84,6 @@ automation:
       - service: input_boolean.turn_off
         target:
           entity_id: input_boolean.badkamerverwarming_on_doorbell
-
-  - id: Automation__Badkamer_Fan_On_Humidity
-    alias: Badkamer fan on humidity
-    description: Switch fan on when humidity increases fast
-    mode: single
-    triggers:
-      - platform: numeric_state
-        entity_id: sensor.douche
-        above: 3
-    # The temperature sensor often oscillates between 17.1 and 17.5.
-    # Exclude.
-    conditions:
-      not:
-        - condition: numeric_state
-          entity_id: sensor.badkamer_temperature
-          above: 17.0
-          below: 17.6
-    actions:
-#      - action: button.press
-#        metadata: {}
-#        target:
-#          entity_id: button.itho_cve_s_timer_1
-#        data: {}
-      - service: mqtt.publish
-        metadata: {}
-        data:
-          qos: "0"
-          topic: itho/cmd
-          payload: "{\"vremotecmd\":\"timer1\"}"
-      - action: notify.info
-        data:
-          message: >-
-            Afzuiging timer triggered by humidity increase
-            {{ states('sensor.douche') }}
 
 template:
   - sensor:

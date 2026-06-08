@@ -1,0 +1,186 @@
+# Itho Daalderop CVE-S w/ NRG gateway                -*-hass-*-
+
+[% device = "itho_cve_s" %]
+
+#### WARNING: This is a generated file. Changes will get lost!
+
+################ Helpers ################
+
+input_boolean:
+
+  # input_boolean.itho_cve_s_humidity_sensor enables/disables
+  # threshold sensing using input_number.itho_cve_s_humidity_threshold.
+
+  [% device %]_humidity_sensor:
+    name: Itho CVE-S Humidity Sensor
+
+input_number:
+
+# Input helper for auto fan speed control.
+
+  [% device %]_humidity_threshold:
+    name: Itho CVE-S Humidity Threshold
+    min: 0
+    max: 100
+    step: 1
+    unit_of_measurement: "%"
+    icon: mdi:target
+
+################ Templates ################
+
+template:
+
+  - sensor:
+
+      - name: Itho CVE-S Fan Info
+        unique_id: [% device %]_fan_info
+        state: "{{ states('select.[% device %]_fan_info') }}"
+
+sensor:
+
+  - name: Douche
+    platform: derivative
+    source: sensor.badkamer_humidity
+    unit_time: min
+
+################ Automations ################
+
+automation:
+
+  - id: Automation__Badkamer_Fan_On_Humidity
+    alias: Badkamer fan on humidity
+    description: Switch fan on when humidity increases fast
+    mode: single
+    triggers:
+      - platform: numeric_state
+        entity_id: sensor.douche
+        above: 3
+    # The temperature sensor often oscillates between 17.1 and 17.5.
+    # Exclude.
+    conditions:
+      not:
+        - condition: numeric_state
+          entity_id: sensor.badkamer_temperature
+          above: 17.0
+          below: 17.6
+    actions:
+      - action: button.press
+        metadata: {}
+        target:
+          entity_id: button.itho_cve_s_timer_1
+        data: {}
+      - service: mqtt.publish
+        metadata: {}
+        data:
+          qos: "0"
+          topic: itho/cmd
+          payload: "{\"vremotecmd\":\"timer1\"}"
+#      - action: notify.info
+#        data:
+#          message: >-
+#            Afzuiging timer triggered by humidity increase
+#            {{ states('sensor.douche') }}
+
+  - id: Automation__Itho_CVE-S_Afzuiging
+    alias: Itho CVE-S Afzuiging
+    description: Schakel de afzuiging in wanneer de badkamer vochtig is.
+
+    triggers:
+      - trigger: state
+        entity_id: sensor.badkamer_humidity
+        for: "00:02:00"
+      - trigger: state
+        entity_id: input_number.itho_cve_s_humidity_threshold
+
+    condition:
+      - condition: numeric_state
+        entity_id: sensor.badkamer_humidity
+        above: input_number.[% device %]_humidity_threshold
+      - condition: state
+        entity_id: input_boolean.[% device %]_humidity_sensor
+        state: "on"
+      - condition: state
+        entity_id: sensor.itho_cve_s_remaining_time
+        state: "0"
+
+    actions:
+
+      - variables:
+          value: |
+            {% set tv = states('sensor.badkamer_humidity')|int %}
+            {% set th = states('input_number.[% device %]_humidity_threshold')|int %}
+            {% if tv > th %}
+            {# proportional between threshold (0%) and 80% (100%) #}
+            {% set x = 100 * (tv - th) / (80 - th) %}
+            {% else %}
+            {% set x = 0 %}
+            {% endif %}
+            {{ min(x|float|round,100) }}
+      - action: fan.set_percentage
+        target:
+          entity_id: fan.[% device %]
+        data:
+          percentage: "{{ value }}"
+      - action: notify.info
+        data:
+          message: >-
+            Afzuiging set to {{ value }}%
+            (humidity
+            {{ states('sensor.badkamer_humidity') }}
+            exceeds
+            {{ states('input_number.[% device %]_humidity_threshold') }}).
+
+  - id: Automation__Itho_CVE-S_Afzuiging_Off
+    alias: Itho CVE-S Afzuiging Off
+    description: Schakel de afzuiging uit wanneer de badkamer niet vochtig.
+
+    triggers:
+      - trigger: numeric_state
+        entity_id: sensor.badkamer_humidity
+        value_template: "{{ states('sensor.badkamer_humidity')|int - 1 }}"
+        below: input_number.[% device %]_humidity_threshold
+        for: "00:02:00"
+      - trigger: state
+        entity_id: input_boolean.[% device %]_humidity_sensor
+        to: "off"
+      - trigger: state
+        entity_id: input_number.itho_cve_s_humidity_threshold
+
+    condition:
+      - condition: numeric_state
+        entity_id: number.[% device %]_fan_demand
+        above: -1
+
+    actions:
+
+      - action: fan.set_percentage
+        target:
+          entity_id: fan.[% device %]
+        data:
+          percentage: "0"
+      - action: notify.info
+        data:
+          message: >-
+            Afzuiging switched off by humidity
+            {{ states('sensor.badkamer_humidity') }}
+            below
+            {{ states('input_number.[% device %]_humidity_threshold') }}.
+
+  - id: Automation__Itho_CVE-S_Re-enable_Afzuiging
+    alias: Itho CVE-S Re-enable afzuiging
+    description: Enable de afzuiging indien disabled
+    initial_state: false
+
+    triggers:
+      - trigger: time
+        at: 00:05:05
+    condition: []
+
+    action:
+      - action: automation.turn_on
+        target:
+            entity_id: automation.[% device %]_afzuiging
+      - action: notify.info
+        data:
+          message: >-
+            Afzuiging enabled.
