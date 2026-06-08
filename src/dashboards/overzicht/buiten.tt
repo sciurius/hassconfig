@@ -58,6 +58,73 @@
           {{ "Slecht" if is_state('sensor.stookwijzer_advice_code',"code_red") else
           "Matig" if is_state('sensor.stookwijzer_advice_code',"code_orange") else "Ok" }}
 
+      - type: custom:mushroom-template-card
+        primary: Pollen
+        secondary: >-
+          {{ "B" +
+             states('sensor.kleenex_pollen_radar_home_trees_level')|truncate(1,true,"",0)|upper }}
+          {{ "G" +
+             states('sensor.kleenex_pollen_radar_home_grass_level')|truncate(1,true,"",0)|upper }}
+          {{ "K" +
+             states('sensor.kleenex_pollen_radar_home_weeds_level')|truncate(1,true,"",0)|upper }}
+        icon: >-
+          {% if is_state('sensor.pollen_max','sensor.kleenex_pollen_radar_home_trees') %}
+          mdi:tree
+          {% else %}
+          {% if is_state('sensor.pollen_max','sensor.kleenex_pollen_radar_home_grass') %}
+          mdi:grass
+          {% else %}
+          mdi:flower-pollen
+          {% endif %}
+          {% endif %}
+        color: >-
+          {% if is_state(states('sensor.pollen_max')+'_level','very-high') %}
+          red
+          {% else %}
+          {% if is_state(states('sensor.pollen_max')+'_level','high') %}
+          orange
+          {% else %}
+          {% if is_state(states('sensor.pollen_max')+'_level','moderate') %}
+          yellow
+          {% else %}
+          [% dash.col.default %]
+          {% endif %}
+          {% endif %}
+          {% endif %}
+        visibility:
+          - condition: or
+            conditions:
+              - condition: state
+                entity: sensor.kleenex_pollen_radar_home_trees_level
+                state_not: low
+              - condition: state
+                entity: sensor.kleenex_pollen_radar_home_weeds_level
+                state_not: low
+              - condition: state
+                entity: sensor.kleenex_pollen_radar_home_grass_level
+                state_not: low
+
+      - type: conditional
+        conditions:
+          - entity: sensor.noorderdiep_valthermond_air_quality_index
+            state_not: unavailable
+        card:
+          type: custom:mushroom-template-card
+          entity: sensor.noorderdiep_valthermond_air_quality_index
+          icon: mdi:air-filter
+          color: >-
+            {% if   states(entity)|int <=  50 %} [% dash.col.green %]
+            {% elif states(entity)|int <= 100 %} [% dash.col.yellow %]
+            {% elif states(entity)|int <= 150 %} orange
+            {% elif states(entity)|int <= 200 %} red
+            {% elif states(entity)|int <= 300 %} purple
+            {% else                           %} brown
+            {% endif %}
+          primary: Luchtkwaliteit
+          secondary: >
+            {{ states('sensor.noorderdiep_valthermond_dominant_pollutant') }}
+            {{ states(entity) }}
+
       - type: tile
         entity: timer.buitenverlichting_achter
         icon: mdi:outdoor-lamp
@@ -138,27 +205,6 @@
 
       - type: conditional
         conditions:
-          - entity: sensor.noorderdiep_valthermond_air_quality_index
-            state_not: unavailable
-        card:
-          type: custom:mushroom-template-card
-          entity: sensor.noorderdiep_valthermond_air_quality_index
-          icon: mdi:air-filter
-          color: >-
-            {% if   states(entity)|int <=  50 %} [% dash.col.green %]
-            {% elif states(entity)|int <= 100 %} [% dash.col.yellow %]
-            {% elif states(entity)|int <= 150 %} orange
-            {% elif states(entity)|int <= 200 %} red
-            {% elif states(entity)|int <= 300 %} purple
-            {% else                           %} brown
-            {% endif %}
-          primary: Luchtkwaliteit
-          secondary: >
-            {{ states('sensor.noorderdiep_valthermond_dominant_pollutant') }}
-            {{ states(entity) }}
-
-      - type: conditional
-        conditions:
           - condition: state
             entity: sensor.afvalwijzer_today_2
             state_not: "geen"
@@ -205,52 +251,6 @@
               service: input_boolean.turn_on
               target:
                 entity_id: input_boolean.afval_dismiss
-
-      - type: custom:mushroom-template-card
-        primary: Pollen
-        secondary: >-
-          {{ "B" +
-             states('sensor.kleenex_pollen_radar_home_trees_level')|truncate(1,true,"",0)|upper }}
-          {{ "G" +
-             states('sensor.kleenex_pollen_radar_home_grass_level')|truncate(1,true,"",0)|upper }}
-          {{ "K" +
-             states('sensor.kleenex_pollen_radar_home_weeds_level')|truncate(1,true,"",0)|upper }}
-        icon: >-
-          {% if is_state('sensor.pollen_max','sensor.kleenex_pollen_radar_home_trees') %}
-          mdi:tree
-          {% else %}
-          {% if is_state('sensor.pollen_max','sensor.kleenex_pollen_radar_home_grass') %}
-          mdi:grass
-          {% else %}
-          mdi:flower-pollen
-          {% endif %}
-          {% endif %}
-        color: >-
-          {% if is_state(states('sensor.pollen_max')+'_level','very-high') %}
-          red
-          {% else %}
-          {% if is_state(states('sensor.pollen_max')+'_level','high') %}
-          orange
-          {% else %}
-          {% if is_state(states('sensor.pollen_max')+'_level','moderate') %}
-          yellow
-          {% else %}
-          [% dash.col.default %]
-          {% endif %}
-          {% endif %}
-          {% endif %}
-        visibility:
-          - condition: or
-            conditions:
-              - condition: state
-                entity: sensor.kleenex_pollen_radar_home_trees_level
-                state_not: low
-              - condition: state
-                entity: sensor.kleenex_pollen_radar_home_weeds_level
-                state_not: low
-              - condition: state
-                entity: sensor.kleenex_pollen_radar_home_grass_level
-                state_not: low
 
   # - type: grid
   #   columns: 1
