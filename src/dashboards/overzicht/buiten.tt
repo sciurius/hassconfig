@@ -56,7 +56,7 @@
           "orange" if is_state('sensor.stookwijzer_advice_code',"code_orange") else "[% dash.col.green %]" }}
         secondary: >-
           {{ "Slecht" if is_state('sensor.stookwijzer_advice_code',"code_red") else
-          "Matig" if is_state('sensor.stookwijzer_advice_code',"code_orange") else "Ok" }}
+              "Matig" if is_state('sensor.stookwijzer_advice_code',"code_orange") else "Ok" }}
 
       - type: custom:mushroom-template-card
         primary: Pollen
@@ -68,29 +68,14 @@
           {{ "K" +
              states('sensor.kleenex_pollen_radar_home_weeds_level')|truncate(1,true,"",0)|upper }}
         icon: >-
-          {% if is_state('sensor.pollen_max','sensor.kleenex_pollen_radar_home_trees') %}
-          mdi:tree
-          {% else %}
-          {% if is_state('sensor.pollen_max','sensor.kleenex_pollen_radar_home_grass') %}
-          mdi:grass
-          {% else %}
-          mdi:flower-pollen
-          {% endif %}
-          {% endif %}
+          {{  "mdi:tree" if is_state('sensor.pollen_max','sensor.kleenex_pollen_radar_home_trees') else
+             "mdi:grass" if is_state('sensor.pollen_max','sensor.kleenex_pollen_radar_home_grass') else
+             "mdi:flower-pollen" }}
         color: >-
-          {% if is_state(states('sensor.pollen_max')+'_level','very-high') %}
-          red
-          {% else %}
-          {% if is_state(states('sensor.pollen_max')+'_level','high') %}
-          orange
-          {% else %}
-          {% if is_state(states('sensor.pollen_max')+'_level','moderate') %}
-          yellow
-          {% else %}
-          [% dash.col.default %]
-          {% endif %}
-          {% endif %}
-          {% endif %}
+          {{    "red" if is_state(states('sensor.pollen_max')+'_level','very-high') else
+             "orange" if is_state(states('sensor.pollen_max')+'_level','high')      else
+             "yellow" if is_state(states('sensor.pollen_max')+'_level','moderate')  else
+             "[% dash.col.default %]" }}
         visibility:
           - condition: or
             conditions:
@@ -180,13 +165,13 @@
           - entity: device_tracker.tracker_joan
             <<: *v_available
 
-      - type: tile
-        entity: device_tracker.sm_a366b
-        name: Johan
-        icon: mdi:radar
-        visibility:
-          - entity: device_tracker.sm_a366b
-            <<: *v_available
+#      - type: tile
+#        entity: device_tracker.sm_a366b
+#        name: Johan
+#        icon: mdi:radar
+#        visibility:
+#          - entity: device_tracker.sm_a366b
+#            <<: *v_available
 
       - type: tile
         entity: light.balkonkerstverlichting
