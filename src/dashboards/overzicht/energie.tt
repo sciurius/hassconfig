@@ -40,3 +40,9 @@
         entity: sensor.dsmr_day_consumption_gas
         name: Gas
 
+      - type: shortcut
+        label: Omvormer
+        tap_action:
+          action: navigate
+          navigation_path: /lovelace-growatt
+        icon: mdi:solar-power

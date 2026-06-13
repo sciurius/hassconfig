@@ -89,6 +89,12 @@ views:
       - !include overzicht/badkamer.yaml
       - !include badkamerafzuiging/itho_cve_s.yaml
       - !include badkamerafzuiging/itho-graph.yaml
+      - type: shortcut
+        tap_action:
+          action: navigate
+          navigation_path: /config/devices/device/7e30c0a6b30e99d33dc65237a303502c
+          vertical: false
+
 #      - !include badkamerverwarming/doorbell.yaml
 
   - title: Logeerkamer
@@ -115,6 +121,12 @@ views:
     path: bijkeuken
     [% sections %]:
       - !include overzicht/bijkeuken.yaml
+      - type: shortcut
+        label: CV
+        tap_action:
+          action: navigate
+          navigation_path: /lovelace-cv
+        icon: mdi:heating-coil
 
   - title: Energie
     path: energie

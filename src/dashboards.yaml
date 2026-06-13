@@ -18,7 +18,7 @@ lovelace-bresser51:
   mode: yaml
   title: Weerstation
   icon:  mdi:weather-partly-rainy
-  show_in_sidebar: true
+  show_in_sidebar: false
   filename: dashboards/bresser51.yaml
   
 lovelace-test:
@@ -53,14 +53,14 @@ lovelace-slaapkamerremote:
   mode: yaml
   title: Afstandsbediening
   icon: mdi:remote
-  show_in_sidebar: true
+  show_in_sidebar: false
   filename: dashboards/slaapkamerremote.yaml
   
 lovelace-chromecast-slaapkamer:
   mode: yaml
   title: Chromecast
   icon: mdi:remote
-  show_in_sidebar: true
+  show_in_sidebar: false
   filename: dashboards/chromecast_slaapkamer.yaml
   
 lovelace-remotedevices:
@@ -81,7 +81,7 @@ lovelace-oven:
   mode: yaml
   title: Oven
   icon: mdi:toaster-oven
-  show_in_sidebar: true
+  show_in_sidebar: false
   filename: dashboards/oven.yaml
   
 lovelace-smotty:

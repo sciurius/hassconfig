@@ -40,6 +40,28 @@
            name = "Media Center" sensor = "slaapkamer_media_center"
            icon = "television" %]
 
+      - type: shortcut
+        label: Media Center
+        tap_action:
+          action: navigate
+          navigation_path: /lovelace-slaapkamerremote/0
+        vertical: false
+        icon: mdi:remote-tv
+        visibility:
+          - entity: sensor.mc_state
+            <<: *v_available
+
+      - type: shortcut
+        tap_action:
+          action: navigate
+          navigation_path: /lovelace-chromecast-slaapkamer/0
+        vertical: false
+        icon: mdi:remote-tv
+        visibility:
+          - entity: sensor.mc_state
+            <<: *v_available
+
+           
       # Fan on/off switch.
       # Only visible if the fan exists.
       - type: tile
