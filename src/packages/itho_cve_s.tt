@@ -36,6 +36,15 @@ template:
         unique_id: [% device %]_fan_info
         state: "{{ states('select.[% device %]_fan_info') }}"
 
+  - binary_sensor:
+
+      - name: [% device %] timer running
+        unique_id: [% device %]_timer_running
+        state: >-
+          {{ (states('sensor.[% device %]_add_on_timer_remaining')|int(0)) > 0
+              or
+              (states('sensor.[% device %]_remaining_time')|int(0)) > 0 }}
+    
 sensor:
 
   - name: Douche
@@ -64,22 +73,28 @@ automation:
           above: 17.0
           below: 17.6
     actions:
+
       - action: button.press
         metadata: {}
         target:
           entity_id: button.itho_cve_s_timer_1
         data: {}
-      - service: mqtt.publish
-        metadata: {}
+      # The 'official' way is to push the Timer1 button. However, this
+      # starts an internal timer that is not tracked by
+      # sensor.itho_cve_s_remaining_time. The timer started by MQTT is
+      # correctly tracked, so use this instead for the time being.
+      # - service: mqtt.publish
+      #   metadata: {}
+      #   data:
+      #     qos: "0"
+      #     topic: itho/cmd
+      #     payload: "{\"vremotecmd\":\"timer1\"}"
+      # Also send a notification.
+      - action: notify.info
         data:
-          qos: "0"
-          topic: itho/cmd
-          payload: "{\"vremotecmd\":\"timer1\"}"
-#      - action: notify.info
-#        data:
-#          message: >-
-#            Afzuiging timer triggered by humidity increase
-#            {{ states('sensor.douche') }}
+          message: >-
+            Afzuiging timer triggered by humidity increase
+            {{ states('sensor.douche') }}
 
   - id: Automation__Itho_CVE-S_Afzuiging
     alias: Itho CVE-S Afzuiging
@@ -100,8 +115,8 @@ automation:
         entity_id: input_boolean.[% device %]_humidity_sensor
         state: "on"
       - condition: state
-        entity_id: sensor.itho_cve_s_remaining_time
-        state: "0"
+        entity_id: binary_sensor.itho_cve_s_timer_running
+        state: "off"
 
     actions:
 
