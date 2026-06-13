@@ -37,6 +37,14 @@ notify:
     recipients:
       - !secret signal_recipient2
 
+mqtt:
+  - notify:
+      unique_id: mqtt_logger
+      name: "MQTT Logger"
+      command_topic: "home/notifications"
+      qos: 0
+      retain: false
+
 logger:
   default: warning
 #  logs:
