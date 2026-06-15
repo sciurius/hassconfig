@@ -182,7 +182,7 @@
             <<: *v_available
 
       - type: tile
-        entity: sensor.toyota_53xdsr_apk_expiration
+        entity: sensor.toyota_x424vf_apk_expiration
         name: APK verloopt
         visibility:
           - entity: sensor.apk_expiration_near
