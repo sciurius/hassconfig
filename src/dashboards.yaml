@@ -74,7 +74,7 @@ lovelace-growatt:
   mode: yaml
   title: Growatt
   icon: mdi:solar-power
-  show_in_sidebar: true
+  show_in_sidebar: false
   filename: dashboards/growatt.yaml
   
 lovelace-oven:
