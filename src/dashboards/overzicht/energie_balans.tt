@@ -38,6 +38,9 @@ boiler = "exsboiler";
           {% endif %}
         secondary: |
           {{ states('sensor.[% boiler %]_energy_today') }} kWh
+        tap_action:
+          action: more-info
+          entity: sensor.[% boiler %]_energy_today
         hold_action:
           action: perform-action
           perform_action: input_boolean.toggle
@@ -65,6 +68,9 @@ boiler = "exsboiler";
           {% endif %}
         secondary: |
           {{ states('sensor.[% heater %]_energy_today') }} kWh
+        tap_action:
+          action: more-info
+          entity: sensor.[% heater %]_energy_today
         hold_action:
           action: perform-action
           perform_action: input_boolean.toggle
