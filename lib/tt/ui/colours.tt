@@ -1,0 +1,16 @@
+[%-
+# Standard cholours.
+
+dash.col = {
+    yellow   => "#ffc107",
+    red      => "#ff0000",
+    green    => "#4caf50",
+    grey     => "#d0d0d0",
+    grey208  => "#d0d0d0",
+    grey160  => "#a0a0a0",
+    default  => "var(--state-icon-color)",
+    active   => "var(--state-active-color)",
+    inactive => "var(--state-inactive-color)",
+}
+
+-%]

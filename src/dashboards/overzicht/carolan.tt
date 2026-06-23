@@ -43,7 +43,7 @@
           {% if is_state(entity, 'on') %}
           [% dash.col.green %]
           {% else %}
-          [% dash.col.default %]
+          [% dash.col.red %]
           {% endif %}
         secondary: >-
           {% if is_state(entity, 'on') %}
