@@ -52,7 +52,7 @@ type: tile
           - entity: sensor.ups_pico_battery_level
             <<: *v_available
 
-      - [% INCLUDE batt  name = "Tracker"  sensor = "tracker_joan_battery" %]
+      - [% INCLUDE batt  name = "Weeny"  sensor = "tracker_joan_battery" %]
 
       - type: custom:mushroom-template-card
         entity: binary_sensor.bresser51_battery
