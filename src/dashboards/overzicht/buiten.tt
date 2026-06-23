@@ -154,7 +154,9 @@
         entity: device_tracker.tracker_joan
         primary: Joan
         secondary: >-
-          {% if state_attr('device_tracker.tracker_joan', 'speed' )|float(0) > 0 %}
+          {% if state_attr('device_tracker.tracker_joan','in_zones') %}
+          {{ state_attr(state_attr('device_tracker.tracker_joan','in_zones')[0],'friendly_name') }}
+          {% elif state_attr('device_tracker.tracker_joan', 'speed' )|float(0) > 0 %}
           {{ state_attr('device_tracker.tracker_joan', 'speed' )|float }} km/h
           {% else %}{{ states('device_tracker.tracker_joan')|capitalize }}
           {% endif %}
