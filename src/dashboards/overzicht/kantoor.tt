@@ -1,7 +1,7 @@
 # Dashboard: Overzicht -- Kantoor       -*- hass -*-
 # WARNING: This is a generated file -- DO NOT EDIT
 
-[% PROCESS v_anchors.tt -%]
+[% PROCESS power_meter.tt -%]
 
 [% INCLUDE section.tt
        name = "Kantoor"
@@ -87,6 +87,14 @@
            switch = "kantoorkacheltje"
            icon   = "heat-wave" -%]
     
+      - [% INCLUDE switching_meter
+                   name = "AirCo"
+                   icon = "air-conditioner"
+                   sensor = "kantoor_airco" %]
+        tap_action:
+          action: more-info
+          entity: sensor.kantoor_airco_energy_today
+
       - type: tile
         entity: switch.psw03
         name: Printer
