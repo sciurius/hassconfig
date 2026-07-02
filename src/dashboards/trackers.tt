@@ -2,6 +2,7 @@
 # WARNING: This is a generated file -- DO NOT EDIT
 
 [% PROCESS v_anchors.tt -%]
+[% PROCESS colours.tt -%]
 
 title: Trackers
 views:
@@ -283,3 +284,86 @@ t0 = [
             grid_options:
               columns: full
               rows: 8
+
+      - type: grid
+        column_span: 3
+        columns: 6
+        square: false
+        cards:
+
+          - type: custom:mushroom-template-card
+            entity: device_tracker.carolan_parking_location
+            primary: Locatie
+            icon: >-
+              {% if is_state(entity,'home') %}
+              mdi:home
+              {% else %}
+              mdi:car-hatchback
+              {% endif %}
+            color: >-
+              {% if is_state(entity,'home') %}
+              [% dash.col.green %]
+              {% else %}
+              [% dash.col.default %]
+              {% endif %}
+            secondary: >-
+              {% if is_state(entity,'home') %}
+              Thuis
+              {% else %}
+              {{ states(entity) }}
+              {% endif %}
+            tap_action:
+              action: navigate
+              navigation_path: /lovelace-trackers/trackercarolan
+            visibility:
+              - entity: device_tracker.carolan_parking_location
+                <<: *v_available
+
+          - type: custom:mushroom-template-card
+            entity: sensor.carolan_fuel_level
+            primary: Brandstof
+            color: >-
+              {% if   states(entity)|int >= 30 %} [% dash.col.green %]
+              {% elif states(entity)|int >= 15 %} orange
+              {% else                         %} red
+              {% endif %}
+            icon: mdi:gas-station
+            secondary: >-
+              {{ states(entity)|int }}%
+              ({{ states('sensor.carolan_fuel_range')|int }} km)
+            visibility:
+              - entity: sensor.carolan_fuel_level
+                <<: *v_available
+
+          - type: tile
+            name: Dag
+            icon: mdi:map-marker-distance
+            entity: sensor.carolan_current_day_statistics
+            visibility:
+              - entity: sensor.carolan_current_day_statistics
+                <<: *v_available
+
+          - type: tile
+            name: Week
+            icon: mdi:map-marker-distance
+            entity: sensor.carolan_current_week_statistics
+            visibility:
+              - entity: sensor.carolan_current_week_statistics
+                <<: *v_available
+
+          - type: tile
+            name: Maand
+            icon: mdi:map-marker-distance
+            entity: sensor.carolan_current_month_statistics
+            visibility:
+              - entity: sensor.carolan_current_month_statistics
+                <<: *v_available
+
+          - type: tile
+            name: Jaar
+            icon: mdi:map-marker-distance
+            entity: sensor.carolan_current_year_statistics
+            visibility:
+              - entity: sensor.carolan_current_year_statistics
+                <<: *v_available
+
