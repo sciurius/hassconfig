@@ -23,6 +23,21 @@
         name: Music Center
         icon: mdi:music-circle-outline
 
+      - type: custom:mushroom-template-card
+        primary: Temperatuur
+        icon: mdi:thermometer-water
+        color: var(--state-icon-color)
+        entity: sensor.woonkamer_temperature
+        secondary: >-
+          {{ states('sensor.woonkamer_temperature')|round(1) }} °C -
+          {{ states('sensor.woonkamer_humidity')|round(0) }} %
+        icon_tap_action:
+          action: more-info
+          entity: sensor.woonkamer_humidity
+        visibility:
+          - entity: sensor.woonkamer_temperature
+            <<: *v_available
+
       - type: tile
         entity: light.binnenkerstverlichting1
         name: Kerstverlichting
