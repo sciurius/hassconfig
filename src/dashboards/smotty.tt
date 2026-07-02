@@ -150,7 +150,7 @@ views:
                 }
 
           - type: custom:button-card
-            entity: sensor.thermostat_hc1_currtemp
+            entity: sensor.woonkamer_temperature
             icon: false
             show_state: true
             show_icon: false
@@ -168,13 +168,13 @@ views:
               rows: 1
 
           - type: custom:button-card
-            entity: sensor.bresser51_humidity
+            entity: sensor.woonkamer_humidity
             icon: false
             show_state: true
             show_icon: false
             show_name: false
             section_mode: true
-            state_display: "--"
+            # state_display: "--"
             styles:
               card:
                 - background-color: [% col_inside %]
@@ -196,7 +196,7 @@ views:
             show_label: false
             state:
               - value: 0
-                state_display: "Windstil"
+                state_display: "&nbsp;<br/>Windstil"
                 entity_picture: /local/compass/arrow-none.svg
                 label: ""
               - value: 0
