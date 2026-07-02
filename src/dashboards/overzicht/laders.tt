@@ -78,7 +78,7 @@ type: tile
         color: >-
           {% if   states(entity)|int >= 30 %} [% dash.col.green %]
           {% elif states(entity)|int >= 15 %} orange
-          {% else                         %} red
+          {% else                          %} red
           {% endif %}
         icon: mdi:gas-station
         secondary: >-
