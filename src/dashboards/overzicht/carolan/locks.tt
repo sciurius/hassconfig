@@ -1,0 +1,20 @@
+# Dashboard: Overzicht -- Carolan       -*- hass -*-
+# WARNING: This is a generated file -- DO NOT EDIT
+
+[% PROCESS v_anchors.tt -%]
+[% PROCESS colours.tt -%]
+
+[% INCLUDE section.tt
+       name   = "Auto Sluiting"
+       icon   = "car-hatchback"
+       color  = "cornflowerblue"
+       columns = 1
+       badges = [] %]
+
+      - type: tile
+        name: Sluiting
+        entity: lock.carolan_door_lock
+        vertical: false
+        features:
+          - type: lock-commands
+        features_position: inline

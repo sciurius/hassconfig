@@ -1,0 +1,74 @@
+# Dashboard: Overzicht -- Carolan       -*- hass -*-
+# WARNING: This is a generated file -- DO NOT EDIT
+
+[% PROCESS v_anchors.tt -%]
+[% PROCESS colours.tt -%]
+
+[% INCLUDE section.tt
+       name    = "Auto"
+       icon    = "car-hatchback"
+       color   = "cornflowerblue"
+       badges  = [ ]
+       columns = 1
+       %]
+
+      - type: custom:vehicle-status-card
+        name: Carolan
+        layout_config:
+          hide_card_name: true
+          button_grid:
+            rows: 2
+            columns: 2
+            swipe: true
+          images_swipe: {}
+          section_order:
+            - range_info
+            - buttons
+            - images
+            - mini_map
+          range_info_config:
+            layout: row
+        mini_map:
+          device_tracker: device_tracker.carolan_parking_location
+          enable_popup: true
+        range_info:
+          - energy_level:
+              entity: sensor.carolan_fuel_level
+              tap_action:
+                action: more-info
+              value_alignment: start
+              value_position: inside
+            range_level:
+              entity: sensor.carolan_fuel_range
+              value_position: outside
+            charging_entity: ""
+            progress_color: "#0bdbbd"
+            color_blocks: false
+            color_thresholds: []
+        button_cards:
+          - layout: horizontal
+            transparent: false
+            show_primary: true
+            show_secondary: true
+            show_icon: true
+            name: Parking location
+            entity: device_tracker.carolan_parking_location
+            tap_action:
+              action: more-info
+            hide_button: false
+            button_type: action
+            card_type: default
+          - entity: sensor.carolan_odometer
+            show_icon: true
+            show_primary: false
+            show_secondary: true
+            layout: horizontal
+            button_type: action
+            tap_action:
+              action: more-info
+            card_type: default
+            icon_type: icon
+            primary_info: name
+        images:
+          - image: /local/carolan.jpg
+#          - image: /api/image/serve/873e352b7af372bad56953ad123a41fc/original

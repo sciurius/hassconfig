@@ -55,9 +55,9 @@
           - entity: binary_sensor.carolan_all_locks
             <<: *v_available
           - entity: binary_sensor.carolan_driverseat_lock
-            condition:
-              state_not:
-                - unknown
+            condition: state
+            state_not:
+              - unknown
 
       - type: custom:mushroom-template-card
         entity: device_tracker.carolan_parking_location

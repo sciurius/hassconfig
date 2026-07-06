@@ -144,7 +144,10 @@ views:
     path: carolan
     [% sections %]:
 
-      - !include overzicht/carolan.yaml
+      - type: vertical-stack
+        cards:
+        - !include overzicht/carolan.yaml
+        - !include overzicht/carolan/locks.yaml
       - !include overzicht/carolan/status.yaml
       - !include overzicht/carolan/doors.yaml
 
