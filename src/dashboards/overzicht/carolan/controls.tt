@@ -5,7 +5,7 @@
 [% PROCESS colours.tt -%]
 
 [% INCLUDE section.tt
-       name   = "Auto Sluiting"
+       name   = "Auto Controls"
        icon   = "car-hatchback"
        color  = "cornflowerblue"
        columns = 1
@@ -19,7 +19,7 @@
           - type: lock-commands
         features_position: inline
 
-      - type horizontal-stack
+      - type: horizontal-stack
         cards:
           - type: tile
             entity: climate.carolan_climate
@@ -27,12 +27,15 @@
           - type: tile
             entity: button.carolan_refresh_vehicle_status
             name: Refresh
+            hide_state: true
 
-      - type horizontal-stack
+      - type: horizontal-stack
         cards:
           - type: tile
             entity: button.carolan_hazard_lights
             name: Knipperlichten
+            hide_state: true
           - type: tile
             entity: button.carolan_buzzer
             name: Pieper
+            hide_state: true
