@@ -72,7 +72,7 @@ script:
 
     mode: queued
     sequence:
-      - service: notify.mobile_app_sm_a366b
+      - action: notify.mobile_app_sm_a366b
         data:
           message: TTS
           data:
@@ -81,7 +81,7 @@ script:
             ttl: 0
             media_stream: "alarm_stream_max"
             importance: high
-      - service: script.smotty_notify
+      - action: script.smotty_notify
         data:
           message: Button 0 pressed
       - action: notify.info
@@ -92,7 +92,7 @@ script:
 
     mode: queued
     sequence:
-      - service: light.toggle
+      - action: light.toggle
         target:
           entity_id: light.woonkamer_tafel
       - action: notify.info
@@ -103,7 +103,7 @@ script:
 
     mode: queued
     sequence:
-      - service: switch.toggle
+      - action: switch.toggle
         target:
           entity_id: switch.woonkamer_sound_system
       - action: notify.info
@@ -114,7 +114,9 @@ script:
 
     mode: queued
     sequence:
-      - service: script.otolift_up
+      - action: light.toggle
+        target:
+          entity_id: light.woonkamer_wand
       - action: notify.info
         data:
           message: Button C pressed
@@ -123,7 +125,11 @@ script:
 
     mode: queued
     sequence:
-      - service: script.otolift_down
+      - action: light.toggle
+        target:
+          entity_id:
+            - light.woonkamer_totem
+            - light.woonkamer_heks
       - action: notify.info
         data:
           message: Button D pressed
@@ -140,7 +146,7 @@ script:
 
     mode: queued
     sequence:
-      - service: notify.mobile_app_sm_a366b
+      - action: notify.mobile_app_sm_a366b
         data:
           message: TTS
           data:
@@ -165,7 +171,7 @@ script:
         - "0x5555C0"            # Ding Dong 2
 
     sequence:
-      - service: mqtt.publish
+      - action: mqtt.publish
         data:
           topic: cmnd/tasm01/rfsend
           payload: "{{ map[chime] }}"
@@ -194,7 +200,7 @@ automation:
     description: ''
     mode: queued
 
-    trigger:
+    triggers:
       - platform: state
         entity_id:
         - sensor.rfbridge_signal
@@ -211,16 +217,18 @@ automation:
         "0x460421": Button_2
         "0x5555C0": Doorbell
 
-    condition: |-
-      {{ trigger.to_state.state not in ( "unavailable", "unknown" )
-	 and
-	 trigger.from_state.state != "unavailable"
-	 and
-	 trigger.to_state.state in button_mapper
-      }}
+    conditions:
+      condition: template
+      value_template: |-
+        {{ trigger.to_state.state not in ( "unavailable", "unknown" )
+           and
+           trigger.from_state.state != "unavailable"
+           and
+           trigger.to_state.state in button_mapper
+        }}
 
-    action:
-      - service: >
+    actions:
+      - action: >
           {% if button_mapper[trigger.to_state.state] %}
           script.rfbridge_{{ button_mapper[trigger.to_state.state]|lower }}_pressed
           {% else %}
