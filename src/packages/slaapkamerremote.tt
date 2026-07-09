@@ -1,8 +1,6 @@
 # Slaapkamer IR Remote                    -*- hass -*-
 
-[% ircontrol = "script";
-   irdevice  = "tasm11";
-   irtopic   = "cmnd/" _ irdevice _ "/irsend";
+[% PROCESS ir_slaapkamer.tt;
 
    MACRO ircommand(device,command) BLOCK;
    "{ service: $ircontrol"; ".ircontrol_$irdevice, ";
@@ -312,7 +310,9 @@ script:
                 payload: "{{ state_attr('sensor.ircontrol_' + device, repeat.item) }}"
             - action: notify.info
               data:
-                message: "IR command {{ repeat.item }} to device {{ device }}"
+                message: >
+                  IR command {{ repeat.item }} to device {{ device }}
+                  (mqtt: [% irtopic %])
 
 # Sending direct commands to Kodi.
 rest_command:
@@ -326,152 +326,3 @@ rest_command:
     payload: |
       {"jsonrpc": "2.0", "id": 1, "method": "{{ cmd }}", "params":{}}
     
-# Template sensors for the devices, with IR key sequences as attributes.
-      
-template:
-
-  - sensor:
-
-    # HDMI Switch: Marmitek Connect 621
-    [% MACRO mc621(data) GET "{\"Protocol\":\"NEC\",\"Bits\":32,\"Data\":\"$data\",\"Repeat\":0}" %]
-    - name: ircontrol_hdmiswitch
-      state: ir38
-      attributes:
-        arc:     '[% mc621("0x40BFE916") %]'
-        ch_20:   '[% mc621("0x40BF33CC") %]'
-        ch_51:   '[% mc621("0x40BFF906") %]'
-        ch_71:   '[% mc621("0x40BF19E6") %]'
-        ch_auto: '[% mc621("0x40BFD32C") %]'
-        in_auto: '[% mc621("0x40BF9B64") %]'
-        input1:  '[% mc621("0x40BF7B84") %]'
-        input2:  '[% mc621("0x40BF5BA4") %]'
-        input3:  '[% mc621("0x40BFDB24") %]'
-        input4:  '[% mc621("0x40BFAA55") %]'
-
-    # TV: Philips 43PFS5525
-    [% MACRO philips(data) GET "{\"Protocol\":\"RC6\",\"Bits\":20,\"Data\":\"$data\",\"Repeat\":0}" %]
-    - name: ircontrol_tv
-      state: ir38
-      attributes:
-        blue:             '[% philips("0x70") %]'
-        channel_down:     '[% philips("0x21") %]'
-        channel_list:     '[% philips("0xD2") %]'
-        channel_up:       '[% philips("0x20") %]'
-        closed_captions:  '[% philips("0x46") %]'
-        cursor_down:      '[% philips("0x59") %]'
-        cursor_left:      '[% philips("0x5A") %]'
-        cursor_right:     '[% philips("0x5B") %]'
-        cursor_up:        '[% philips("0x58") %]'
-        exit:             '[% philips("0x9F") %]'
-        fast_forward:     '[% philips("0x28") %]'
-        green:            '[% philips("0x6E") %]'
-        guide:            '[% philips("0xCC") %]'
-        info:             '[% philips("0x0F") %]'
-        key_0:            '[% philips("0x00") %]'
-        key_1:            '[% philips("0x01") %]'
-        key_2:            '[% philips("0x02") %]'
-        key_3:            '[% philips("0x03") %]'
-        key_4:            '[% philips("0x04") %]'
-        key_5:            '[% philips("0x05") %]'
-        key_6:            '[% philips("0x06") %]'
-        key_7:            '[% philips("0x07") %]'
-        key_8:            '[% philips("0x08") %]'
-        key_9:            '[% philips("0x09") %]'
-        menu:             '[% philips("0x54") %]'
-        mute:             '[% philips("0x0D") %]'
-        next_source:      '[% philips("0x38") %]'
-        ok:               '[% philips("0x5C") %]'
-        option:           '[% philips("0x40") %]'
-        pause:            '[% philips("0x30") %]'
-        play:             '[% philips("0x32") %]'
-        power:            '[% philips("0x0C") %]'
-        previous_channel: '[% philips("0x0A") %]'
-        record:           '[% philips("0x37") %]'
-        red:              '[% philips("0x6D") %]'
-        rewind:           '[% philips("0x2B") %]'
-        settings:         '[% philips("0xBF") %]'
-        standby:          '[% philips("0x3D") %]'
-        stop:             '[% philips("0x31") %]'
-        subtitles:        '[% philips("0x4B") %]'
-        teletext:         '[% philips("0xF1") %]'
-        volume_down:      '[% philips("0x11") %]'
-        volume_up:        '[% philips("0x10") %]'
-        white:            '[% philips("0x71") %]'
-        yellow:           '[% philips("0x6F") %]'
-
-    # Audio amplifier: SMSL AD18
-    [% MACRO smsl(data) GET "{\"Protocol\":\"NEC\",\"Bits\":32,\"Data\":\"$data\",\"Repeat\":0}" %]
-    - name: ircontrol_audio
-      state: ir38
-      attributes:
-        a_left:      '[% smsl("0xC03F") %]'
-        a_right:     '[% smsl("0xA05F") %]'
-        b_down:      '[% smsl("0x609F") %]'
-        b_enter:     '[% smsl("0x20DF") %]'
-        b_fn:        '[% smsl("0x10EF") %]'
-        b_input:     '[% smsl("0xE01F") %]'
-        b_left:      '[% smsl("0xC03F") %]'
-        b_mute:      '[% smsl("0x906F") %]'
-        b_power:     '[% smsl("0x807F") %]'
-        b_right:     '[% smsl("0xA05F") %]'
-        b_up:        '[% smsl("0x40BF") %]'
-        c_down:      '[% smsl("0x609F") %]'
-        c_enter:     '[% smsl("0x20DF") %]'
-        c_fn:        '[% smsl("0x10EF") %]'
-        c_left:      '[% smsl("0xC03F") %]'
-        c_mode:      '[% smsl("0xE01F") %]'
-        c_mute:      '[% smsl("0x906F") %]'
-        c_power:     '[% smsl("0x807F") %]'
-        c_right:     '[% smsl("0xA05F") %]'
-        c_up:        '[% smsl("0x40BF") %]'
-        fn:          '[% smsl("0x10EF") %]'
-        input:       '[% smsl("0xE01F") %]'
-        mute:        '[% smsl("0x906F") %]'
-        power:       '[% smsl("0x807F") %]'
-        settings:    '[% smsl("0x20DF") %]'
-        volume_down: '[% smsl("0x609F") %]'
-        volume_up:   '[% smsl("0x40BF") %]'
-
-    # SetTopBox: Arris 2952 / 5202 -- NOTE: 56Khz
-    [% a1 = "56,320,640,640,640,320,320,640,640,640,640,320,320,320,320,320,320,320,320,320,320,320,320,320,320" %]
-    - name: ircontrol_stb
-      state: ir56
-      attributes:
-        back:         '[% a1 %],320,320,640,640,320,320,640,320,320,640,320,85000'
-        blue:         '[% a1 %],640,640,320,320,320,320,320,320,320,320,640,85000'
-        channel_down: '[% a1 %],320,320,640,320,320,320,320,640,320,320,640,85000'
-        channel_up:   '[% a1 %],320,320,640,320,320,640,320,320,640,640,320,85000'
-        down:         '[% a1 %],320,320,320,320,640,320,320,640,640,640,320,85000'
-        fast_forward: '[% a1 %],640,640,320,320,640,640,320,320,640,85000'
-        green:        '[% a1 %],320,320,640,320,320,320,320,320,320,640,640,85000'
-        guide:        '[% a1 %],320,320,640,640,640,320,320,640,640,85000'
-        key_0:        '[% a1 %],320,320,320,320,640,640,640,640,640,85000'
-        key_1:        '[% a1 %],320,320,320,320,320,320,320,320,320,320,640,640,320,85000'
-        key_2:        '[% a1 %],320,320,320,320,320,320,320,320,640,640,640,85000'
-        key_3:        '[% a1 %],320,320,320,320,320,320,320,320,640,320,320,640,320,85000'
-        key_4:        '[% a1 %],320,320,320,320,320,320,640,640,320,320,640,85000'
-        key_5:        '[% a1 %],320,320,320,320,320,320,640,640,640,640,320,85000'
-        key_6:        '[% a1 %],320,320,320,320,320,320,640,320,320,640,640,85000'
-        key_7:        '[% a1 %],320,320,320,320,320,320,640,320,320,320,320,640,320,85000'
-        key_8:        '[% a1 %],320,320,320,320,640,640,320,320,320,320,640,85000'
-        key_9:        '[% a1 %],320,320,320,320,640,640,320,320,640,640,320,85000'
-        left:         '[% a1 %],320,320,320,320,640,320,320,320,320,640,640,85000'
-        menu:         '[% a1 %],640,640,640,320,320,640,640,640,320,85000'
-        mute:         '[% a1 %],320,320,640,320,320,640,320,320,320,320,640,85000'
-        ok:           '[% a1 %],320,320,320,320,640,320,320,320,320,320,320,640,320,85000'
-        play_pause:   '[% a1 %],320,320,640,320,320,640,640,320,320,640,320,85000'
-        power:        '[% a1 %],320,320,320,320,640,640,640,320,320,640,320,85000'
-        radio:        '[% a1 %],640,640,640,640,640,320,320,640,320,85000'
-        record:       '[% a1 %],640,640,320,320,320,320,640,320,320,640,320,85000'
-        red:          '[% a1 %],320,320,640,320,320,320,320,640,640,640,320,85000'
-        rewind:       '[% a1 %],640,640,320,320,320,320,320,320,640,640,320,85000'
-        right:        '[% a1 %],320,320,640,640,320,320,320,320,320,320,640,85000'
-        source:       '[% a1 %],320,320,640,640,320,320,320,320,640,640,320,85000'
-        stop:         '[% a1 %],640,640,320,320,320,320,640,640,640,85000'
-        text:         '[% a1 %],640,640,640,640,320,320,640,640,320,85000'
-        tv:           '[% a1 %],320,320,640,640,640,640,320,320,640,85000'
-        up:           '[% a1 %],320,320,320,320,640,320,320,640,320,320,640,85000'
-        volume_down:  '[% a1 %],320,320,640,320,320,640,640,640,640,85000'
-        volume_up:    '[% a1 %],320,320,640,640,640,320,320,320,320,640,320,85000'
-        yellow:       '[% a1 %],320,320,640,320,320,320,320,320,320,320,320,640,320,85000'
-

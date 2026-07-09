@@ -1,10 +1,7 @@
 # Dashboard: slaapkamerremote -- Slaapkamer       -*- hass -*-
 # WARNING: This is a generated file -- DO NOT EDIT
 
-[% ircontrol = "script";
-   irdevice  = "tasm11";
-   irtopic   = "cmnd/" _ irdevice _ "/irsend";
-%]
+[% PROCESS ir_slaapkamer.tt %]
 
 button_card_templates:
 
@@ -44,13 +41,13 @@ button_card_templates:
     show_name: true
     tap_action:
       action: call-service
-      service: [% ircontrol %].ircontrol
+      service: [% ircontrol %].ircontrol_[% irdevice %]
       service_data:
         command: '[[[ return variables.command ]]]'
         device:  '[[[ return variables.device  ]]]'
     hold_action:
       action: call-service
-      service: [% ircontrol %].ircontrol
+      service: [% ircontrol %].ircontrol_[% irdevice %]
       service_data:
         command: '[[[ return variables.command ]]]'
         device:  '[[[ return variables.device  ]]]'
@@ -74,13 +71,13 @@ button_card_templates:
     show_name: false
     tap_action:
       action: call-service
-      service: [% ircontrol %].ircontrol
+      service: [% ircontrol %].ircontrol_[% irdevice %]
       service_data:
         command: '[[[ return variables.command ]]]'
         device:  '[[[ return variables.device  ]]]'
     hold_action:
       action: call-service
-      service: [% ircontrol %].ircontrol
+      service: [% ircontrol %].ircontrol_[% irdevice %]
       service_data:
         command: '[[[ return variables.command ]]]'
         device:  '[[[ return variables.device  ]]]'
@@ -100,13 +97,13 @@ button_card_templates:
     show_name: false
     tap_action:
       action: call-service
-      service: [% ircontrol %].ircontrol
+      service: [% ircontrol %].ircontrol_[% irdevice %]
       service_data:
         command: '[[[ return variables.command ]]]'
         device:  '[[[ return variables.device  ]]]'
     hold_action:
       action: call-service
-      service: [% ircontrol %].ircontrol
+      service: [% ircontrol %].ircontrol_[% irdevice %]
       service_data:
         command: '[[[ return variables.command ]]]'
         device:  '[[[ return variables.device  ]]]'
@@ -126,13 +123,13 @@ button_card_templates:
     show_name: false
     tap_action:
       action: call-service
-      service: [% ircontrol %].ircontrol
+      service: [% ircontrol %].ircontrol_[% irdevice %]
       service_data:
         command: '[[[ return variables.command ]]]'
         device:  '[[[ return variables.device  ]]]'
     hold_action:
       action: call-service
-      service: [% ircontrol %].ircontrol
+      service: [% ircontrol %].ircontrol_[% irdevice %]
       service_data:
         command: '[[[ return variables.command ]]]'
         device:  '[[[ return variables.device  ]]]'

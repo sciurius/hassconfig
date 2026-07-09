@@ -1,0 +1,4 @@
+[% ircontrol = "script";
+   irdevice  = "tasm11";
+   irtopic   = "cmnd/" _ irdevice _ "/irsend";
+%]
