@@ -1,0 +1,26 @@
+// Tasmota IR Ready data definition for Blaupunkt Moby AirCo
+
+title   : AirCo
+brand   : Blaupunkt
+model   : Moby
+
+options {
+  device_type              : remote
+  media_protocol           : NEC
+  media_bits               : 32
+
+  // Standard (known) commands for remote.
+  media_power_data         : 0x817ED629
+
+  // Additional commands.
+  remote_extra_commands    : [
+    { name: incr     data: 0x817EA659 }
+    { name: decr     data: 0x817E16E9 }
+    { name: swing    data: 0x817EE619 }
+    { name: mode     data: 0x817E6699 }
+    { name: fan      data: 0x817E26D9 }
+    { name: timer    data: 0x817E9669 }
+    { name: night    data: 0x817E56A9 }
+    { name: "°C/°F"  data: 0x817E36C9 }
+  ]
+}

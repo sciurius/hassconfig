@@ -1,0 +1,12 @@
+[% irdevice  = "kantoor";
+
+# Public.
+MACRO ir_action(device,command) BLOCK;
+  "{ action: perform-action, ";
+    "perform_action: remote.send_command, ";
+    "target: { entity_id: remote.$irdevice"; "_$device }, ";
+    "data: { command: \"$command\" } ";
+  "}";
+END;
+
+%]

@@ -2,6 +2,7 @@
 # WARNING: This is a generated file -- DO NOT EDIT
 
 [% PROCESS power_meter.tt -%]
+[% PROCESS ir_kantoor.tt -%]
 
 [% INCLUDE section.tt
        name = "Kantoor"
@@ -96,15 +97,7 @@
           - entity: switch.kantoor_airco
             <<: *v_available
         color: "var(--state-{{ '' if (states('sensor.kantoor_airco_energy_power')|int(0)) > 2 else 'in'}}active-color)"
-        icon_tap_action:
-          action: perform-action
-          perform_action: remote.send_command
-          target:
-#            entity_id: remote.kantoor_rmmini1
-            entity_id: remote.kantoor_tasm21
-          data:
-            device: airco
-            command: power
+        icon_tap_action: [% ir_action("airco","power") %]
         tap_action:
           action: more-info
           entity: sensor.kantoor_airco_energy_today
