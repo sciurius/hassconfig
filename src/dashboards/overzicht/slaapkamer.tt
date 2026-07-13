@@ -48,8 +48,9 @@
         vertical: false
         icon: mdi:remote-tv
         visibility:
-          - entity: sensor.mc_state
-            <<: *v_available
+          - entity: switch.slaapkamer_media_center
+            condition: state
+            state: "on"
 
       - type: shortcut
         tap_action:
@@ -58,8 +59,9 @@
         vertical: false
         icon: mdi:remote-tv
         visibility:
-          - entity: sensor.mc_state
-            <<: *v_available
+          - entity: switch.slaapkamer_media_center
+            condition: state
+            state: "on"
 
            
       # Fan on/off switch.
