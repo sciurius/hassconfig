@@ -1,1049 +1,245 @@
 # Generic IR                      -*- hass -*-
 
-[% PROCESS ir_slaapkamer.tt %]
+[% PROCESS ir_action.tt; remote = "slaapkamer";
 
-button_card_templates:
+   MACRO button(command) BLOCK;
+     "type: markdown\n";
+     "        title: false\n";
+     "        content: '<center><b>"; command.replace("_"," ").upper() ;"</b></center>'\n";
+     "        tap_action: "; ir_perform(remote,device,command); "\n";
+     "        hold_action: "; ir_perform(remote,device,command); "\n";
+     "        card_mod:\n";
+     "          style:\n";
+     "            .: |\n";
+     "              ha-card { background: lightgrey; }\n";       
+   END;
 
-  button:
-    variables:
-      device: xx
-      command: xx
-    styles:
-      name:
-       - color: black
-      card:
-        - height: 70px
-        - background: lightgrey
-        - font-weight: bold
-        - font-size: 160%
-      icon:
-        - color: red
-        - width: 50%
-    show_name: true
-    show_icon: false
-    tap_action:
-      action: call-service
-      service: [% ircontrol %].ircontrol_[% irdevice %]
-      service_data:
-        device:  '[[[ return variables.device  ]]]'
-        command: '[[[ return variables.command ]]]'
-    hold_action:
-      action: []
-    icon: mdi:television
+   max_cols = 6;
+   width    = 150;
+%]
 
 title: Remote Devices
 views:
+
   - title: philips_tv
     type: custom:horizontal-layout
     layout:
-      max_cols: 6
-      width: 150
+      max_cols: [% max_cols %]
+      width: [% width %]
     cards:
-      - type: custom:button-card
-        name: KEY 0
-        template: button
-        variables:
-          device: tv
-          command: key_0
-      - type: custom:button-card
-        name: KEY 1
-        template: button
-        variables:
-          device: tv
-          command: key_1
-      - type: custom:button-card
-        name: KEY 2
-        template: button
-        variables:
-          device: tv
-          command: key_2
-      - type: custom:button-card
-        name: KEY 3
-        template: button
-        variables:
-          device: tv
-          command: key_3
-      - type: custom:button-card
-        name: KEY 4
-        template: button
-        variables:
-          device: tv
-          command: key_4
-      - type: custom:button-card
-        name: KEY 5
-        template: button
-        variables:
-          device: tv
-          command: key_5
-      - type: custom:button-card
-        name: KEY 6
-        template: button
-        variables:
-          device: tv
-          command: key_6
-      - type: custom:button-card
-        name: KEY 7
-        template: button
-        variables:
-          device: tv
-          command: key_7
-      - type: custom:button-card
-        name: KEY 8
-        template: button
-        variables:
-          device: tv
-          command: key_8
-      - type: custom:button-card
-        name: KEY 9
-        template: button
-        variables:
-          device: tv
-          command: key_9
-      - type: custom:button-card
-        name: PREVIOUS CHANNEL
-        template: button
-        variables:
-          device: tv
-          command: previous_channel
-      - type: custom:button-card
-        name: POWER
-        template: button
-        variables:
-          device: tv
-          command: power
-      - type: custom:button-card
-        name: MUTE
-        template: button
-        variables:
-          device: tv
-          command: mute
-      - type: custom:button-card
-        name: INFO
-        template: button
-        variables:
-          device: tv
-          command: info
-      - type: custom:button-card
-        name: VOLUME UP
-        template: button
-        variables:
-          device: tv
-          command: volume_up
-      - type: custom:button-card
-        name: VOLUME DOWN
-        template: button
-        variables:
-          device: tv
-          command: volume_down
-      - type: custom:button-card
-        name: CHANNEL UP
-        template: button
-        variables:
-          device: tv
-          command: channel_up
-      - type: custom:button-card
-        name: CHANNEL DOWN
-        template: button
-        variables:
-          device: tv
-          command: channel_down
-      - type: custom:button-card
-        name: FAST FORWARD
-        template: button
-        variables:
-          device: tv
-          command: fast_forward
-      - type: custom:button-card
-        name: REWIND
-        template: button
-        variables:
-          device: tv
-          command: rewind
-      - type: custom:button-card
-        name: PAUSE
-        template: button
-        variables:
-          device: tv
-          command: pause
-      - type: custom:button-card
-        name: STOP
-        template: button
-        variables:
-          device: tv
-          command: stop
-      - type: custom:button-card
-        name: PLAY
-        template: button
-        variables:
-          device: tv
-          command: play
-      - type: custom:button-card
-        name: RECORD
-        template: button
-        variables:
-          device: tv
-          command: record
-      - type: custom:button-card
-        name: NEXT SOURCE
-        template: button
-        variables:
-          device: tv
-          command: next_source
-      - type: custom:button-card
-        name: TELETEXT
-        template: button
-        variables:
-          device: tv
-          command: teletext
-      - type: custom:button-card
-        name: STANDBY
-        template: button
-        variables:
-          device: tv
-          command: standby
-      - type: custom:button-card
-        name: OPTION
-        template: button
-        variables:
-          device: tv
-          command: option
-      - type: custom:button-card
-        name: CLOSED CAPTIONS
-        template: button
-        variables:
-          device: tv
-          command: closed_captions
-      - type: custom:button-card
-        name: SUBTITLES
-        template: button
-        variables:
-          device: tv
-          command: subtitles
-      - type: custom:button-card
-        name: MENU
-        template: button
-        variables:
-          device: tv
-          command: menu
-      - type: custom:button-card
-        name: CURSOR UP
-        template: button
-        variables:
-          device: tv
-          command: cursor_up
-      - type: custom:button-card
-        name: CURSOR DOWN
-        template: button
-        variables:
-          device: tv
-          command: cursor_down
-      - type: custom:button-card
-        name: CURSOR LEFT
-        template: button
-        variables:
-          device: tv
-          command: cursor_left
-      - type: custom:button-card
-        name: CURSOR RIGHT
-        template: button
-        variables:
-          device: tv
-          command: cursor_right
-      - type: custom:button-card
-        name: OK
-        template: button
-        variables:
-          device: tv
-          command: ok
-      - type: custom:button-card
-        name: RED
-        template: button
-        variables:
-          device: tv
-          command: red
-      - type: custom:button-card
-        name: GREEN
-        template: button
-        variables:
-          device: tv
-          command: green
-      - type: custom:button-card
-        name: YELLOW
-        template: button
-        variables:
-          device: tv
-          command: yellow
-      - type: custom:button-card
-        name: BLUE
-        template: button
-        variables:
-          device: tv
-          command: blue
-      - type: custom:button-card
-        name: WHITE
-        template: button
-        variables:
-          device: tv
-          command: white
-      - type: custom:button-card
-        name: EXIT
-        template: button
-        variables:
-          device: tv
-          command: exit
-      - type: custom:button-card
-        name: SETTINGS
-        template: button
-        variables:
-          device: tv
-          command: settings
-      - type: custom:button-card
-        name: GUIDE
-        template: button
-        variables:
-          device: tv
-          command: guide
-      - type: custom:button-card
-        name: CHANNEL LIST
-        template: button
-        variables:
-          device: tv
-          command: channel_list
-      - type: custom:button-card
-        name: TELETEXT
-        template: button
-        variables:
-          device: tv
-          command: teletext
+      [%- device = "tv"; "\n";
+         FOREACH b IN
+           [ "key_0",
+             "key_1",
+             "key_2",
+             "key_3",
+             "key_4",
+             "key_5",
+             "key_6",
+             "key_7",
+             "key_8",
+             "key_9",
+             "previous_channel",
+             "power",
+             "mute",
+             "info",
+             "volume_up",
+             "volume_down",
+             "channel_up",
+             "channel_down",
+             "fast_forward",
+             "rewind",
+             "pause",
+             "stop",
+             "play",
+             "record",
+             "next_source",
+             "teletext",
+             "standby",
+             "option",
+             "closed_captions",
+             "subtitles",
+             "menu",
+             "cursor_up",
+             "cursor_down",
+             "cursor_left",
+             "cursor_right",
+             "ok",
+             "red",
+             "green",
+             "yellow",
+             "blue",
+             "white",
+             "exit",
+             "settings",
+             "guide",
+             "channel_list",
+             "teletext",
+           ]; "      - "; button(b); END %]
+
   - title: hdmi_switch
     type: custom:horizontal-layout
     layout:
-      max_cols: 6
-      width: 150
+      max_cols: [% max_cols %]
+      width: [% width %]
     cards:
-      - type: custom:button-card
-        name: INPUT1
-        template: button
-        variables:
-          device: hdmiswitch
-          command: input1
-      - type: custom:button-card
-        name: INPUT2
-        template: button
-        variables:
-          device: hdmiswitch
-          command: input2
-      - type: custom:button-card
-        name: INPUT3
-        template: button
-        variables:
-          device: hdmiswitch
-          command: input3
-      - type: custom:button-card
-        name: INPUT4
-        template: button
-        variables:
-          device: hdmiswitch
-          command: input4
-      - type: custom:button-card
-        name: IN AUTO
-        template: button
-        variables:
-          device: hdmiswitch
-          command: in_auto
-      - type: custom:button-card
-        name: CH 20
-        template: button
-        variables:
-          device: hdmiswitch
-          command: ch_20
-      - type: custom:button-card
-        name: CH 51
-        template: button
-        variables:
-          device: hdmiswitch
-          command: ch_51
-      - type: custom:button-card
-        name: CH 71
-        template: button
-        variables:
-          device: hdmiswitch
-          command: ch_71
-      - type: custom:button-card
-        name: CH AUTO
-        template: button
-        variables:
-          device: hdmiswitch
-          command: ch_auto
-      - type: custom:button-card
-        name: ARC
-        template: button
-        variables:
-          device: hdmiswitch
-          command: arc
+      [%- device = "hdmiswitch"; "\n";
+         FOREACH b IN
+           [ "input1",
+             "input2",
+             "input3",
+             "input4",
+             "in_auto",
+             "ch_20",
+             "ch_51",
+             "ch_71",
+             "ch_auto",
+             "arc",
+           ]; "      - "; button(b); END %]
+
   - title: vip1853
     type: custom:horizontal-layout
     layout:
-      max_cols: 6
-      width: 150
+      max_cols: [% max_cols %]
+      width: [% width %]
     cards:
-      - type: custom:button-card
-        name: KEY 1
-        template: button
-        variables:
-          device: stb
-          command: key_1
-      - type: custom:button-card
-        name: KEY 2
-        template: button
-        variables:
-          device: stb
-          command: key_2
-      - type: custom:button-card
-        name: KEY 3
-        template: button
-        variables:
-          device: stb
-          command: key_3
-      - type: custom:button-card
-        name: KEY 4
-        template: button
-        variables:
-          device: stb
-          command: key_4
-      - type: custom:button-card
-        name: KEY 5
-        template: button
-        variables:
-          device: stb
-          command: key_5
-      - type: custom:button-card
-        name: KEY 6
-        template: button
-        variables:
-          device: stb
-          command: key_6
-      - type: custom:button-card
-        name: KEY 7
-        template: button
-        variables:
-          device: stb
-          command: key_7
-      - type: custom:button-card
-        name: KEY 8
-        template: button
-        variables:
-          device: stb
-          command: key_8
-      - type: custom:button-card
-        name: KEY 9
-        template: button
-        variables:
-          device: stb
-          command: key_9
-      - type: custom:button-card
-        name: KEY 0
-        template: button
-        variables:
-          device: stb
-          command: key_0
-      - type: custom:button-card
-        name: POWER
-        template: button
-        variables:
-          device: stb
-          command: power
-      - type: custom:button-card
-        name: PLAY PAUSE
-        template: button
-        variables:
-          device: stb
-          command: play_pause
-      - type: custom:button-card
-        name: REWIND
-        template: button
-        variables:
-          device: stb
-          command: rewind
-      - type: custom:button-card
-        name: FAST FORWARD
-        template: button
-        variables:
-          device: stb
-          command: fast_forward
-      - type: custom:button-card
-        name: STOP
-        template: button
-        variables:
-          device: stb
-          command: stop
-      - type: custom:button-card
-        name: RECORD
-        template: button
-        variables:
-          device: stb
-          command: record
-      - type: custom:button-card
-        name: RED
-        template: button
-        variables:
-          device: stb
-          command: red
-      - type: custom:button-card
-        name: GREEN
-        template: button
-        variables:
-          device: stb
-          command: green
-      - type: custom:button-card
-        name: YELLOW
-        template: button
-        variables:
-          device: stb
-          command: yellow
-      - type: custom:button-card
-        name: BLUE
-        template: button
-        variables:
-          device: stb
-          command: blue
-      - type: custom:button-card
-        name: UP
-        template: button
-        variables:
-          device: stb
-          command: up
-      - type: custom:button-card
-        name: DOWN
-        template: button
-        variables:
-          device: stb
-          command: down
-      - type: custom:button-card
-        name: LEFT
-        template: button
-        variables:
-          device: stb
-          command: left
-      - type: custom:button-card
-        name: RIGHT
-        template: button
-        variables:
-          device: stb
-          command: right
-      - type: custom:button-card
-        name: OK
-        template: button
-        variables:
-          device: stb
-          command: ok
-      - type: custom:button-card
-        name: MENU
-        template: button
-        variables:
-          device: stb
-          command: menu
-      - type: custom:button-card
-        name: TV
-        template: button
-        variables:
-          device: stb
-          command: tv
-      - type: custom:button-card
-        name: GUIDE
-        template: button
-        variables:
-          device: stb
-          command: guide
-      - type: custom:button-card
-        name: RADIO
-        template: button
-        variables:
-          device: stb
-          command: radio
-      - type: custom:button-card
-        name: BACK
-        template: button
-        variables:
-          device: stb
-          command: back
-      - type: custom:button-card
-        name: CHANNEL UP
-        template: button
-        variables:
-          device: stb
-          command: channel_up
-      - type: custom:button-card
-        name: CHANNEL DOWN
-        template: button
-        variables:
-          device: stb
-          command: channel_down
-      - type: custom:button-card
-        name: VOLUME UP
-        template: button
-        variables:
-          device: stb
-          command: volume_up
-      - type: custom:button-card
-        name: VOLUME DOWN
-        template: button
-        variables:
-          device: stb
-          command: volume_down
-      - type: custom:button-card
-        name: MUTE
-        template: button
-        variables:
-          device: stb
-          command: mute
-      - type: custom:button-card
-        name: SOURCE
-        template: button
-        variables:
-          device: stb
-          command: source
-      - type: custom:button-card
-        name: TEXT
-        template: button
-        variables:
-          device: stb
-          command: text
-  # - title: sony_mc
-  #   type: custom:horizontal-layout
-  #   layout:
-  #     max_cols: 6
-  #     width: 150
-  #   cards:
-  #     - type: custom:button-card
-  #       name: POWER
-  #       template: button
-  #       variables:
-  #         device: sony_mc
-  #         command: power
-  #     - type: custom:button-card
-  #       name: VOLUME UP
-  #       template: button
-  #       variables:
-  #         device: sony_mc
-  #         command: volume_up
-  #     - type: custom:button-card
-  #       name: VOLUME DOWN
-  #       template: button
-  #       variables:
-  #         device: sony_mc
-  #         command: volume_down
-  #     - type: custom:button-card
-  #       name: BASS DOWN
-  #       template: button
-  #       variables:
-  #         device: sony_mc
-  #         command: bass_down
-  #     - type: custom:button-card
-  #       name: BASS UP
-  #       template: button
-  #       variables:
-  #         device: sony_mc
-  #         command: bass_up
-  #     - type: custom:button-card
-  #       name: TREBLE DOWN
-  #       template: button
-  #       variables:
-  #         device: sony_mc
-  #         command: treble_down
-  #     - type: custom:button-card
-  #       name: TREBLE UP
-  #       template: button
-  #       variables:
-  #         device: sony_mc
-  #         command: treble_up
-  #     - type: custom:button-card
-  #       name: FORWARD
-  #       template: button
-  #       variables:
-  #         device: sony_mc
-  #         command: forward
-  #     - type: custom:button-card
-  #       name: REWIND
-  #       template: button
-  #       variables:
-  #         device: sony_mc
-  #         command: rewind
-  #     - type: custom:button-card
-  #       name: DBFB
-  #       template: button
-  #       variables:
-  #         device: sony_mc
-  #         command: dbfb
-  #     - type: custom:button-card
-  #       name: DISPLAY
-  #       template: button
-  #       variables:
-  #         device: sony_mc
-  #         command: display
-  #     - type: custom:button-card
-  #       name: ENTER
-  #       template: button
-  #       variables:
-  #         device: sony_mc
-  #         command: enter
-  #     - type: custom:button-card
-  #       name: CLEAR
-  #       template: button
-  #       variables:
-  #         device: sony_mc
-  #         command: clear
-  #     - type: custom:button-card
-  #       name: SLEEP
-  #       template: button
-  #       variables:
-  #         device: sony_mc
-  #         command: sleep
-  #     - type: custom:button-card
-  #       name: SELECT
-  #       template: button
-  #       variables:
-  #         device: sony_mc
-  #         command: select
-  #     - type: custom:button-card
-  #       name: SET
-  #       template: button
-  #       variables:
-  #         device: sony_mc
-  #         command: set
-  #     - type: custom:button-card
-  #       name: MD VIDEO
-  #       template: button
-  #       variables:
-  #         device: sony_mc
-  #         command: md_video
-  #     - type: custom:button-card
-  #       name: CD
-  #       template: button
-  #       variables:
-  #         device: sony_mc
-  #         command: cd
-  #     - type: custom:button-card
-  #       name: TUNER BAND
-  #       template: button
-  #       variables:
-  #         device: sony_mc
-  #         command: tuner_band
-  #     - type: custom:button-card
-  #       name: MODE
-  #       template: button
-  #       variables:
-  #         device: sony_mc
-  #         command: mode
-  #     - type: custom:button-card
-  #       name: STEREO MONO
-  #       template: button
-  #       variables:
-  #         device: sony_mc
-  #         command: stereo_mono
-  #     - type: custom:button-card
-  #       name: MEMORY
-  #       template: button
-  #       variables:
-  #         device: sony_mc
-  #         command: memory
-  #     - type: custom:button-card
-  #       name: PLAY
-  #       template: button
-  #       variables:
-  #         device: sony_mc
-  #         command: play
-  #     - type: custom:button-card
-  #       name: PAUSE
-  #       template: button
-  #       variables:
-  #         device: sony_mc
-  #         command: pause
-  #     - type: custom:button-card
-  #       name: STOP
-  #       template: button
-  #       variables:
-  #         device: sony_mc
-  #         command: stop
-  #     - type: custom:button-card
-  #       name: TUNING PREVIOUS
-  #       template: button
-  #       variables:
-  #         device: sony_mc
-  #         command: tuning_previous
-  #     - type: custom:button-card
-  #       name: TUNING NEXT
-  #       template: button
-  #       variables:
-  #         device: sony_mc
-  #         command: tuning_next
-  #     - type: custom:button-card
-  #       name: PLAY MODE
-  #       template: button
-  #       variables:
-  #         device: sony_mc
-  #         command: play_mode
-  #     - type: custom:button-card
-  #       name: REPEAT
-  #       template: button
-  #       variables:
-  #         device: sony_mc
-  #         command: repeat
+      [%- device = "stb"; "\n";
+         FOREACH b IN
+           [ "key_1",
+             "key_2",
+             "key_3",
+             "key_4",
+             "key_5",
+             "key_6",
+             "key_7",
+             "key_8",
+             "key_9",
+             "key_0",
+             "power",
+             "play_pause",
+             "rewind",
+             "fast_forward",
+             "stop",
+             "record",
+             "red",
+             "green",
+             "yellow",
+             "blue",
+             "up",
+             "down",
+             "left",
+             "right",
+             "ok",
+             "menu",
+             "tv",
+             "guide",
+             "radio",
+             "back",
+             "channel_up",
+             "channel_down",
+             "volume_up",
+             "volume_down",
+             "mute",
+             "source",
+             "text",
+           ]; "      - "; button(b); END %]
+
   - title: smsl_ad18
     type: custom:horizontal-layout
     layout:
-      max_cols: 6
-      width: 150
+      max_cols: [% max_cols %]
+      width: [% width %]
     cards:
-      - type: custom:button-card
-        name: POWER
-        template: button
-        variables:
-          device: audio
-          command: power
-      - type: custom:button-card
-        name: MUTE
-        template: button
-        variables:
-          device: audio
-          command: mute
-      - type: custom:button-card
-        name: VOLUME UP
-        template: button
-        variables:
-          device: audio
-          command: volume_up
-      - type: custom:button-card
-        name: A LEFT
-        template: button
-        variables:
-          device: audio
-          command: a_left
-      - type: custom:button-card
-        name: SETTINGS
-        template: button
-        variables:
-          device: audio
-          command: settings
-      - type: custom:button-card
-        name: A RIGHT
-        template: button
-        variables:
-          device: audio
-          command: a_right
-      - type: custom:button-card
-        name: VOLUME DOWN
-        template: button
-        variables:
-          device: audio
-          command: volume_down
-      - type: custom:button-card
-        name: INPUT
-        template: button
-        variables:
-          device: audio
-          command: input
-      - type: custom:button-card
-        name: FN
-        template: button
-        variables:
-          device: audio
-          command: fn
-      - type: custom:button-card
-        name: B POWER
-        template: button
-        variables:
-          device: audio
-          command: b_power
-      - type: custom:button-card
-        name: B MUTE
-        template: button
-        variables:
-          device: audio
-          command: b_mute
-      - type: custom:button-card
-        name: B UP
-        template: button
-        variables:
-          device: audio
-          command: b_up
-      - type: custom:button-card
-        name: B LEFT
-        template: button
-        variables:
-          device: audio
-          command: b_left
-      - type: custom:button-card
-        name: B ENTER
-        template: button
-        variables:
-          device: audio
-          command: b_enter
-      - type: custom:button-card
-        name: B RIGHT
-        template: button
-        variables:
-          device: audio
-          command: b_right
-      - type: custom:button-card
-        name: B DOWN
-        template: button
-        variables:
-          device: audio
-          command: b_down
-      - type: custom:button-card
-        name: B INPUT
-        template: button
-        variables:
-          device: audio
-          command: b_input
-      - type: custom:button-card
-        name: B FN
-        template: button
-        variables:
-          device: audio
-          command: b_fn
-      - type: custom:button-card
-        name: C POWER
-        template: button
-        variables:
-          device: audio
-          command: c_power
-      - type: custom:button-card
-        name: C MUTE
-        template: button
-        variables:
-          device: audio
-          command: c_mute
-      - type: custom:button-card
-        name: C UP
-        template: button
-        variables:
-          device: audio
-          command: c_up
-      - type: custom:button-card
-        name: C LEFT
-        template: button
-        variables:
-          device: audio
-          command: c_left
-      - type: custom:button-card
-        name: C ENTER
-        template: button
-        variables:
-          device: audio
-          command: c_enter
-      - type: custom:button-card
-        name: C RIGHT
-        template: button
-        variables:
-          device: audio
-          command: c_right
-      - type: custom:button-card
-        name: C DOWN
-        template: button
-        variables:
-          device: audio
-          command: c_down
-      - type: custom:button-card
-        name: C MODE
-        template: button
-        variables:
-          device: audio
-          command: c_mode
-      - type: custom:button-card
-        name: C FN
-        template: button
-        variables:
-          device: audio
-          command: c_fn
+      [%- device = "audio"; "\n";
+         FOREACH b IN
+           [ "power",
+             "mute",
+             "volume_up",
+             "a_left",
+             "settings",
+             "a_right",
+             "volume_down",
+             "input",
+             "fn",
+             "b_power",
+             "b_mute",
+             "b_up",
+             "b_left",
+             "b_enter",
+             "b_right",
+             "b_down",
+             "b_input",
+             "b_fn",
+             "c_power",
+             "c_mute",
+             "c_up",
+             "c_left",
+             "c_enter",
+             "c_right",
+             "c_down",
+             "c_mode",
+             "c_fn",
+           ]; "      - "; button(b); END %]
+
+  # - title: sony_mc
+  #   type: custom:horizontal-layout
+  #   layout:
+  #     max_cols: [% max_cols %]
+  #     width: [% width %]
+  #   cards:
+  #     [%- device = "sony_mc"; "\n";
+  #        FOREACH b IN
+  #          [ "power",
+  #            "volume_up",
+  #            "volume_down",
+  #            "bass_down",
+  #            "bass_up",
+  #            "treble_down",
+  #            "treble_up",
+  #            "forward",
+  #            "rewind",
+  #            "dbfb",
+  #            "display",
+  #            "enter",
+  #            "clear",
+  #            "sleep",
+  #            "select",
+  #            "set",
+  #            "md_video",
+  #            "cd",
+  #            "tuner_band",
+  #            "mode",
+  #            "stereo_mono",
+  #            "memory",
+  #            "play",
+  #            "pause",
+  #            "stop",
+  #            "tuning_previous",
+  #            "tuning_next",
+  #            "play_mode",
+  #            "repeat",
+  #          ]; "      - "; button(b); END %]
+
   # - title: squeezebox
   #   type: custom:horizontal-layout
   #   layout:
-  #     max_cols: 6
-  #     width: 150
+  #     max_cols: [% max_cols %]
+  #     width: [% width %]
   #   cards:
-  #     - type: custom:button-card
-  #       name: HOME
-  #       template: button
-  #       variables:
-  #         device: squeezebox
-  #         command: home
-  #     - type: custom:button-card
-  #       name: LIGHT
-  #       template: button
-  #       variables:
-  #         device: squeezebox
-  #         command: light
-  #     - type: custom:button-card
-  #       name: POWER
-  #       template: button
-  #       variables:
-  #         device: squeezebox
-  #         command: power
-  #     - type: custom:button-card
-  #       name: PLUS
-  #       template: button
-  #       variables:
-  #         device: squeezebox
-  #         command: plus
-  #     - type: custom:button-card
-  #       name: PLAY
-  #       template: button
-  #       variables:
-  #         device: squeezebox
-  #         command: play
-  #     - type: custom:button-card
-  #       name: UP
-  #       template: button
-  #       variables:
-  #         device: squeezebox
-  #         command: up
-  #     - type: custom:button-card
-  #       name: LEFT
-  #       template: button
-  #       variables:
-  #         device: squeezebox
-  #         command: left
-  #     - type: custom:button-card
-  #       name: RIGHT
-  #       template: button
-  #       variables:
-  #         device: squeezebox
-  #         command: right
-  #     - type: custom:button-card
-  #       name: DOWN
-  #       template: button
-  #       variables:
-  #         device: squeezebox
-  #         command: down
-  #     - type: custom:button-card
-  #       name: VOLDOWN
-  #       template: button
-  #       variables:
-  #         device: squeezebox
-  #         command: voldown
-  #     - type: custom:button-card
-  #       name: VOLUP
-  #       template: button
-  #       variables:
-  #         device: squeezebox
-  #         command: volup
-  #     - type: custom:button-card
-  #       name: PREV
-  #       template: button
-  #       variables:
-  #         device: squeezebox
-  #         command: prev
-  #     - type: custom:button-card
-  #       name: PAUSE
-  #       template: button
-  #       variables:
-  #         device: squeezebox
-  #         command: pause
-  #     - type: custom:button-card
-  #       name: NEXT
-  #       template: button
-  #       variables:
-  #         device: squeezebox
-  #         command: next
+  #     [%- device = "squeezebox"; "\n";
+  #        FOREACH b IN
+  #          [ "home",
+  #            "light",
+  #            "power",
+  #            "plus",
+  #            "play",
+  #            "up",
+  #            "left",
+  #            "right",
+  #            "down",
+  #            "voldown",
+  #            "volup",
+  #            "prev",
+  #            "pause",
+  #            "next",
+  #          ]; "      - "; button(b); END %]

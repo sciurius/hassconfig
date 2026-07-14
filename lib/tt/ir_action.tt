@@ -1,0 +1,26 @@
+[%
+
+# Call the irsend script.
+#
+# Scripts use "action: script.irsend" but card actions (i.e, tap_action)
+# need "action: perform-action, perform_action: script.irsend".
+
+MACRO ir_action_core(remote,device,command) BLOCK;
+  "action: script.irsend, ";
+  "data: { remote: "; remote; ", device: "; device; ", command: \"$command\" }";
+END;
+
+# For dashboard cards.
+MACRO ir_perform(remote,device,command) BLOCK;
+
+  "{ action: perform-action, ";
+    "perform_"; ir_action_core(remote,device,command);
+  "}";
+END;
+
+# For scripts.
+MACRO ir_action(remote,device,command) BLOCK;
+      "{ "; ir_action_core(remote,device,command); " }";
+END;
+
+%]

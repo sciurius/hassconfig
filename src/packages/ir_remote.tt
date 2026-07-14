@@ -1,0 +1,233 @@
+# IR Remotes               -*- hass -*-
+# WARNING: This is a generated file -- DO NOT EDIT
+
+[%
+
+# This script can handle IR communication, either via MQTT or
+# the Tasmota IR Ready integration.
+
+mqtt = 1;
+
+# If mqtt, this file defines pseudo-sensors that act as lookup tables
+# for mqtt topics (based on `remote`) and payloads (based on `device`).
+# Otherwise, the action is remote.send_command with target `remote`_`device`.
+
+-%]
+
+script:
+
+  irsend:
+    fields:
+      remote:
+        required: true
+        description: "The remote that sends the commands."
+        example: slaapkamer
+      device:
+        required: true
+        description: "The device the command is for."
+        example: tv
+      command:
+        required: true
+        description: "The command to be sent."
+        example: power
+    sequence:
+      - repeat:
+          for_each: "{{ command.split(' ') }}"
+          sequence:
+[%- IF mqtt %]
+            - action: mqtt.publish
+              data:
+                qos: "0"
+                retain: false
+                topic: "{{ state_attr('sensor.irdata_topics', remote) }}"
+                payload: "{{ state_attr('sensor.irdata_' + device, repeat.item) }}"
+[%- ELSE %]
+            - action: remote.send_command
+              target:
+                entity_id: "remote.{{ remote }}_{{ device }}"
+              data:
+                command: "{{ repeat.item }}"
+[%- END %]
+            - action: notify.info
+              data:
+                message: >-
+                  IR[% IF mqtt; "/MQTT"; END %]
+                  command {{ repeat.item }} to device {{ remote }}:{{ device }}
+
+[%- IF mqtt %]
+# Template sensors for the devices, with IR key sequences as attributes.
+ 
+template:
+
+  - sensor:
+
+    # Abuse sensor attributes as a lookup table.
+    - name: irdata_topics
+      state: false
+      attributes:
+        slaapkamer:    "cmnd/tasm11/irsend"
+#        slaapkamer:    "cmnd/tasm21/irsend"	# for testing
+        kantoor:       "cmnd/tasm21/irsend"
+
+[%-
+MACRO NEC(data) BLOCK;
+  "{\"Protocol\":\"NEC\",\"Bits\":32,\"Data\":\""; data; "\",\"Repeat\":0}";
+END;
+MACRO RC6(data) BLOCK;
+  "{\"Protocol\":\"RC6\",\"Bits\":20,\"Data\":\""; data; "\",\"Repeat\":0}";
+END;
+
+-%]
+
+    # HDMI Switch: Marmitek Connect 621
+    - name: irdata_hdmiswitch
+      state: ir38
+      attributes:
+        arc:     '[% NEC("0x40BFE916") %]'
+        ch_20:   '[% NEC("0x40BF33CC") %]'
+        ch_51:   '[% NEC("0x40BFF906") %]'
+        ch_71:   '[% NEC("0x40BF19E6") %]'
+        ch_auto: '[% NEC("0x40BFD32C") %]'
+        in_auto: '[% NEC("0x40BF9B64") %]'
+        input1:  '[% NEC("0x40BF7B84") %]'
+        input2:  '[% NEC("0x40BF5BA4") %]'
+        input3:  '[% NEC("0x40BFDB24") %]'
+        input4:  '[% NEC("0x40BFAA55") %]'
+
+    # TV: Philips 43PFS5525
+    - name: irdata_tv
+      state: ir38
+      attributes:
+        blue:             '[% RC6("0x70") %]'
+        channel_down:     '[% RC6("0x21") %]'
+        channel_list:     '[% RC6("0xD2") %]'
+        channel_up:       '[% RC6("0x20") %]'
+        closed_captions:  '[% RC6("0x46") %]'
+        cursor_down:      '[% RC6("0x59") %]'
+        cursor_left:      '[% RC6("0x5A") %]'
+        cursor_right:     '[% RC6("0x5B") %]'
+        cursor_up:        '[% RC6("0x58") %]'
+        exit:             '[% RC6("0x9F") %]'
+        fast_forward:     '[% RC6("0x28") %]'
+        green:            '[% RC6("0x6E") %]'
+        guide:            '[% RC6("0xCC") %]'
+        info:             '[% RC6("0x0F") %]'
+        key_0:            '[% RC6("0x00") %]'
+        key_1:            '[% RC6("0x01") %]'
+        key_2:            '[% RC6("0x02") %]'
+        key_3:            '[% RC6("0x03") %]'
+        key_4:            '[% RC6("0x04") %]'
+        key_5:            '[% RC6("0x05") %]'
+        key_6:            '[% RC6("0x06") %]'
+        key_7:            '[% RC6("0x07") %]'
+        key_8:            '[% RC6("0x08") %]'
+        key_9:            '[% RC6("0x09") %]'
+        menu:             '[% RC6("0x54") %]'
+        mute:             '[% RC6("0x0D") %]'
+        next_source:      '[% RC6("0x38") %]'
+        ok:               '[% RC6("0x5C") %]'
+        option:           '[% RC6("0x40") %]'
+        pause:            '[% RC6("0x30") %]'
+        play:             '[% RC6("0x32") %]'
+        power:            '[% RC6("0x0C") %]'
+        previous_channel: '[% RC6("0x0A") %]'
+        record:           '[% RC6("0x37") %]'
+        red:              '[% RC6("0x6D") %]'
+        rewind:           '[% RC6("0x2B") %]'
+        settings:         '[% RC6("0xBF") %]'
+        standby:          '[% RC6("0x3D") %]'
+        stop:             '[% RC6("0x31") %]'
+        subtitles:        '[% RC6("0x4B") %]'
+        teletext:         '[% RC6("0xF1") %]'
+        volume_down:      '[% RC6("0x11") %]'
+        volume_up:        '[% RC6("0x10") %]'
+        white:            '[% RC6("0x71") %]'
+        yellow:           '[% RC6("0x6F") %]'
+
+    # Audio amplifier: SMSL AD18
+    - name: irdata_audio
+      state: ir38
+      attributes:
+        a_left:      '[% NEC("0xC03F") %]'
+        a_right:     '[% NEC("0xA05F") %]'
+        b_down:      '[% NEC("0x609F") %]'
+        b_enter:     '[% NEC("0x20DF") %]'
+        b_fn:        '[% NEC("0x10EF") %]'
+        b_input:     '[% NEC("0xE01F") %]'
+        b_left:      '[% NEC("0xC03F") %]'
+        b_mute:      '[% NEC("0x906F") %]'
+        b_power:     '[% NEC("0x807F") %]'
+        b_right:     '[% NEC("0xA05F") %]'
+        b_up:        '[% NEC("0x40BF") %]'
+        c_down:      '[% NEC("0x609F") %]'
+        c_enter:     '[% NEC("0x20DF") %]'
+        c_fn:        '[% NEC("0x10EF") %]'
+        c_left:      '[% NEC("0xC03F") %]'
+        c_mode:      '[% NEC("0xE01F") %]'
+        c_mute:      '[% NEC("0x906F") %]'
+        c_power:     '[% NEC("0x807F") %]'
+        c_right:     '[% NEC("0xA05F") %]'
+        c_up:        '[% NEC("0x40BF") %]'
+        fn:          '[% NEC("0x10EF") %]'
+        input:       '[% NEC("0xE01F") %]'
+        mute:        '[% NEC("0x906F") %]'
+        power:       '[% NEC("0x807F") %]'
+        settings:    '[% NEC("0x20DF") %]'
+        volume_down: '[% NEC("0x609F") %]'
+        volume_up:   '[% NEC("0x40BF") %]'
+
+[%-
+
+# I assume this is very specific for this Arris STB.
+MACRO RAW(data) BLOCK;
+   data = "01110011 11000000 00000000 " _ data;
+  "56,";
+  data.replace('\\s+','').replace('0','320,').replace('1','640,');
+  "85000";
+END;
+
+-%]
+
+    # SetTopBox: Arris 2952 / 5202 -- NOTE: 56Khz
+    - name: irdata_stb
+      state: ir56
+      attributes:
+        back:         '[% RAW("00110010010")   %]'
+        blue:         '[% RAW("11000000001")   %]'
+        channel_down: '[% RAW("00100001001")   %]'
+        channel_up:   '[% RAW("00100100110")   %]'
+        down:         '[% RAW("00001001110")   %]'
+        fast_forward: '[% RAW("110011001")     %]'
+        green:        '[% RAW("00100000011")   %]'
+        guide:        '[% RAW("001110011")     %]'
+        key_0:        '[% RAW("000011111")     %]'
+        key_1:        '[% RAW("0000000000110") %]'
+        key_2:        '[% RAW("00000000111")   %]'
+        key_3:        '[% RAW("0000000010010") %]'
+        key_4:        '[% RAW("00000011001")   %]'
+        key_5:        '[% RAW("00000011110")   %]'
+        key_6:        '[% RAW("00000010011")   %]'
+        key_7:        '[% RAW("0000001000010") %]'
+        key_8:        '[% RAW("00001100001")   %]'
+        key_9:        '[% RAW("00001100110")   %]'
+        left:         '[% RAW("00001000011")   %]'
+        menu:         '[% RAW("111001110")     %]'
+        mute:         '[% RAW("00100100001")   %]'
+        ok:           '[% RAW("0000100000010") %]'
+        play_pause:   '[% RAW("00100110010")   %]'
+        power:        '[% RAW("00001110010")   %]'
+        radio:        '[% RAW("111110010")     %]'
+        record:       '[% RAW("11000010010")   %]'
+        red:          '[% RAW("00100001110")   %]'
+        rewind:       '[% RAW("11000000110")   %]'
+        right:        '[% RAW("00110000001")   %]'
+        source:       '[% RAW("00110000110")   %]'
+        stop:         '[% RAW("110000111")     %]'
+        text:         '[% RAW("111100110")     %]'
+        tv:           '[% RAW("001111001")     %]'
+        up:           '[% RAW("00001001001")   %]'
+        volume_down:  '[% RAW("001001111")     %]'
+        volume_up:    '[% RAW("00111000010")   %]'
+        yellow:       '[% RAW("0010000000010") %]'
+
+[%- END %]

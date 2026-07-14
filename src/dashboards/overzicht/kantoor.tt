@@ -2,7 +2,6 @@
 # WARNING: This is a generated file -- DO NOT EDIT
 
 [% PROCESS power_meter.tt -%]
-[% PROCESS ir_kantoor.tt -%]
 
 [% INCLUDE section.tt
        name = "Kantoor"
@@ -88,6 +87,7 @@
            switch = "kantoorkacheltje"
            icon   = "heat-wave" -%]
     
+      [% PROCESS ir_action.tt; remote = "kantoor" -%]
       - type: custom:mushroom-template-card
         entity: switch.kantoor_airco
         icon: mdi:air-conditioner
@@ -97,7 +97,7 @@
           - entity: switch.kantoor_airco
             <<: *v_available
         color: "var(--state-{{ '' if (states('sensor.kantoor_airco_energy_power')|int(0)) > 2 else 'in'}}active-color)"
-        icon_tap_action: [% ir_action("airco","power") %]
+        icon_tap_action: [% ir_perform(remote,"airco","power") %]
         tap_action:
           action: more-info
           entity: sensor.kantoor_airco_energy_today

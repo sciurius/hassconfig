@@ -1,13 +1,6 @@
 # Slaapkamer IR Remote                    -*- hass -*-
 
-[% PROCESS ir_slaapkamer.tt;
-
-   MACRO ircommand(device,command) BLOCK;
-   "{ service: $ircontrol"; ".ircontrol_$irdevice, ";
-     "data: { device: $device, command: $command } }";
-   END
-
--%]
+[% PROCESS ir_action.tt; remote = "slaapkamer" -%]
 
 # automation:
 
@@ -29,7 +22,7 @@
 #       - repeat:
 #           count: 10
 #           sequence:
-#             - service: remote.send_command
+#             - action: remote.send_command
 #               data:
 #                 entity_id: remote.slaapkamer
 #                 device: audio
@@ -59,7 +52,7 @@ script:
     sequence:
 
       # Register activity, will be adjusted later.
-      - service: input_select.select_option
+      - action: input_select.select_option
         target:
           entity_id: input_select.mc
         data:
@@ -72,8 +65,8 @@ script:
             state: "off"
         then:
           # power toggles, key_0 etc wakes up.
-          - [% ircommand( "tv", "key_0") %]
-          - service: input_boolean.turn_on
+          - [% ir_action( remote, "tv", "key_0") %]
+          - action: input_boolean.turn_on
             target:
               entity_id: input_boolean.slaapkamer_tv
 
@@ -83,8 +76,8 @@ script:
             entity_id: input_boolean.slaapkamer_stb
             state: "off"
         then:
-          - [% ircommand( "stb", "power" ) %]
-          - service: input_boolean.turn_on
+          - [% ir_action( remote, "stb", "power" ) %]
+          - action: input_boolean.turn_on
             target:
               entity_id: input_boolean.slaapkamer_stb
 
@@ -94,20 +87,20 @@ script:
             entity_id: input_boolean.slaapkamer_audio
             state: "off"
         then:
-          - [% ircommand( "audio", "power" ) %]
-          - service: input_boolean.turn_on
+          - [% ir_action( remote, "audio", "power" ) %]
+          - action: input_boolean.turn_on
             target:
               entity_id: input_boolean.slaapkamer_audio
 
       # Set HDMI switch to TV input.
-      - [% ircommand( "hdmiswitch", "input1" ) %]
+      - [% ir_action( remote, "hdmiswitch", "input1" ) %]
 
   activity_video:
 
     sequence:
 
       # Register activity, will be adjusted later.
-      - service: input_select.select_option
+      - action: input_select.select_option
         target:
           entity_id: input_select.mc
         data:
@@ -120,8 +113,8 @@ script:
             state: "off"
         then:
           # power toggles, key_0 etc wakes up.
-          - [% ircommand( "tv", "key_0" ) %]
-          - service: input_boolean.turn_on
+          - [% ir_action( remote, "tv", "key_0" ) %]
+          - action: input_boolean.turn_on
             target:
               entity_id: input_boolean.slaapkamer_tv
 
@@ -131,8 +124,8 @@ script:
             entity_id: input_boolean.slaapkamer_stb
             state: "on"
         then:
-          - [% ircommand( "stb", "power" ) %]
-          - service: input_boolean.turn_off
+          - [% ir_action( remote, "stb", "power" ) %]
+          - action: input_boolean.turn_off
             target:
               entity_id: input_boolean.slaapkamer_stb
 
@@ -142,20 +135,20 @@ script:
             entity_id: input_boolean.slaapkamer_audio
             state: "off"
         then:
-          - [% ircommand( "audio", "power" ) %]
-          - service: input_boolean.turn_on
+          - [% ir_action( remote, "audio", "power" ) %]
+          - action: input_boolean.turn_on
             target:
               entity_id: input_boolean.slaapkamer_audio
 
       # Set HDMI switch to Video input.
-      - [% ircommand( "hdmiswitch", "input2" ) %]
+      - [% ir_action( remote, "hdmiswitch", "input2" ) %]
 
   activity_chromecast:
 
     sequence:
 
       # Register activity, will be adjusted later.
-      - service: input_select.select_option
+      - action: input_select.select_option
         target:
           entity_id: input_select.mc
         data:
@@ -168,8 +161,8 @@ script:
             state: "off"
         then:
           # power toggles, key_0 etc wakes up.
-          - [% ircommand( "tv", "key_0" ) %]
-          - service: input_boolean.turn_on
+          - [% ir_action( remote, "tv", "key_0" ) %]
+          - action: input_boolean.turn_on
             target:
               entity_id: input_boolean.slaapkamer_tv
 
@@ -179,8 +172,8 @@ script:
             entity_id: input_boolean.slaapkamer_stb
             state: "on"
         then:
-          - [% ircommand( "stb", "power" ) %]
-          - service: input_boolean.turn_off
+          - [% ir_action( remote, "stb", "power" ) %]
+          - action: input_boolean.turn_off
             target:
               entity_id: input_boolean.slaapkamer_stb
 
@@ -190,13 +183,13 @@ script:
             entity_id: input_boolean.slaapkamer_audio
             state: "off"
         then:
-          - [% ircommand( "audio", "power" ) %]
-          - service: input_boolean.turn_on
+          - [% ir_action( remote, "audio", "power" ) %]
+          - action: input_boolean.turn_on
             target:
               entity_id: input_boolean.slaapkamer_audio
 
       # Set HDMI switch to ChromeCast input.
-      - [% ircommand( "hdmiswitch", "input3" ) %]
+      - [% ir_action( remote, "hdmiswitch", "input3" ) %]
 
   activity_off:
 
@@ -208,8 +201,8 @@ script:
             entity_id: input_boolean.slaapkamer_tv
             state: "on"
         then:
-          - [% ircommand( "tv", "power" ) %]
-          - service: input_boolean.turn_off
+          - [% ir_action( remote, "tv", "power" ) %]
+          - action: input_boolean.turn_off
             target:
               entity_id: input_boolean.slaapkamer_tv
 
@@ -219,8 +212,8 @@ script:
             entity_id: input_boolean.slaapkamer_stb
             state: "on"
         then:
-          - [% ircommand( "stb", "power" ) %]
-          - service: input_boolean.turn_off
+          - [% ir_action( remote, "stb", "power" ) %]
+          - action: input_boolean.turn_off
             target:
               entity_id: input_boolean.slaapkamer_stb
 
@@ -230,89 +223,28 @@ script:
             entity_id: input_boolean.slaapkamer_audio
             state: "on"
         then:
-          - [% ircommand( "audio", "power" ) %]
-          - service: input_boolean.turn_off
+          - [% ir_action( remote, "audio", "power" ) %]
+          - action: input_boolean.turn_off
             target:
               entity_id: input_boolean.slaapkamer_audio
 
   activity_reset:
+
     # Force boolean states off.
+
     sequence:
-      - service: input_boolean.turn_off
+      - action: input_boolean.turn_off
         target:
-          entity_id: input_boolean.slaapkamer_tv
-      - service: input_boolean.turn_off
-        target:
-          entity_id: input_boolean.slaapkamer_stb
-      - service: input_boolean.turn_off
-        target:
-          entity_id: input_boolean.slaapkamer_audio
+          entity_id:
+            - input_boolean.slaapkamer_tv
+            - input_boolean.slaapkamer_stb
+            - input_boolean.slaapkamer_audio
 
-  channel_npo1:
+  subtitles_tv:
     sequence:
-      - [% ircommand( "stb", "key_0 key_0 key_0 key_1" ) %]
-
-  channel_npo2:
-    sequence:
-      - [% ircommand( "stb", "key_0 key_0 key_0 key_2" ) %]
-
-  channel_npo3:
-    sequence:
-      - [% ircommand( "stb", "key_0 key_0 key_0 key_3" ) %]
-
-  channel_rtl4:
-    sequence:
-      - [% ircommand( "stb", "key_0 key_0 key_0 key_4" ) %]
-
-  channel_bbc1:
-    sequence:
-      - [% ircommand( "stb", "key_0 key_0 key_2 key_6" ) %]
-
-  channel_bbc2:
-    sequence:
-      - [% ircommand( "stb", "key_0 key_0 key_2 key_7" ) %]
-
-  channel_een:
-    sequence:
-      - [% ircommand( "stb", "key_0 key_0 key_2 key_9" ) %]
-
-  channel_canvas:
-    sequence:
-      - [% ircommand( "stb", "key_0 key_0 key_3 key_0" ) %]
-
-  channel_rtvdrenthe:
-    sequence:
-      - [% ircommand( "stb", "key_0 key_5 key_0 key_3" ) %]
-
-  channel_subtitles:
-    sequence:
-      - [% ircommand( "stb", "text" ) %]
+      - [% ir_action( remote, "stb", "text" ) %]
       - delay: 1
-      - [% ircommand( "stb", "key_8 key_8 key_8" ) %]
-
-  channel_tv:
-    sequence:
-      - [% ircommand( "stb", "tv" ) %]
-
-  ircontrol_[% irdevice %]:
-    variables:
-      device: tv
-      command: power
-    sequence:
-      - repeat:
-          for_each: "{{ command.split(' ') }}"
-          sequence:
-            - action: mqtt.publish
-              data:
-                qos: "0"
-                retain: false
-                topic: [% irtopic %]
-                payload: "{{ state_attr('sensor.ircontrol_' + device, repeat.item) }}"
-            - action: notify.info
-              data:
-                message: >
-                  IR command {{ repeat.item }} to device {{ device }}
-                  (mqtt: [% irtopic %])
+      - [% ir_action( remote, "stb", "key_8 key_8 key_8" ) %]
 
 # Sending direct commands to Kodi.
 rest_command:

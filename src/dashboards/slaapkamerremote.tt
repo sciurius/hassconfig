@@ -1,232 +1,10 @@
 # Dashboard: slaapkamerremote -- Slaapkamer       -*- hass -*-
 # WARNING: This is a generated file -- DO NOT EDIT
 
-[% PROCESS ir_slaapkamer.tt %]
-
-button_card_templates:
-
-  activity:
-    variables:
-      device: xx
-    styles:
-      card:
-        - height: 70px
-        - background: '[[[ if (entity.state.toLowerCase() == variables.device.toLowerCase()) return "lime"; else return "yellow" ]]]'
-      icon:
-        - color: red
-        - width: 50%
-    entity: select.slaapkamer_media_center
-    show_name: false
-    tap_action:
-      action: call-service
-      service: '[[[ return "script.activity_" + variables.device ]]]'
-    hold_action:
-      action: call-service
-      service: '[[[ return "script.activity_" + variables.device ]]]'
-    icon: mdi:television
-    show_icon: true
-
-  power:
-    variables:
-      command: power
-      device: xx
-    styles:
-      card:
-        - height: 70px
-        - color: green
-        - background-color: lightyellow
-      icon:
-        - color: green
-        - width: 50%
-    show_name: true
-    tap_action:
-      action: call-service
-      service: [% ircontrol %].ircontrol_[% irdevice %]
-      service_data:
-        command: '[[[ return variables.command ]]]'
-        device:  '[[[ return variables.device  ]]]'
-    hold_action:
-      action: call-service
-      service: [% ircontrol %].ircontrol_[% irdevice %]
-      service_data:
-        command: '[[[ return variables.command ]]]'
-        device:  '[[[ return variables.device  ]]]'
-    icon: mdi:switch
-    show_icon: false
-    show_label: true
-    entity: '[[[ return "input_boolean.slaapkamer_"+variables.device ]]]'
-    label: >-
-      [[[ if (entity.state==="on") return "UIT/AAN"; else return "AAN/UIT" ]]]
-
-  general:
-    variables:
-      command: xx
-      device: xx
-    styles:
-      card:
-        - background: lightgreen
-      icon:
-        - color: black
-        - width: 50%
-    show_name: false
-    tap_action:
-      action: call-service
-      service: [% ircontrol %].ircontrol_[% irdevice %]
-      service_data:
-        command: '[[[ return variables.command ]]]'
-        device:  '[[[ return variables.device  ]]]'
-    hold_action:
-      action: call-service
-      service: [% ircontrol %].ircontrol_[% irdevice %]
-      service_data:
-        command: '[[[ return variables.command ]]]'
-        device:  '[[[ return variables.device  ]]]'
-    icon: mdi:television
-    show_icon: true
-
-  general_audio:
-    variables:
-      command: xx
-      device: audio
-    styles:
-      card:
-        - background: lightblue
-      icon:
-        - color: black
-        - width: 50%
-    show_name: false
-    tap_action:
-      action: call-service
-      service: [% ircontrol %].ircontrol_[% irdevice %]
-      service_data:
-        command: '[[[ return variables.command ]]]'
-        device:  '[[[ return variables.device  ]]]'
-    hold_action:
-      action: call-service
-      service: [% ircontrol %].ircontrol_[% irdevice %]
-      service_data:
-        command: '[[[ return variables.command ]]]'
-        device:  '[[[ return variables.device  ]]]'
-    icon: mdi:audio
-    show_icon: true
-
-  general_tv:
-    variables:
-      device: stb
-      command: xx
-    styles:
-      card:
-        - background: lightgreen
-      icon:
-        - width: 50%
-        - color: black
-    show_name: false
-    tap_action:
-      action: call-service
-      service: [% ircontrol %].ircontrol_[% irdevice %]
-      service_data:
-        command: '[[[ return variables.command ]]]'
-        device:  '[[[ return variables.device  ]]]'
-    hold_action:
-      action: call-service
-      service: [% ircontrol %].ircontrol_[% irdevice %]
-      service_data:
-        command: '[[[ return variables.command ]]]'
-        device:  '[[[ return variables.device  ]]]'
-    icon: mdi:video
-    show_icon: true
-
-  general_video:
-    variables:
-      command: xx
-    styles:
-      card:
-        - background: pink
-      icon:
-        - width: 50%
-        - color: black
-    show_name: false
-    tap_action:
-      action: call-service
-      service: '[[[ return "media_player.media_" + variables.command ]]]'
-      target:
-        entity_id: media_player.osmc
-      service_data:
-        entity_id: media_player.osmc
-    hold_action:
-      action: call-service
-      service: '[[[ return "media_player.media_" + variables.command ]]]'
-      target:
-        entity_id: media_player.osmc
-      service_data:
-        entity_id: media_player.osmc
-    icon: mdi:video
-    show_icon: true
-
-  general_kodi:
-    variables:
-      command: xx
-    styles:
-      card:
-        - background: pink
-      icon:
-        - width: 50%
-        - color: black
-    show_name: false
-    tap_action:
-      action: call-service
-      service: rest_command.kodicmd
-      data:
-        cmd: '[[[ return variables.command ]]]'
-    hold_action:
-      action: call-service
-      service: rest_command.kodicmd
-      data:
-        cmd: '[[[ return variables.command ]]]'
-    icon: mdi:video
-    show_icon: true
-
-  channel:
-    variables:
-      channel: npo1
-    styles:
-      name:
-        - color: black
-      card:
-        - background-image: >
-            [[[
-            return 'url("/local/' + variables.channel + '.png")';
-            ]]]
-        - background-repeat: no-repeat
-        - background-position: center
-        - background-color: lightgrey
-        - height: 100px
-      icon:
-        - width: 25%
-    show_name: false
-    tap_action:
-      action: call-service
-      service: '[[[ return "[% ircontrol %].channel_" + variables.channel ]]]'
-#      multi-calls: |
-#        [[[
-#        hass.callService( "script", "channel_tv" );
-#        setTimeout(() => {
-#            hass.callService( "script", "channel_" + variables.channel );
-#        }, 500);
-#        ]]]
-    hold_action:
-      multi-calls: |
-        [[[
-        hass.callService( "script", "channel_tv" );
-        setTimeout(() => {
-            hass.callService( "script", "channel_" + variables.channel );
-        }, 500);
-        ]]]
-    icon: mdi:television
-    show_icon: false
+[%- PROCESS ir_action.tt; remote = "slaapkamer" -%]
 
 title: Afstandsbediening
-[% INCLUDE kiosk.tt %]
+[%- INCLUDE kiosk.tt %]
 
 views:
   - title: Afstandsbediening
@@ -272,55 +50,88 @@ views:
                 icon:
                   - color: red
                   - width: 50%
+
+[%- MACRO activity_button(device) BLOCK -%]
+type: custom:button-card
+              icon: mdi:[% icon %]
+              styles:
+                card:
+                  - height: 70px
+                  - background: '[[[ if (entity.state.toLowerCase() == "[% device.lower() %]") return "lime"; else return "yellow" ]]]'
+                icon:
+                  - color: red
+                  - width: 50%
+              entity: select.slaapkamer_media_center
+              show_name: false
+              tap_action:
+                action: perform-action
+                perform_action: script.activity_[% device %]
+              hold_action:
+                action: perform-action
+                perform_action: script.activity_[% device %]
+              show_icon: true
+[%- END %]
+
         - type: horizontal-stack
           cards:
-            - type: custom:button-card
-              template: activity
-              variables:
-                device: "off"
-              icon: mdi:power
+            - [% activity_button( "off",        icon = "power" ) %]
               hold_action:
-                action: call-service
-                service: script.activity_reset
-            - type: custom:button-card
-              template: activity
-              variables:
-                device: tv
-              icon: mdi:television-classic
-            - type: custom:button-card
-              template: activity
-              variables:
-                device: video
-              icon: mdi:movie-open-outline
-            - type: custom:button-card
-              template: activity
-              variables:
-                device: chromecast
-              icon: mdi:cast
+                action: perform-action
+                perform_action: script.activity_reset
+            - [% activity_button( "tv",         icon = "television-classic" ) %]
+            - [% activity_button( "video",      icon = "movie-open-outline" ) %]
+            - [% activity_button( "chromecast", icon = "cast" ) %]
 
       #### Power panel. Always present.
+
+[%- MACRO power_button(device) BLOCK -%]
+type: custom:button-card
+              styles:
+                card:
+                  - height: 70px
+                  - color: green
+                  - background-color: lightyellow
+                icon:
+                  - color: green
+                  - width: 50%
+              name: [% device.upper() %]
+              show_name: true
+              tap_action:
+                [% ir_perform(remote,device,"power") %]
+              icon: mdi:switch
+              show_icon: false
+              show_label: true
+              entity: input_boolean.slaapkamer_[% device %]
+              label: >-
+                [[[ if (entity.state==="on") return "UIT/AAN"; else return "AAN/UIT" ]]]
+[%- END %]
 
       - type: vertical-stack
         cards:
         - type: horizontal-stack
           cards:
-            - type: custom:button-card
-              template: power
-              variables:
-                device: tv
-              name: TV
-            - type: custom:button-card
-              template: power
-              variables:
-                device: audio
-              name: AUDIO
-            - type: custom:button-card
-              template: power
-              variables:
-                device: stb
-              name: STB
+            - [% power_button("tv")    %]
+            - [% power_button("audio")    %]
+            - [% power_button("stb")    %]
 
       #### Volume
+
+[%- MACRO audio_button(op) BLOCK -%]
+type: custom:button-card
+              styles:
+                card:
+                  - background: lightblue
+                icon:
+                  - color: black
+                  - width: 50%
+              show_name: false
+              tap_action:
+                [% ir_perform(remote,"audio",op) %]
+              hold_action:
+                [% ir_perform(remote,"audio",op) %]
+              icon: mdi:[% icon %]
+              show_icon: true
+[%- END %]
 
       - type: custom:state-switch
         entity: >-
@@ -335,27 +146,43 @@ views:
           {% else %} false {% endif %}
         states:
          sound_card:
-            type: vertical-stack
+          type: vertical-stack
+          cards:
+          - type: horizontal-stack
             cards:
-              - type: horizontal-stack
-                cards:
-                  - type: custom:button-card
-                    template: general_audio
-                    variables:
-                      command: volume_down
-                    icon: mdi:volume-minus
-                  - type: custom:button-card
-                    template: general_audio
-                    variables:
-                      command: mute
-                    icon: mdi:volume-mute
-                  - type: custom:button-card
-                    template: general_audio
-                    variables:
-                      command: volume_up
-                    icon: mdi:volume-plus
+            - [% audio_button("volume_down", icon = "volume-minus") %]
+            - [% audio_button("volume_mute", icon = "volume-mute") %]
+            - [% audio_button("volume_up",   icon = "volume-plus") %]
 
       #### TV: Volume/Play/Pause/Subtitles/Undo
+
+[%- MACRO tv_button(dev,op) BLOCK -%]
+type: custom:button-card
+              styles:
+                card:
+                  - background: lightgreen
+                icon:
+                  - color: black
+                  - width: 50%
+              show_name: false
+              tap_action:
+                [% IF action %]
+                action: perform-action
+                perform_action: [% action;
+                ELSE;
+                ir_perform(remote,dev,op);
+                END %]
+              hold_action:
+                [% IF action %]
+                action: perform-action
+                perform_action: [% action;
+                ELSE;
+                ir_perform(remote,dev,op);
+                END %]
+              icon: mdi:[% icon %]
+              show_icon: true
+
+[%- END %]
 
       - type: custom:state-switch
         entity: >-
@@ -368,31 +195,50 @@ views:
          tv_card:
           type: vertical-stack
           cards:
-            - type: horizontal-stack
-              cards:
-                - type: custom:button-card
-                  template: general
-                  icon: mdi:subtitles-outline
-                  tap_action:
-                    action: call-service
-                    service: script.channel_subtitles
-                  long_tap_action:
-                    action: call-service
-                    service: script.channel_subtitles
-                - type: custom:button-card
-                  template: general
-                  variables:
-                    device: stb
-                    command: tv
-                  icon: mdi:undo
-                - type: custom:button-card
-                  template: general
-                  variables:
-                    device: stb
-                    command: ok
-                  icon: mdi:checkbox-marked-circle-outline
+          - type: horizontal-stack
+            cards:
+            - [% tv_button("stb", "subtitles", icon = "subtitles-outline",
+                           action = "script.subtitles_tv" ) %]
+            - [% tv_button("stb", "tv",        icon = "undo") %]
+            - [% tv_button("stb", "ok",        icon = "checkbox-marked-circle-outline" ) %]
 
       #### Video: Play/Pause/Stop/Back
+
+[%- MACRO video_button(op) BLOCK -%]
+type: custom:button-card
+                  icon: mdi:[% icon %]
+                  show_icon: true
+                  styles:
+                    card:
+                      - background: pink
+                    icon:
+                      - width: 50%
+                      - color: black
+                  show_name: false
+[%- IF op.search('\.') %]
+                  tap_action:
+                    action: perform-action
+                    perform_action: rest_command.kodicmd
+                    data:
+                      cmd: [% op %]
+                  hold_action:
+                    action: perform-action
+                    perform_action: rest_command.kodicmd
+                    data:
+                      cmd: [% op %]
+[%- ELSE %]
+                  tap_action:
+                    action: perform-action
+                    perform_action: media_player.media_[% op %]
+                    data:
+                      entity_id: media_player.osmc
+                  hold_action:
+                    action: perform-action
+                    perform_action: media_player.media_[% op %]
+                    data:
+                      entity_id: media_player.osmc
+[%- END %]
+[%- END %]
 
       - type: custom:state-switch
         entity: >-
@@ -407,59 +253,58 @@ views:
           cards:
             - type: horizontal-stack
               cards:
-                - type: custom:button-card
-                  template: general_video
-                  variables:
-                    command: play
-                  icon: mdi:play
-                - type: custom:button-card
-                  template: general_kodi
-                  variables:
-                    command: Input.Up
-                  icon: mdi:arrow-up-bold
-                - type: custom:button-card
-                  template: general_video
-                  variables:
-                    command: stop
-                  icon: mdi:stop
+                - [% video_button("play",         icon = "play") %]
+                - [% video_button("Input.Up",     icon = "arrow-up-bold") %]
+                - [% video_button("stop",         icon = "stop") %]
             - type: horizontal-stack
               cards:
-                - type: custom:button-card
-                  template: general_kodi
-                  variables:
-                    command: Input.Left
-                  icon: mdi:arrow-left-bold
-                - type: custom:button-card
-                  template: general_kodi
-                  variables:
-                    command: Input.Select
-                  icon: mdi:checkbox-outline
-                - type: custom:button-card
-                  template: general_kodi
-                  variables:
-                    command: Input.Right
-                  icon: mdi:arrow-right-bold
+                - [% video_button("Input.Left",   icon = "arrow-left-bold") %]
+                - [% video_button("Input.Select", icon = "checkbox-outline") %]
+                - [% video_button("Input.Right",  icon = "arrow-right-bold") %]
             - type: horizontal-stack
               cards:
-                - type: custom:button-card
-                  template: general_video
-                  variables:
-                    command: pause
-                  icon: mdi:pause
-                - type: custom:button-card
-                  template: general_kodi
-                  variables:
-                    command: Input.Down
-                  icon: mdi:arrow-down-bold
-                - type: custom:button-card
-                  template: general_kodi
-                  variables:
-                    command: Input.Back
-                  icon: mdi:arrow-u-left-top
+                - [% video_button("pause",        icon = "pause") %]
+                - [% video_button("Input.Down",   icon = "arrow-down-bold") %]
+                - [% video_button("Input.Back",   icon = "arrow-u-left-top") %]
 
       - type: custom:layout-break
 
       #### TV: Channels.
+
+[%- MACRO channel_cmd(channel) BLOCK;
+      prog = "0";
+      channel = prog.repeat(4-channel.length) _ channel;
+      channel.split('').join().replace('(\d)','key_$1');
+    END;
+    MACRO channel_button(channel,prog) BLOCK;
+-%]
+type: custom:button-card
+                  name: [% DEFAULT name = channel.upper(); name %]
+                  styles:
+                    name:
+                      - color: black
+                    card:
+                      - background-image: 'url("/local/[% channel %].png")'
+                      - background-repeat: no-repeat
+                      - background-position: center
+                      - background-color: lightgrey
+                      - height: 100px
+                    icon:
+                      - width: 25%
+                  show_name: false
+                  tap_action:
+                    [% ir_perform( remote,"stb", channel_cmd(prog)) %]
+                  hold_action:
+                    multi-calls: |
+                      [[[
+                      hass.callService( "script", "channel_tv" );
+                      setTimeout(() => {
+                          hass.callService( "script", "channel_[% channel %]);
+                      }, 500);
+                      ]]]
+                  icon: mdi:television
+                  show_icon: false
+[%- END %]
 
       - type: custom:state-switch
         entity: >-
@@ -474,63 +319,21 @@ views:
           cards:
             - type: horizontal-stack
               cards:
-                - type: custom:button-card
-                  template: channel
-                  variables:
-                    channel: npo1
-                  name: NPO1
-                - type: custom:button-card
-                  template: channel
-                  variables:
-                    channel: npo2
-                  name: NPO2
-                - type: custom:button-card
-                  template: channel
-                  variables:
-                    channel: npo3
-                  name: NPO3
+                - [% channel_button("npo1",   1) %]
+                - [% channel_button("npo1",   2) %]
+                - [% channel_button("npo3",   3) %]
 
             - type: horizontal-stack
               cards:
-                - type: custom:button-card
-                  template: channel
-                  variables:
-                    channel: rtl4
-                  entity: sensor.dummy
-                  name: RTL4
-                - type: custom:button-card
-                  entity: sensor.dummy
-                  template: channel
-                  variables:
-                    channel: bbc1
-                  name: BBC1
-                - type: custom:button-card
-                  entity: sensor.dummy
-                  template: channel
-                  variables:
-                    channel: bbc2
-                  name: BBC2
+                - [% channel_button("rtl4",   4) %]
+                - [% channel_button("bbc1",  26) %]
+                - [% channel_button("bbc2",  27) %]
 
             - type: horizontal-stack
               cards:
-                - type: custom:button-card
-                  template: channel
-                  variables:
-                    channel: een
-                  entity: sensor.dummy
-                  name: Eén
-                - type: custom:button-card
-                  entity: sensor.dummy
-                  template: channel
-                  variables:
-                    channel: canvas
-                  name: Canvas
-                - type: custom:button-card
-                  entity: sensor.dummy
-                  template: channel
-                  variables:
-                    channel: rtvdrenthe
-                  name: RTV Drenthe
+                - [% channel_button("een",         29, name = "Eén" ) %]
+                - [% channel_button("canvas",      30, name = "Canvas") %]
+                - [% channel_button("rtvdrenthe", 503, name = "RTV Drenthe") %]
 
       #### Media Player
 
