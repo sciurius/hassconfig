@@ -1,0 +1,47 @@
+// Tasmota IR Ready data definition for generic Philips TV
+
+title   : "Philips TV"
+brand   : Philips
+model   : Generic
+
+options {
+  device_type              : remote
+  media_protocol           : RC6
+  media_bits               : 20
+
+  // Standard (known) commands for remote.
+  media_power_data         : 0x0C
+
+  // Additional commands.
+  remote_extra_commands    : [
+    { name : blue          data : 0x70 }
+    { name : channel_down  data : 0x6D }
+    { name : channel_up    data : 0x20 }
+    { name : down          data : 0x59 }
+    { name : exit          data : 0x9F }
+    { name : green         data : 0x6E }
+    { name : info          data : 0x0F }
+    { name : key_0         data : 0x00 }
+    { name : key_1         data : 0x01 }
+    { name : key_2         data : 0x02 }
+    { name : key_3         data : 0x03 }
+    { name : key_4         data : 0x04 }
+    { name : key_5         data : 0x05 }
+    { name : key_6         data : 0x06 }
+    { name : key_7         data : 0x07 }
+    { name : key_8         data : 0x08 }
+    { name : key_9         data : 0x09 }
+    { name : left          data : 0x5A }
+    { name : menu          data : 0x54 }
+    { name : mute          data : 0x0d }
+    { name : ok            data : 0x5C }
+    { name : red           data : 0x6D }
+    { name : right         data : 0x5B }
+    { name : settings      data : 0xBF }
+    { name : text          data : 0x3C }
+    { name : up            data : 0x58 }
+    { name : volume_down   data : 0x11 }
+    { name : volume_up     data : 0x10 }
+    { name : yellow        data : 0x6F }
+  ]
+}

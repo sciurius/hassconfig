@@ -1,0 +1,25 @@
+// Tasmota IR Ready data definition for Marmitex MC621 HDMI switch
+
+title   : HDMIswitch
+brand   : Marmitek
+model   : MC621
+
+options {
+  device_type              : remote
+  media_protocol           : NEC
+  media_bits               : 32
+
+  // Additional commands.
+  remote_extra_commands    : [
+    { name:  input1   data: 0x40BF7B84 }
+    { name:  input2   data: 0x40BF5BA4 }
+    { name:  input3   data: 0x40BFDB24 }
+    { name:  input4   data: 0x40BFAA55 }
+    { name:  in_auto  data: 0x40BF9B64 }
+    { name:  ch_2_0   data: 0x40BF33CC }
+    { name:  ch_5_1   data: 0x40BFF906 }
+    { name:  ch_7_1   data: 0x40BF19E6 }
+    { name:  ch_auto  data: 0x40BFD32C }
+    { name:  arc      data: 0x40BFE916 }
+  ]
+}
