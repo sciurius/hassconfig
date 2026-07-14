@@ -13,7 +13,7 @@ CFGS      := ${CFGS_PL} ${CFGS_TT} ${CFGS_YAML}
 TCFG      := $(shell mktemp)
 
 # Tools.
-INSTALL   := install -m 0644
+INSTALL   := install -D -m 0644
 SECTIONS  := cards
 TPOPTS    :=
 TPAGE     := tpage --define sections=${SECTIONS} ${TPOPTS} --include_path=${TTLIB} --include_path=${TTLIB}/ui
@@ -43,7 +43,7 @@ ${DST}/%.yaml :: %.pl
 # Rule for templated config.
 # By also depending on the library templates we make sure they
 # are rebuilt when a library template changes.
-${DST}/%.yaml :: %.tt ${TTLIB}/ui/*
+${DST}/%.yaml :: %.tt ${TTLIB}/ui/* ${TTLIB}/*
 	${TPAGE} $< > ${TCFG}
 	${INSTALL} ${TCFG} $@
 	rm ${TCFG}
