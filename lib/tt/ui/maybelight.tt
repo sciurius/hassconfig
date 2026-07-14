@@ -1,0 +1,40 @@
+[%# Light that may be offline.          -*- tt -*-
+
+## NOTE: This requires v_anchors.tt!
+
+Arguments:
+
+entity     e.g. light.logeerkamer_verlichting
+label      defaults to "Verlichting"
+icon       defaults to "mdi:dome-light"
+
+-%][%-
+
+DEFAULT label    = "Verlichting";
+DEFAULT icon     = "mdi:dome-light"
+
+# We use two cards, of which only one is visible.
+# If the light is online, we display the first card, a common tile.
+# If the light is offline, we display a dummy sensor with state "Uit".
+
+-%]
+type: tile
+        entity: [% entity %]
+        name: [% label %]
+        icon: [% icon %]
+        visibility:
+          - entity: [% entity %]
+            <<: *v_available
+
+      - type: custom:mushroom-template-card
+        primary: [% label %]
+        secondary: "Uit"
+        icon: [% icon %]
+        color: "var(--state-inactive-color)"
+        tap_action:
+          action: more-info
+          entity: [% entity %]
+        visibility:
+          - entity: [% entity %]
+            condition: state
+            state: unavailable
