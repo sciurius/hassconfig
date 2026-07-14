@@ -5,3 +5,7 @@ default ::
 
 publish ::
 	${MAKE} ${MFLAGS} -C src publish
+
+process ::
+	mkdir -p  public/.storage
+	${MAKE} ${MFLAGS} DST="${PWD}/public" -C src publish
