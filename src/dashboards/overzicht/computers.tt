@@ -32,15 +32,15 @@ type: custom:mushroom-template-card
        badges   = []
        columns  = 2 %]
 
-      - [% INCLUDE sys2 name = "Phoenix"
-           sensor = "systems_phoenix", second = "phoenix_nvme0" %]
-      - [% INCLUDE sys2 name = "Server1" sensor = "systems_srv1" %]
+      - [% INCLUDE sys2 name = "Phoenix" sensor = "systems_phoenix",
+                                         second = "phoenix_nvme0"  %]
+      - [% INCLUDE sys2 name = "Server1" sensor = "systems_srv1"   %]
 
-      - [% INCLUDE sys2 name = "Server4" sensor = "systems_srv4" %]
+      - [% INCLUDE sys2 name = "Server4" sensor = "systems_srv4"   %]
 
-      - [% INCLUDE sys1 name = "NAS1"    sensor = "systems_nas1" %]
-      - [% INCLUDE sys1 name = "NAS2"    sensor = "systems_nas2" %]
-      - [% INCLUDE sys1 name = "HASS"    sensor = "t520_cpu" limit = 51 %]
+      - [% INCLUDE sys1 name = "NAS1"    sensor = "systems_nas1" limit = 58 %]
+      - [% INCLUDE sys1 name = "NAS2"    sensor = "systems_nas2"   %]
+      - [% INCLUDE sys1 name = "HASS"    sensor = "t520_cpu"     limit = 56 %]
       - [% INCLUDE sys1 name = "MacCho"  sensor = "systems_maccho" %]
 
       # Only shown on the hAXX system.
