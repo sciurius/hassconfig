@@ -320,7 +320,7 @@ type: custom:button-card
             - type: horizontal-stack
               cards:
                 - [% channel_button("npo1",   1) %]
-                - [% channel_button("npo1",   2) %]
+                - [% channel_button("npo2",   2) %]
                 - [% channel_button("npo3",   3) %]
 
             - type: horizontal-stack
