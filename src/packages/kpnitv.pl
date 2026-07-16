@@ -45,7 +45,7 @@ my $xp = Text::Template::Tiny->new( %$res );
 print $d->detab($xp->expand($_)) while <DATA>;
 
 __DATA__
-# KPN iTV using Webbie		     -*- hess -*-
+# KPN iTV using Webbie		     -*- hass -*-
 
 #### WARNING: This is a generated file. Changes will get lost!
 
@@ -54,5 +54,5 @@ script:
 [% script %]
 
 automation:
- 
+
 [% automation %]
