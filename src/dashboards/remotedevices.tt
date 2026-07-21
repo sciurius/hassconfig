@@ -181,6 +181,26 @@ views:
              "c_fn",
            ]; "      - "; button(b); END %]
 
+  - title: kodi
+    type: custom:horizontal-layout
+    layout:
+      max_cols: [% max_cols %]
+      width: [% width %]
+    cards:
+      [%- device = "kodi"; "\n";
+         FOREACH b IN
+           [ "left",
+             "right",
+             "play",
+             "pause",
+             "fast_forward",
+             "rewind",
+             "stop",
+             "up",
+             "down",
+             "ok",
+           ]; "      - "; button(b); END %]
+
   # - title: sony_mc
   #   type: custom:horizontal-layout
   #   layout:

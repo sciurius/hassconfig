@@ -76,6 +76,9 @@ END;
 MACRO RC6(data) BLOCK;
   "{\"Protocol\":\"RC6\",\"Bits\":20,\"Data\":\""; data; "\",\"Repeat\":0}";
 END;
+MACRO MCE(data) BLOCK;
+  "{\"Protocol\":\"RC6\",\"Bits\":36,\"Data\":\""; data; "\",\"Repeat\":0}";
+END;
 
 -%]
 
@@ -229,5 +232,20 @@ END;
         volume_down:  '[% RAW("001001111")     %]'
         volume_up:    '[% RAW("00111000010")   %]'
         yellow:       '[% RAW("0010000000010") %]'
+
+    # Kodi via IR signals
+    - name: irdata_kodi
+      state: ir38
+      attributes:
+        play:         '[% MCE("0xC800F0416")  %]'
+        pause:        '[% MCE("0xC800F0418")  %]'
+        fast_forward: '[% MCE("0xC800F0414")  %]'
+        rewind:       '[% MCE("0xC800F8415")  %]'
+        stop:         '[% MCE("0xC800F8419")  %]'
+        up:           '[% MCE("0xC800F841E")  %]'
+        down:         '[% MCE("0xC800F041F")  %]'
+        left:         '[% MCE("0xC800F8420")  %]'
+        right:        '[% MCE("0xC800F0421")  %]'
+        ok:           '[% MCE("0xC800F8422")  %]'
 
 [%- END %]
