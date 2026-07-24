@@ -1,0 +1,12 @@
+[%- MACRO notify_tts(msg) BLOCK; -%]
+{ action: notify.mobile_app_sm_a366b,
+  data: { message: TTS,
+          data: { tts_text: [% msg %],
+                  priority: high,
+                  ttl: 0,
+                  media_stream: alarm_stream_max,
+                  importance: high }
+        }
+}
+[%- END -%]
+

@@ -1,4 +1,7 @@
+[% PROCESS notify_tts.tt -%]
+
 automation:
+
 - id: Automation__Voordeurbel_Notification
   alias: Notify Voordeurbel
   description: ''
@@ -10,15 +13,7 @@ automation:
     domain: switch
   condition: []
   action:
-  - service: notify.mobile_app_sm_a366b
-    data:
-      message: TTS
-      data:
-        tts_text: Someone at the door
-        priority: high
-        ttl: 0
-        media_stream: "alarm_stream_max"
-        importance: high
+  - [% notify_tts( "Someone at the door" ) %]
   - service: script.doorbell_alarm
     data: {}
   - action: notify.info
