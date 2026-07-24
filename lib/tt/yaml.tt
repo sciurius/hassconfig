@@ -1,0 +1,13 @@
+[% # Support for YAML.
+
+  MACRO yaml(text,i) BLOCK;
+    # This is like 'indent' but does not indent the first line.
+    # If the first line is indented, this is subtracted from the
+    # overall indent.
+    base = 0;
+    IF (matches = text.match('^( +)')); base = matches.0.length; END;
+    indented = text | indent(i-base);
+    indented.trim;
+  END;
+
+%]

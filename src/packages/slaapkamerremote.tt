@@ -42,6 +42,8 @@ input_boolean:
     name: SetTop box is on
   slaapkamer_audio:
     name: Audio is on
+  subtitles:
+    name: Subtitles on
 
 # Scripts.
 
@@ -242,9 +244,24 @@ script:
 
   subtitles_tv:
     sequence:
-      - [% ir_action( remote, "stb", "text" ) %]
-      - delay: 1
-      - [% ir_action( remote, "stb", "key_8 key_8 key_8" ) %]
+      - if:
+        - condition: state
+          entity_id: input_boolean.subtitles
+          state: "on"
+        then:
+          sequence:
+          - [% ir_action( remote, "stb", "tv" ) %]
+          - action: input_boolean.turn_off
+            target:
+              entity_id: input_boolean.subtitles
+        else:
+          sequence:
+          - [% ir_action( remote, "stb", "text" ) %]
+          - delay: 1
+          - [% ir_action( remote, "stb", "key_8 key_8 key_8" ) %]
+          - action: input_boolean.turn_on
+            target:
+              entity_id: input_boolean.subtitles
 
 # Sending direct commands to Kodi.
 rest_command:
