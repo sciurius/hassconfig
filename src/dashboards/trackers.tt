@@ -68,6 +68,11 @@ views:
                 state_not: "0"
 
           - type: tile
+            entity: input_boolean.joan_is_moving
+            hide_state: true
+            name: Moving
+
+          - type: tile
             entity: button.tracker_joan_refresh_location
             name: Refresh
             hide_state: true
