@@ -56,6 +56,13 @@ lovelace-slaapkamerremote:
   show_in_sidebar: false
   filename: dashboards/slaapkamerremote.yaml
   
+lovelace-slaapkamerremote-full:
+  mode: yaml
+  title: Afstandsbediening
+  icon: mdi:remote
+  show_in_sidebar: false
+  filename: dashboards/slaapkamerremote-full.yaml
+  
 lovelace-chromecast-slaapkamer:
   mode: yaml
   title: Chromecast
