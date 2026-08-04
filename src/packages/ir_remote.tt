@@ -248,4 +248,18 @@ END;
         right:        '[% MCE("0xC800F0421")  %]'
         ok:           '[% MCE("0xC800F8422")  %]'
 
+    # Blaupunkkt Moby Airco
+    - name: irdata_airco
+      state: ir38
+      attributes:
+        fan:       '[% NEC("0x817E26D9")  %]'
+        increase:  '[% NEC("0x817EA659")  %]'
+        mode:      '[% NEC("0x817E6699")  %]'
+        swing:     '[% NEC("0x817EE619")  %]'
+        decrease:  '[% NEC("0x817E16E9")  %]'
+        timer:     '[% NEC("0x817E9669")  %]'
+        night:     '[% NEC("0x817E56A9")  %]'
+        power:     '[% NEC("0x817ED629")  %]'
+        unit:      '[% NEC("0x817E36C9")  %]'
+
 [%- END %]
