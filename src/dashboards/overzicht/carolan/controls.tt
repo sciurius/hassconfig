@@ -39,3 +39,18 @@
             entity: button.carolan_buzzer
             name: Pieper
             hide_state: true
+
+      - type: markdown
+        content: |-
+          {% set m = state_attr('sensor.carolan_notifications','latest')  |list %}
+          {% for msg in m  %}
+          {{  msg.date.strftime("%Y-%m-%d %T") }} {{ msg.message }}
+          {%  endfor  %}
+        grid_options:
+          rows: 1
+        card_mod:
+          style: |
+            ha-markdown {
+              overflow-y: scroll;
+              max-height: 40px;
+            }
