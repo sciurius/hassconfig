@@ -266,6 +266,8 @@ views:
               - type: conditional
                 conditions:
                   - entity: switch.badkamerverwarming
+                    state_not: unknown
+                  - entity: switch.badkamerverwarming
                     state_not: unavailable
                 card:
                   type: custom:button-card
