@@ -95,7 +95,7 @@ lovelace-smotty:
   mode: yaml
   title: Smotty
   icon: mdi:script
-  show_in_sidebar: true
+  show_in_sidebar: false
   filename: dashboards/smotty.yaml
   
 lovelace-trackers:
