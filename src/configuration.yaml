@@ -12,12 +12,6 @@ schedule:   !include schedules.yaml
 recorder:   !include recorder.yaml
 # Yes, there's only one recorder :)
 
-# For the NGINX proxy on HAOS.
-http:
-  use_x_forwarded_for: true
-  trusted_proxies:
-    - 172.30.33.0/24
-    
 notify:
 
   # With notification.
