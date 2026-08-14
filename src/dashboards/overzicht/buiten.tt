@@ -193,8 +193,8 @@
       - type: conditional
         conditions:
           - condition: state
-            entity: sensor.afvalwijzer_today_2
-            state_not: "geen"
+            entity: sensor.afvalwijzer_today
+            state_not: "Geen"
           - condition: state
             entity: input_boolean.afval_dismiss
             state: "off"
@@ -203,7 +203,7 @@
             state: "on"
         card:
             type: custom:mushroom-template-card
-            entity: sensor.afvalwijzer_today_2
+            entity: sensor.afvalwijzer_today
             primary: Afval
             icon: mdi:recycle
             active: true
@@ -219,14 +219,14 @@
       - type: conditional
         conditions:
           - condition: state
-            entity: sensor.afvalwijzer_tomorrow_2
-            state_not: "geen"
+            entity: sensor.afvalwijzer_tomorrow
+            state_not: "Geen"
           - condition: state
             entity: input_boolean.afval_dismiss
             state: "off"
         card:
             type: custom:mushroom-template-card
-            entity: sensor.afvalwijzer_tomorrow_2
+            entity: sensor.afvalwijzer_tomorrow
             primary: Afval (morgen)
             icon: mdi:recycle
             color: [% dash.col.default %]
