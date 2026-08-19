@@ -152,7 +152,7 @@ views:
 
           [% area = "slaapkamer" %]
           - [% INCLUDE button name = "deken",
-               entity = "switch.${area}_warmtedeken_joan" %]
+               entity = "switch.${area}_warmtedeken" %]
           - [% INCLUDE button name = "video",
                entity = "switch.${area}_media_center" %]
           - [% INCLUDE button name = "lichtje",

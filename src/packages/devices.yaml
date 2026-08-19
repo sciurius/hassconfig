@@ -144,7 +144,7 @@ script:
             - switch.radiatorfans
             - switch.pswm01
             - switch.pswm02
-            - switch.pswm03
+            - switch.slaapkamer_warmtedeken
             - switch.pswm10
             - switch.pswm12
           sequence:
