@@ -165,4 +165,50 @@ automation:
 
     action:
       - service: switch.turn_on
-        entity_id: switch.slaapkamer_warmtedeken_joan
+        entity_id: switch.slaapkamer_warmtedeken
+
+  # Various controls via IR:
+  # - warmtedeken
+  # - avondlichtje
+  - id: Automation__Slaapkamer_IR_Control
+    alias: Slaapkamer IR Control
+    description: 'Various IR controls'
+    mode: single
+
+    triggers:
+      - trigger: mqtt
+        options:
+          topic: tele/tasm11/RESULT
+
+    conditions:
+      # Filter Belle Luna remote.
+      - condition: template
+        value_template: >
+          {{ trigger.payload_json.IrReceived.Data.startswith("0x10ED")}}
+
+    actions:
+      - choose:
+
+          # Belle Luna 'ON' button.
+          - conditions:
+              - condition: template
+                value_template: '{{ trigger.payload_json.IrReceived.Data == "0x10ED00FF"}}'
+            sequence:
+              - action: switch.turn_on
+                target:
+                  entity_id: switch.slaapkamer_warmtedeken
+
+          # Belle Luna 'OFF' button.
+          - conditions:
+              - condition: template
+                value_template: '{{ trigger.payload_json.IrReceived.Data == "0x10ED40BF"}}'
+            sequence:
+              - action: switch.turn_off
+                target:
+                  entity_id: switch.slaapkamer_warmtedeken
+
+        # Belle Luna any other button.
+        default:
+          - action: light.toggle
+            target:
+              entity_id: light.slaapkamer_avondlichtje
