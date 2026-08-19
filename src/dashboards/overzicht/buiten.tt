@@ -194,7 +194,7 @@
         conditions:
           - condition: state
             entity: sensor.afvalwijzer_today
-            state_not: "Geen"
+            state_not: "geen"
           - condition: state
             entity: input_boolean.afval_dismiss
             state: "off"
@@ -220,7 +220,7 @@
         conditions:
           - condition: state
             entity: sensor.afvalwijzer_tomorrow
-            state_not: "Geen"
+            state_not: "geen"
           - condition: state
             entity: input_boolean.afval_dismiss
             state: "off"
