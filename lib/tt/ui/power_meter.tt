@@ -34,7 +34,10 @@ type: custom:mushroom-template-card
 [%- IF icon %]
         icon: "mdi:[% icon %]"[% END; END %]
         primary: [% name %]
-        secondary: "{{ states('[% sensor %]')|round(2) }} kWh"
+        secondary: >
+          {% if states('[% sensor %]')|round(2) > 0 %}
+          {{ states('[% sensor %]')|round(2) }} kWh
+          {% endif %}
         icon_tap_action:
           action: toggle
         visibility:
