@@ -7,14 +7,14 @@
        name       = "CV"
        icon       = "heating_coil"
        badges     = [ "temperature", "current" ]
-       temperature_entity = "sensor.boiler_heatingtemp"
-       current_entity     = "sensor.boiler_curflowtemp"
+       temperature_entity = "sensor.boiler_dhw_set_temperature"
+       current_entity     = "sensor.boiler_current_flow_temperature"
        navigate   = "/lovelace-overzicht/cv" %]
 
       - type: tile
-        entity: binary_sensor.boiler_heatingactive
+        entity: binary_sensor.boiler_heating_active
         name: Status
-        icon: url("/local/compass/arrow-s.png");
+        icon: mdi:text-box-outline
         card_mod:
           style:
             ha-tile-info$: |
@@ -43,13 +43,13 @@
               }
 
       - type: tile
-        entity: sensor.boiler_syspress
+        entity: sensor.boiler_system_pressure
         name: Waterdruk
         card_mod:
           style:
             .: |
               ha-card {
-                {% if (states('sensor.boiler_syspress')|float) < 1.0 %}
+                {% if (states('sensor.boiler_system_pressure')|float) < 1.0 %}
                 --card-mod-icon-color: red
                 {% endif %};
               }
@@ -57,7 +57,7 @@
       - type: custom:mushroom-template-card
         entity: input_boolean.emsgw_return_temp_high
         primary: Return Temperature
-        secondary: "{{ states('sensor.boiler_rettemp') }} °C"
+        secondary: "{{ states('sensor.boiler_return_temperature') }} °C"
         color: red
         visibility:
           - entity: entity

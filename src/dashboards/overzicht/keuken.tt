@@ -37,6 +37,8 @@
       - [% INCLUDE switching_meter
            name = "Koffie" sensor = "koffiespul" icon = "coffee-maker-outline" %]
       - [% INCLUDE switching_meter
+           name = "Expresso" sensor = "expresso" icon = "coffee-maker" %]
+      - [% INCLUDE switching_meter
            name = "Koelkast" icon = "fridge" alwayson = 1 %]
       - [% INCLUDE power_meter name = "Oven" icon = "toaster-oven" %]
         hold_action:
@@ -68,26 +70,18 @@
           - entity: timer.keuken_afzuigkap
             <<: *v_active
 
-      - type: tile
+      - type: custom:mushroom-template-card
         entity: sensor.aeg_oven_targettemperature
-        name: Oven
+        primary: Oven
+        icon: mdi:thermostat
         color: red
+        secondary: "{{ states('sensor.aeg_oven_displaytemperature') }} / {{ states('sensor.aeg_oven_targettemperature')|int }} °C"
         visibility:
           - entity: sensor.aeg_oven_targettemperature
             <<: *v_available
           - entity: sensor.aeg_oven_appliancestate
             condition: state
             state: "Running"
-        card_mod:
-          style:
-            ha-tile-info$: |
-              .secondary {
-                visibility: hidden;
-                display: inline;
-              }
-              .secondary:before {
-                visibility: visible;
-                content: "{{ states('sensor.aeg_oven_displaytemperature') }} / {{ states('sensor.aeg_oven_targettemperature')|int }} °C"
 
       - type: tile
         entity: sensor.aeg_oven_starttime

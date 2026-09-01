@@ -85,12 +85,13 @@
         visibility:
           - entity: timer.badkamerverwarming
             <<: *v_active
-            
-      - type: tile
-        entity: input_boolean.badkamerverwarming_on_doorbell
-        name: Deurbel actief
-        visibility:
-          - entity: switch.badkamerverwarming
-            <<: *v_available
+
+#      # Switch on verwarming when doorbell is pressed.
+#      - type: tile
+#        entity: input_boolean.badkamerverwarming_on_doorbell
+#        name: Deurbel actief
+#        visibility:
+#          - entity: switch.badkamerverwarming
+#            <<: *v_available
 
 

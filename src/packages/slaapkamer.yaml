@@ -181,7 +181,7 @@ automation:
           topic: tele/tasm11/RESULT
 
     conditions:
-      # Filter Belle Luna remote.
+      # Filter Bello Luna remote.
       - condition: template
         value_template: >
           {{ trigger.payload_json.IrReceived.Data.startswith("0x10ED")}}
@@ -189,7 +189,7 @@ automation:
     actions:
       - choose:
 
-          # Belle Luna 'ON' button.
+          # Bello Luna 'ON' button.
           - conditions:
               - condition: template
                 value_template: '{{ trigger.payload_json.IrReceived.Data == "0x10ED00FF"}}'
@@ -198,7 +198,7 @@ automation:
                 target:
                   entity_id: switch.slaapkamer_warmtedeken
 
-          # Belle Luna 'OFF' button.
+          # Bello Luna 'OFF' button.
           - conditions:
               - condition: template
                 value_template: '{{ trigger.payload_json.IrReceived.Data == "0x10ED40BF"}}'
@@ -207,7 +207,28 @@ automation:
                 target:
                   entity_id: switch.slaapkamer_warmtedeken
 
-        # Belle Luna any other button.
+          # Bello Luna buttons (left side). Toggle MC.
+          - conditions:
+            - condition: or
+              conditions:
+              - condition: template
+                # 2H
+                value_template: '{{ trigger.payload_json.IrReceived.Data == "0x08B704FB"}}'
+              - condition: template
+                # 6H
+                value_template: '{{ trigger.payload_json.IrReceived.Data == "0x08B708F7"}}'
+              - condition: template
+                # CANDLE
+                value_template: '{{ trigger.payload_json.IrReceived.Data == "0x08B70CF3"}}'
+              - condition: template
+                # DIM-
+                value_template: '{{ trigger.payload_json.IrReceived.Data == "0x08B710EF"}}'
+            sequence:
+              - action: switch.toggle
+                target:
+                  entity_id: switch.slaapkamer_media_center
+
+        # Bello Luna any other button. Toggle light.
         default:
           - action: light.toggle
             target:

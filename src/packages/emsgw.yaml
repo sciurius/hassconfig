@@ -135,7 +135,7 @@ automation:
 
     trigger:
       - platform: numeric_state
-        entity_id: sensor.boiler_syspress
+        entity_id: sensor.boiler_system_pressure
         below: '0.85'
         for:
           hours: 0
@@ -236,14 +236,14 @@ automation:
     trigger:
       - platform: numeric_state
         id: too_high
-        entity_id: sensor.boiler_rettemp
+        entity_id: sensor.boiler_return_temperature
         above: 55
         for: "00:05:00"
 
     condition: >
       {{ is_state('input_boolean.emsgw_return_temp_high','off')
          and
-         states('sensor.boiler_dhw_curflow')|float <= 0
+         states('sensor.boiler_current_flow_temperature')|float <= 0
       }}
       
     action:
@@ -258,7 +258,7 @@ automation:
     trigger:
       - platform: numeric_state
         id: ok_again
-        entity_id: sensor.boiler_rettemp
+        entity_id: sensor.boiler_return_temperature
         below: 55
         for: "00:05:00"
 
@@ -313,16 +313,16 @@ automation:
 
     trigger:
       - platform: state
-        entity_id: sensor.ems_esp_shower_duration
+        entity_id: sensor.ems_esp_shower_shower_duration
 
     action:
       - action: notify.info
         data:
           message: >
             Shower: {{
-            as_timestamp(states('sensor.ems_esp_shower_timestamp')) 
+            as_timestamp(states('sensor.ems_esp_shower_shower_timestamp')) 
             | timestamp_custom('%-d %b %-H:%M') }} -- {{
-            states('sensor.ems_esp_shower_duration')|int
+            states('sensor.ems_esp_shower_shower_duration')|int
             | timestamp_custom('%-M\'%S"') }}
 
   - id: Automation__CV_RadiatorFans
@@ -332,7 +332,7 @@ automation:
 
     trigger:
       - platform: state
-        entity_id: binary_sensor.boiler_heatingactive
+        entity_id: binary_sensor.boiler_heating_active
         to: "on"
 
     action:

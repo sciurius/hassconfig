@@ -36,9 +36,13 @@
       - type: tile
         entity: light.slaapkamer_avondlichtje
 
-      - [% INCLUDE power_meter
-           name = "Media Center" sensor = "slaapkamer_media_center"
-           icon = "television" %]
+      - type: tile
+        entity: switch.slaapkamer_media_center
+        icon: mdi:television
+
+#      - [% INCLUDE power_meter
+#           name = "Media Center" sensor = "slaapkamer_media_center"
+#           icon = "television" %]
 
       - type: shortcut
         label: Media Center

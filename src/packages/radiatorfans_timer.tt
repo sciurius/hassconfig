@@ -9,7 +9,7 @@
 
     trigger:
       - platform: state
-        entity_id: binary_sensor.boiler_heatingactive
+        entity_id: binary_sensor.boiler_heating_active
         to: "off"
 
     action:
@@ -22,7 +22,7 @@
 
     trigger:
       - platform: state
-        entity_id: binary_sensor.boiler_heatingactive
+        entity_id: binary_sensor.boiler_heating_active
         to: "on"
       - platform: state
         entity_id: switch.radiatorfans

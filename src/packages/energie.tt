@@ -151,6 +151,7 @@ automation:
   # If the boiler is completely heated up, register it.
   - id: Automation__ExsBoiler_Hot
     alias: ExsBoiler Hot
+    initial_state: false
     mode: single
     triggers:
       - trigger: numeric_state
@@ -166,6 +167,8 @@ automation:
 
   # Reset the boiler state at midnight.
   - id: Automation__ExsBoiler_Reset
+    alias: ExsBoiler Reset
+    initial_state: false
     triggers:
       - trigger: time
         at: "00:00:00"

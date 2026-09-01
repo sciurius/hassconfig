@@ -88,4 +88,4 @@ type: tile
             <<: *v_available
 
       - [% INCLUDE timed.tt name = "Scoot"  switch = "scootlader" %]
-      - [% INCLUDE timed.tt name = "Fiets"  switch = "fietslader" %]
+#      - [%# INCLUDE timed.tt name = "Fiets"  switch = "fietslader" %]

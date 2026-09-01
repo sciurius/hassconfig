@@ -8,7 +8,7 @@
    name     = "Energie"
    icon     = "lightning-bolt"
    badges   = [ "flowtemp" ]
-   flowtemp_entity = "sensor.boiler_curflowtemp"
+   flowtemp_entity = "sensor.boiler_current_flow_temperature"
    navigate = "/lovelace-overzicht/energie"
    %]
 
@@ -46,3 +46,4 @@
           action: navigate
           navigation_path: /lovelace-growatt
         icon: mdi:solar-power
+

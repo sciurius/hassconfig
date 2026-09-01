@@ -106,6 +106,7 @@ views:
     path: hal
     [% sections %]:
       - !include overzicht/hal.yaml
+      - !include overzicht/traplift.yaml
 
   - title: Kantoor
     path: kantoor
