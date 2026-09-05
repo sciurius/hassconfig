@@ -63,13 +63,13 @@
             above: 0
   
       - type: tile
-        entity: sensor.boiler_dhw_curflow
+        entity: sensor.boiler_dhw_current_tap_water_flow
         name: Warm water
         icon: mdi:shower
         visibility:
-          - entity: sensor.boiler_dhw_curflow
+          - entity: sensor.boiler_dhw_current_tap_water_flow
             <<: *v_available
-          - entity: sensor.boiler_dhw_curflow
+          - entity: sensor.boiler_dhw_current_tap_water_flow
             condition: numeric_state
             above: 0
 
