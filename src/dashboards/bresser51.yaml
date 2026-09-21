@@ -95,10 +95,22 @@ views:
                 name: Totaal
               - entity: sensor.bresser51_rain_1h
                 name: Laatste uur
+              - entity: sensor.bresser51_rain_stats_hourly
+                name: Dit uur
+                icon: mdi:weather-rainy
+              - entity: sensor.bresser51_rain_stats_daily
+                name: Vandaag
+                icon: mdi:weather-rainy
               - entity: sensor.bresser51_rain_24h
                 name: Laatste 24 uur
+              - entity: sensor.bresser51_rain_stats_weekly
+                name: Deze week
+                icon: mdi:weather-rainy
               - entity: sensor.bresser51_rain_168h
                 name: Laatste 168 uur
+              - entity: sensor.bresser51_rain_stats_monthly
+                name: Deze maand
+                icon: mdi:weather-rainy
               - entity: sensor.bresser51_rain_earliest
                 name: 168 uur waarde
               - entity: sensor.bresser51_rain_offset
@@ -149,7 +161,7 @@ views:
             card:
               type: markdown
               content: >-
-                  {{ state_attr("binary_sensor.knmi_warning","description) }}
+                  {{ state_attr("binary_sensor.knmi_warning","description") }}
               name: Waarschuwing
               title: Waarschuwing
           - type: weather-forecast

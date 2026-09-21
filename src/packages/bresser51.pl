@@ -254,15 +254,14 @@ template:
 
       # Wind Chill (Feels like) temperature.
       # JAG/TI formula.
-      # Correction in line 3 is for 1.5m level measurement of the wind
+      # Correction of 1.5 is for 1.5m level measurement of the wind
       # speed instead of the required 10m.
       - name: Bresser51 Wind Chill
         state: |
-          {% set t = states('sensor.bresser51_temperature')|float %}
-          {% set s = states('sensor.bresser51_wind_speed')|float %}
-          {% set s = s * 1.5 %}
-          {% set chill = (13.12 + 0.6215 * t + ( 0.4867 * t - 13.96 ) * s ** 0.16) %}
-          {% if ( chill > t ) %}{% set chill = t %}{% endif %}
+          {% set t1 = states('sensor.bresser51_temperature')|float %}
+          {% set t2 = 1.5 * states('sensor.bresser51_wind_speed')|float %}
+          {% set chill = (13.12 + 0.6215 * t1 + ( 0.4867 * t1 - 13.96 ) * t2 ** 0.16) %}
+          {% if ( chill > t1 ) %}{% set chill = t1 %}{% endif %}
           {{ chill|round(1) }}
         availability: >-
           {{ states('sensor.bresser51_wind_speed') != 'unknown'
@@ -343,7 +342,7 @@ template:
           {% set x = states('sensor.bresser51_db_rain_24h') %}
           {% if x == "unknown" %}
           {% set x = states('sensor.bresser51_rain_earliest') %}
-          {% endif %} 
+          {% endif %}
           {{ ((states('sensor.bresser51_rain') | float) - ( x | float) ) | round(1) }} 
 
       # Rain (last 168 hours (week));
@@ -418,3 +417,48 @@ logbook:
       - sensor.bresser51_time
     entity_globs:
       - sensor.bresser51_wind*
+
+sensor:
+
+  # Must keep an eye on the 1h stats. Not sure if they are correct.
+  - platform: statistics
+    entity_id: sensor.bresser51_rain
+    state_characteristic: change
+    name: Bresser51 Rain Stats Hourly
+    unique_id: bresser51_rain_stats_hourly
+    keep_last_sample: true
+    sampling_size: 10
+    precision: 1
+    max_age:
+      hours: 1
+
+  - platform: statistics
+    entity_id: sensor.bresser51_rain
+    state_characteristic: change
+    name: Bresser51 Rain Stats Daily
+    unique_id: bresser51_rain_stats_daily
+    keep_last_sample: true
+    precision: 1
+    max_age:
+      days: 1
+
+  - platform: statistics
+    entity_id: sensor.bresser51_rain
+    state_characteristic: change
+    name: Bresser51 Rain Stats Weekly
+    unique_id: bresser51_rain_stats_weekly
+    keep_last_sample: true
+    precision: 1
+    max_age:
+      days: 7
+
+  - platform: statistics
+    entity_id: sensor.bresser51_rain
+    state_characteristic: change
+    name: Bresser51 Rain Stats Monthly
+    unique_id: bresser51_rain_stats_monthly
+    keep_last_sample: true
+    precision: 1
+    max_age:
+      days: 30
+
