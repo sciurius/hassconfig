@@ -43,7 +43,7 @@ template:
       - name: 'Boiler Status Text'
         unique_id: boiler_status_text
         state: >
-          {% set sc = states('sensor.boiler_servicecodenumber') %}
+          {% set sc = states('sensor.boiler_service_code_number') %}
           {% if sc == '200' %} CH active
           {% elif sc == '201' %} HW active
           {% elif sc == '202' %} CH anti cycle
@@ -125,6 +125,16 @@ sensor:
     sampling_size: 300
     max_age:
       hours: 1
+
+  - platform: integration
+    name: Tap Water Total
+    unique_id: tap_water_total
+    source: sensor.boiler_dhw_current_tap_water_flow
+    round: 1
+    method: left
+    unit_time: min
+    max_sub_interval:
+      seconds: 10
 
 automation:
 
@@ -339,3 +349,19 @@ automation:
       - service_template: 'switch.turn_{{trigger.to_state.state}}'
         entity_id: switch.radiatorfans
 
+  - id: Automation__CV_Party
+    alias: CV Cool Party
+    description: 'Decrease temp when partying'
+    mode: single
+    triggers:
+      - trigger: numeric_state
+        entity_id:
+          - number.thermostat_hc1_party
+        above: 0
+    actions:
+      - action: number.decrement
+        metadata: {}
+        target:
+          entity_id: number.thermostat_hc1_seltemp
+        data:
+          amount: 2
