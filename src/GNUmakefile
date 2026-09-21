@@ -5,10 +5,11 @@ DST       = ${HADIR}/config
 LIB       := ../lib
 TTLIB     := ${LIB}/tt
 PLLIB     := ${LIB}/perl5
-CFGS_PL   := $(basename $(shell find * -name '*.pl'   -print))
-CFGS_TT   := $(basename $(shell find * -name '*.tt'   -print))
-CFGS_YAML := $(basename $(shell find * -name '*.yaml' -print))
-CFGS_PYS  := $(shell find * -name '*.py'   -print)
+FFPR	  := -path todo -prune -o
+CFGS_PL   := $(basename $(shell find * ${FFPR} -name '*.pl'   -print))
+CFGS_TT   := $(basename $(shell find * ${FFPR} -name '*.tt'   -print))
+CFGS_YAML := $(basename $(shell find * ${FFPR} -name '*.yaml' -print))
+CFGS_PYS  := $(shell find * ${FFPR} -name '*.py'   -print)
 CFGS      := ${CFGS_PL} ${CFGS_TT} ${CFGS_YAML}
 TCFG      := $(shell mktemp)
 
