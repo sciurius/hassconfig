@@ -236,6 +236,12 @@ template:
         state: >-
           {{ ((states('sensor.nextcloud_nextcloud_system_freespace')|int(0))/1073741824)|int }}
 
+      - name: Buiten Beter Binnen
+        unique_id: buiten_beter_binnen
+        state: >-
+          {{ (( states('sensor.bresser51_temperature')|float(0) ) -
+              ( states('sensor.woonkamer_temperature')|float(0) )) | round(1) }}
+        unit_of_measurement: °C
 
 #      - name: a36_a36_battery
 #        unique_id: a36_a36_battery

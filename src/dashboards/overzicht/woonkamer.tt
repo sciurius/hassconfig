@@ -6,9 +6,6 @@
 [% INCLUDE section.tt
        name = "Woonkamer"
        icon = "sofa"
-       badges = [ "temperature", "light" ]
-       temperature_entity = "sensor.thermostat_hc1_currtemp"
-       light_entity = "light.woonkamer_tafel"
        navigate = "/lovelace-overzicht/woonkamer" %]
 
       - type: custom:mushroom-template-card
@@ -19,24 +16,40 @@
         secondary: '{{ states("sensor.thermostat_setting") }} °C ({{ states("select.thermostat_hc1_mode")|capitalize }})'
 
       - type: tile
+        entity: light.woonkamer_tafel
+        name: Tafel
+        grid_options:
+          columns: 6
+
+      - type: tile
         entity: switch.woonkamer_sound_system
         name: Music Center
         icon: mdi:music-circle-outline
 
+#      - type: custom:mushroom-template-card
+#        primary: Temperatuur
+#        icon: mdi:thermometer-water
+#        color: var(--state-icon-color)
+#        entity: sensor.woonkamer_temperature
+#        secondary: >-
+#          {{ states('sensor.woonkamer_temperature')|round(1) }} °C -
+#          {{ states('sensor.woonkamer_humidity')|round(0) }} %
+#        icon_tap_action:
+#          action: more-info
+#          entity: sensor.woonkamer_humidity
+#        visibility:
+#          - entity: sensor.woonkamer_temperature
+#            <<: *v_available
+
       - type: custom:mushroom-template-card
-        primary: Temperatuur
-        icon: mdi:thermometer-water
-        color: var(--state-icon-color)
-        entity: sensor.woonkamer_temperature
-        secondary: >-
-          {{ states('sensor.woonkamer_temperature')|round(1) }} °C -
-          {{ states('sensor.woonkamer_humidity')|round(0) }} %
-        icon_tap_action:
-          action: more-info
-          entity: sensor.woonkamer_humidity
-        visibility:
-          - entity: sensor.woonkamer_temperature
-            <<: *v_available
+        entity: sensor.buiten_beter_binnen
+        icon: mdi:sun-snowflake
+        color: >-
+          {% if   states(entity)|int <  1 %} blue
+          {% elif states(entity)|int < 10 %} green
+          {% else %} red {% endif %}
+        primary: Bu Be Bi
+        secondary: "{{ states(entity) }} °C"
 
       - type: tile
         entity: light.binnenkerstverlichting1
