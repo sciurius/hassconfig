@@ -1,0 +1,26 @@
+[% total = "sensor.tap_water_total" -%]
+
+type: vertical-stack
+title: Warm water
+
+cards:
+
+  - type: statistics-graph
+    chart_type: bar
+    period: day
+    entities:
+      - [% total %]
+    stat_types:
+      - change
+    days_to_show: 7
+    hide_legend: true
+
+  - type: statistics-graph
+    chart_type: bar
+    period: hour
+    entities:
+      - [% total %]
+    stat_types:
+      - change
+    days_to_show: 1
+    hide_legend: true
