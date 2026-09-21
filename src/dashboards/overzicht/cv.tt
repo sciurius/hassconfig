@@ -11,48 +11,35 @@
        current_entity     = "sensor.boiler_current_flow_temperature"
        navigate   = "/lovelace-overzicht/cv" %]
 
-      - type: tile
+      - type: custom:mushroom-template-card
         entity: binary_sensor.boiler_heating_active
-        name: Status
+        primary: Status
         icon: mdi:text-box-outline
-        card_mod:
-          style:
-            ha-tile-info$: |
-              .secondary {
-                visibility: hidden;
-                display: inline;
-              }
-              .secondary:before {
-                visibility: visible;
-                content: '{{ states("sensor.boiler_status_text") }}';
-              }
+        color: >-
+          var(--state-icon-color)
+        secondary: '{{ states("sensor.boiler_status_text") }}'
 
-      - type: tile
+      - type: custom:mushroom-template-card
         entity: climate.thermostat_hc1
-        name: Thermostaat
-        card_mod:
-          style:
-            ha-tile-info$: |
-              .secondary {
-                visibility: hidden;
-                display: inline;
-              }
-              .secondary:before {
-                visibility: visible;
-                content: '{{ states("sensor.thermostat_setting") }} °C ({{ states('select.thermostat_hc1_mode')|capitalize }})';
-              }
+        primary: Thermostaat
+        secondary: >-
+          {{ states("sensor.thermostat_setting") }} °C ({{ states('select.thermostat_hc1_mode')|capitalize }})
+        icon: mdi:thermostat
+        color: >-
+          var(--state-icon-color)
 
-      - type: tile
+      - type: custom:mushroom-template-card
         entity: sensor.boiler_system_pressure
-        name: Waterdruk
-        card_mod:
-          style:
-            .: |
-              ha-card {
-                {% if (states('sensor.boiler_system_pressure')|float) < 1.0 %}
-                --card-mod-icon-color: red
-                {% endif %};
-              }
+        primary: Waterdruk
+        secondary: "{{ states(entity)|float(0)|round(1) }} bar"
+        icon: >-
+          {% if   (states(entity)|float) < 0.8 %} mdi:gauge-empty
+          {% elif (states(entity)|float) < 1.0 %} mdi:gauge-low
+          {% elif (states(entity)|float) > 1.5 %} mdi:gauge-full
+          {% else %} mdi:gauge {% endif %}
+        color: >-
+          {% if (states(entity)|float) < 1.0 %} red
+          {% else %} var(--state-icon-color) {% endif %}
 
       - type: custom:mushroom-template-card
         entity: input_boolean.emsgw_return_temp_high
@@ -64,10 +51,29 @@
             condition: state
             state: true
 
-[% FOREACH i IN [ "party" "pause" ] %]
       - type: tile
+        entity: sensor.thermostat_party_time
+        name: Suspend
+        vertical: false
+        tap_action:
+          action: perform-action
+          perform_action: number.decrement
+          target:
+            entity_id: number.thermostat_hc1_party
+        hold_action:
+          action: perform-action
+          perform_action: number.increment
+          target:
+            entity_id: number.thermostat_hc1_party
+            
+[% FOREACH i IN [ "party" "pause" ] %]
+      - type: custom:mushroom-template-card
         entity: sensor.thermostat_[% i %]_time
-        name: [% i.ucfirst %]
+        primary: [% i.ucfirst %]
+        icon: "{{ state_attr(entity,'icon') }}"
+        color: var(--state-icon-color)
+        secondary: >-
+          {{ states(entity) }} h {{ states('sensor.thermostat_setting') }} °C
         visibility:
           - entity: sensor.thermostat_[% i %]_time
             condition: state
