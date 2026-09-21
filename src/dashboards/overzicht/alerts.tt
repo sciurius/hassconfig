@@ -1,0 +1,31 @@
+# Dashboard: Overzicht -- CV       -*- hass -*-
+# WARNING: This is a generated file -- DO NOT EDIT
+
+[% PROCESS v_anchors.tt -%]
+
+[% INCLUDE section.tt
+       name       = "Alerts"
+       badges     = []
+       columns    = 1
+      %]
+
+      - type: custom:alert-ticker-card
+        cycle_interval: 5
+        show_when_clear: false
+        clear_message: ''
+        clear_theme: success
+        alerts:
+          - entity: sensor.boiler_system_pressure
+            operator: <
+            state: '1.0'
+            message: >-
+              Boiler System pressure {{
+              states('sensor.boiler_system_pressure') }} bar
+            priority: 1
+            theme: emergency
+            icon: ''
+            name: CV Pressure Low
+        cycle_animation: fold
+        overlay_mode: true
+        overlay_position: top
+        overlay_duration: 0
