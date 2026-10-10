@@ -11,7 +11,7 @@ views:
 
         - type: conditional
           conditions:
-            - entity: binary_sensor.aeg_oven_appliancestatus
+            - entity: sensor.aeg_oven_appliancestate
               state_not: "xx"
               # Sometimes it reports disconnected, while everything is functional.
 
@@ -41,11 +41,11 @@ views:
                 name: " "
                 icon: mdi:remote
 
-              - entity: button.aeg_oven_executecommand
+              - entity: button.aeg_oven_executecommand_3
                 name: Start
                 icon: mdi:play
 
-              - entity: button.aeg_oven_executecommand_2
+              - entity: button.aeg_oven_executecommand_4
                 name: Stop
                 icon: mdi:stop
 
@@ -80,7 +80,7 @@ views:
                 
         - type: conditional
           conditions:
-            - entity: binary_sensor.aeg_oven_appliancestatus
+            - entity: sensor.aeg_oven_appliancestate
               state: "off"
 
           card:
@@ -90,7 +90,7 @@ views:
             show_header_toggle: false
             entities:
 
-              - entity: binary_sensor.aeg_oven_appliancestatus
+              - entity: sensor.aeg_oven_appliancestate
                 name: Connected
                 icon: mdi:close-network-outline
 
