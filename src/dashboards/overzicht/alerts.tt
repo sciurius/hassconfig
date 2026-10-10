@@ -5,7 +5,8 @@
 
 [% INCLUDE section.tt
        name       = "Alerts"
-       badges     = []
+       badges     = [ "testing" ]
+       testing_entity = "input_boolean.testing_alerts"
        columns    = 1
       %]
 
@@ -15,9 +16,8 @@
         clear_message: ''
         clear_theme: success
         alerts:
+
           - entity: sensor.boiler_system_pressure
-            operator: <
-            state: '1.0'
             message: >-
               Boiler System pressure {{
               states('sensor.boiler_system_pressure') }} bar
@@ -25,6 +25,64 @@
             theme: emergency
             icon: ''
             name: CV Pressure Low
+            conditions_logic: or
+            conditions:
+              - entity: sensor.boiler_system_pressure
+                operator: <
+                state: '1.0'
+              - entity: input_boolean.testing_alerts
+                state: "on"
+
+          - entity: sensor.phoenix_nvme0_temperature_updated
+            message: "Phoenix offline"
+            conditions_logic: or
+            conditions:
+              - entity: sensor.phoenix_nvme0_temperature_updated
+                operator: older
+                state: "90"
+              - entity: input_boolean.testing_alerts
+                state: "on"
+
+          - entity: sensor.systems_srv1_timestamp
+            message: "SRV1 offline"
+            conditions_logic: or
+            conditions:
+              - entity: sensor.systems_srv1_timestamp
+                operator: older
+                state: "120"
+              - entity: input_boolean.testing_alerts
+                state: "on"
+
+          - entity: sensor.systems_srv4_timestamp
+            message: "SRV4 offline"
+            conditions_logic: or
+            conditions:
+              - entity: sensor.systems_srv4_timestamp
+                operator: older
+                state: "120"
+              - entity: input_boolean.testing_alerts
+                state: "on"
+
+          - entity: binary_sensor.carolan_vehicle_health
+            message: "Carolan health problem"
+            conditions_logic: or
+            conditions:
+              - entity: binary_sensor.carolan_vehicle_health
+                operator: "="
+                state: "on"
+              - entity: input_boolean.testing_alerts
+                state: "on"
+            
+          - entity: sensor.carolan_warning_lights
+            message: "Carolan warning lights"
+            conditions_logic: or
+            conditions:
+              - entity: sensor.carolan_warning_lights
+                operator: ">"
+                state: 0
+              - entity: input_boolean.testing_alerts
+                state: "on"
+            
         cycle_animation: fold
         overlay_mode: true
         overlay_position: top
