@@ -36,39 +36,14 @@
            name = "Vaatwasser" icon = "dishwasher" %]
       - [% INCLUDE switching_meter
            name = "Koffie" sensor = "koffiespul" icon = "coffee-maker-outline" %]
-      - [% INCLUDE switching_meter
-           name = "Expresso" sensor = "expresso" icon = "coffee-maker" %]
+#      - [% INCLUDE switching_meter
+#           name = "Expresso" sensor = "expresso" icon = "coffee-maker" %]
       - [% INCLUDE switching_meter
            name = "Koelkast" icon = "fridge" alwayson = 1 %]
       - [% INCLUDE power_meter name = "Oven" icon = "toaster-oven" %]
         hold_action:
           action: navigate
           navigation_path: /lovelace-oven/0
-
-      - type: tile
-        visibility:
-          - entity: switch.keuken_afzuigkap
-            <<: *v_available
-        name: Afzuigkap
-        icon: mdi:fan
-        card_mod:
-          style:
-            ha-tile-info$: |
-              .secondary {
-                visibility: hidden;
-                display: inline;
-              }
-              .secondary:before {
-                visibility: visible;
-                content: "{% if is_state('switch.keuken_afzuigkap','on') %}Ready{% else %}Off{% endif %}"
-        
-      - type: tile
-        entity: timer.keuken_afzuigkap
-        icon: mdi:fan
-        name: Timer
-        visibility:
-          - entity: timer.keuken_afzuigkap
-            <<: *v_active
 
       - type: custom:mushroom-template-card
         entity: sensor.aeg_oven_targettemperature
