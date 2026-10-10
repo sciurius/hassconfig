@@ -196,6 +196,30 @@ automation:
           message: Shelley temperature {{ states('sensor.shelly1l_1_tasmota_analog_temperature')
             }} °C
 
+  # - id: Automation__watchdog_phoenix
+  #   alias: Watchdog Phoenix
+  #   description: Alarm is Phoenix does not report timely.
+  #   mode: single
+  #   triggers:
+  #     - trigger: spook.stale
+  #       target:
+  #         entity_id: sensor.phoenix_nvme0_temperature_updated
+  #       options:
+  #         for:
+  #           hours: 0
+  #           minutes: 2
+  #           seconds: 0
+  #   actions:
+  #     - action: notify.mobile_app_sm_a366b
+  #       data:
+  #         message: TTS
+  #         data:
+  #           tts_text: Phoenix Offline
+  #           priority: high
+  #           ttl: 0
+  #           media_stream: alarm_stream_max
+  #           importance: high
+
 mqtt:
   sensor:
     - name: Phoenix NVMe0 Temperature
@@ -204,6 +228,11 @@ mqtt:
       unique_id: sensor__phoenix_nvme0_temperature
       unit_of_measurement: "°C"
       value_template: "{{ value_json.temperature }}"
+    - name: Phoenix NVMe0 Temperature Updated
+      state_topic: phoenix/nvme0/status
+      device_class: timestamp
+      unique_id: sensor__phoenix_nvme0_temperature_updated
+      value_template: "{{ value_json.timeutc }}"
 
 command_line:
 
