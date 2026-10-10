@@ -1,0 +1,18 @@
+# Dashboard: Overzicht -- Media       -*- hass -*-
+# WARNING: This is a generated file -- DO NOT EDIT
+
+[% PROCESS v_anchors.tt %]
+
+[% INCLUDE section.tt
+       name = "Media"
+       icon = "disc-player"
+       badges = []
+       navigate = "/lovelace-overzicht/media" %]
+
+      - type: custom:mushroom-template-card
+        entity: sensor.allmusic_total_albums
+        primary: "{{ states(entity) }} albums"
+        secondary: "{{ states('sensor.allmusic_total_artists') }} artists"
+        icon: mdi:play-network-outline
+        color: var(--state-icon-color)
+        

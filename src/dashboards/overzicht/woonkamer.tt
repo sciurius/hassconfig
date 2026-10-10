@@ -26,6 +26,28 @@
         name: Music Center
         icon: mdi:music-circle-outline
 
+      - type: tile
+        entity: media_player.picky_lms
+        name: Picky (LMS)
+        visibility:
+          - condition: or
+            conditions:
+              - condition: state
+                state: playing
+              - condition: state
+                state: paused
+
+      - type: tile
+        entity: media_player.picky_ma
+        name: Picky (MA)
+        visibility:
+          - condition: or
+            conditions:
+              - condition: state
+                state: playing
+              - condition: state
+                state: paused
+
 #      - type: custom:mushroom-template-card
 #        primary: Temperatuur
 #        icon: mdi:thermometer-water

@@ -30,16 +30,17 @@ views:
 
     [% sections %]:
 
+      - !include overzicht/alerts.yaml
       - !include overzicht/buiten.yaml
 
 #      - type: vertical-stack
 #        cards:
-      - !include overzicht/alerts.yaml
       - !include overzicht/weerstation.yaml
 
       - type: vertical-stack
         cards:
         - !include overzicht/woonkamer.yaml
+        - !include overzicht/media.yaml
         - !include overzicht/hal.yaml
 
       - type: vertical-stack
@@ -67,7 +68,8 @@ views:
         - !include overzicht/computers.yaml
 
       - !include overzicht/laders.yaml
-      - !include overzicht/picky.yaml
+      - !include overzicht/picky_ma.yaml
+      - !include overzicht/picky_lms.yaml
       - !include overzicht/osmc.yaml
 
       - !include overzicht/carolan.yaml

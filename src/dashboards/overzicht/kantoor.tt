@@ -107,6 +107,39 @@
         name: Printer
         icon: mdi:printer
 
+      - type: tile
+        entity: media_player.phoenix_squirrel_nl
+        name: Phoenix
+        visibility:
+          - condition: or
+            conditions:
+              - condition: state
+                state: playing
+              - condition: state
+                state: paused
+      
+      - type: tile
+        entity: media_player.sleepy_ma
+        name: Sleepy (MA)
+        visibility:
+          - condition: or
+            conditions:
+              - condition: state
+                state: playing
+              - condition: state
+                state: paused
+      
+      - type: tile
+        entity: media_player.sleepy_lms
+        name: Sleepy (LMS)
+        visibility:
+          - condition: or
+            conditions:
+              - condition: state
+                state: playing
+              - condition: state
+                state: paused
+      
       - type: custom:mushroom-template-card
         entity: light.bulb01
         primary: Media Center actief
