@@ -32,11 +32,12 @@
       - type: horizontal-stack
         cards:
           - type: tile
-            entity: button.carolan_hazard_lights
+            # Should be a button!
+            entity: switch.carolan_hazard_lights
             name: Knipperlichten
             hide_state: true
           - type: tile
-            entity: button.carolan_buzzer
+            entity: button.carolan_sound_buzzer
             name: Pieper
             hide_state: true
 
