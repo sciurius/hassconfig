@@ -104,30 +104,31 @@ schedule:
 
   # Time when we are (supposed to be) active.
   # This is between 07:30 and 23:15 (weekdays), 10:30 and 23:30 weekends.
+  # Update: between 08:00 and 23:00 (weekdays), 09:00 and 23:00 weekends.
 
   daytime_schedule:
     name: Daytime schedule
     monday:
-      - from: "07:15:00"
-        to:   "23:15:00"
+      - from: "08:00:00"
+        to:   "23:00:00"
     tuesday:
-      - from: "07:15:00"
-        to:   "23:15:00"
+      - from: "08:00:00"
+        to:   "23:00:00"
     wednesday:
-      - from: "07:15:00"
-        to:   "23:15:00"
+      - from: "08:00:00"
+        to:   "23:00:00"
     thursday:
-      - from: "07:15:00"
-        to:   "23:15:00"
+      - from: "08:00:00"
+        to:   "23:00:00"
     friday:
-      - from: "07:15:00"
-        to:   "23:30:00"
+      - from: "08:00:00"
+        to:   "23:00:00"
     saturday:
-      - from: "10:00:00"
-        to:   "23:30:00"
+      - from: "09:00:00"
+        to:   "23:00:00"
     sunday:
-      - from: "10:00:00"
-        to:   "23:30:00"
+      - from: "09:00:00"
+        to:   "23:00:00"
 
 script:
 
