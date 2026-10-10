@@ -23,21 +23,18 @@ for ( qw( Phoenix NAS1 Srv5 Maccho ) ) {
 		      value => "float",
 		      state_topic => "~/".lc($_)."/temperature" } );
 }
-for ( "mc/mc_01" ) {
-    $d->add_sensor( { name => "MC Temperature (°C)",
-		      value => "float",
-		      state_topic => "$_/temperature" } );
-    $d->add_sensor( { name => "MC GPU Temperature (°C)",
-		      value => "float",
-		      state_topic => "$_/gputemperature" } );
-}
-for ( qw( srv1 srv4 mc621 ) ) {
+for ( qw( srv1 srv4 mc621 osmc ) ) {
     $d->add_sensor( { name => uc($_)." Temperature (°C)",
-		      value => "float",
-		      state_topic => "~/$_/temperature" } );
+		      value_template => "{{ value_json.cputemperature|float }}",
+		      state_topic => "~/$_/state" } );
     $d->add_sensor( { name => uc($_)." GPU Temperature (°C)",
-		      value => "float",
-		      state_topic => "~/$_/gputemperature" } );
+		      value_template => "{{ value_json.gputemperature|float }}",
+		      state_topic => "~/$_/state" } );
+    $d->add_sensor( { name => uc($_)." Timestamp",
+		      value_template => "{{ value_json.timestamp }}",
+		      state_topic => "~/$_/state" } );
+    $d->add_sensor( { name => uc($_)." State",
+		      state_topic => "~/$_/state" } );
 }
 
 $d->add_sensor( { name => "WAN Uptime(s)",
