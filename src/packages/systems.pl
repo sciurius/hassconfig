@@ -42,6 +42,27 @@ $d->add_sensor( { name => "WAN Uptime(s)",
 		  device_class => "duration",
 		  state_topic => "~/fritz/uptime" } );
 
+
+for ( qw( smotty ) ) {
+    $d->add_sensor( { name => uc($_)." Battery (%)",
+		      device_class => "battery",
+		      value_template => "{{ value_json.batteryLevel|int }}",
+		      state_topic => "~/$_/status" } );
+    $d->add_sensor( { name => uc($_)." Plugged",
+		      type => "binary",
+		      value_template => "{{ 'ON' if value_json.isPlugged else 'OFF' }}",
+		      payload_on => "ON",
+		      payload_off => "OFF",
+		      state_topic => "~/$_/status" } );
+    $d->add_sensor( { name => uc($_)." Temperature (°C)",
+		      value_template => "{{ value_json.batteryTemperature|float }}",
+		      state_topic => "~/$_/status" } );
+    $d->add_sensor( { name => uc($_)." Timestamp",
+		      device_class => "timestamp",
+		      value_template => "{{ (value_json.timestamp|int/1000)|timestamp_local }}",
+		      state_topic => "~/$_/status" } );
+}
+
 binmode STDOUT => ':utf8';
 
 my $res = $d->generate;

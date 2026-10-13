@@ -10,6 +10,13 @@
        navigate = "/lovelace-overzicht/media" %]
 
       - type: custom:mushroom-template-card
+        entity: sensor.mass_total_albums
+        primary: "{{ states(entity) }} albums"
+        secondary: "{{ states('sensor.mass_total_artists') }} artists"
+        icon: mdi:folder-play-outline
+        color: var(--state-icon-color)
+        
+      - type: custom:mushroom-template-card
         entity: sensor.allmusic_total_albums
         primary: "{{ states(entity) }} albums"
         secondary: "{{ states('sensor.allmusic_total_artists') }} artists"

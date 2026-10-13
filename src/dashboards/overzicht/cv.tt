@@ -5,7 +5,7 @@
 
 [% INCLUDE section.tt
        name       = "CV"
-       icon       = "heating_coil"
+       icon       = "heating-coil"
        badges     = [ "temperature", "current" ]
        temperature_entity = "sensor.boiler_dhw_set_temperature"
        current_entity     = "sensor.boiler_current_flow_temperature"

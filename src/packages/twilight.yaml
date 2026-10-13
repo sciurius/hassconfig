@@ -343,7 +343,7 @@ automation:
         entity_id:
           - binary_sensor.lighting
         from: 'off'
-        to: 'om'
+        to: 'on'
 
     condition:
       - condition: time

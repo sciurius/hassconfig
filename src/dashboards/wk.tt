@@ -2,8 +2,7 @@
 [% INCLUDE kiosk.tt %]
 
 views:
-  - theme: Backend-selected
-    title: Home
+  - title: Home
     badges: []
     cards:
       - type: vertical-stack

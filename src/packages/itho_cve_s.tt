@@ -34,7 +34,7 @@ template:
 
       - name: Itho CVE-S Fan Info
         unique_id: [% device %]_fan_info
-        state: "{{ states('select.[% device %]_fan_info') }}"
+        state: "{{ states('sensor.[% device %]_fan_info') }}"
 
   - binary_sensor:
 

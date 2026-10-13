@@ -161,7 +161,7 @@ views:
               card:
                 - background-color: [% col_inside %]
               state:
-                - font-size: 40px
+                - font-size: 36px
                 - font-weight: bold
             grid_options:
               columns: 6
@@ -179,7 +179,7 @@ views:
               card:
                 - background-color: [% col_inside %]
               state:
-                - font-size: 40px
+                - font-size: 36px
                 - font-weight: bold
             grid_options:
               columns: 6
@@ -224,7 +224,7 @@ views:
               card:
                 - background: [% col_outside %]
               state:
-                - font-size: 30px
+                - font-size: 24px
             grid_options:
               columns: 12
               rows: auto
@@ -241,7 +241,7 @@ views:
               card:
                 - background-color: [% col_outside %]
               state:
-                - font-size: 40px
+                - font-size: 36px
                 - font-weight: bold
             grid_options:
               columns: 6
@@ -258,7 +258,7 @@ views:
               card:
                 - background-color: [% col_outside %]
               state:
-                - font-size: 40px
+                - font-size: 36px
                 - font-weight: bold
             grid_options:
               columns: 6
@@ -266,9 +266,9 @@ views:
 
           - type: markdown
             content: >-
-              <h1><center>voelt als {{ states('sensor.bresser51_wind_chill') }} °C</br>
+              <h2><center>voelt als {{ states('sensor.bresser51_wind_chill') }} °C</br>
               <ha-icon icon="mdi:gauge"></ha-icon>
-              {{ states('sensor.knmi_pressure')|int }} hPa</center></h1>
+              {{ states('sensor.knmi_pressure')|int }} hPa</center></h2>
 #            text_only: true
             card_mod:
               style: "ha-card { background: blue }"
