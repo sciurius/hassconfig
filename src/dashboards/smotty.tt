@@ -1,6 +1,8 @@
 # Dashboard: Smotty       -*- hass -*-
 # WARNING: This is a generated file -- DO NOT EDIT
 
+[% PROCESS colours.tt -%]
+
 title: Buiten
 
 # Why does kiosk.tt not work?
@@ -17,6 +19,7 @@ kiosk_mode:
 #   charts              = "std apex mgc"; # combine
    col_inside          = "green";
    col_outside         = "blue";
+   battery             = "ecoflow_stream_ac_5000_battery";
 -%]
 
 [% IF charts.search("apex") %]
@@ -182,7 +185,20 @@ views:
                 - font-size: 36px
                 - font-weight: bold
             grid_options:
-              columns: 6
+              columns: 3
+              rows: 1
+
+          - type: custom:button-card
+            entity: sensor.home_battery_level
+            show_state: false
+            show_icon: true
+            show_name: false
+            section_mode: true
+            styles:
+              card:
+                - background-color: [% col_inside %]
+            grid_options:
+              columns: 3
               rows: 1
 
           - type: custom:button-card
