@@ -17,7 +17,7 @@
       - [% INCLUDE switching_meter
            name = "Afzuiging"
            icon = "fan"
-           alwayson = 1 %]
+           alwayson = 2 %]
             
       - type: custom:mushroom-template-card
         entity: sensor.[% device %]_speed_status
