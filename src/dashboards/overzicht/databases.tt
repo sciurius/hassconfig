@@ -1,0 +1,29 @@
+# Dashboard: Overzicht -- Hal       -*- hass -*-
+# WARNING: This is a generated file -- DO NOT EDIT
+
+[% INCLUDE section.tt
+       name     = "Databases"
+       icon     = "database"
+       navigate = "/lovelace-overzicht/computers"
+       badges   = []
+       color    = "lavender"
+       columns  = 1 %]
+
+      - type: custom:auto-entities
+        show_empty: false
+        card:
+          type: grid
+          columns: 2
+          square: false
+        filter:
+          include:
+            - entity_id: "sensor.*_databases_size"
+              options:
+                type: custom:mushroom-template-card
+                primary: >-
+                  {% set v = entity.split('.')[1].split('_')[0] %}
+                  {{ v[0]|upper}}{{v[1:]}}
+                secondary: "{{ (states(entity)|int /1024 /1024) |int }} MiB"
+                icon: mdi:database-outline
+                color: var(--state-icon-color)
+        card_param: cards

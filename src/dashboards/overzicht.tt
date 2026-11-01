@@ -30,7 +30,6 @@ views:
 
     [% sections %]:
 
-      - !include overzicht/alerts.yaml
       - !include overzicht/buiten.yaml
 
 #      - type: vertical-stack
@@ -41,6 +40,7 @@ views:
         cards:
         - !include overzicht/woonkamer.yaml
         - !include overzicht/media.yaml
+        - !include overzicht/databases.yaml
         - !include overzicht/hal.yaml
 
       - type: vertical-stack
@@ -180,8 +180,14 @@ views:
   - title: Computers
     path: computers
     [% sections %]:
+      - !include overzicht/databases.yaml
       - !include overzicht/computers.yaml
       - !include overzicht/laders.yaml
       - !include overzicht/picky.yaml
       - !include overzicht/osmc.yaml
+
+  - title: Alerts
+    path: alerts
+    [% sections %]:
+      - !include overzicht/alerts.yaml
 
