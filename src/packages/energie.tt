@@ -200,6 +200,39 @@ automation:
       - action: switch.turn_off
         entity_id: switch.[% heater %]
 
+  # Turn keukenboiler on/off with clock program.
+  - id: Automation__Keukenboiler_Schedule
+    alias: Keukenboiler Schedule
+    description: 'Turn keukenboiler on/off with clock program.'
+    mode: single
+
+    triggers:
+      - trigger: numeric_state
+        entity_id: number.thermostat_hc1_seltemp
+        below: 17.9
+        id: trigger-below
+      - trigger: numeric_state
+        entity_id: number.thermostat_hc1_seltemp
+        above: 17.9
+        id: trigger-above
+
+    actions:
+      - choose:
+          - conditions:
+              - condition: trigger
+                id: trigger-below
+            sequence:
+              - action: switch.turn_off
+                target:
+                  entity_id: switch.keukenboiler
+          - conditions:
+              - condition: trigger
+                id: trigger-above
+            sequence:
+              - action: switch.turn_on
+                target:
+                  entity_id: switch.keukenboiler
+
 template:
 
   - sensor:
