@@ -30,16 +30,18 @@
             topic: cmnd/tasm22/add1
             payload: 1
 
-      - [% INCLUDE power_meter
-           name = "Boiler" sensor = "keukenboiler" icon = "water-boiler" %]
+      - [% INCLUDE switching_meter
+           name = "Boiler" sensor = "keukenboiler"
+           icon = "water-boiler" alwayson = 1 %]
       - [% INCLUDE power_meter
            name = "Vaatwasser" icon = "dishwasher" %]
       - [% INCLUDE switching_meter
-           name = "Koffie" sensor = "koffiespul" icon = "coffee-maker-outline" %]
+           name = "Koffie" sensor = "koffiespul"
+           icon = "coffee-maker-outline" %]
 #      - [% INCLUDE switching_meter
 #           name = "Expresso" sensor = "expresso" icon = "coffee-maker" %]
       - [% INCLUDE switching_meter
-           name = "Koelkast" icon = "fridge" alwayson = 1 %]
+           name = "Koelkast" icon = "fridge" alwayson = 2 %]
       - [% INCLUDE power_meter name = "Oven" icon = "toaster-oven" %]
         hold_action:
           action: navigate
