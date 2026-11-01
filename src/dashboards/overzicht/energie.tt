@@ -7,20 +7,47 @@
 [% INCLUDE section.tt
    name     = "Energie"
    icon     = "lightning-bolt"
-   badges   = [ "flowtemp" ]
+   badges   = [ "battery", "flowtemp" ]
    flowtemp_entity = "sensor.boiler_current_flow_temperature"
+   battery_entity = "sensor.ecoflow_stream_ac_5000_battery_soc"
    navigate = "/lovelace-overzicht/energie"
    %]
 
-      - type: custom:mushroom-template-card
-        entity: sensor.energie_balans
-        icon: mdi:lightning-bolt
-        primary: Balans
-        secondary: "{{ states('sensor.energie_balans')|round(3) }} kW"
-        color: >-
-          {{ "[% dash.col.green %]" if (states('sensor.energie_balans')|float)>0.2 else
-             "[% dash.col.yellow %]" if (states('sensor.energie_balans')|float)>0 else "none" }}
+#      - type: custom:mushroom-template-card
+#        entity: sensor.energie_balans
+#        icon: mdi:lightning-bolt
+#        primary: Balans
+#        secondary: "{{ states('sensor.energie_balans')|round(3) }} kW"
+#        color: >-
+#          {{ "[% dash.col.green %]" if (states('sensor.energie_balans')|float)>0.2 else
+#             "[% dash.col.yellow %]" if (states('sensor.energie_balans')|float)>0 else "none" }}
        
+      - type: custom:horizontal-gauge-card
+        entity: sensor.energie_balans
+        max: 1
+        needle: true
+        needle_shadow: false
+        needle_color: "#808080"
+        show_segment_labels: false
+        segment_label_position: below
+        value_label_position: above
+        segments:
+          - value: 0
+            color: orange
+            label: Charge
+          - value: 1
+            color: lightgreen
+            label: Discharge
+        min: -1
+        show_value: true
+        decimals: 2
+        smooth_gradients: false
+        needle_label_position: below
+        show_value_labels: false
+        show_needle_label: false
+        name: Balans
+        icon: mdi:lightning-bolt
+             
       - type: tile
         entity: sensor.energy_generated
         name: Solar
@@ -28,13 +55,69 @@
 
       - type: tile
         entity: sensor.dsmr_day_consumption_electricity_merged
-        icon: mdi:tray-arrow-down
+        icon: mdi:transmission-tower-export
         name: Gebruikt
 
       - type: tile
         entity: sensor.dsmr_day_consumption_electricity_returned_merged
-        icon: mdi:tray-arrow-up
+        icon: mdi:transmission-tower-import
         name: Geleverd
+
+      - type: custom:mushroom-template-card
+        entity: sensor.ecoflow_stream_ac_5000_battery_soc
+        primary: Batterij
+        color: >-
+          {% if   states(entity)|int >= 40 %} [% dash.col.green %]
+          {% elif states(entity)|int >= 30 %} orange
+          {% else                         %} red
+          {% endif %}
+        icon: >-
+          {% set charging = "-charging" if states('sensor.ecoflow_stream_ac_5000_battery_charge_power')|int > 0 else "" %}
+          {% set lvl = ((states(entity)|int) / 10 ) | int %}
+          {% if lvl >= 10 %}
+          mdi:battery{{ charging }}
+          {% elif lvl > 0 %}
+          mdi:battery{{ charging }}-{{ lvl }}0
+          {% else %}
+          mdi:battery{{ charging }}-outline
+          {% endif %}
+        secondary: >-
+          {{ states(entity) }}%
+          {{ "SelfPowered" if is_state('sensor.ecoflow_stream_ac_5000_work_mode','self_powered') else "Custom" }}
+        vertical: false
+
+
+      - type: custom:horizontal-gauge-card
+        entity: sensor.energy_battery_ecoflow_stream_ac_5000_battery_discharge_power_ecoflow_stream_ac_5000_battery_charge_power_net_power
+        max: 800
+        needle: true
+        needle_shadow: false
+        needle_color: "#808080"
+        show_segment_labels: false
+        segment_label_position: below
+        value_label_position: above
+        segments:
+          - value: 0
+            color: orange
+            label: Charge
+          - value: 800
+            color: lightgreen
+            label: Discharge
+        min: -800
+        show_value: true
+        decimals: 0
+        smooth_gradients: false
+        needle_label_position: below
+        show_value_labels: false
+        show_needle_label: false
+        name: Batterij
+        icon: mdi:battery-sync-outline
+        tap_action:
+          action: more-info
+        hold_action:
+          action: none
+        double_tap_action:
+          action: none
 
       - type: tile
         entity: sensor.dsmr_day_consumption_gas
