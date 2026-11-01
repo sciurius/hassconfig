@@ -16,6 +16,25 @@
         secondary: '{{ states("sensor.thermostat_setting") }} °C ({{ states("select.thermostat_hc1_mode")|capitalize }})'
 
       - type: tile
+        entity: sensor.thermostat_party_time
+        name: Suspend
+        vertical: false
+        tap_action:
+          action: perform-action
+          perform_action: number.decrement
+          target:
+            entity_id: number.thermostat_hc1_party
+        hold_action:
+          action: perform-action
+          perform_action: number.increment
+          target:
+            entity_id: number.thermostat_hc1_party
+        visibility:
+          - entity: sensor.thermostat_party_time
+            condition: state
+            state_not: "0"
+
+      - type: tile
         entity: light.woonkamer_tafel
         name: Tafel
         grid_options:
