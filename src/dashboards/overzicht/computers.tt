@@ -1,4 +1,4 @@
-# Dashboard: Overzicht -- Computers       -*- hass -*-
+
 # WARNING: This is a generated file -- DO NOT EDIT
 
 [% PROCESS v_anchors.tt -%]
@@ -35,8 +35,8 @@ type: custom:mushroom-template-card
       - [% INCLUDE sys2 name = "Phoenix" sensor = "systems_phoenix",
                                          second = "phoenix_nvme0"  %]
       - [% INCLUDE sys2 name = "Server1" sensor = "systems_srv1"   %]
-
       - [% INCLUDE sys2 name = "Server4" sensor = "systems_srv4"   %]
+      - [% INCLUDE sys2 name = "Server5" sensor = "systems_srv5"   %]
 
       - [% INCLUDE sys1 name = "NAS1"    sensor = "systems_nas1" limit = 58 %]
       - [% INCLUDE sys1 name = "NAS2"    sensor = "systems_nas2"   %]
