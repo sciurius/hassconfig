@@ -14,6 +14,10 @@ type: custom:mushroom-template-card
         primary: [% name %]
         color: var(--state-icon-color)
         secondary: "{{ states('[% sensor %]')|round(2) }} kWh"
+        icon_tap_action:
+          action: more-info
+        icon_hold_action:
+          action: more-info
         visibility:
           - entity: [% sensor %]
             condition: numeric_state
@@ -24,6 +28,7 @@ type: custom:mushroom-template-card
 
 [%- BLOCK switching_meter;
    DEFAULT sensor = name.lower;
+   DEFAULT alwayson = 0;
    switch = "switch." _ sensor
    sensor = "sensor." _ sensor _ "_energy_today";
 -%]
@@ -40,11 +45,16 @@ type: custom:mushroom-template-card
           {% endif %}
         icon_tap_action:
           action: toggle
+        icon_hold_action:
+          action: more-info
+          entity: [% sensor %]
         visibility:
           - entity: [% switch %]
             <<: *v_available
-[%- IF alwayson %]
+[%- IF alwayson > 1 %]
         color: "{{ 'var(--state-icon-color)' if is_state('[% switch %]','on') else 'red' }}"
+[%- ELSIF alwayson > 0 %]
+        color: "{{ 'var(--state-icon-color)' if is_state('[% switch %]','on') else 'var(--state-inactive-color)' }}"
 [%- ELSE %]
         color: "var(--state-{{ '' if is_state('[% switch %]','on') else 'in' }}active-color)"
 [%- END -%]
