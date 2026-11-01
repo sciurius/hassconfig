@@ -4,9 +4,10 @@
 [% PROCESS v_anchors.tt %]
 
 [% INCLUDE section.tt
-       name = "Media"
-       icon = "disc-player"
-       badges = []
+       name     = "Media"
+       icon     = "disc-player"
+       badges   = []
+       color    = "lavender"
        navigate = "/lovelace-overzicht/media" %]
 
       - type: custom:mushroom-template-card
