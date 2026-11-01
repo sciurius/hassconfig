@@ -45,26 +45,67 @@
         entity: sensor.home_assistant_website
         name: Hass Software
 
-      - type: tile
+      - name: NAS1
         entity: sensor.nas1_volume_1_volume_used
-        name: NAS1
+[% IF 1 %]
+        type: tile
+[% ELSE %]
+        type: custom:horizontal-gauge-card
+        min: 0
+        max: 100
+        needle: true
+        show_segment_labels: false
+        segment_label_position: below
+        value_label_position: above
+        segments:
+          - value: 80
+            color: var(--state-icon-color)
+            label: Low
+          - value: 90
+            color: var(--warning-color)
+            label: Med
+          - value: 100
+            color: var(--error-color)
+            label: High
+[% END %]
 
       - type: tile
         entity: sensor.nextcloud_free_space
         name: NextCloud
         icon: mdi:cloud
         unit: "GiB free"
-    
-      - type: custom:mushroom-template-card
-        entity: sensor.www_disk_inuse
+
+      - entity: sensor.www_disk_inuse
+        icon: mdi:cloud
+[% IF 1 %]
+        type: custom:mushroom-template-card
         primary: WWW Server
         secondary: "{{ states('sensor.www_disk_inuse') }} %"
-        icon: mdi:cloud
         color: |
           {% if states('sensor.www_disk_inuse')|int >= 98 %} red
           {% elif states('sensor.www_disk_inuse')|int >= 96 %} orange
           {% else %} var(--state-icon-color) {% endif %}
-    
+[% ELSE %]    
+        type: custom:horizontal-gauge-card
+        name: WWW Server
+        min: 0
+        max: 100
+        needle: true
+        show_segment_labels: false
+        segment_label_position: below
+        value_label_position: above
+        segments:
+          - value: 96
+            color: var(--state-icon-color)
+            label: Low
+          - value: 98
+            color: var(--warning-color)
+            label: Med
+          - value: 100
+            color: var(--error-color)
+            label: High
+[% END %]
+
       - type: tile
         entity: switch.radiatorfans
         name: Radiator fans
