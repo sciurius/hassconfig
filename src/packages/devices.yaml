@@ -279,6 +279,22 @@ template:
 #          {{ state_attr("device_tracker.a36_a36","battery_level") }}
 #        device_class: battery
       
+      - name: Home Battery Level
+        unique_id: home_battery_level
+        device_class: battery
+        state: >-
+          {{ states('sensor.ecoflow_stream_ac_5000_battery_soc') }}
+        icon: >-
+          {% set charging = "-charging" if states('sensor.ecoflow_stream_ac_5000_battery_charge_power')|int > 0 else "" %}
+          {% set lvl = ((states('sensor.ecoflow_stream_ac_5000_battery_soc')|int) / 10 ) | int %}
+          {% if lvl >= 10 %}
+          mdi:battery{{ charging }}
+          {% elif lvl > 0 %}
+          mdi:battery{{ charging }}-{{ lvl }}0
+          {% else %}
+          mdi:battery{{ charging }}-outline
+          {% endif %}
+
   - switch:
 
       - unique_id: switch_radiatorfans
