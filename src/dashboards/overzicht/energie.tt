@@ -48,45 +48,6 @@
         name: Balans
         icon: mdi:lightning-bolt
              
-      - type: tile
-        entity: sensor.energy_generated
-        name: Solar
-        icon: mdi:solar-power
-
-      - type: tile
-        entity: sensor.dsmr_day_consumption_electricity_merged
-        icon: mdi:transmission-tower-export
-        name: Gebruikt
-
-      - type: tile
-        entity: sensor.dsmr_day_consumption_electricity_returned_merged
-        icon: mdi:transmission-tower-import
-        name: Geleverd
-
-      - type: custom:mushroom-template-card
-        entity: sensor.ecoflow_stream_ac_5000_battery_soc
-        primary: Batterij
-        color: >-
-          {% if   states(entity)|int >= 40 %} [% dash.col.green %]
-          {% elif states(entity)|int >= 30 %} orange
-          {% else                         %} red
-          {% endif %}
-        icon: >-
-          {% set charging = "-charging" if states('sensor.ecoflow_stream_ac_5000_battery_charge_power')|int > 0 else "" %}
-          {% set lvl = ((states(entity)|int) / 10 ) | int %}
-          {% if lvl >= 10 %}
-          mdi:battery{{ charging }}
-          {% elif lvl > 0 %}
-          mdi:battery{{ charging }}-{{ lvl }}0
-          {% else %}
-          mdi:battery{{ charging }}-outline
-          {% endif %}
-        secondary: >-
-          {{ states(entity) }}%
-          {{ "SelfPowered" if is_state('sensor.ecoflow_stream_ac_5000_work_mode','self_powered') else "Custom" }}
-        vertical: false
-
-
       - type: custom:horizontal-gauge-card
         entity: sensor.energy_battery_ecoflow_stream_ac_5000_battery_discharge_power_ecoflow_stream_ac_5000_battery_charge_power_net_power
         max: 800
@@ -120,8 +81,47 @@
           action: none
 
       - type: tile
+        entity: sensor.dsmr_day_consumption_electricity_merged
+        icon: mdi:transmission-tower-export
+        name: Gebruikt
+
+      - type: tile
+        entity: sensor.dsmr_day_consumption_electricity_returned_merged
+        icon: mdi:transmission-tower-import
+        name: Geleverd
+
+      - type: tile
+        entity: sensor.energy_generated
+        name: Solar
+        icon: mdi:solar-power
+
+      - type: tile
         entity: sensor.dsmr_day_consumption_gas
         name: Gas
+
+      - type: custom:mushroom-template-card
+        entity: sensor.ecoflow_stream_ac_5000_battery_soc
+        primary: Batterij
+        color: >-
+          {% if   states(entity)|int >= 40 %} [% dash.col.green %]
+          {% elif states(entity)|int >= 30 %} orange
+          {% else                         %} red
+          {% endif %}
+        icon: >-
+          {% set charging = "-charging" if states('sensor.ecoflow_stream_ac_5000_battery_charge_power')|int > 0 else "" %}
+          {% set lvl = ((states(entity)|int) / 10 ) | int %}
+          {% if lvl >= 10 %}
+          mdi:battery{{ charging }}
+          {% elif lvl > 0 %}
+          mdi:battery{{ charging }}-{{ lvl }}0
+          {% else %}
+          mdi:battery{{ charging }}-outline
+          {% endif %}
+        secondary: >-
+          {{ states(entity) }}%
+          {{ "SelfPowered" if is_state('sensor.ecoflow_stream_ac_5000_work_mode','self_powered') else "Custom" }}
+        vertical: false
+
 
       - type: shortcut
         label: Omvormer
