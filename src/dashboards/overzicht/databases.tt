@@ -21,8 +21,7 @@
               options:
                 type: custom:mushroom-template-card
                 primary: >-
-                  {% set v = entity.split('.')[1].split('_')[0] %}
-                  {{ v[0]|upper}}{{v[1:]}}
+                  {{ entity_name(entity).split(' ')[0] }}
                 secondary: "{{ (states(entity)|int /1024 /1024) |int }} MiB"
                 icon: mdi:database-outline
                 color: var(--state-icon-color)
