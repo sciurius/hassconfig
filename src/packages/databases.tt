@@ -1,0 +1,18 @@
+# Databases                      -*- hass -*-
+# WARNING: This is a generated file -- DO NOT EDIT
+
+[%-
+
+-%]
+
+mqtt:
+
+  sensor:
+
+[% FOR srv IN [ "Phoenix", "MAss", "Srv4", "Srv5" ] %]
+    - name: [% srv %] Databases Size
+      state_topic: db/[% srv.lower %]/status
+      device_class: data_size
+      unique_id: sensor__[% srv.lower %]_databases_size
+      value_template: "{{ value_json.total }}"
+[% END %]
