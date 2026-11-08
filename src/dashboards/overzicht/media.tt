@@ -24,3 +24,18 @@
         icon: mdi:play-network-outline
         color: var(--state-icon-color)
         
+      - type: custom:mushroom-template-card
+        entity: sensor.kpn_itv_recordings_used
+        primary: >-
+          Video
+          {% set h = (( states(entity)|int ) / 60 ) | int %}
+          {% set m = (( states(entity)|int ) % 60 ) %}
+          {% if h > 0 %}{{ h }}h {% endif %}
+          {% if m > 0 %}{{ m }}min {% endif %}
+        secondary: >-
+          {{ ( ( states('sensor.kpn_itv_recordings_used')|int * 100 )
+               / states('sensor.kpn_itv_recordings_total')|int )|int
+          }}% (KPN)
+        icon: mdi:file-video-outline
+        color: var(--state-icon-color)
+        
