@@ -35,6 +35,7 @@
       # Avondlichtje.
       - type: tile
         entity: light.slaapkamer_avondlichtje
+        name: Avondlichtje
 
       - type: tile
         entity: switch.slaapkamer_media_center
