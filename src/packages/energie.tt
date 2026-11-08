@@ -4,15 +4,15 @@
 [%-
 
 # Load of heater, in Watts.
-load_heater = 800;
+load_heater = 900;
 # Load of boiler, in Watts.
-load_boiler = 2300;
+load_boiler = 900;
 # Floor space, in Watts.
 load_floor = 200
 
 # Sensor mapping.
-heater = "achterkamerkacheltje";
-boiler = "exsboiler";
+heater = "kantoorkacheltje";
+boiler = "huiskamerkacheltje";
 
 -%]
 
@@ -254,7 +254,7 @@ template:
           {{
           ( states('sensor.energie_balans')|float * 1000
             +
-            states('sensor.achterkamerkacheltje_energy_power')|float
+            states('sensor.[% heater %]_energy_power')|float
             +
             states('sensor.exsboiler_energy_power')|float ) |float(2)
           }}
@@ -273,6 +273,12 @@ template:
         unit_of_measurement: kW
         state: 0.0085
 
+      - name: EcoFLow Battery Charging Power
+        unique_id: ecoflow_battery_charging_power
+        device_class: power
+        unit_of_measurement: W
+        state: "{{ -(states('sensor.energy_battery_ecoflow_stream_ac_5000_battery_discharge_power_ecoflow_stream_ac_5000_battery_charge_power_net_power')|int)}}"
+        
   - binary_sensor:
       - name: Energie Overschot
         unique_id: power_energie_overschot
@@ -307,3 +313,4 @@ sensor:
     round: 2
     max_sub_interval:
       minutes: 5
+

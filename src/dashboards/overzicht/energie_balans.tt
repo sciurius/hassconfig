@@ -5,8 +5,8 @@
 [% PROCESS colours.tt -%]
 [%-
 # Sensor mapping.
-heater = "achterkamerkacheltje";
-boiler = "exsboiler";
+heater = "kantoorkacheltje";
+boiler = "huiskamerkacheltje";
 -%]
 
 [% INCLUDE section.tt
@@ -19,42 +19,8 @@ boiler = "exsboiler";
    %]
 
       - type: custom:mushroom-template-card
-        icon: mdi:water-boiler
-        primary: Exs Boiler
-        entity: switch.[% boiler %]
-        color: |
-          {% if is_state('input_boolean.[% boiler %]_enabled','on') %}
-            {% if is_state('input_boolean.[% boiler %]_hot','on') %}
-              [% dash.col.green %]
-            {% else %}
-              {% if is_state('switch.[% boiler %]','on') %}
-                [% dash.col.active %]
-              {% else %}
-                [% dash.col.default %]
-              {% endif %}
-            {% endif %}
-          {% else %}
-            [% dash.col.inactive %]
-          {% endif %}
-        secondary: |
-          {{ states('sensor.[% boiler %]_energy_today') }} kWh
-        tap_action:
-          action: more-info
-          entity: sensor.[% boiler %]_energy_today
-        hold_action:
-          action: perform-action
-          perform_action: input_boolean.toggle
-          target:
-            entity_id: input_boolean.[% boiler %]_enabled
-        icon_hold_action:
-          action: perform-action
-          perform_action: input_boolean.toggle
-          target:
-            entity_id: input_boolean.[% boiler %]_enabled
-
-      - type: custom:mushroom-template-card
         icon: mdi:radiator
-        primary: Exs Kachel
+        primary: Exs Kachel1
         entity: switch.[% heater %]
         color: |
           {% if is_state('input_boolean.[% heater %]_enabled','on') %}
@@ -85,4 +51,38 @@ boiler = "exsboiler";
           - entity: switch.[% heater %]
             <<: *v_available
 
+
+      - type: custom:mushroom-template-card
+        icon: mdi:radiator
+        primary: Exs Kachel2
+        entity: switch.[% boiler %]
+        color: |
+          {% if is_state('input_boolean.[% boiler %]_enabled','on') %}
+            {% if is_state('input_boolean.[% boiler %]_hot','on') %}
+              [% dash.col.green %]
+            {% else %}
+              {% if is_state('switch.[% boiler %]','on') %}
+                [% dash.col.active %]
+              {% else %}
+                [% dash.col.default %]
+              {% endif %}
+            {% endif %}
+          {% else %}
+            [% dash.col.inactive %]
+          {% endif %}
+        secondary: |
+          {{ states('sensor.[% boiler %]_energy_today') }} kWh
+        tap_action:
+          action: more-info
+          entity: sensor.[% boiler %]_energy_today
+        hold_action:
+          action: perform-action
+          perform_action: input_boolean.toggle
+          target:
+            entity_id: input_boolean.[% boiler %]_enabled
+        icon_hold_action:
+          action: perform-action
+          perform_action: input_boolean.toggle
+          target:
+            entity_id: input_boolean.[% boiler %]_enabled
 
