@@ -16,6 +16,9 @@
         secondary: "{{ states('sensor.mass_total_artists') }} artists"
         icon: mdi:folder-play-outline
         color: var(--state-icon-color)
+        icon_tap_action:
+          action: url
+          url_path: https://mass.squirrel.nl/#/albums
         
       - type: custom:mushroom-template-card
         entity: sensor.allmusic_total_albums
@@ -23,6 +26,9 @@
         secondary: "{{ states('sensor.allmusic_total_artists') }} artists"
         icon: mdi:play-network-outline
         color: var(--state-icon-color)
+        icon_tap_action:
+          action: url
+          url_path: https://lms.squirrel.nl/default
         
       - type: custom:mushroom-template-card
         entity: sensor.kpn_itv_recordings_used
@@ -38,4 +44,6 @@
           }}% (KPN)
         icon: mdi:file-video-outline
         color: var(--state-icon-color)
-        
+        icon_tap_action:
+          action: url
+          url_path: https://tv.kpn.com/opgeslagen
