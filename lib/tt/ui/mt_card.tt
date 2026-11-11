@@ -1,0 +1,10 @@
+[%
+
+# For mushroom template cards.
+# Special treatment in custom:grid-layout.
+
+DEFAULT type    = "mt";
+
+INCLUDE tile_card.tt;
+
+-%]

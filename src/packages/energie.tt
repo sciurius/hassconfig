@@ -11,7 +11,7 @@ load_boiler = 900;
 load_floor = 200
 
 # Sensor mapping.
-heater = "kantoorkacheltje";
+heater = "kantoorxkacheltje";
 boiler = "huiskamerkacheltje";
 
 -%]

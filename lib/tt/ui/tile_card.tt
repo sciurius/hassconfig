@@ -1,0 +1,67 @@
+[%
+
+# For tile and tile-based cards cards.
+# Special treatment in custom:grid-layout.
+
+DEFAULT type    = "tile";
+DEFAULT columns = 1;
+DEFAULT indent  = 0;
+DEFAULT conditional = 0;
+
+# Try to infer indentation from content, use indent arg otherwise.
+IF indent;
+  # Use indent parameter. Overrides content checking.
+  Ind = " ";
+  Ind = Ind.repeat(indent);
+ELSIF content.defined && content.length > 0;
+  # Note that content (may) start with newline(s).
+  Ind = content.match("^\n*( *)").0;
+ELSE;
+  # Just a default.
+  Ind = "            ";
+END;
+
+# Card type.
+IF type == "mt"; SET type = "custom:mushroom-template-card";
+ELSIF type == "hg"; SET type = "custom:horizontal-gauge-card"; END;
+"type: "; type; "\n";
+
+# grids (custom:grid-layout-card) need some card mods.
+IF sections == 'grids';
+Ind; "card_mod: {\n";
+Ind; "  style: ':host { --masonry-view-card-margin: 3px; }'\n";
+Ind; "}\n";
+END;
+
+# Parameters, if any.
+IF entity;      Ind; "entity: "; entity; "\n"; END;
+IF icon;        Ind; "icon: mdi:"; icon; "\n"; END;
+
+# Only grids can do this.
+IF columns > 1 && sections == 'grids'; Ind; "view_layout:\n";
+Ind; "  grid-column: 1 / span "; columns; "\n"; END;
+
+IF conditional;
+IF sections == 'grids';
+IF columns <= 1; Ind; "view_layout:\n"; END;
+Ind; "  show: >-\n";
+Ind; "    {% if ";
+IF conditional == -1; "not "; END;
+"( is_state('"; entity; "','unavailable')\n";
+Ind; "            or is_state('"; entity; "','unknown') ) %}never{% else %}always{% endif %}\n";
+ELSE;
+Ind; "visibility:\n";
+Ind; "  - entity: "; entity; "\n";
+Ind; "    condition: state\n";
+Ind; "    state";
+IF conditional == 1; "_not "; END;
+":\n";
+Ind; "      - unavailable\n";
+Ind; "      - unknown\n";
+END;
+END;
+
+# Finally, the rest of the card content.
+content;
+
+-%]

@@ -39,6 +39,29 @@ card_mod:
       padding: 5px;
     }
 
+cards:
+[%- ELSIF sections == "grids"; indent = "    "; -%]
+type: custom:mod-card
+card_mod:
+  style: |
+    ha-card {
+      /* border: 2px solid #D0D0D0; */
+      background: [% color %];
+      padding: 5px;
+    }
+card:
+    type: custom:layout-card
+    layout_type: custom:grid-layout
+    layout:
+      grid-template-columns: 50% 50%
+      grid-template-rows: auto
+      # T R B L
+      padding: -8px
+      margin: -3px
+      # This does not work. See card_mod below.
+      # card_margin: 3px
+
+    cards:
 [%- ELSE;
   indent = "    ";
   DEFAULT columns    = 1;
@@ -48,9 +71,9 @@ type: grid
 background:
   color: [% color %]
   opacity: 100
+cards:
   
 [% END %]
-cards:
 
 [% indent %]  # First, a heading card.
 [% indent %]  - type: heading
@@ -61,9 +84,12 @@ cards:
 [% IF navigate %][% indent %]    tap_action:
 [% indent %]      action: navigate
 [% indent %]      navigation_path: [% navigate %]
+[%- END %]
+[% IF sections == "grids" %][% indent %]    card_mod:
+[% indent %]      style: ':host { --masonry-view-card-margin: 4px 0px -4px 4px; }'
+[% IF columns > 1 %][% indent %]    view_layout:
+[% indent %]      grid-column: 1 / span [% columns %]
 [%- END -%]
-[% IF textsize %][% indent %]    card_mod:
-[% indent %]      style: "ha-card .title { font-size: [% textsize %]; }"
 [%- END -%]
 
 [% IF NOT badges.empty %]

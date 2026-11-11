@@ -10,6 +10,12 @@ media_small  = '"(max-width:  700px)"';
 media_medium = '"(max-width: 1000px)"';
 media_large  = '"(min-width: 1001px)"';
 
+IF sections == "sections";
+  sectioncards = "sections";
+ELSE;
+  sectioncards = "cards";
+END;
+
 -%]
 
 title: Overzicht
@@ -28,7 +34,7 @@ views:
 #        [% media_medium %]:
 #          grid-template-columns: 50% 50%
 
-    [% sections %]:
+    [% sectioncards %]:
 
       - !include overzicht/buiten.yaml
 
@@ -76,19 +82,19 @@ views:
 
   - title: Woonkamer
     path: woonkamer
-    [% sections %]:
+    [% sectioncards %]:
       - !include overzicht/woonkamer.yaml
       - !include overzicht/woonkamer_verlichting.yaml
       - !include overzicht/woonkamer_overig.yaml
 
   - title: Slaapkamer
     path: slaapkamer
-    [% sections %]:
+    [% sectioncards %]:
       - !include overzicht/slaapkamer.yaml
     
   - title: Badkamer
     path: badkamer
-    [% sections %]:
+    [% sectioncards %]:
       - !include overzicht/badkamer.yaml
       - !include badkamerafzuiging/itho_cve_s.yaml
       - !include badkamerafzuiging/itho-graph.yaml
@@ -103,28 +109,28 @@ views:
 
   - title: Logeerkamer
     path: logeerkamer
-    [% sections %]:
+    [% sectioncards %]:
       - !include overzicht/logeerkamer.yaml
 
   - title: Hal
     path: hal
-    [% sections %]:
+    [% sectioncards %]:
       - !include overzicht/hal.yaml
       - !include overzicht/traplift.yaml
 
   - title: Kantoor
     path: kantoor
-    [% sections %]:
+    [% sectioncards %]:
       - !include overzicht/kantoor.yaml
 
   - title: Keuken
     path: keuken
-    [% sections %]:
+    [% sectioncards %]:
       - !include overzicht/keuken.yaml
 
   - title: Bijkeuken
     path: bijkeuken
-    [% sections %]:
+    [% sectioncards %]:
       - !include overzicht/bijkeuken.yaml
       - type: shortcut
         label: CV
@@ -135,7 +141,7 @@ views:
 
   - title: Energie
     path: energie
-    [% sections %]:
+    [% sectioncards %]:
       - type: energy-distribution
         link_dashboard: false
 
@@ -148,7 +154,7 @@ views:
   - title: Auto
     subview: true
     path: carolan
-    [% sections %]:
+    [% sectioncards %]:
 
       - type: vertical-stack
         cards:
@@ -159,7 +165,7 @@ views:
 
   - title: Buiten
     path: buiten
-    [% sections %]:
+    [% sectioncards %]:
 
       - !include bresser51/compass.yaml
       - !include overzicht/buiten.yaml
@@ -175,12 +181,12 @@ views:
 
   - title: Overig
     path: overig
-    [% sections %]:
+    [% sectioncards %]:
       - !include overzicht/overig.yaml
 
   - title: Computers
     path: computers
-    [% sections %]:
+    [% sectioncards %]:
       - !include overzicht/databases.yaml
       - !include overzicht/computers.yaml
       - !include overzicht/laders.yaml
@@ -189,6 +195,14 @@ views:
 
   - title: Alerts
     path: alerts
-    [% sections %]:
+    [% sectioncards %]:
       - !include overzicht/alerts.yaml
+
+  - title: Testing
+    path: testing
+    [% sectioncards %]:
+      - !include overzicht/test1.yaml
+      - !include overzicht/test3.yaml
+      - !include overzicht/test3.yaml
+      - !include overzicht/test1.yaml
 

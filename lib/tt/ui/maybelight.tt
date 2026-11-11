@@ -18,15 +18,16 @@ DEFAULT icon     = "mdi:dome-light"
 # If the light is offline, we display a dummy sensor with state "Uit".
 
 -%]
-type: tile
-        entity: [% entity %]
+[% WRAPPER tile_card.tt
+           entity = "$entity"
+           conditional = 1 %]
         name: [% label %]
         icon: [% icon %]
-        visibility:
-          - entity: [% entity %]
-            <<: *v_available
+[% END %]
 
-      - type: custom:mushroom-template-card
+      - [% WRAPPER mt_card.tt
+           entity = "$entity"
+           conditional = -1 %]
         primary: [% label %]
         secondary: "Uit"
         icon: [% icon %]
@@ -34,7 +35,4 @@ type: tile
         tap_action:
           action: more-info
           entity: [% entity %]
-        visibility:
-          - entity: [% entity %]
-            condition: state
-            state: unavailable
+        [% END %]

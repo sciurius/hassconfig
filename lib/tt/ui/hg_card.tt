@@ -1,0 +1,10 @@
+[%
+
+# For horizontal gauge cards.
+# Special treatment in custom:grid-layout.
+
+DEFAULT type    = "hg";
+
+INCLUDE tile_card.tt;
+
+-%]
