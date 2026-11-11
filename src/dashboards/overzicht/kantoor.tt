@@ -127,7 +127,11 @@
            name   = "Kacheltje"
            switch = "kantoorkacheltje"
            icon   = "heat-wave" -%]
-    
+
+      - [% INCLUDE switching_meter
+           name = "ExtKacheltje" sensor = "kantoorxkacheltje"
+           icon = "heat-wave" %]
+
       [% PROCESS ir_action.tt; remote = "kantoor" -%]
       - type: custom:mushroom-template-card
         entity: switch.kantoor_airco
