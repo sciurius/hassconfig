@@ -22,8 +22,8 @@
 #          {{ "[% dash.col.green %]" if (states('sensor.energie_balans')|float)>0.2 else
 #             "[% dash.col.yellow %]" if (states('sensor.energie_balans')|float)>0 else "none" }}
        
-      - type: custom:horizontal-gauge-card
-        entity: sensor.energie_balans
+      - [% WRAPPER hg_card.tt
+                   entity = "sensor.energie_balans" %]
         max: 1
         needle: true
         needle_shadow: false
@@ -47,9 +47,10 @@
         show_needle_label: false
         name: Balans
         icon: mdi:lightning-bolt
+        [% END %]
              
-      - type: custom:horizontal-gauge-card
-        entity: sensor.ecoflow_battery_charging_power
+      - [% WRAPPER hg_card.tt
+                   entity = "sensor.ecoflow_battery_charging_power" %]
         max: 800
         needle: true
         needle_shadow: false
@@ -79,28 +80,34 @@
           action: none
         double_tap_action:
           action: none
+        [% END %]
 
-      - type: tile
-        entity: sensor.dsmr_day_consumption_electricity_merged
+      - [% WRAPPER tile_card.tt
+                   entity = "sensor.dsmr_day_consumption_electricity_merged" %]
         icon: mdi:transmission-tower-export
         name: Gebruikt
+        [% END %]
 
-      - type: tile
-        entity: sensor.dsmr_day_consumption_electricity_returned_merged
+      - [% WRAPPER tile_card.tt
+                   entity = "sensor.dsmr_day_consumption_electricity_returned_merged" %]
         icon: mdi:transmission-tower-import
         name: Geleverd
+        [% END %]
 
-      - type: tile
-        entity: sensor.dsmr_day_consumption_gas
+      - [% WRAPPER tile_card.tt
+                   entity = "sensor.dsmr_day_consumption_gas" %]
         name: Gas
+        [% END %]
 
-      - type: tile
-        entity: sensor.energy_generated
+      - [% WRAPPER tile_card.tt
+                   entity = "sensor.energy_generated" %]
         name: Zon
         icon: mdi:solar-power
+        [% END %]
 
-      - type: custom:mushroom-template-card
-        entity: sensor.ecoflow_stream_ac_5000_battery_soc
+      # ECOFlow cloud based integration.
+      - [% WRAPPER mt_card.tt
+                   entity = "sensor.ecoflow_stream_ac_5000_battery_soc" %]
         primary: Batterij
         color: >-
           {% if   states(entity)|int >= 40 %} [% dash.col.green %]
@@ -121,4 +128,29 @@
           {{ states(entity) }}%
           {{ "SelfPowered" if is_state('sensor.ecoflow_stream_ac_5000_work_mode','self_powered') else "Custom" }}
         vertical: false
+        [% END %]
 
+      # ECOFlow BLE (local) integration.
+      - [% WRAPPER mt_card.tt
+                   entity = "sensor.stream_ac_5000_0538_main_battery_level" %]
+        primary: Batterij
+        color: >-
+          {% if   states(entity)|int >= 40 %} [% dash.col.green %]
+          {% elif states(entity)|int >= 30 %} orange
+          {% else                         %} red
+          {% endif %}
+        icon: >-
+          {% set charging = "-charging" if states('sensor.ecoflow_stream_ac_5000_battery_charge_power')|int > 0 else "" %}
+          {% set lvl = ((states(entity)|int) / 10 ) | int %}
+          {% if lvl >= 10 %}
+          mdi:battery{{ charging }}
+          {% elif lvl > 0 %}
+          mdi:battery{{ charging }}-{{ lvl }}0
+          {% else %}
+          mdi:battery{{ charging }}-outline
+          {% endif %}
+        secondary: >-
+          {{ states(entity) }}%
+          {{ "Custom" if is_state('select.pack_stream_5000_pack_mode','timer_task') else "SelfPowered" }}
+        vertical: false
+        [% END %]
