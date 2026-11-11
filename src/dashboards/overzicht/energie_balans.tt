@@ -5,7 +5,7 @@
 [% PROCESS colours.tt -%]
 [%-
 # Sensor mapping.
-heater = "kantoorkacheltje";
+heater = "kantoorxkacheltje";
 boiler = "huiskamerkacheltje";
 -%]
 
