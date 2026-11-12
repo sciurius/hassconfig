@@ -1,24 +1,25 @@
 # Dashboard: Overzicht -- Media Player: osmc       -*- hass -*-
 # WARNING: This is a generated file -- DO NOT EDIT
 
-[% PROCESS v_anchors.tt %]
+[%- IF sections == "cards"; sections = "grids"; END -%]
 
 [% INCLUDE section.tt
        name = "Woonkamer"
        icon = "sofa"
        navigate = "/lovelace-overzicht/woonkamer" %]
 
-      - type: custom:mushroom-template-card
-        entity: climate.thermostat_hc1
-        icon: mdi:thermostat
+      - [% WRAPPER mt_card.tt
+                   entity = "climate.thermostat_hc1"
+                   icon = "mdi:thermostat"
+                   name   = "Thermostaat" %]
         color: green
-        primary: Thermostaat
         secondary: '{{ states("sensor.thermostat_setting") }} °C ({{ states("select.thermostat_hc1_mode")|capitalize }})'
+        [% END %]
 
-      - type: tile
-        entity: sensor.thermostat_party_time
-        name: Suspend
-        vertical: false
+      - [% WRAPPER tile_card.tt
+                   name    = "Suspend"
+                   entity  = "sensor.thermostat_party_time"
+                   visible = "not 0" %]
         tap_action:
           action: perform-action
           perform_action: number.decrement
@@ -29,43 +30,32 @@
           perform_action: number.increment
           target:
             entity_id: number.thermostat_hc1_party
-        visibility:
-          - entity: sensor.thermostat_party_time
-            condition: state
-            state_not: "0"
+        [% END %]
 
-      - type: tile
-        entity: light.woonkamer_tafel
-        name: Tafel
-        grid_options:
-          columns: 6
+      - [% WRAPPER tile_card.tt
+                   name    = "Tafel"
+                   entity  = "light.woonkamer_tafel"
+                   span    = 1 %]
+        [% END %]
 
-      - type: tile
-        entity: switch.woonkamer_sound_system
-        name: Music Center
+      - [% WRAPPER tile_card.tt
+                   name   = "Music Center"
+                   entity = "switch.woonkamer_sound_system" %]
         icon: mdi:music-circle-outline
+        [% END %]
 
-      - type: tile
-        entity: media_player.picky_lms
-        name: Picky (LMS)
-        visibility:
-          - condition: or
-            conditions:
-              - condition: state
-                state: playing
-              - condition: state
-                state: paused
+      - [% WRAPPER tile_card.tt
+                   name    = "Picky (LMS)"
+                   entity  = "media_player.picky_lms"
+                   visible = "paused|playing"
+                   %]
+        [% END %]
 
-      - type: tile
-        entity: media_player.picky_ma
-        name: Picky (MA)
-        visibility:
-          - condition: or
-            conditions:
-              - condition: state
-                state: playing
-              - condition: state
-                state: paused
+      - [% WRAPPER tile_card.tt
+                   name   = "Picky (MA)"
+                   entity = "media_player.picky_ma"
+                   visible = "paused|playing" %]
+        [% END %]
 
 #      - type: custom:mushroom-template-card
 #        primary: Temperatuur
@@ -82,20 +72,48 @@
 #          - entity: sensor.woonkamer_temperature
 #            <<: *v_available
 
-      - type: custom:mushroom-template-card
-        entity: sensor.buiten_beter_binnen
-        icon: mdi:sun-snowflake
+[% IF 0 %]
+      - [% WRAPPER mt_card.tt
+                   name   = "Bu Be Bi"
+                   entity = "sensor.buiten_beter_binnen"
+                   icon   = "mdi:sun-snowflake" %]
         color: >-
           {% if   states(entity)|int <  1 %} blue
           {% elif states(entity)|int < 10 %} green
           {% else %} red {% endif %}
-        primary: Bu Be Bi
         secondary: "{{ states(entity) }} °C"
+        [% END %]
+[% ELSE %]
+      - [% WRAPPER hg_card.tt
+                   name   = "Bu Be Bi"
+                   entity = "sensor.buiten_beter_binnen"
+                   icon   = "mdi:sun-snowflake" %]
+        max: 10
+        needle: true
+        needle_shadow: false
+        needle_color: "#808080"
+        show_segment_labels: false
+        segment_label_position: below
+        value_label_position: above
+        segments:
+          - value: -1
+            color: "#18bcf2"
+          - value: 1
+            color: orange
+          - value: 10
+            color: lightgreen
+        min: -10
+        show_value: true
+        decimals: 1
+        smooth_gradients: false
+        needle_label_position: below
+        show_value_labels: false
+        show_needle_label: false
+        [% END %]
+[% END %]
 
-      - type: tile
-        entity: light.binnenkerstverlichting1
-        name: Kerstverlichting
-        visibility:
-          - entity: light.binnenkerstverlichting1
-            <<: *v_available
-
+      - [% WRAPPER tile_card.tt
+                   name    = "Kerstverlichting"
+                   entity  = "light.binnenkerstverlichting1"
+                   visible = "available" %]
+        [% END %]

@@ -19,15 +19,15 @@ DEFAULT icon     = "mdi:dome-light"
 
 -%]
 [% WRAPPER tile_card.tt
-           entity = "$entity"
-           conditional = 1 %]
+           entity  = "$entity"
+           visible = "available" %]
         name: [% label %]
         icon: [% icon %]
 [% END %]
 
       - [% WRAPPER mt_card.tt
-           entity = "$entity"
-           conditional = -1 %]
+           entity  = "$entity"
+           visible = "not available" %]
         primary: [% label %]
         secondary: "Uit"
         icon: [% icon %]

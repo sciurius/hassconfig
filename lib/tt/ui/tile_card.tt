@@ -4,9 +4,11 @@
 # Special treatment in custom:grid-layout.
 
 DEFAULT type    = "tile";
-DEFAULT columns = 1;
+DEFAULT name    = "";
+DEFAULT icon    = "";
+DEFAULT span    = 1;
 DEFAULT indent  = 0;
-DEFAULT conditional = 0;
+DEFAULT visible = "";
 
 # Try to infer indentation from content, use indent arg otherwise.
 IF indent;
@@ -21,47 +23,111 @@ ELSE;
   Ind = "            ";
 END;
 
+# Use a wrapping conditional card for visibility.
+IF visible;
+"type: conditional\n";
+Ind; "conditions:\n";
+
+v_reverse = 0;
+v_a = visible.split(' +');
+
+FOREACH v_v IN v_a;
+  IF v_v == "not"; v_reverse = !v_reverse;
+
+  ELSIF v_v == "active";
+    Ind; "- condition: state\n";
+    Ind; "  entity: "; entity; "\n";
+    Ind; "  state"; IF v_reverse; "_not"; END; ": active\n";
+    v_reverse = 0;
+
+  ELSIF v_v == "available";
+    Ind; "- condition: state\n";
+    Ind; "  entity: "; entity; "\n";
+    Ind; "  state"; IF !v_reverse; "_not"; END; ":\n";
+    Ind; "    - unavailable\n";
+    Ind; "    - unknown\n";
+    v_reverse = 0;
+
+  # < and > indicate "below" and "above". Note that "not" is ignored.
+  ELSIF ( v_m = v_v.match('^([<>])(.*)') );
+    Ind; "- condition: numeric_state\n";
+    Ind; "  entity: "; entity; "\n";
+    IF v_m.0 == '<'; 
+      Ind; "  below; "; v_m.1; "\n";
+    ELSE;
+      Ind; "  above: "; v_m.1; "\n";
+    END;
+    v_reverse = 0;
+
+  # Assume state match.
+  ELSE;
+    IF ( v_or = v_v.split("\\\|") ) && v_or.size > 1;
+      Ind; "- condition: "; IF v_reverse; "and"; ELSE; "or"; END; "\n";
+      Ind; "  conditions:\n";
+      FOREACH v_vv IN v_or;
+          Ind; "  - condition: state\n";
+          Ind; "    entity: "; entity; "\n";
+          Ind; "    state"; IF v_reverse; "_not"; END; ": \""; v_vv; "\"\n";
+      END;
+    ELSIF ( v_and = v_v.split("&") ) && v_and.size > 1;
+      Ind; "- condition: state\n";
+      Ind; "  entity: "; entity; "\n";
+      Ind; "  state"; IF v_reverse; "_not"; END; ":\n";
+      FOREACH v_vv IN v_and;
+          Ind; "    - \""; v_vv; "\"\n";
+      END;
+    ELSE;
+      Ind; "- condition: state\n";
+      Ind; "  entity: "; entity; "\n";
+      Ind; "  state"; IF v_reverse; "_not"; END; ": \""; v_v; "\"\n";
+    END;
+    v_reverse = 0;
+  END;
+
+END;
+
+Ind; "card:\n";
+Ind = "  " _ Ind;
+Ind;
+END;
+
 # Card type.
-IF type == "mt"; SET type = "custom:mushroom-template-card";
-ELSIF type == "hg"; SET type = "custom:horizontal-gauge-card"; END;
-"type: "; type; "\n";
+IF    type == "mt"; cardtype = "custom:mushroom-template-card";
+ELSIF type == "hg"; cardtype = "custom:horizontal-gauge-card";
+ELSE;               cardtype = "tile"; END;
+"type: "; cardtype; "\n";
 
 # grids (custom:grid-layout-card) need some card mods.
 IF sections == 'grids';
-Ind; "card_mod: {\n";
+Ind; "card_mod:\n";
 Ind; "  style: ':host { --masonry-view-card-margin: 3px; }'\n";
-Ind; "}\n";
 END;
 
 # Parameters, if any.
-IF entity;      Ind; "entity: "; entity; "\n"; END;
-IF icon;        Ind; "icon: mdi:"; icon; "\n"; END;
-
-# Only grids can do this.
-IF columns > 1 && sections == 'grids'; Ind; "view_layout:\n";
-Ind; "  grid-column: 1 / span "; columns; "\n"; END;
-
-IF conditional;
-IF sections == 'grids';
-IF columns <= 1; Ind; "view_layout:\n"; END;
-Ind; "  show: >-\n";
-Ind; "    {% if ";
-IF conditional == -1; "not "; END;
-"( is_state('"; entity; "','unavailable')\n";
-Ind; "            or is_state('"; entity; "','unknown') ) %}never{% else %}always{% endif %}\n";
-ELSE;
-Ind; "visibility:\n";
-Ind; "  - entity: "; entity; "\n";
-Ind; "    condition: state\n";
-Ind; "    state";
-IF conditional == 1; "_not "; END;
-":\n";
-Ind; "      - unavailable\n";
-Ind; "      - unknown\n";
+IF name;
+  IF type == "tile" || type == "hg";
+    Ind; "name: "; name; "\n";
+  ELSIF type == "mt";
+    Ind; "primary: "; name; "\n";
+  END;
 END;
+IF entity;      Ind; "entity: "; entity; "\n"; END;
+IF icon;        Ind; "icon: "; icon; "\n"; END;
+
+# Only grids and sections can do this.
+IF span > 1;
+  SWITCH sections;
+  CASE 'grids';
+    Ind; "view_layout:\n";
+    Ind; "  grid-column: 1 / span "; span; "\n";
+  CASE 'sections';
+    Ind; "grid_options:\n";
+    Ind; "  columns: "; 6 * span; "\n";
+  END;
 END;
 
 # Finally, the rest of the card content.
-content;
+content = content.remove('^\n+');
+IF visible; content | indent(2); ELSE; content; END;
 
 -%]
