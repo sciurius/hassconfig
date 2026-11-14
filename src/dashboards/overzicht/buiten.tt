@@ -15,11 +15,14 @@
         clock_size: medium
         no_background: true
 
-      - type: tile
-        entity: weather.knmi_home
-        name: KNMI
+      - [% WRAPPER tile_card.tt
+                   entity = "weather.knmi_home"
+                   name = "KNMI" %]
+        [% END %]
 
-      - type: custom:mushroom-template-card
+      - [% WRAPPER mt_card.tt
+                   entity = "binary_sensor.day_period"
+                   %]
         primary: >-
           {% if is_state('binary_sensor.day_period','on') %} Daglicht
           {% else %} Nacht {% endif %}
@@ -32,51 +35,41 @@
           {% if is_state('binary_sensor.illuminated','on') %}
           var(--state-active-color)
           {% else %} var(--state-inactive-color) {% endif %}
+        [% END %]
 
-      - type: custom:mushroom-template-card
-        primary: Licht
-        icon: mdi:weather-sunny
+      - [% WRAPPER mt_card.tt
+                   entity = "sensor.achterkamer_illuminance"
+                   name = "Licht"
+                   icon = "mdi:weather-sunny"
+                   %]
         secondary: >-
           {{ states('sensor.achterkamer_illuminance') }} lx
         color: >-
           {% if is_state('binary_sensor.illuminated','on') %}
           var(--state-active-color)
           {% else %} var(--state-inactive-color) {% endif %}
+        [%END %]
 
-      - type: tile
-        entity: sensor.knmi_pressure
-        name: Luchtdruk
+      - [% WRAPPER tile_card.tt
+                   entity = "sensor.knmi_pressure"
+                   name = "Luchtdruk" %]
+        [% END %]
 
-      - type: custom:mushroom-template-card
-        entity: sensor.stookwijzer_advice_code
-        primary: Stookwijzer
-        icon: mdi:air-filter
+      - [% WRAPPER mt_card.tt
+                   entity = "sensor.stookwijzer_advice_code"
+                   name = "Stookwijzer"
+                   icon = "mdi:air-filter"
+                   %]
         color: >-
           {{ "red" if is_state('sensor.stookwijzer_advice_code',"code_red") else
           "orange" if is_state('sensor.stookwijzer_advice_code',"code_orange") else "[% dash.col.green %]" }}
         secondary: >-
           {{ "Slecht" if is_state('sensor.stookwijzer_advice_code',"code_red") else
               "Matig" if is_state('sensor.stookwijzer_advice_code',"code_orange") else "Ok" }}
+        [% END %]
 
-      - type: custom:mushroom-template-card
-        primary: Pollen
-        secondary: >-
-          {{ "B" +
-             states('sensor.kleenex_pollen_radar_home_trees_level')|truncate(1,true,"",0)|upper }}
-          {{ "G" +
-             states('sensor.kleenex_pollen_radar_home_grass_level')|truncate(1,true,"",0)|upper }}
-          {{ "K" +
-             states('sensor.kleenex_pollen_radar_home_weeds_level')|truncate(1,true,"",0)|upper }}
-        icon: >-
-          {{  "mdi:tree" if is_state('sensor.pollen_max','sensor.kleenex_pollen_radar_home_trees') else
-             "mdi:grass" if is_state('sensor.pollen_max','sensor.kleenex_pollen_radar_home_grass') else
-             "mdi:flower-pollen" }}
-        color: >-
-          {{    "red" if is_state(states('sensor.pollen_max')+'_level','very-high') else
-             "orange" if is_state(states('sensor.pollen_max')+'_level','high')      else
-             "yellow" if is_state(states('sensor.pollen_max')+'_level','moderate')  else
-             "[% dash.col.default %]" }}
-        visibility:
+      - type: conditional
+        conditions:
           - condition: or
             conditions:
               - condition: state
@@ -88,32 +81,54 @@
               - condition: state
                 entity: sensor.kleenex_pollen_radar_home_grass_level
                 state_not: low
-
-      - type: conditional
-        conditions:
-          - entity: sensor.noorderdiep_valthermond_air_quality_index
-            state_not: unavailable
         card:
-          type: custom:mushroom-template-card
-          entity: sensor.noorderdiep_valthermond_air_quality_index
-          icon: mdi:air-filter
+          [% WRAPPER mt_card.tt
+                     entity = "sensor.pollen_max"
+                     name = "Pollen"
+                     %]
+          secondary: >-
+            {{ "B" +
+               states('sensor.kleenex_pollen_radar_home_trees_level')|truncate(1,true,"",0)|upper }}
+            {{ "G" +
+               states('sensor.kleenex_pollen_radar_home_grass_level')|truncate(1,true,"",0)|upper }}
+            {{ "K" +
+               states('sensor.kleenex_pollen_radar_home_weeds_level')|truncate(1,true,"",0)|upper }}
+          icon: >-
+            {{  "mdi:tree" if is_state('sensor.pollen_max','sensor.kleenex_pollen_radar_home_trees') else
+               "mdi:grass" if is_state('sensor.pollen_max','sensor.kleenex_pollen_radar_home_grass') else
+               "mdi:flower-pollen" }}
           color: >-
-            {% if   states(entity)|int <=  50 %} [% dash.col.green %]
-            {% elif states(entity)|int <= 100 %} [% dash.col.yellow %]
-            {% elif states(entity)|int <= 150 %} orange
-            {% elif states(entity)|int <= 200 %} red
-            {% elif states(entity)|int <= 300 %} purple
-            {% else                           %} brown
-            {% endif %}
-          primary: Luchtkwaliteit
-          secondary: >
-            {{ states('sensor.noorderdiep_valthermond_dominant_pollutant') }}
-            {{ states(entity) }}
+            {{    "red" if is_state(states('sensor.pollen_max')+'_level','very-high') else
+               "orange" if is_state(states('sensor.pollen_max')+'_level','high')      else
+               "yellow" if is_state(states('sensor.pollen_max')+'_level','moderate')  else
+               "[% dash.col.default %]" }}
+          [% END %]
 
-      - type: tile
-        entity: timer.buitenverlichting_achter
-        icon: mdi:outdoor-lamp
-        name: Achterkant
+      - [% WRAPPER mt_card.tt
+                   entity = "sensor.noorderdiep_valthermond_air_quality_index"
+                   name = "Luchtkwaliteit"
+                   icon = "mdi:air-filter"
+                   visible = "available"
+                   %]
+        color: >-
+          {% if   states(entity)|int <=  50 %} [% dash.col.green %]
+          {% elif states(entity)|int <= 100 %} [% dash.col.yellow %]
+          {% elif states(entity)|int <= 150 %} orange
+          {% elif states(entity)|int <= 200 %} red
+          {% elif states(entity)|int <= 300 %} purple
+          {% else                           %} brown
+          {% endif %}
+        secondary: >
+          {{ states('sensor.noorderdiep_valthermond_dominant_pollutant') }}
+          {{ states(entity) }}
+        [% END %]
+
+      - [% WRAPPER tile_card.tt
+                   entity  = "timer.buitenverlichting_achter"
+                   icon    = "mdi:outdoor-lamp"
+                   name    = "Achterkant"
+                   visible = "active"
+                   %]
         icon_tap_action:
           action: perform-action
           perform_action: light.toggle
@@ -122,13 +137,14 @@
         icon_hold_action:
           action: call-service
           service: script.start_buitenverlichting_achter_timer
-        visibility:
-          - entity: timer.buitenverlichting_achter
-            state: active
+        [% END %]
 
-      - type: custom:mushroom-template-card
-        icon: mdi:outdoor-lamp
-        primary: Achterkant
+      - [% WRAPPER mt_card.tt
+                   icon    = "mdi:outdoor-lamp"
+                   name    = "Achterkant"
+                   entity  = "timer.buitenverlichting_achter"
+                   visible = "not active"
+                   %]
         secondary: >-
           {% if is_state('timer.buitenverlichting_achter','idle') %} Off
           {% else %} {{ states('timer.buitenverlichting_achter') }} {% endif %}
@@ -140,34 +156,28 @@
         icon_hold_action:
           action: call-service
           service: script.start_buitenverlichting_achter_timer
-        visibility:
-          - entity: light.balkonkerstverlichting
-            <<: *v_available
-          - entity: timer.buitenverlichting_achter
-            state_not: active
+        [% END %]
 
-#      - type: tile
-#        entity: device_tracker.sm_a366b
-#        name: Johan
-#        icon: mdi:radar
-#        visibility:
-#          - entity: device_tracker.sm_a366b
-#            <<: *v_available
+      - [% WRAPPER tile_card.tt
+                   entity  = "light.balkonkerstverlichting"
+                   name    = "Balkon (Kerst)"
+                   icon    = "mdi:string-lights"
+                   visible = "available"
+                   %]
+        [% END %]
 
-      - type: tile
-        entity: light.balkonkerstverlichting
-        name: Balkon (Kerst)
-        icon: mdi:string-lights
-        visibility:
-          - entity: light.balkonkerstverlichting
-            <<: *v_available
-
-      - type: tile
-        entity: sensor.toyota_x424vf_apk_expiration
-        name: APK verloopt
-        visibility:
-          - entity: sensor.apk_expiration_near
+      - type: conditional
+        conditions:
+          - condition: state
+            entity: sensor.apk_expiration_near
             state_not: nog_lang_niet
+        card:
+          [% WRAPPER tile_card.tt
+                     entity = "sensor.toyota_x424vf_apk_expiration"
+                     name    = "APK verloopt"
+                     visible = "not nog_lang_niet"
+                     %]
+          [% END %]
 
       - type: conditional
         conditions:
@@ -181,19 +191,21 @@
             entity: binary_sensor.before_1700
             state: "on"
         card:
-            type: custom:mushroom-template-card
-            entity: sensor.afvalwijzer_today
-            primary: Afval
-            icon: mdi:recycle
-            active: true
-            color: "[% dash.col.yellow %]"
-            secondary: >-
-              {{ states(entity).capitalize() }}
-            hold_action:
-              action: call-service
-              service: input_boolean.turn_on
-              target:
-                entity_id: input_boolean.afval_dismiss
+          [% WRAPPER mt_card.tt
+                     entity = "sensor.afvalwijzer_today"
+                     name   = "Afval"
+                     icon   = "mdi:recycle"
+                     %]
+          active: true
+          color: "[% dash.col.yellow %]"
+          secondary: >-
+            {{ states(entity).capitalize() }}
+          hold_action:
+            action: call-service
+            service: input_boolean.turn_on
+            target:
+              entity_id: input_boolean.afval_dismiss
+          [% END %]
 
       - type: conditional
         conditions:
@@ -204,111 +216,18 @@
             entity: input_boolean.afval_dismiss
             state: "off"
         card:
-            type: custom:mushroom-template-card
-            entity: sensor.afvalwijzer_tomorrow
-            primary: Afval (morgen)
-            icon: mdi:recycle
-            color: [% dash.col.default %]
-            active: true
-            secondary: >-
-              {{ states(entity).capitalize() }}
-            hold_action:
-              action: call-service
-              service: input_boolean.turn_on
-              target:
-                entity_id: input_boolean.afval_dismiss
-
-  # - type: grid
-  #   columns: 1
-  #   square: false
-  #   cards:
-  #     - type: entities
-  #       entities:
-
-  #         - type: conditional
-  #           conditions:
-  #             - entity: binary_sensor.pollen_kleenex
-  #               state: 'on'
-  #           row:
-  #             entity: sensor.kleenex_pollen_radar_home_weeds
-  #             type: custom:multiple-entity-row
-  #             show_state: false
-  #             name: Pollen
-  #             secondary_info: Kleenex.NL
-  #             entities:
-  #               - entity: sensor.kleenex_pollen_radar_home_trees
-  #                 hide_if: none
-  #                 name: Bomen
-  #                 unit: false
-  #               - entity: sensor.kleenex_pollen_radar_home_grass
-  #                 hide_if: none
-  #                 name: Gras
-  #                 unit: false
-  #               - entity: sensor.kleenex_pollen_radar_home_weeds
-  #                 hide_if: none
-  #                 name: Kruiden
-  #                 unit: false
-
-  #         # - type: conditional
-  #         #   conditions:
-  #         #     - entity: sensor.noorderdiep_valthermond_air_quality_index
-  #         #       state_not: unavailable
-  #         #   row:
-  #         #     entity: sensor.noorderdiep_valthermond_air_quality_index
-  #         #     type: custom:multiple-entity-row
-  #         #     name: Luchtkwaliteit
-  #         #     secondary_info: Valthermond
-  #         #     entities:
-  #         #       - entity: sensor.noorderdiep_valthermond_dominant_pollutant
-  #         #         name: false
-
-
-  #         # - type: custom:multiple-entity-row
-  #         #   entity: binary_sensor.lighting
-  #         #   name: Duisterlicht
-  #         #   entities:
-  #         #     - entity: binary_sensor.day_time
-  #         #       name: Dag
-  #         #     - entity: binary_sensor.darkness
-  #         #       name: Donker
-
-  #         # - type: custom:template-entity-row
-  #         #   entity: sensor.afvalwijzer_today
-  #         #   name: Afval
-  #         #   icon: mdi:recycle
-  #         #   active: true
-  #         #   color: "#ffc107"
-  #         #   condition: >
-  #         #     {{ ( not
-  #         #        is_state('sensor.afvalwijzer_today','geen') )
-  #         #        and ( now() < today_at("17:00") )
-  #         #        and is_state('input_boolean.afval_dismiss','off')
-  #         #     }}
-  #         #   state: >-
-  #         #     {{ states('sensor.afvalwijzer_today').capitalize()
-  #         #     }}
-  #         #   hold_action:
-  #         #     action: call-service
-  #         #     service: input_boolean.turn_on
-  #         #     target:
-  #         #       entity_id: input_boolean.afval_dismiss
-
-  #         # - type: custom:template-entity-row
-  #         #   entity: sensor.afvalwijzer_tomorrow
-  #         #   name: Afval (morgen)
-  #         #   icon: mdi:recycle
-  #         #   active: false
-  #         #   state: >-
-  #         #     {{
-  #         #     states('sensor.afvalwijzer_tomorrow').capitalize()
-  #         #     }}
-  #         #   condition: >-
-  #         #     {{ not
-  #         #        is_state('sensor.afvalwijzer_tomorrow','geen')
-  #         #        and is_state('input_boolean.afval_dismiss','off')
-  #         #     }}
-  #         #   hold_action:
-  #         #     action: input_boolean.turn_on
-  #         #     target:
-  #         #       entity_id: input_boolean.afval_dismiss
-
+          [% WRAPPER mt_card.tt
+                     entity = "sensor.afvalwijzer_tomorrow"
+                     name   = "Afval (morgen)"
+                     icon   = "mdi:recycle"
+                     %]
+          color: [% dash.col.default %]
+          active: true
+          secondary: >-
+            {{ states(entity).capitalize() }}
+          hold_action:
+            action: call-service
+            service: input_boolean.turn_on
+            target:
+              entity_id: input_boolean.afval_dismiss
+          [% END %]
