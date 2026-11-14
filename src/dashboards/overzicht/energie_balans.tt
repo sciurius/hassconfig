@@ -5,8 +5,9 @@
 [% PROCESS colours.tt -%]
 [%-
 # Sensor mapping.
-heater = "kantoorxkacheltje";
-boiler = "huiskamerkacheltje";
+extra1 = "kantoorxkacheltje";
+extra2 = "huiskamerkacheltje";
+boiler = "exsboiler"
 -%]
 
 [% INCLUDE section.tt
@@ -18,13 +19,15 @@ boiler = "huiskamerkacheltje";
    navigate = "/lovelace-overzicht/energie"
    %]
 
-      - type: custom:mushroom-template-card
-        icon: mdi:radiator
-        primary: Exs Kachel1
-        entity: switch.[% heater %]
+      - [% WRAPPER mt_card.tt
+                   icon    = "mdi:radiator"
+                   name    = "Exs Kachel1"
+                   entity  = "switch." _ extra1
+                   visible = "available"
+                   %]
         color: |
-          {% if is_state('input_boolean.[% heater %]_enabled','on') %}
-            {% if is_state('switch.[% heater %]','on') %}
+          {% if is_state('input_boolean.[% extra1 %]_enabled','on') %}
+            {% if is_state('switch.[% extra1 %]','on') %}
               [% dash.col.active %]
             {% else %}
               [% dash.col.default %]
@@ -33,29 +36,61 @@ boiler = "huiskamerkacheltje";
             [% dash.col.inactive %]
           {% endif %}
         secondary: |
-          {{ states('sensor.[% heater %]_energy_today') }} kWh
+          {{ states('sensor.[% extra1 %]_energy_today') }} kWh
         tap_action:
           action: more-info
-          entity: sensor.[% heater %]_energy_today
+          entity: sensor.[% extra1 %]_energy_today
         hold_action:
           action: perform-action
           perform_action: input_boolean.toggle
           target:
-            entity_id: input_boolean.[% heater %]_enabled
+            entity_id: input_boolean.[% extra1 %]_enabled
         icon_hold_action:
           action: perform-action
           perform_action: input_boolean.toggle
           target:
-            entity_id: input_boolean.[% heater %]_enabled
-        visibility:
-          - entity: switch.[% heater %]
-            <<: *v_available
+            entity_id: input_boolean.[% extra1 %]_enabled
+        [% END %]
 
+      - [% WRAPPER mt_card.tt
+                   icon    = "mdi:radiator"
+                   name    = "Exs Kachel2"
+                   entity  = "switch." _ extra2
+                   visible = "available"
+                   %]
+        color: |
+          {% if is_state('input_boolean.[% extra2 %]_enabled','on') %}
+            {% if is_state('switch.[% extra2 %]','on') %}
+              [% dash.col.active %]
+            {% else %}
+              [% dash.col.default %]
+            {% endif %}
+          {% else %}
+            [% dash.col.inactive %]
+          {% endif %}
+        secondary: |
+          {{ states('sensor.[% extra2 %]_energy_today') }} kWh
+        tap_action:
+          action: more-info
+          entity: sensor.[% extra2 %]_energy_today
+        hold_action:
+          action: perform-action
+          perform_action: input_boolean.toggle
+          target:
+            entity_id: input_boolean.[% extra2 %]_enabled
+        icon_hold_action:
+          action: perform-action
+          perform_action: input_boolean.toggle
+          target:
+            entity_id: input_boolean.[% extra2 %]_enabled
+        [% END %]
 
-      - type: custom:mushroom-template-card
-        icon: mdi:radiator
-        primary: Exs Kachel2
-        entity: switch.[% boiler %]
+      - [% WRAPPER mt_card.tt
+                   icon    = "mdi:water-boiler"
+                   name    = "Exs Boiler"
+                   entity  = "switch." _ boiler
+                   visible = "available"
+                   %]
         color: |
           {% if is_state('input_boolean.[% boiler %]_enabled','on') %}
             {% if is_state('input_boolean.[% boiler %]_hot','on') %}
@@ -85,4 +120,4 @@ boiler = "huiskamerkacheltje";
           perform_action: input_boolean.toggle
           target:
             entity_id: input_boolean.[% boiler %]_enabled
-
+        [% END %]        

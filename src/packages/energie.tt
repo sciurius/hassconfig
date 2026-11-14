@@ -4,15 +4,16 @@
 [%-
 
 # Load of heater, in Watts.
-load_heater = 900;
-# Load of boiler, in Watts.
-load_boiler = 900;
+load_heater1 = 900;
+load_heater2 = 900;
+load_boiler = 2300;
 # Floor space, in Watts.
 load_floor = 200
 
 # Sensor mapping.
-heater = "kantoorxkacheltje";
-boiler = "huiskamerkacheltje";
+heater1 = "kantoorxkacheltje";
+heater2 = "huiskamerkacheltje";
+boiler = "exsboiler";
 
 -%]
 
@@ -29,27 +30,27 @@ automation:
       - id: all_off
         trigger: numeric_state
         entity_id: sensor.energie_overschot
-        below: [% load_heater %]
+        below: [% load_heater1 %]
         for: "00:01:00"
 
-      - id: heater_on
+      - id: heater1_on
         trigger: numeric_state
         entity_id: sensor.energie_overschot
-        above: [% load_heater %]
-        below: [% load_boiler %]
+        above: [% load_heater1 %]
+        below: [% load_heater2 %]
         for: "00:01:00"
 
-      - id: boiler_on
+      - id: heater2_on
         trigger: numeric_state
         entity_id: sensor.energie_overschot
-        above: [% load_boiler %]
-        below: [% load_boiler + load_heater %]
+        above: [% load_heater2 %]
+        below: [% load_heater2 + load_heater1 %]
         for: "00:01:00"
 
       - id: all_on
         trigger: numeric_state
         entity_id: sensor.energie_overschot
-        above: [% load_boiler + load_heater %]
+        above: [% load_heater2 + load_heater1 %]
         for: "00:01:00"
 
     actions:
@@ -59,10 +60,10 @@ automation:
           message: >-
             Trigger {{ trigger.id }},
             overschot {{ states('sensor.energie_overschot') }} W,
-            heater {{ states('switch.[% heater %]') }}
-            ({{ states('sensor.[% heater %]_energy_power')|float }}),
-            boiler {{ states('switch.[% boiler %]') }}
-            ({{ states('sensor.[% boiler %]_energy_power')|float }}).
+            heater1 {{ states('switch.[% heater1 %]') }}
+            ({{ states('sensor.[% heater1 %]_energy_power')|float }}),
+            heater2 {{ states('switch.[% heater2 %]') }}
+            ({{ states('sensor.[% heater2 %]_energy_power')|float }}).
 
       - choose:
 
@@ -74,54 +75,54 @@ automation:
           - action: switch.turn_off
             target:
               entity_id:
-                - switch.[% heater %]
-                - switch.[% boiler %]
+                - switch.[% heater1 %]
+                - switch.[% heater2 %]
 
-        # Sufficient energy for heater, but not for boiler.
+        # Sufficient energy for heater1, but not for heater2.
         - conditions:
            - condition: trigger
-             id: heater_on
+             id: heater1_on
            - condition: state
-             entity_id: input_boolean.[% heater %]_enabled
+             entity_id: input_boolean.[% heater1 %]_enabled
              state: "on"
           sequence:
           - action: switch.turn_on
             target:
               entity_id:
-                - switch.[% heater %]
+                - switch.[% heater1 %]
           - action: switch.turn_off
             target:
               entity_id:
-                - switch.[% boiler %]
+                - switch.[% heater2 %]
 
-        # Sufficient energy for boiler, but not for both.
+        # Sufficient energy for heater2, but not for both.
         - conditions:
             - condition: trigger
-              id: boiler_on
+              id: heater2_on
           sequence:
             - if:
                 - condition: state
-                  entity_id: input_boolean.[% boiler %]_enabled
+                  entity_id: input_boolean.[% heater2 %]_enabled
                   state: "on"
                 - condition: state
-                  entity_id: input_boolean.[% boiler %]_hot
+                  entity_id: input_boolean.[% heater2 %]_hot
                   state: "off"
               then:
                 - action: switch.turn_on
                   target:
-                    entity_id: switch.[% boiler %]
+                    entity_id: switch.[% heater2 %]
                 - action: switch.turn_off
                   target:
-                    entity_id: switch.[% heater %]
+                    entity_id: switch.[% heater1 %]
               else:
                 - if:
                     - condition: state
-                      entity_id: input_boolean.[% heater %]_enabled
+                      entity_id: input_boolean.[% heater1 %]_enabled
                       state: "on"
                   then:
                     - action: switch.turn_on
                       target:
-                        entity_id: switch.[% heater %]
+                        entity_id: switch.[% heater1 %]
 
         # Sufficient energy for both.
         - conditions:
@@ -130,23 +131,23 @@ automation:
           sequence:
             - if:
                 - condition: state
-                  entity_id: input_boolean.[% boiler %]_enabled
+                  entity_id: input_boolean.[% heater2 %]_enabled
                   state: "on"
                 - condition: state
-                  entity_id: input_boolean.[% boiler %]_hot
+                  entity_id: input_boolean.[% heater2 %]_hot
                   state: "off"
               then:
                 - action: switch.turn_on
                   target:
-                    entity_id: switch.[% boiler %]
+                    entity_id: switch.[% heater2 %]
             - if:
                 - condition: state
-                  entity_id: input_boolean.[% heater %]_enabled
+                  entity_id: input_boolean.[% heater1 %]_enabled
                   state: "on"
               then:
                 - action: switch.turn_on
                   target:
-                    entity_id: switch.[% heater %]
+                    entity_id: switch.[% heater1 %]
 
   # If the boiler is completely heated up, register it.
   - id: Automation__ExsBoiler_Hot
@@ -189,16 +190,28 @@ automation:
         entity_id: switch.[% boiler %]
 
   # Turn off when disabled.
-  - id: Automation__ExsHeater_Enabled
+  - id: Automation__ExsHeater1_Enabled
     alias: "ExsHeater Enabled"
     mode: single
     triggers:
       - trigger: state
-        entity_id: input_boolean.[% heater %]_enabled
+        entity_id: input_boolean.[% heater1 %]_enabled
         to: "off"
     actions:
       - action: switch.turn_off
-        entity_id: switch.[% heater %]
+        entity_id: switch.[% heater1 %]
+
+  # Turn off when disabled.
+  - id: Automation__ExsHeater2_Enabled
+    alias: "ExsHeater Enabled"
+    mode: single
+    triggers:
+      - trigger: state
+        entity_id: input_boolean.[% heater2 %]_enabled
+        to: "off"
+    actions:
+      - action: switch.turn_off
+        entity_id: switch.[% heater2 %]
 
   # Turn keukenboiler on/off with clock program.
   - id: Automation__Keukenboiler_Schedule
@@ -254,9 +267,11 @@ template:
           {{
           ( states('sensor.energie_balans')|float * 1000
             +
-            states('sensor.[% heater %]_energy_power')|float
+            states('sensor.[% heater1 %]_energy_power')|float
             +
-            states('sensor.exsboiler_energy_power')|float ) |float(2)
+            states('sensor.[% heater2 %]_energy_power')|float
+            +
+            states('sensor.[% boiler %]_energy_power')|float ) |float(2)
           }}
           
       # Constant consumption: 175W
@@ -287,8 +302,11 @@ template:
 
 input_boolean:
 
-  [% heater %]_enabled:
-    name: EXS Heater
+  [% heater1 %]_enabled:
+    name: EXS Heater1
+
+  [% heater2 %]_enabled:
+    name: EXS Heater2
 
   [% boiler %]_enabled:
     name: EXS Boiler
