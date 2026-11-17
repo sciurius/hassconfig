@@ -43,15 +43,22 @@ script:
   doorbell_alarm:
     alias: Doorbell Alarm
     sequence:
-    - service: shell_command.dingdong_picky
+    - action: music_assistant.play_announcement
+      target:
+        entity_id: media_player.picky_ma
+      data:
+        url: https://data.squirrel.nl/lms/Westminster-chimes-doorbell.mp3
+[%#    - action: shell_command.dingdong_picky
       data: {}
     mode: single
-    icon: mdi:bell-alert
+    icon: mdi:bell-alert %]
+
+[% url = "http://lms.squirrel.nl:9000/plugins/LMSannounce/js.html?cmd=announceFile&file=%2Fhome%2fjv%2fSounds%2fWestminster-chimes-doorbell.mp3" %]
 
 shell_command:
   dingdong_picky: >-
-    curl 'http://lms.squirrel.nl:9000/plugins/LMSannounce/js.html?cmd=announceFile&file=%2Fhome%2fjv%2fSounds%2fWestminster-chimes-doorbell.mp3&playerid=80%3a1f%3a02%3ac2%3a37%3a7d'
+    curl '[% url %]&playerid=80%3a1f%3a02%3ac2%3a37%3a7d'
   dingdong_phoenix: >-
-    curl 'http://lms.squirrel.nl:9000/plugins/LMSannounce/js.html?cmd=announceFile&file=%2Fhome%2fjv%2fSounds%2fWestminster-chimes-doorbell.mp3&playerid=e0%3ad5%3a5e%3ad9%3a7b%3a67'
+    curl '[% url %]&playerid=e0%3ad5%3a5e%3ad9%3a7b%3a67'
   dingdong_sleepy: >-
-    curl 'http://lms.squirrel.nl:9000/plugins/LMSannounce/js.html?cmd=announceFile&file=%2Fhome%2fjv%2fSounds%2fWestminster-chimes-doorbell.mp3&playerid=00%3a04%3a20%3a12%3ab8%3a91'
+    curl '[% url %]&playerid=00%3a04%3a20%3a12%3ab8%3a91'
