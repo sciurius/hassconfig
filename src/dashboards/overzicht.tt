@@ -190,7 +190,8 @@ views:
       - !include overzicht/databases.yaml
       - !include overzicht/computers.yaml
       - !include overzicht/laders.yaml
-      - !include overzicht/picky.yaml
+      - !include overzicht/picky_ma.yaml
+      - !include overzicht/picky_lms.yaml
       - !include overzicht/osmc.yaml
 
   - title: Alerts
