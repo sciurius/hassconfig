@@ -60,7 +60,6 @@ views:
         - !include overzicht/keuken.yaml
         - !include overzicht/bijkeuken.yaml
 #      - !include overzicht/cv.yaml
-#      - !include overzicht/cv.yaml
 
       - type: vertical-stack
         cards:
