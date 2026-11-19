@@ -16,3 +16,11 @@ mqtt:
       unique_id: sensor__[% srv.lower %]_databases_size
       value_template: "{{ value_json.total }}"
 [% END %]
+
+  binary_sensor:
+    - name: Phoenix Database Error
+      state_topic: db/phoenix/pgerror
+      device_class: problem
+      unique_id: sensor__phoenix_database_error
+      payload_off: "off"
+      payload_on: "on"

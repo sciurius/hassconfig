@@ -83,6 +83,18 @@
               - entity: input_boolean.testing_alerts
                 state: "on"
             
+          - entity: binary_sensor.phoenix_database_error
+            message: "Postgres Database Problem"
+            theme: emergency
+            icon: ''
+            conditions_logic: or
+            conditions:
+              - entity: binary_sensor.phoenix_database_error
+                operator: "="
+                state: "on"
+              - entity: input_boolean.testing_alerts
+                state: "on"
+            
         cycle_animation: fold
         overlay_mode: true
         overlay_position: top
