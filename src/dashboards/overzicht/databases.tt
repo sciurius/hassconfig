@@ -25,4 +25,11 @@
                 secondary: "{{ (states(entity)|int /1024 /1024) |int }} MiB"
                 icon: mdi:database-outline
                 color: var(--state-icon-color)
+            - entity_id: "sensor.cloud_squirrel_nl_datab*se_size"
+              options:
+                type: custom:mushroom-template-card
+                primary: Cloud
+                secondary: "{{ states(entity)|int }} MiB"
+                icon: mdi:database-outline
+                color: var(--state-icon-color)
         card_param: cards
