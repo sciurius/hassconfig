@@ -104,9 +104,6 @@ automation:
                 - condition: state
                   entity_id: input_boolean.[% heater2 %]_enabled
                   state: "on"
-                - condition: state
-                  entity_id: input_boolean.[% heater2 %]_hot
-                  state: "off"
               then:
                 - action: switch.turn_on
                   target:
@@ -133,9 +130,6 @@ automation:
                 - condition: state
                   entity_id: input_boolean.[% heater2 %]_enabled
                   state: "on"
-                - condition: state
-                  entity_id: input_boolean.[% heater2 %]_hot
-                  state: "off"
               then:
                 - action: switch.turn_on
                   target:
