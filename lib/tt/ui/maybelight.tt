@@ -20,17 +20,17 @@ DEFAULT icon     = "mdi:dome-light"
 -%]
 [% WRAPPER tile_card.tt
            entity  = "$entity"
+	   name    = label
+           icon    = icon
            visible = "available" %]
-        name: [% label %]
-        icon: [% icon %]
-[% END %]
+        [% END %]
 
       - [% WRAPPER mt_card.tt
            entity  = "$entity"
+	   name    = label
+           icon    = icon
            visible = "not available" %]
-        primary: [% label %]
         secondary: "Uit"
-        icon: [% icon %]
         color: "var(--state-inactive-color)"
         tap_action:
           action: more-info
