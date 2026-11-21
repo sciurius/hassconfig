@@ -15,6 +15,11 @@
         show_when_clear: false
         clear_message: ''
         clear_theme: success
+        cycle_animation: fold
+        overlay_mode: true
+        overlay_position: top
+        overlay_duration: 0
+
         alerts:
 
           - entity: sensor.boiler_system_pressure
@@ -95,7 +100,15 @@
               - entity: input_boolean.testing_alerts
                 state: "on"
             
-        cycle_animation: fold
-        overlay_mode: true
-        overlay_position: top
-        overlay_duration: 0
+          - entity: sensor.letsencrypt_cert_days
+            message: >-
+              LetsEncrypt Cert expires in
+              {{ states('sensor.letsencrypt_cert_days') }} days
+            conditions_logic: or
+            conditions:
+              - entity: sensor.letsencrypt_cert_days
+                operator: "<"
+                state: 14
+              - entity: input_boolean.testing_alerts
+                state: "on"
+            
