@@ -38,7 +38,7 @@
       - [% INCLUDE switching_meter
            name = "Koffie" sensor = "koffiespul"
            icon = "coffee-maker-outline" %]
-#      - [% INCLUDE switching_meter
+#      - [%# INCLUDE switching_meter
 #           name = "Expresso" sensor = "expresso" icon = "coffee-maker" %]
       - [% INCLUDE switching_meter
            name = "Koelkast" icon = "fridge" alwayson = 2 %]
