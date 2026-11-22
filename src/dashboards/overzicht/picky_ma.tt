@@ -1,0 +1,14 @@
+# Dashboard: Overzicht -- Media Player: picky       -*- hass -*-
+
+[% IF sections == "cards" %]
+type: conditional
+conditions:
+  - entity: media_player.picky_ma
+    state_not: idle
+  - entity: media_player.picky_ma
+    state_not: unavailable
+
+card:
+[% END %]
+  type: media-control
+  entity: media_player.picky_ma
