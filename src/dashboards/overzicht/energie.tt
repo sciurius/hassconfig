@@ -25,7 +25,9 @@
       - [% WRAPPER hg_card.tt
                    name   = "Balans"
                    entity = "sensor.energie_balans"
-                   icon   = "mdi:lightning-bolt" %]
+                   icon   = "mdi:lightning-bolt"
+                   color  = "segment"
+                   %]
         max: 1
         needle: true
         needle_shadow: false
@@ -38,12 +40,12 @@
             color: orange
             label: Charge
           - value: 1
-            color: lightgreen
+            color: "#00ff00"
             label: Discharge
+        smooth_gradients: false
         min: -1
         show_value: true
         decimals: 2
-        smooth_gradients: false
         needle_label_position: below
         show_value_labels: false
         show_needle_label: false
@@ -52,7 +54,9 @@
       - [% WRAPPER hg_card.tt
                    name   = "Batterij"
                    entity = "sensor.ecoflow_battery_charging_power"
-                   icon   = "mdi:battery-sync-outline" %]
+                   icon   = "mdi:home-battery"
+                   color  = "segment"
+                   %]
         max: 800
         needle: true
         needle_shadow: false
@@ -65,12 +69,12 @@
             color: orange
             label: Charge
           - value: 800
-            color: lightgreen
+            color: "#00ff00"
             label: Discharge
+        smooth_gradients: false
         min: -800
         show_value: true
         decimals: 0
-        smooth_gradients: false
         needle_label_position: below
         show_value_labels: false
         show_needle_label: false
@@ -99,10 +103,12 @@
                    entity = "sensor.dsmr_day_consumption_gas" %]
         [% END %]
 
-      - [% WRAPPER tile_card.tt
-                   name   = "Zon"
+      - [% WRAPPER mt_card.tt
+                   name   = "Zon {{ states('sensor.power_generated')|int }} W"
                    icon   = "mdi:solar-power"
                    entity = "sensor.energy_generated" %]
+        secondary: >-
+          {{ (states('sensor.energy_generated'))|int / 1000 }} kWh
         [% END %]
 
       # ECOFlow cloud based integration.

@@ -87,7 +87,9 @@
       - [% WRAPPER hg_card.tt
                    name   = "Bu Be Bi"
                    entity = "sensor.buiten_beter_binnen"
-                   icon   = "mdi:sun-snowflake" %]
+                   icon   = "mdi:sun-snowflake"
+                   color  = "segment"
+                   %]
         max: 10
         needle: true
         needle_shadow: false
@@ -101,7 +103,7 @@
           - value: 1
             color: orange
           - value: 10
-            color: lightgreen
+            color: "#00ff00"
         min: -10
         show_value: true
         decimals: 1
