@@ -1,0 +1,67 @@
+# Dashboard: Overzicht -- Hal       -*- hass -*-
+# WARNING: This is a generated file -- DO NOT EDIT
+
+[%- IF sections == "cards"; sections = "grids"; END -%]
+
+[% INCLUDE section.tt
+       name     = "Traplift"
+       icon     = "elevator-passenger-outline"
+       badges   = []
+       navigate = "/lovelace-overzicht/traplift" %]
+
+      - [% WRAPPER mt_card.tt
+                   entity = "cover.otolift"
+                   span   = 2
+                   %]
+        icon: >-
+          {% if is_state('sensor.otolift_on','Up') %}
+          mdi:arrow-up-bold-outline
+          {% elif is_state('sensor.otolift_on','Down') %}
+          mdi:arrow-down-bold-outline
+          {% else %}
+          mdi:elevator-passenger-outline
+          {% endif %}
+        color: >-
+          {% if is_state('sensor.otolift_on','Up') %} red
+          {% elif is_state('sensor.otolift_on','Down') %} red
+          {% else %} var(--state-icon-color) {% endif %}
+        primary: >-
+          {% if is_state('sensor.otolift_on','Up') %} Going Up
+          {% elif is_state('sensor.otolift_on','Down') %} Going Down
+          {% else %} Traplift {% endif %}
+        secondary:
+        card_mod:
+          style: |
+            ha-state-icon {
+              {% if is_state('sensor.otolift_on', 'Stopped') %}
+              {% else %} animation: blink-animation 1s steps(1,start) infinite; {% endif %}
+            }
+            @keyframes blink-animation {
+              50% { visibility: hidden; }
+            }
+        features_position: inline
+        features:
+          - type: custom:service-call
+            entries:
+              - type: button
+                icon: mdi:arrow-down-bold
+                tap_action:
+                  action: perform-action
+                  perform_action: script.turn_on
+                  target:
+                    entity_id: script.otolift_down
+              - type: button
+                tap_action:
+                  action: perform-action
+                  perform_action: script.turn_on
+                  target:
+                    entity_id: script.otolift_stop
+                icon: mdi:stop
+              - type: button
+                icon: mdi:arrow-up-bold
+                tap_action:
+                  action: perform-action
+                  perform_action: script.turn_on
+                  target:
+                    entity_id: script.otolift_up
+        [% END %]
