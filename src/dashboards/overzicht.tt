@@ -1,4 +1,4 @@
-# WARNING: This is a generated file -- DO NOT EDIT
+# WARNING: This is a generated file -- DO NOT EDIT   -*- hass -*-
 # Dashboard: Overzicht                 -*- hass -*-
 
 [%-
@@ -36,18 +36,21 @@ views:
 
     [% sectioncards %]:
 
-      - !include overzicht/buiten.yaml
+      - type: vertical-stack
+        cards:
+          - !include overzicht/alert_ticker.yaml
+          - !include overzicht/buiten.yaml
 
-#      - type: vertical-stack
-#        cards:
       - !include overzicht/weerstation.yaml
 
       - type: vertical-stack
         cards:
         - !include overzicht/woonkamer.yaml
+        - !include overzicht/hal.yaml
+      - type: vertical-stack
+        cards:
         - !include overzicht/media.yaml
         - !include overzicht/databases.yaml
-        - !include overzicht/hal.yaml
 
       - type: vertical-stack
         cards:
@@ -55,6 +58,7 @@ views:
         - !include overzicht/energie_balans.yaml
 
       - !include overzicht/kantoor.yaml
+
       - type: vertical-stack
         cards:
         - !include overzicht/keuken.yaml
