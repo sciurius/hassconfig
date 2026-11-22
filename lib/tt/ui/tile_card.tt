@@ -9,6 +9,7 @@ DEFAULT icon    = "";
 DEFAULT span    = 1;
 DEFAULT indent  = 0;
 DEFAULT visible = "";
+DEFAULT color   = "";
 
 # Try to infer indentation from content, use indent arg otherwise.
 IF indent;
@@ -113,6 +114,13 @@ IF name;
 END;
 IF entity;      Ind; "entity: "; entity; "\n"; END;
 IF icon;        Ind; "icon: "; icon; "\n"; END;
+IF color;
+  IF type == "hg" && color == "segment";
+    Ind; "icon_color_from_segment: true\n";
+  ELSE;
+    Ind; "color: "; color; "\n";
+  END;
+END;
 
 # Only grids and sections can do this.
 IF span > 1;
