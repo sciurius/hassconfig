@@ -124,12 +124,12 @@
             <<: *v_active
 
       - [% INCLUDE timed.tt
-           name   = "Kacheltje"
+           name   = "Voetkacheltje"
            switch = "kantoorkacheltje"
            icon   = "heat-wave" -%]
 
       - [% INCLUDE switching_meter
-           name = "ExtKacheltje" sensor = "kantoorxkacheltje"
+           name = "Exs Kachel1" sensor = "kantoorxkacheltje"
            icon = "heat-wave" %]
 
       [% PROCESS ir_action.tt; remote = "kantoor" -%]
