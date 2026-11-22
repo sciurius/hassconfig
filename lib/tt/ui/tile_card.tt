@@ -11,85 +11,85 @@ DEFAULT indent  = 0;
 DEFAULT visible = "";
 DEFAULT color   = "";
 
-# Try to infer indentation from content, use indent arg otherwise.
+# If indent is not set, try to infer indentation from content.
 IF indent;
   # Use indent parameter. Overrides content checking.
-  Ind = " ";
-  Ind = Ind.repeat(indent);
+  ind = " ";
+  ind = ind.repeat(indent);
 ELSIF content.defined && content.length > 0;
   # Note that content (may) start with newline(s).
-  Ind = content.match("^\n*( *)").0;
+  ind = content.match("^\n*( *)").0;
 ELSE;
   # Just a default.
-  Ind = "            ";
+  ind = "            ";
 END;
 
 # Use a wrapping conditional card for visibility.
 IF visible;
 "type: conditional\n";
-Ind; "conditions:\n";
+ind; "conditions:\n";
 
-v_reverse = 0;
-v_a = visible.split(' +');
+reverse = 0;
+a = visible.split(' +');
 
-FOREACH v_v IN v_a;
-  IF v_v == "not"; v_reverse = !v_reverse;
+FOREACH v IN a;
+  IF v == "not"; reverse = !reverse;
 
-  ELSIF v_v == "active";
-    Ind; "- condition: state\n";
-    Ind; "  entity: "; entity; "\n";
-    Ind; "  state"; IF v_reverse; "_not"; END; ": active\n";
-    v_reverse = 0;
+  ELSIF v == "active";
+    ind; "- condition: state\n";
+    ind; "  entity: "; entity; "\n";
+    ind; "  state"; IF reverse; "_not"; END; ": active\n";
+    reverse = 0;
 
-  ELSIF v_v == "available";
-    Ind; "- condition: state\n";
-    Ind; "  entity: "; entity; "\n";
-    Ind; "  state"; IF !v_reverse; "_not"; END; ":\n";
-    Ind; "    - unavailable\n";
-    Ind; "    - unknown\n";
-    v_reverse = 0;
+  ELSIF v == "available";
+    ind; "- condition: state\n";
+    ind; "  entity: "; entity; "\n";
+    ind; "  state"; IF !reverse; "_not"; END; ":\n";
+    ind; "    - unavailable\n";
+    ind; "    - unknown\n";
+    reverse = 0;
 
   # < and > indicate "below" and "above". Note that "not" is ignored.
-  ELSIF ( v_m = v_v.match('^([<>])(.*)') );
-    Ind; "- condition: numeric_state\n";
-    Ind; "  entity: "; entity; "\n";
-    IF v_m.0 == '<'; 
-      Ind; "  below; "; v_m.1; "\n";
+  ELSIF ( m = v.match('^([<>])(.*)') );
+    ind; "- condition: numeric_state\n";
+    ind; "  entity: "; entity; "\n";
+    IF m.0 == '<'; 
+      ind; "  below; "; m.1; "\n";
     ELSE;
-      Ind; "  above: "; v_m.1; "\n";
+      ind; "  above: "; m.1; "\n";
     END;
-    v_reverse = 0;
+    reverse = 0;
 
   # Assume state match.
   ELSE;
-    IF ( v_or = v_v.split("\\\|") ) && v_or.size > 1;
-      Ind; "- condition: "; IF v_reverse; "and"; ELSE; "or"; END; "\n";
-      Ind; "  conditions:\n";
-      FOREACH v_vv IN v_or;
-          Ind; "  - condition: state\n";
-          Ind; "    entity: "; entity; "\n";
-          Ind; "    state"; IF v_reverse; "_not"; END; ": \""; v_vv; "\"\n";
+    IF ( v_or = v.split("\\\|") ) && v_or.size > 1;
+      ind; "- condition: "; IF reverse; "and"; ELSE; "or"; END; "\n";
+      ind; "  conditions:\n";
+      FOREACH vv IN v_or;
+          ind; "  - condition: state\n";
+          ind; "    entity: "; entity; "\n";
+          ind; "    state"; IF reverse; "_not"; END; ": \""; vv; "\"\n";
       END;
-    ELSIF ( v_and = v_v.split("&") ) && v_and.size > 1;
-      Ind; "- condition: state\n";
-      Ind; "  entity: "; entity; "\n";
-      Ind; "  state"; IF v_reverse; "_not"; END; ":\n";
-      FOREACH v_vv IN v_and;
-          Ind; "    - \""; v_vv; "\"\n";
+    ELSIF ( v_and = v.split("&") ) && v_and.size > 1;
+      ind; "- condition: state\n";
+      ind; "  entity: "; entity; "\n";
+      ind; "  state"; IF reverse; "_not"; END; ":\n";
+      FOREACH vv IN v_and;
+          ind; "    - \""; vv; "\"\n";
       END;
     ELSE;
-      Ind; "- condition: state\n";
-      Ind; "  entity: "; entity; "\n";
-      Ind; "  state"; IF v_reverse; "_not"; END; ": \""; v_v; "\"\n";
+      ind; "- condition: state\n";
+      ind; "  entity: "; entity; "\n";
+      ind; "  state"; IF reverse; "_not"; END; ": \""; v; "\"\n";
     END;
-    v_reverse = 0;
+    reverse = 0;
   END;
 
 END;
 
-Ind; "card:\n";
-Ind = "  " _ Ind;
-Ind;
+ind; "card:\n";
+ind = "  " _ ind;
+ind;
 END;
 
 # Card type.
@@ -100,25 +100,25 @@ ELSE;               cardtype = "tile"; END;
 
 # grids (custom:grid-layout-card) need some card mods.
 IF sections == 'grids';
-Ind; "card_mod:\n";
-Ind; "  style: ':host { --masonry-view-card-margin: 3px; }'\n";
+ind; "card_mod:\n";
+ind; "  style: ':host { --masonry-view-card-margin: 3px; }'\n";
 END;
 
 # Parameters, if any.
 IF name;
   IF type == "tile" || type == "hg";
-    Ind; "name: "; name; "\n";
+    ind; "name: "; name; "\n";
   ELSIF type == "mt";
-    Ind; "primary: "; name; "\n";
+    ind; "primary: "; name; "\n";
   END;
 END;
-IF entity;      Ind; "entity: "; entity; "\n"; END;
-IF icon;        Ind; "icon: "; icon; "\n"; END;
+IF entity;      ind; "entity: "; entity; "\n"; END;
+IF icon;        ind; "icon: "; icon; "\n"; END;
 IF color;
   IF type == "hg" && color == "segment";
-    Ind; "icon_color_from_segment: true\n";
+    ind; "icon_color_from_segment: true\n";
   ELSE;
-    Ind; "color: "; color; "\n";
+    ind; "color: "; color; "\n";
   END;
 END;
 
@@ -126,11 +126,11 @@ END;
 IF span > 1;
   SWITCH sections;
   CASE 'grids';
-    Ind; "view_layout:\n";
-    Ind; "  grid-column: 1 / span "; span; "\n";
+    ind; "view_layout:\n";
+    ind; "  grid-column: 1 / span "; span; "\n";
   CASE 'sections';
-    Ind; "grid_options:\n";
-    Ind; "  columns: "; 6 * span; "\n";
+    ind; "grid_options:\n";
+    ind; "  columns: "; 6 * span; "\n";
   END;
 END;
 

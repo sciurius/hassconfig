@@ -37,14 +37,6 @@
                    %]
         [% END %]
 
-      - type: tile
-        entity: switch.slaapkamer_media_center
-        icon: mdi:television
-
-#      - [% INCLUDE power_meter.tt
-#           name = "Media Center" sensor = "slaapkamer_media_center"
-#           icon = "television" %]
-
       - type: shortcut
         label: Media Center
         tap_action:
@@ -115,6 +107,6 @@
                    entity = "timer.slaapkamer_warmtedeken"
                    name = "Timer"
                    icon = "mdi:radiator"
-                   visible = "available acive"
+                   visible = "available active"
                    %]
         [% END %]

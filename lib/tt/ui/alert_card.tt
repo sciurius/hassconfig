@@ -1,0 +1,66 @@
+[%
+
+# For conditional alert card.
+
+DEFAULT name    = "";
+DEFAULT icon    = "mdi:alert";
+DEFAULT icon_color = "orange";
+DEFAULT indent  = 0;
+DEFAULT condition = "state";
+DEFAULT cstate    = "";
+
+# Try to infer indentation from content, use indent arg otherwise.
+IF indent;
+  # Use indent parameter. Overrides content checking.
+  Ind = " ";
+  Ind = Ind.repeat(indent);
+ELSIF content.defined && content.length > 0;
+  # Note that content (may) start with newline(s).
+  Ind = content.match("^\n*( *)").0;
+ELSE;
+  # Just a default.
+  Ind = "            ";
+END;
+
+message = message.replace( '\bentity\b', "'" _ entity _ "'" );
+
+IF ( v_m = condition.match('^([<>])(.*)') );
+    condition = "numeric_state";
+    IF v_m.0 == '<'; 
+      cstate = "below: " _ v_m.1;
+    ELSE;
+      cstate = "above: " _ v_m.1;
+    END;
+END;
+
+IF condition == "state"
+   && cstate == ""
+   && entity.match('^(binary_sensor|input_boolean)\.');
+   cstate = "state: 'on'";
+END;
+
+"type: conditional\n";
+Ind; "conditions:\n";
+Ind; "- condition: or\n";
+Ind; "  conditions:\n";
+Ind; "  - condition: "; condition; "\n";
+Ind; "    entity: "; entity; "\n";
+Ind; "    "; cstate; "\n";
+Ind; "  - condition: state\n";
+Ind; "    entity: input_boolean.testing_alerts\n";
+Ind; "    state: \"on\"\n";
+Ind; "card:\n";
+Ind; "  type: custom:alert-ticker-card\n";
+Ind; "  alerts:\n";
+Ind; "  - entity: "; entity; "\n";
+Ind; "    message: \""; message; "\"\n";
+Ind; "    theme: warning\n";
+Ind; "    use_ha_icon: true\n";
+Ind; "    icon: \""; icon; "\"\n";
+Ind; "    icon_color: \""; icon_color; "\"\n";
+Ind; "    disable_animation: true\n";
+
+# Finally, the rest of the card content.
+content | indent(2);
+
+-%]

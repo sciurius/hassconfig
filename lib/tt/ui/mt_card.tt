@@ -5,6 +5,6 @@
 
 DEFAULT type    = "mt";
 
-INCLUDE tile_card.tt;
+PROCESS tile_card.tt;
 
 -%]

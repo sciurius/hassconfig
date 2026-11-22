@@ -1,7 +1,6 @@
 # Dashboard: Overzicht -- Energie       -*- hass -*-
 # WARNING: This is a generated file -- DO NOT EDIT
 
-[% PROCESS v_anchors.tt -%]
 [% PROCESS colours.tt -%]
 
 [% INCLUDE section.tt
@@ -29,12 +28,16 @@
                    color  = "segment"
                    %]
         max: 1
+        min: -1
+        show_value: true
+        decimals: 2
+        show_value_labels: false
+        value_label_position: above
         needle: true
         needle_shadow: false
         needle_color: "#808080"
-        show_segment_labels: false
-        segment_label_position: below
-        value_label_position: above
+        show_needle_label: false
+        needle_label_position: below
         segments:
           - value: 0
             color: orange
@@ -42,13 +45,10 @@
           - value: 1
             color: "#00ff00"
             label: Discharge
-        smooth_gradients: false
-        min: -1
-        show_value: true
-        decimals: 2
-        needle_label_position: below
-        show_value_labels: false
-        show_needle_label: false
+        smooth_gradients: true
+        show_segment_labels: false
+        segment_label_position: below
+        icon-background-circle: false
         [% END %]
              
       - [% WRAPPER hg_card.tt
@@ -58,12 +58,16 @@
                    color  = "segment"
                    %]
         max: 800
+        min: -800
+        show_value: true
+        decimals: 0
+        show_value_labels: false
+        value_label_position: above
         needle: true
         needle_shadow: false
         needle_color: "#808080"
-        show_segment_labels: false
-        segment_label_position: below
-        value_label_position: above
+        show_needle_label: false
+        needle_label_position: below
         segments:
           - value: 0
             color: orange
@@ -71,19 +75,12 @@
           - value: 800
             color: "#00ff00"
             label: Discharge
-        smooth_gradients: false
-        min: -800
-        show_value: true
-        decimals: 0
-        needle_label_position: below
-        show_value_labels: false
-        show_needle_label: false
+        smooth_gradients: true
+        show_segment_labels: false
+        segment_label_position: below
+        icon-background-circle: false
         tap_action:
           action: more-info
-        hold_action:
-          action: none
-        double_tap_action:
-          action: none
         [% END %]
 
       - [% WRAPPER tile_card.tt

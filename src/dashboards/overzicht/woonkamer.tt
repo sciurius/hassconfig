@@ -91,12 +91,16 @@
                    color  = "segment"
                    %]
         max: 10
+        min: -10
+        show_value: true
+        decimals: 1
+        show_value_labels: false
+        value_label_position: above
         needle: true
         needle_shadow: false
         needle_color: "#808080"
-        show_segment_labels: false
-        segment_label_position: below
-        value_label_position: above
+        show_needle_label: false
+        needle_label_position: below
         segments:
           - value: -1
             color: "#18bcf2"
@@ -104,13 +108,10 @@
             color: orange
           - value: 10
             color: "#00ff00"
-        min: -10
-        show_value: true
-        decimals: 1
-        smooth_gradients: false
-        needle_label_position: below
-        show_value_labels: false
-        show_needle_label: false
+        smooth_gradients: true
+        show_segment_labels: false
+        segment_label_position: below
+        icon_background_circle: false
         [% END %]
 [% END %]
 
