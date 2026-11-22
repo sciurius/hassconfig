@@ -1,16 +1,13 @@
-# -*- mode: tt; indent-tabs-mode: nil -*-
-# MUST BE INCLUDEd, NOT PROCESSed.
-
-[% PROCESS v_anchors.tt -%]
-
-[% BLOCK power_meter;
+[%- # -*- mode: tt; indent-tabs-mode: nil -*-
    DEFAULT sensor = name.lower;
    sensor = "sensor." _ sensor _ "_energy_today";
--%]
-type: custom:mushroom-template-card
-        entity: [% sensor %]
-[%- IF icon %]
-        icon: mdi:[% icon %][% END %]
+
+WRAPPER mt_card.tt
+           entity = sensor
+           name = name
+           visible = "available >0"
+           %]
+[% IF icon %]        icon: mdi:[% icon %][% END %]
         primary: [% name %]
         color: var(--state-icon-color)
         secondary: "{{ states('[% sensor %]')|round(2) }} kWh"
@@ -18,44 +15,4 @@ type: custom:mushroom-template-card
           action: more-info
         icon_hold_action:
           action: more-info
-        visibility:
-          - entity: [% sensor %]
-            condition: numeric_state
-            above: 0
-          - entity: [% sensor %]
-            <<: *v_available
-[% END -%]
-
-[%- BLOCK switching_meter;
-   DEFAULT sensor = name.lower;
-   DEFAULT alwayson = 0;
-   switch = "switch." _ sensor
-   sensor = "sensor." _ sensor _ "_energy_today";
--%]
-type: custom:mushroom-template-card
-        entity: [% switch %]
-[%- IF icon.match('{%') %]
-        icon: "[% icon %]"[%- ELSE -%]
-[%- IF icon %]
-        icon: "mdi:[% icon %]"[% END; END %]
-        primary: [% name %]
-        secondary: >
-          {% if states('[% sensor %]')|round(2) > 0 %}
-          {{ states('[% sensor %]')|round(2) }} kWh
-          {% endif %}
-        icon_tap_action:
-          action: toggle
-        icon_hold_action:
-          action: more-info
-          entity: [% sensor %]
-        visibility:
-          - entity: [% switch %]
-            <<: *v_available
-[%- IF alwayson > 1 %]
-        color: "{{ 'var(--state-icon-color)' if is_state('[% switch %]','on') else 'red' }}"
-[%- ELSIF alwayson > 0 %]
-        color: "{{ 'var(--state-icon-color)' if is_state('[% switch %]','on') else 'var(--state-inactive-color)' }}"
-[%- ELSE %]
-        color: "var(--state-{{ '' if is_state('[% switch %]','on') else 'in' }}active-color)"
-[%- END -%]
-[% END -%]
+[% END %]

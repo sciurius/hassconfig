@@ -1,18 +1,16 @@
 # Dashboard: Overzicht -- Bijkeuken      -*- hass -*-
 # WARNING: This is a generated file -- DO NOT EDIT
 
-[% PROCESS power_meter.tt -%]
-
 [% INCLUDE section.tt
        name     = "Bijkeuken"
        icon     = "countertop"
        navigate = "/lovelace-overzicht/bijkeuken" %]
 
-      - [% INCLUDE power_meter
+      - [% INCLUDE power_meter.tt
            name = "Vriezer"    icon = "fridge-industrial" %]
-      - [% INCLUDE switching_meter
+      - [% INCLUDE switching_meter.tt
            name = "AirMagBread" icon = "microwave" %]
-      - [% INCLUDE power_meter
+      - [% INCLUDE power_meter.tt
            name = "Wasmachine" icon = "washing-machine" %]
-      - [% INCLUDE power_meter
+      - [% INCLUDE power_meter.tt
            name = "Wasdroger"  icon = "tumble-dryer" %]

@@ -1,8 +1,6 @@
 # Dashboard: Overzicht -- Keuken      -*- hass -*-
 # WARNING: This is a generated file -- DO NOT EDIT
 
-[% PROCESS power_meter.tt -%]
-
 [% INCLUDE section.tt
        name     = "Keuken"
        icon     = "countertop"
@@ -30,63 +28,61 @@
             topic: cmnd/tasm22/add1
             payload: 1
 
-      - [% INCLUDE switching_meter
+      - [% INCLUDE switching_meter.tt
            name = "Boiler" sensor = "keukenboiler"
            icon = "water-boiler" alwayson = 1 %]
-      - [% INCLUDE power_meter
+      - [% INCLUDE power_meter.tt
            name = "Vaatwasser" icon = "dishwasher" %]
-      - [% INCLUDE switching_meter
+      - [% INCLUDE switching_meter.tt
            name = "Koffie" sensor = "koffiespul"
            icon = "coffee-maker-outline" %]
-#      - [%# INCLUDE switching_meter
+#      - [%# INCLUDE switching_meter.tt
 #           name = "Expresso" sensor = "expresso" icon = "coffee-maker" %]
-      - [% INCLUDE switching_meter
+      - [% INCLUDE switching_meter.tt
            name = "Koelkast" icon = "fridge" alwayson = 2 %]
-      - [% INCLUDE power_meter name = "Oven" icon = "toaster-oven" %]
+      - [% INCLUDE power_meter.tt
+           name = "Oven" icon = "toaster-oven" %]
         hold_action:
           action: navigate
           navigation_path: /lovelace-oven/0
 
-      - type: custom:mushroom-template-card
-        entity: sensor.aeg_oven_targettemperature
-        primary: Oven
-        icon: mdi:thermostat
-        color: red
-        secondary: "{{ states('sensor.aeg_oven_displaytemperature') }} / {{ states('sensor.aeg_oven_targettemperature')|int }} °C"
-        visibility:
-          - entity: sensor.aeg_oven_targettemperature
-            <<: *v_available
-          - entity: sensor.aeg_oven_appliancestate
-            condition: state
-            state: "Running"
+      - type: conditional
+        conditions:
+        - condition: state
+          entity: sensor.aeg_oven_targettemperature
+          state_not:
+            - unavailable
+            - unknown
+        - condition: state
+          entity: sensor.aeg_oven_appliancestate
+          state: "Running"
+        card:
+          [% WRAPPER mt_card.tt
+                     entity = "sensor.aeg_oven_targettemperature"
+                     name = "Oven"
+                     icon = "mdi:thermostat"
+                     %]
+          color: red
+          secondary: "{{ states('sensor.aeg_oven_displaytemperature') }} / {{ states('sensor.aeg_oven_targettemperature')|int }} °C"
+          [% END %]
 
-      - type: tile
-        entity: sensor.aeg_oven_starttime
-        name: Oven start
-        visibility:
-          - entity: sensor.aeg_oven_starttime
-            <<: *v_available
-          - entity: sensor.aeg_oven_starttime
-            condition: numeric_state
-            above: 0
+      - [% WRAPPER tile_card.tt
+                   entity = "sensor.aeg_oven_starttime"
+                   name = "Oven start"
+                   visible = "available >0"
+                   %]
+        [% END %]
 
-      - type: tile
-        entity: sensor.aeg_oven_runningtime
-        name: Oven
-        visibility:
-          - entity: sensor.aeg_oven_runningtime
-            <<: *v_available
-          - entity: sensor.aeg_oven_runningtime
-            condition: numeric_state
-            above: 0
+      - [% WRAPPER tile_card.tt
+                   entity = "sensor.aeg_oven_runningtime"
+                   name = "Oven"
+                   visible = "available >0"
+                   %]
+        [% END %]
 
-      - type: tile
-        entity: sensor.aeg_oven_timetoend
-        # Note that the sensor seems to stop at 1.
-        name: Stopt over
-        visibility:
-          - entity: sensor.aeg_oven_timetoend
-            <<: *v_available
-          - entity: sensor.aeg_oven_timetoend
-            condition: numeric_state
-            above: 1
+      - [% WRAPPER tile_card.tt
+                   entity = "sensor.aeg_oven_timetoend"
+                   name = "Stopt over"
+                   visible = "available >1"
+                   %]
+        [% END %]

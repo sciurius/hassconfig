@@ -1,7 +1,6 @@
 # Dashboard: Overzicht -- Badkamer       -*- hass -*-
 # WARNING: This is a generated file -- DO NOT EDIT
 
-[% PROCESS power_meter.tt -%]
 [% PROCESS colours.tt -%]
 
 [% device = "itho_cve_s" %]
@@ -14,7 +13,7 @@
       - [% INCLUDE maybelight.tt
            entity = "light.badkamer_verlichting" %]
 
-      - [% INCLUDE switching_meter
+      - [% INCLUDE switching_meter.tt
            name = "Afzuiging"
            icon = "fan"
            alwayson = 2 %]
@@ -52,39 +51,33 @@
           {% if (states('sensor.[% device %]_ventilation_setpoint')|int) > 0 %}({{ states('sensor.[% device %]_ventilation_setpoint') }}%){% endif %}
           {% endif %}
 
-      - type: tile
-        entity: sensor.[% device %]_remaining_time
-        name: Fan Timer
-        visibility:
-          - entity: sensor.[% device %]_remaining_time
-            <<: *v_available
-          - entity: sensor.[% device %]_remaining_time
-            condition: numeric_state
-            above: 0
+      - [% WRAPPER tile_card.tt
+                   entity = "sensor." _ device _ "_remaining_time"
+                   name = "Fan Timer"
+                   visible = "available >0"
+                   %]
+        [% END %]
   
-      - type: tile
-        entity: sensor.boiler_dhw_current_tap_water_flow
-        name: Warm water
-        icon: mdi:shower
-        visibility:
-          - entity: sensor.boiler_dhw_current_tap_water_flow
-            <<: *v_available
-          - entity: sensor.boiler_dhw_current_tap_water_flow
-            condition: numeric_state
-            above: 0
+      - [% WRAPPER tile_card.tt
+                   entity = "sensor.boiler_dhw_current_tap_water_flow"
+                   name = "Warm water"
+                   icon = "mdi:shower"
+                   visible = "available >0"
+                   %]
+        [% END %]
 
-      - [% INCLUDE switching_meter
+      - [% INCLUDE switching_meter.tt
                    name = "Verwarming"
                    icon = "heat-wave"
                    sensor = "badkamerverwarming" %]
             
-      - type: tile
-        entity: timer.badkamerverwarming
-        icon: mdi:radiator
-        name: Timer
-        visibility:
-          - entity: timer.badkamerverwarming
-            <<: *v_active
+      - [% WRAPPER tile_card.tt
+                   entity = "timer.badkamerverwarming"
+                   name = "Timer"
+                   icon = "mdi:radiator"
+                   visible = "active"
+                   %]
+        [% END %]
 
 #      # Switch on verwarming when doorbell is pressed.
 #      - type: tile

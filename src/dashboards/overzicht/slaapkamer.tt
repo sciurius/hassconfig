@@ -1,8 +1,6 @@
 # Dashboard: Overzicht -- Slaapkamer                     -*- hass -*-
 # New design based on tile cards.
 
-[% PROCESS power_meter.tt -%]
-
 [% INCLUDE section.tt
        name     = "Slaapkamer"
        icon     = "bed"
@@ -33,15 +31,17 @@
           {% endif %}
 
       # Avondlichtje.
-      - type: tile
-        entity: light.slaapkamer_avondlichtje
-        name: Avondlichtje
+      - [% WRAPPER tile_card.tt
+                   entity = "light.slaapkamer_avondlichtje"
+                   name = "Avondlichtje"
+                   %]
+        [% END %]
 
       - type: tile
         entity: switch.slaapkamer_media_center
         icon: mdi:television
 
-#      - [% INCLUDE power_meter
+#      - [% INCLUDE power_meter.tt
 #           name = "Media Center" sensor = "slaapkamer_media_center"
 #           icon = "television" %]
 
@@ -71,27 +71,25 @@
            
       # Fan on/off switch.
       # Only visible if the fan exists.
-      - type: tile
-        entity: switch.slaapkamer_fan
-        visibility:
-          - entity: switch.slaapkamer_fan
-            <<: *v_available
+      - [% WRAPPER tile_card.tt
+                   entity = "switch.slaapkamer_fan"
+                   visible = "available"
+                   %]
+        [% END %]
 
       # Fan timer.
       # Only visible when the timer is running.
-      - type: tile
-        entity: timer.slaapkamer_fan
-        name: Timer
-        icon: mdi:fan
-        visibility:
-          - entity: timer.slaapkamer_fan
-            <<: *v_active
-          - entity: switch.slaapkamer_fan
-            <<: *v_available
+      - [% WRAPPER tile_card.tt
+                   entity = "timer.slaapkamer_fan"
+                   name = "Timer"
+                   icon = "mdi:fan"
+                   visible = "available active"
+                   %]
+        [% END %]
 
       # Warmtedeken switch.
       # Only visible when the warmtedeken exists.
-      - [% INCLUDE switching_meter
+      - [% INCLUDE switching_meter.tt
            name = "\"Deken {% if is_state('automation.scheduled_switch_on_warmtedeken','on') %} (auto) {% endif %}\""
            sensor = "slaapkamer_warmtedeken"
            icon = "radiator" %]
@@ -113,12 +111,10 @@
 
       # Warmtedeken timer.
       # Only visible when the timer is running.
-      - type: tile
-        entity: timer.slaapkamer_warmtedeken
-        name: Timer
-        icon: mdi:radiator
-        visibility:
-          - entity: timer.slaapkamer_warmtedeken
-            <<: *v_active
-          - entity: switch.slaapkamer_warmtedeken
-            <<: *v_available
+      - [% WRAPPER tile_card.tt
+                   entity = "timer.slaapkamer_warmtedeken"
+                   name = "Timer"
+                   icon = "mdi:radiator"
+                   visible = "available acive"
+                   %]
+        [% END %]

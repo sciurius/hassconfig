@@ -1,0 +1,28 @@
+# Dashboard: Overzicht -- Omvormer       -*- hass -*-
+# WARNING: This is a generated file -- DO NOT EDIT
+
+[% PROCESS v_anchors.tt -%]
+[% PROCESS colours.tt -%]
+
+[% INCLUDE section.tt
+   name     = "Omvormer"
+   icon     = "solar-power"
+   badges   = [ "temperature" ]
+   temperature_entity = "sensor.growatt_temperature"
+   navigate = "/lovelace-growatt"
+   %]
+
+      - type: tile
+        entity: sensor.growatt_pac
+        name: Energie
+        icon: mdi:lightning-bolt
+
+      - type: tile
+        entity: sensor.energy_generated
+        name: Opgewekt
+        icon: mdi:solar-power
+
+      - type: tile
+        name: Temperatuur
+        entity: sensor.growatt_temperature
+

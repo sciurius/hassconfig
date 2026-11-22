@@ -1,0 +1,64 @@
+# Dashboard: Overzicht -- Woonkamer wand       -*- hass -*-
+# WARNING: This is a generated file -- DO NOT EDIT
+
+[% PROCESS v_anchors.tt %]
+
+[% INCLUDE section.tt
+   name   = "Verlichting"
+   icon   = "sofa"
+   entity = "woonkamer"
+   badges = []
+   %]
+
+      - type: tile
+        entity: light.woonkamer_tafel
+        name: Tafel
+        icon: mdi:ceiling-light
+
+      - type: tile
+        entity: light.woonkamer_tafeltje
+        name: Tafeltje
+        icon: mdi:lamp
+
+      - type: tile
+        entity: light.woonkamer_hoek
+        name: Hoek
+
+      - type: tile
+        entity: light.woonkamer_heks
+        icon: mdi:light-flood-down
+        name: Heks
+        icon_hold_action:
+          action: call-service
+          service: light.toggle
+          data:
+            entity_id: light.woonkamer_heks
+            brightness_pct: 100
+            rgb_color: [191,0,255]
+
+      - type: tile
+        entity: light.woonkamer_totem
+        icon: mdi:light-flood-down
+        name: Totem
+        icon_hold_action:
+          action: call-service
+          service: script.start_woonkamer_totem_timer
+
+      - [% INCLUDE switchoff_timer_tile.tt name = "Timer",
+           timer = "woonkamer_totem" %]
+
+      - type: tile
+        entity: light.woonkamer_wand_l
+        name: Links
+
+      - type: tile
+        entity: light.woonkamer_wand_r
+        name: Rechts
+
+      - type: tile
+        entity: light.binnenkerstverlichting1
+        name: Kerstverlichting
+        visibility:
+          - entity: light.binnenkerstverlichting1
+            <<: *v_available
+

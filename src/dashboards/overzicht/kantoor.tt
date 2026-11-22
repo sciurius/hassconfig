@@ -1,8 +1,7 @@
 # Dashboard: Overzicht -- Kantoor       -*- hass -*-
 # WARNING: This is a generated file -- DO NOT EDIT
 
-[% PROCESS power_meter.tt -%]
-
+[% PROCESS v_anchors.tt -%]
 [% INCLUDE section.tt
        name = "Kantoor"
        icon = "account-network"
@@ -126,9 +125,9 @@
       - [% INCLUDE timed.tt
            name   = "Voetkacheltje"
            switch = "kantoorkacheltje"
-           icon   = "heat-wave" -%]
+           icon   = "heat-wave" %]
 
-      - [% INCLUDE switching_meter
+      - [% INCLUDE switching_meter.tt
            name = "Exs Kachel1" sensor = "kantoorxkacheltje"
            icon = "heat-wave" %]
 

@@ -1,0 +1,27 @@
+# Dashboard: Overzicht -- Hal       -*- hass -*-
+# WARNING: This is a generated file -- DO NOT EDIT
+
+[% INCLUDE section.tt
+       name     = "Johan"
+       icon     = "radar"
+       columns  = 1
+       badges   = [ "battery" ]
+       battery_entity = "sensor.a36_a36_battery"
+       navigate = "/lovelace-overzicht/trackerjohan" %]
+
+      - type: tile
+        entity: device_tracker.a36_a36
+        icon: mdi:radar
+        name: Johan
+
+      # ownTracks on phone.
+      - type: map
+        entities:
+          - entity: device_tracker.a36_a36
+            icon: mdi:radar
+            label_mode: attribute
+            attribute: battery_level
+            unit: "%"
+        hours_to_show: 1
+        theme_mode: auto
+

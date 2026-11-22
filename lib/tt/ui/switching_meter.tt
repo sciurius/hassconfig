@@ -1,0 +1,32 @@
+[% # -*- mode: tt; indent-tabs-mode: nil -*-
+   DEFAULT sensor = name.lower;
+   DEFAULT alwayson = 0;
+   switch = "switch." _ sensor
+   sensor = "sensor." _ sensor _ "_energy_today";
+
+WRAPPER mt_card.tt
+           entity = switch
+           name = name
+           visible = "available"
+           %]
+[%- IF icon.match('{%') %]
+        icon: "[% icon %]"[%- ELSE -%]
+[%- IF icon %]
+        icon: "mdi:[% icon %]"[% END; END %]
+        secondary: >
+          {% if states('[% sensor %]')|round(2) > 0 %}
+          {{ states('[% sensor %]')|round(2) }} kWh
+          {% endif %}
+        icon_tap_action:
+          action: toggle
+        icon_hold_action:
+          action: more-info
+          entity: [% sensor %]
+[%- IF alwayson > 1 %]
+        color: "{{ 'var(--state-icon-color)' if is_state('[% switch %]','on') else 'red' }}"
+[%- ELSIF alwayson > 0 %]
+        color: "{{ 'var(--state-icon-color)' if is_state('[% switch %]','on') else 'var(--state-inactive-color)' }}"
+[%- ELSE %]
+        color: "var(--state-{{ '' if is_state('[% switch %]','on') else 'in' }}active-color)"
+[%- END -%]
+        [% END %]
