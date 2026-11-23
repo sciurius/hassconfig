@@ -23,7 +23,7 @@ test :
 
 publish :: $(addprefix ${DST}/,$(addsuffix .yaml,${CFGS_PL}))
 	${TTREE}
-	rsync -avHci ${DST}/ /mnt/ha/config/
+	rsync -rvHOJci --modify-window=2 ${DST}/ /mnt/ha/config/
 
 # Rule for programmatically generated configs.
 ${DST}/%.yaml :: %.pl
