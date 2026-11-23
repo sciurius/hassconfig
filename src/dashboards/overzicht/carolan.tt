@@ -1,9 +1,6 @@
 # Dashboard: Overzicht -- Carolan       -*- hass -*-
 # WARNING: This is a generated file -- DO NOT EDIT
 
-[% PROCESS v_anchors.tt -%]
-[% PROCESS colours.tt -%]
-
 [% INCLUDE section.tt
        name   = "Auto"
        icon   = "car-hatchback"

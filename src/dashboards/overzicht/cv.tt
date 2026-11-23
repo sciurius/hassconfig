@@ -1,8 +1,6 @@
 # Dashboard: Overzicht -- CV       -*- hass -*-
 # WARNING: This is a generated file -- DO NOT EDIT
 
-[% PROCESS v_anchors.tt -%]
-
 [% INCLUDE section.tt
        name       = "CV"
        icon       = "heating-coil"

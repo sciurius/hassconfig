@@ -1,7 +1,6 @@
 # Dashboard: Overzicht -- Kantoor       -*- hass -*-
 # WARNING: This is a generated file -- DO NOT EDIT
 
-[% PROCESS v_anchors.tt -%]
 [% INCLUDE section.tt
        name = "Kantoor"
        icon = "account-network"

@@ -1,8 +1,6 @@
 # Dashboard: Overzicht -- Logeerkamer       -*- hass -*-
 # WARNING: This is a generated file -- DO NOT EDIT
 
-[% PROCESS v_anchors.tt -%]
-
 [% INCLUDE section.tt
        name      = "Logeerkamer"
        icon      = "bed-empty"

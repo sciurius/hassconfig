@@ -1,8 +1,6 @@
 # Dashboard: Overzicht -- Woonkamer wand       -*- hass -*-
 # WARNING: This is a generated file -- DO NOT EDIT
 
-[% PROCESS v_anchors.tt %]
-
 [% INCLUDE section.tt
    name   = "Verlichting"
    icon   = "sofa"
