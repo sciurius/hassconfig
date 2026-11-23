@@ -43,12 +43,12 @@
             color: orange
             label: Charge
           - value: 1
-            color: "#00ff00"
+            color: "#00c000"
             label: Discharge
         smooth_gradients: true
         show_segment_labels: false
         segment_label_position: below
-        icon-background-circle: false
+        icon_background_circle: false
         [% END %]
              
       - [% WRAPPER hg_card.tt
@@ -73,12 +73,12 @@
             color: orange
             label: Charge
           - value: 800
-            color: "#00ff00"
+            color: "#00c000"
             label: Discharge
         smooth_gradients: true
         show_segment_labels: false
         segment_label_position: below
-        icon-background-circle: false
+        icon_background_circle: false
         tap_action:
           action: more-info
         [% END %]
