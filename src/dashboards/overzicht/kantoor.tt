@@ -44,6 +44,20 @@
         entity: sensor.home_assistant_website
         name: Hass Software
 
+      - [% WRAPPER tile_card.tt type="mt"
+                   entity = "sensor.phoenix_linux_disk_usage_volume"
+                   name = "Phoenix"
+                   icon = "mdi:harddisk"
+                   visible = "available"
+                   %]
+        secondary: "{{ state_attr('sensor.phoenix_linux_disk_usage_volume','percent') }} %"
+        color: |
+          {% set inuse = state_attr('sensor.phoenix_linux_disk_usage_volume','percent') |int %}
+          {% if inuse >= 90 %} red
+          {% elif inuse >= 80 %} orange
+          {% else %} var(--state-icon-color) {% endif %}
+        [% END %]
+
       - name: NAS1
         entity: sensor.nas1_volume_1_volume_used
 [% IF 1 %]

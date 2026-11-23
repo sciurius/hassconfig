@@ -1,5 +1,5 @@
 [%# Standard anchors, used for visibility in tiles. -%]
-
+[% IF ! have.v_anchors %]
 # Anchors. Used for visibility in tiles.
 _anchor_v_active: &v_active
     condition: state
@@ -9,3 +9,6 @@ _anchor_v_available: &v_available
     state_not:
       - unavailable
       - unknown
+[% have.v_anchors = 1; END; %]
+
+

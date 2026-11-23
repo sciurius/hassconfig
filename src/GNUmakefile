@@ -1,39 +1,29 @@
 #! /bin/make -f
 
-HADIR     := /mnt/ha
-DST       = ${HADIR}/config
+DST       := ../yaml
 LIB       := ../lib
-TTLIB     := ${LIB}/tt
+ETC	  := ../etc
 PLLIB     := ${LIB}/perl5
 FFPR	  := -path todo -prune -o
 CFGS_PL   := $(basename $(shell find * ${FFPR} -name '*.pl'   -print))
-CFGS_TT   := $(basename $(shell find * ${FFPR} -name '*.tt'   -print))
-CFGS_YAML := $(basename $(shell find * ${FFPR} -name '*.yaml' -print))
-CFGS_PYS  := $(shell find * ${FFPR} -name '*.py'   -print)
-CFGS      := ${CFGS_PL} ${CFGS_TT} ${CFGS_YAML}
 TCFG      := $(shell mktemp)
 
 # Tools.
-INSTALL   := install -D -m 0644
 SECTIONS  := cards
 TPOPTS    :=
-TPAGE     := tpage --define sections=${SECTIONS} ${TPOPTS} --include_path=${TTLIB} --include_path=${TTLIB}/ui
+TTREE     := ttree  -f ${ETC}/ttree.cfg --define sections=${SECTIONS} ${TPOPTS} 
 PERL      := perl -Mlib=${PLLIB}
+INSTALL   := install -D -m 0644
 
 default :: publish
 
 # For testing/debugging.
 test :
-	@echo YAML: ${CFGS_YAML}
 	@echo PL:   ${CFGS_PL}
-	@echo TT:   ${CFGS_TT}
-	@echo PY:   ${CFGS_PYS}
 
-publish :: mount $(addprefix ${DST}/,$(addsuffix .yaml,${CFGS})) $(addprefix ${DST}/,${CFGS_PYS})
-
-# Make sure the destination is available, mount it if necessary.
-mount ::
-	test -d ${DST}/.storage || mount ${HADIR}/config
+publish :: $(addprefix ${DST}/,$(addsuffix .yaml,${CFGS_PL}))
+	${TTREE}
+	rsync -avHci ${DST}/ /mnt/ha/config/
 
 # Rule for programmatically generated configs.
 ${DST}/%.yaml :: %.pl
@@ -41,18 +31,3 @@ ${DST}/%.yaml :: %.pl
 	${INSTALL} ${TCFG} $@
 	rm ${TCFG}
 
-# Rule for templated config.
-# By also depending on the library templates we make sure they
-# are rebuilt when a library template changes.
-${DST}/%.yaml :: %.tt ${TTLIB}/ui/* ${TTLIB}/*
-	${TPAGE} $< > ${TCFG}
-	${INSTALL} ${TCFG} $@
-	rm ${TCFG}
-
-# Rule for straight 'copy publish' config files.
-${DST}/%.yaml :: %.yaml
-	${INSTALL} $< $@
-
-
-${DST}/%.py :: %.py
-	${INSTALL} $< $@
