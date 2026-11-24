@@ -35,20 +35,6 @@ lovelace-quick:
   show_in_sidebar: false
   filename: dashboards/quick.yaml
 
-lovelace-woonkamer:
-  mode: yaml
-  title: Woonkamer
-  icon: mdi:script
-  show_in_sidebar: false
-  filename: dashboards/wk.yaml
-  
-lovelace-kpnitv:
-  mode: yaml
-  title: KPN iTV
-  icon: mdi:youtube-tv
-  show_in_sidebar: true
-  filename: dashboards/kpnitv.yaml
-  
 lovelace-slaapkamerremote:
   mode: yaml
   title: Afstandsbediening
@@ -105,9 +91,3 @@ lovelace-trackers:
   show_in_sidebar: false
   filename: dashboards/trackers.yaml
 
-lovelace-ovz2:
-  mode: yaml
-  title: Overzicht2
-  icon: mdi:script
-  show_in_sidebar: false
-  filename: dashboards/overzicht2.yaml
