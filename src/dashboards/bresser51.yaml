@@ -169,25 +169,186 @@ views:
             show_forecast: true
 
 
+      # - type: vertical-stack
+      #   title: Neerslag
+      #   cards:
+      #     - type: statistics-graph
+      #       chart_type: bar
+      #       period: day
+      #       entities:
+      #         - sensor.bresser51_rain
+      #       stat_types:
+      #         - change
+      #       days_to_show: 15
+      #       hide_legend: true
+
+      #     - type: statistics-graph
+      #       chart_type: bar
+      #       period: hour
+      #       entities:
+      #         - sensor.bresser51_rain
+      #       stat_types:
+      #         - change
+      #       days_to_show: 1
+      #       hide_legend: true
+
       - type: vertical-stack
         title: Neerslag
         cards:
-          - type: statistics-graph
-            chart_type: bar
-            period: day
+          - type: custom:statistics-graph-chart-card
+            card_header: null
+            show_x_ticks: true
+            show_y_ticks: true
+            hours_to_show: 360
+            points_per_hour: 1
+            tooltip_match_axis: false
+            tooltip_order: default
+            height: auto
+            datetime_format: ddd
+            y_axis_decimals: 1
+            x_grid_style: dashed
+            y_grid_style: dashed
+            y_grid_opacity: 0.9
+            group_by: date
             entities:
-              - sensor.bresser51_rain
-            stat_types:
-              - change
-            days_to_show: 7
-            hide_legend: true
+              - entity: sensor.bresser51_rain
+                statistic_id: null
+                name: null
+                color: '#3584e4'
+                aggregate_func: change
+                graph_type: bar
+                show_state: false
+                gradient: false
 
-          - type: statistics-graph
-            chart_type: bar
-            period: hour
+          - type: custom:statistics-graph-chart-card
+            card_header: null
+            show_x_ticks: true
+            show_y_ticks: true
+            hours_to_show: 24
+            points_per_hour: 1
+            tooltip_match_axis: false
+            tooltip_order: default
+            height: auto
+            datetime_format: HH
+            y_axis_decimals: 1
+            x_grid_style: dashed
+            y_grid_style: dashed
+            y_grid_opacity: 0.9
+            group_by: hour
             entities:
-              - sensor.bresser51_rain
-            stat_types:
-              - change
-            days_to_show: 1
-            hide_legend: true
+              - entity: sensor.bresser51_rain
+                statistic_id: null
+                name: null
+                color: '#3584e4'
+                aggregate_func: change
+                graph_type: bar
+                show_state: false
+                gradient: false
+            visibility:
+              - condition: state
+                entity: sensor.bresser51_rain_stats_daily
+                state_not: '0.0'
+
+  - type: panel
+    title: Neerslag
+    cards:
+    - type: vertical-stack
+      cards:
+      - type: custom:statistics-graph-chart-card
+        card_header: Neerslag (mm)
+        card_background_color: '#f6f5f4'
+        time_zone: local
+        language: nl
+        axis_style: default
+        show_x_ticks: true
+        show_y_ticks: true
+        hours_to_show: 24
+        points_per_hour: 1
+        tooltip_match_axis: false
+        tooltip_order: default
+        height: 400
+        graph_start: month
+        show_full_period: true
+        y_axis_decimals: 1
+        x_axis_date_color: '#000000'
+        auto_scale_points: true
+        datetime_format: DD/MM
+        x_grid_style: dashed
+        y_grid_style: dashed
+        y_grid_opacity: 0.95
+        show_date_picker: true
+        date_picker_modes:
+          - day
+          - week
+          - month
+          - year
+          - last_24h
+          - last_7d
+          - last_15d
+        group_by: hour
+        entities:
+          - entity: sensor.bresser51_rain
+            statistic_id: null
+            name: null
+            color: '#3584e4'
+            aggregate_func: change
+            graph_type: bar
+            show_state: false
+            gradient: false
+        annotations: []
+      - type: horizontal-stack
+        cards:
+          - type: custom:statistics-graph-chart-card
+            card_header: 24 uur (mm)
+            time_zone: local
+            language: nl
+            show_x_ticks: true
+            show_y_ticks: true
+            hours_to_show: 24
+            points_per_hour: 1
+            tooltip_match_axis: false
+            tooltip_order: default
+            height: auto
+            datetime_format: HH
+            y_axis_decimals: 1
+            x_grid_style: dashed
+            y_grid_style: dashed
+            y_grid_opacity: 0.9
+            group_by: hour
+            entities:
+              - entity: sensor.bresser51_rain
+                statistic_id: null
+                name: null
+                color: '#3584e4'
+                aggregate_func: change
+                graph_type: bar
+                show_state: false
+                gradient: false
+          - type: entities
+            entities:
+              - entity: sensor.bresser51_rain
+                name: Totaal
+              - entity: sensor.bresser51_rain_1h
+                name: Laatste uur
+              - entity: sensor.bresser51_rain_stats_hourly
+                name: Dit uur
+                icon: mdi:weather-rainy
+              - entity: sensor.bresser51_rain_stats_daily
+                name: Vandaag
+                icon: mdi:weather-rainy
+              - entity: sensor.bresser51_rain_24h
+                name: Laatste 24 uur
+          - type: entities
+            entities:
+              - entity: sensor.bresser51_rain_stats_weekly
+                name: Deze week
+                icon: mdi:weather-rainy
+              - entity: sensor.bresser51_rain_168h
+                name: Laatste 168 uur
+              - entity: sensor.bresser51_rain_stats_monthly
+                name: Deze maand
+                icon: mdi:weather-rainy
+              - entity: sensor.bresser51_rain_earliest
+                name: 168 uur waarde
+              - entity: sensor.bresser51_rain_offset
+                name: Offset
