@@ -5,7 +5,7 @@ LIB       := ../lib
 ETC	  := ../etc
 PLLIB     := ${LIB}/perl5
 FFPR	  := -path todo -prune -o
-CFGS_PL   := $(basename $(shell find * ${FFPR} -name '*.pl'   -print))
+CFGS_PL   := $(basename $(shell find * ${FFPR} -name '*.pl'   -print| grep -v arrows))
 TCFG      := $(shell mktemp)
 
 # Tools.
@@ -15,7 +15,7 @@ TTREE     := ttree  -f ${ETC}/ttree.cfg --define sections=${SECTIONS} ${TPOPTS}
 PERL      := perl -Mlib=${PLLIB}
 INSTALL   := install -D -m 0644
 
-default :: build publish
+default :: build
 
 # For testing/debugging.
 test :
@@ -33,3 +33,10 @@ ${DST}/%.yaml :: %.pl
 	${INSTALL} ${TCFG} $@
 	rm ${TCFG}
 
+# Rebuild arrow images for compass.
+www/compass/arrow-0.svg :: www/arrows.pl
+	${PERL} $<
+
+# Cleanup.
+clean ::
+	rm -fr ${DST}
