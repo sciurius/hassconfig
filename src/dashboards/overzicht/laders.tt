@@ -8,15 +8,12 @@
 
 [%# Sensor controlled -%]
 [% BLOCK batt -%]
-type: tile
-        entity: sensor.[% sensor %]
-        name: [% name %]
-        vertical: false
-        grid_options:
-          columns: 4
-        visibility:
-          - entity: sensor.[% sensor %]
-            <<: *v_available
+[% WRAPPER tile_card.tt
+           entity  = "sensor." _ sensor
+           name    = name
+           visible = "available"
+           %]
+        [% END %]
 [% END -%]
 
       - [% INCLUDE batt  name = "Largo"  sensor = "sm_a366b_battery_level" %]
@@ -24,9 +21,12 @@ type: tile
       - [% INCLUDE batt  name = "GlaxS7" sensor = "sm_t733_battery_level" %]
       - [% INCLUDE batt  name = "Joni"   sensor = "joni_battery_level" %]
       - [% INCLUDE batt  name = "Zenny"  sensor = "zenny_battery_level" %]
-      - type: custom:mushroom-template-card
-        entity: sensor.systems_smotty_battery
-        primary: Smotty
+
+      - [% WRAPPER mt_card.tt
+                   entity  = "sensor.systems_smotty_battery"
+                   name    = "Smotty"
+                   visible = "available"
+                   %]
         color: >-
           {% if   states(entity)|int >= 4 %} [% dash.col.green %]
           {% elif states(entity)|int >= 3 %} orange
@@ -37,17 +37,16 @@ type: tile
           {% set lvl = ((states(entity)|int) / 10 ) | int %}
           mdi:battery{{ charging }}-{{ lvl }}0
         secondary: "{{ states(entity) }} %"
-        vertical: false
-        visibility:
-          - entity: sensor.systems_smotty_battery
-            <<: *v_available
+        [% END %]
 
-[%#      - [% INCLUDE batt  name = "Tracky" sensor = "sm_a520f_battery_level" %]
       - [% INCLUDE batt  name = "TZ200"  sensor = "battery_tz200" %]
       - [% INCLUDE batt  name = "Irmby"  sensor = "irmby_battery_level" %]
-      - type: custom:mushroom-template-card
-        entity: sensor.ups_pico_battery_level
-        primary: UPS Srv1
+
+      - [% WRAPPER mt_card.tt
+                   entity  = "sensor.ups_pico_battery_level"
+                   name    = "UPS Srv1"
+                   visible = "available"
+                   %]
         color: >-
           {% if   states(entity)|int >= 4 %} [% dash.col.green %]
           {% elif states(entity)|int >= 3 %} orange
@@ -61,14 +60,13 @@ type: tile
           {% else                         %} mdi:battery{{ charging }}-outline
           {% endif %}
         secondary: "{{ states(entity) }} V"
-        vertical: false
-        visibility:
-          - entity: sensor.ups_pico_battery_level
-            <<: *v_available
+        [% END %]
 
-      - type: custom:mushroom-template-card
-        entity: binary_sensor.bresser51_battery
-        primary: Weerstation
+      - [% WRAPPER mt_card.tt
+                   entity  = "binary_sensor.bresser51_battery"
+                   name    = "Weerstation"
+                   visible = "available"
+                   %]
         color: >-
           {% if   is_state(entity,'off') %} [% dash.col.green %]
           {% else                        %} red
@@ -79,25 +77,21 @@ type: tile
           {% endif %}
         secondary: >-
           {{ "Ok" if is_state(entity,'off') else "Empty" }}
-        vertical: false
-        visibility:
-          - entity: binary_sensor.bresser51_battery
-            <<: *v_available
+        [% END %]
 
-      - type: custom:mushroom-template-card
-        entity: sensor.carolan_fuel_level
-        primary: Carolan
+      - [% WRAPPER mt_card.tt
+                   entity  = "sensor.carolan_fuel_level"
+                   name    = "Carolan"
+                   icon    = "mdi:gas-station"
+                   visible = "available"
+                   %]
         color: >-
           {% if   states(entity)|int >= 30 %} [% dash.col.green %]
           {% elif states(entity)|int >= 15 %} orange
           {% else                          %} red
           {% endif %}
-        icon: mdi:gas-station
         secondary: >-
           {{ states(entity)|int }} %
-        visibility:
-          - entity: sensor.carolan_fuel_level
-            <<: *v_available
+        [% END %]
 
       - [% INCLUDE timed.tt name = "Scoot"  switch = "scootlader" %]
-[%#      - [% INCLUDE timed.tt name = "Fiets"  switch = "fietslader" %]

@@ -6,13 +6,11 @@
        icon = "account-network"
        navigate = "/lovelace-overzicht/kantoor" %]
 
-      - type: tile
-        entity: binary_sensor.home_assistant_website_update_available
-        name: HASS Software
-        visibility:
-          - entity: binary_sensor.home_assistant_website_update_available
-            condition: state
-            state: "on"
+      - [% WRAPPER tile_card.tt
+                   entity  = "binary_sensor.home_assistant_website_update_available"
+                   name    = "HASS Software"
+                   visible = "on"
+                   %]
         tap_action:
           action: url,
           url_path: "{{ state_attr('sensor.home_assistant_website','release_notes') }}"
@@ -27,21 +25,26 @@
                 visibility: visible;
                 content: 'Update available';
               }
+        [% END %]
 
-      - type: custom:mushroom-template-card
-        entity: sensor.systems_wan_uptime
-        primary: WAN Up
-        icon: mdi:wan
+      - [% WRAPPER mt_card.tt
+                   entity  = "sensor.systems_wan_uptime"
+                   name    = "WAN Up"
+                   icon    = "mdi:wan"
+                   %]
         color: |
           {{ 'red' if states('sensor.systems_wan_uptime')|int<86400
              else 'var(--state-icon-color)' }}
         secondary: |
           {% from 'relative_time_plus.jinja' import relative_time_plus %}
           {{ relative_time_plus(states('sensor.systems_wan_uptime'),parts=2,abbr=true,compare_date=0)|replace(" and ",", ")}}
+        [% END %]
 
-      - type: tile
-        entity: sensor.home_assistant_website
-        name: Hass Software
+      - [% WRAPPER tile_card.tt
+                   entity = "sensor.home_assistant_website"
+                   name   = "Hass Software"
+                   %]
+        [% END %]
 
       - [% WRAPPER tile_card.tt type="mt"
                    entity = "sensor.phoenix_linux_disk_usage_volume"
@@ -57,12 +60,17 @@
           {% else %} var(--state-icon-color) {% endif %}
         [% END %]
 
-      - name: NAS1
-        entity: sensor.nas1_volume_1_volume_used
 [% IF 1 %]
-        type: tile
+      - [% WRAPPER tile_card.tt
+                   name    = "NAS1"
+                   entity  = "sensor.nas1_volume_1_volume_used"
+                   %]
+        [% END %]
 [% ELSE %]
-        type: custom:horizontal-gauge-card
+      - [% WRAPPER hg_card.tt
+                   name    = "NAS1"
+                   entity  = "sensor.nas1_volume_1_volume_used"
+                   %]
         min: 0
         max: 100
         needle: true
@@ -79,27 +87,35 @@
           - value: 100
             color: var(--error-color)
             label: High
+        [% END %]
 [% END %]
 
-      - type: tile
-        entity: sensor.nextcloud_free_space
-        name: NextCloud
-        icon: mdi:cloud
+      - [% WRAPPER tile_card.tt
+                   entity  = "sensor.nextcloud_free_space"
+                   name    = "NextCloud"
+                   icon    = "mdi:cloud"
+                   %]
         unit: "GiB free"
+        [% END %]
 
-      - entity: sensor.www_disk_inuse
-        icon: mdi:cloud
 [% IF 1 %]
-        type: custom:mushroom-template-card
-        primary: WWW Server
+      - [% WRAPPER mt_card.tt
+                   entity  = "sensor.www_disk_inuse"
+                   icon    = "mdi:cloud"
+                   name    = "WWW Server"
+                   %]
         secondary: "{{ states('sensor.www_disk_inuse') }} %"
         color: |
           {% if states('sensor.www_disk_inuse')|int >= 98 %} red
           {% elif states('sensor.www_disk_inuse')|int >= 96 %} orange
           {% else %} var(--state-icon-color) {% endif %}
+        [% END %]
 [% ELSE %]    
-        type: custom:horizontal-gauge-card
-        name: WWW Server
+      - [% WRAPPER hg_card.tt
+                   entity  = "sensor.www_disk_inuse"
+                   icon    = "mdi:cloud"
+                   name    = "WWW Server"
+                   %]
         min: 0
         max: 100
         needle: true
@@ -116,24 +132,24 @@
           - value: 100
             color: var(--error-color)
             label: High
+        [% END %]
 [% END %]
 
-      - type: tile
-        entity: switch.radiatorfans
-        name: Radiator fans
-        icon: mdi:fan
-        visibility:
-          - entity: timer.radiatorfans
-            condition: state
-            state_not: active
+      - [% WRAPPER tile_card.tt
+                   entity  = "switch.radiatorfans"
+                   name    = "Radiator fans"
+                   icon    = "mdi:fan"
+                   visible = "active"
+                   %]
+        [% END %]
 
-      - type: tile
-        entity: timer.radiatorfans
-        name: Radiator fans
-        icon: mdi:fan
-        visibility:
-          - entity: timer.radiatorfans
-            <<: *v_active
+      - [% WRAPPER tile_card.tt
+                   entity  = "timer.radiatorfans"
+                   name    = "Radiator fans"
+                   icon    = "mdi:fan"
+                   visible = "active"
+                   %]
+        [% END %]
 
       - [% INCLUDE timed.tt
            name   = "Voetkacheltje"
@@ -145,65 +161,51 @@
            icon = "heat-wave" %]
 
       [% PROCESS ir_action.tt; remote = "kantoor" -%]
-      - type: custom:mushroom-template-card
-        entity: switch.kantoor_airco
-        icon: mdi:air-conditioner
-        primary: AirCo
+
+      - [% WRAPPER mt_card.tt
+                   entity  = "switch.kantoor_airco"
+                   icon    = "mdi:air-conditioner"
+                   name    = "AirCo"
+                   visible = "available"
+                   %]
         secondary: "{{ states('sensor.kantoor_airco_energy_today')|round(2) }} kWh"
-        visibility:
-          - entity: switch.kantoor_airco
-            <<: *v_available
         color: "var(--state-{{ '' if (states('sensor.kantoor_airco_energy_power')|int(0)) > 2 else 'in'}}active-color)"
         icon_tap_action: [% ir_perform(remote,"airco","power") %]
         tap_action:
           action: more-info
           entity: sensor.kantoor_airco_energy_today
+        [% END %]
 
-      - type: tile
-        entity: switch.psw03
-        name: Printer
-        icon: mdi:printer
+      - [% WRAPPER tile_card.tt
+                   entity  = "switch.psw03"
+                   name    = "Printer"
+                   icon    = "mdi:printer"
+                   %]
+        [% END %]
 
-      - type: tile
-        entity: media_player.phoenix_squirrel_nl
-        name: Phoenix
-        visibility:
-          - condition: or
-            conditions:
-              - condition: state
-                state: playing
-              - condition: state
-                state: paused
+      - [% WRAPPER tile_card.tt
+                   entity  = "media_player.phoenix_squirrel_nl"
+                   name    = "Phoenix"
+                   visible = "playing|paused"
+                   %]
+        [% END %]
       
-      - type: tile
-        entity: media_player.sleepy_ma
-        name: Sleepy (MA)
-        visibility:
-          - condition: or
-            conditions:
-              - condition: state
-                state: playing
-              - condition: state
-                state: paused
+      - [% WRAPPER tile_card.tt
+                   entity  = "media_player.sleepy_ma"
+                   name    = "Sleepy (MA)"
+                   visible = "playing|paused"
+                   %]
+        [% END %]
       
-      - type: tile
-        entity: media_player.sleepy_lms
-        name: Sleepy (LMS)
-        visibility:
-          - condition: or
-            conditions:
-              - condition: state
-                state: playing
-              - condition: state
-                state: paused
-      
-      - type: custom:mushroom-template-card
-        entity: light.bulb01
-        primary: Media Center actief
-        secondary: "{{ states('sensor.mc_state') }}"
-        icon: mdi:television
-        color: "rgb({{ state_attr('light.bulb01','rgb_color')|join(',') }})"
-        visibility:
+      - [% WRAPPER tile_card.tt
+                   entity  = "media_player.sleepy_lms"
+                   name    = "Sleepy (LMS)"
+                   visible = "playing|paused"
+                   %]
+        [% END %]
+
+      - type: conditional
+        conditions:
           - condition: or
             conditions:
               - entity: light.bulb01
@@ -212,4 +214,12 @@
               - entity: switch.slaapkamer_media_center
                 condition: state
                 state: "on"
-                
+        card:
+          [% WRAPPER mt_card.tt
+                     entity = "light.bulb01"
+                     name   = "Media Center actief"
+                     icon   = "mdi:television"
+                     %]
+        secondary: "{{ states('sensor.mc_state') }}"
+        color: "rgb({{ state_attr('light.bulb01','rgb_color')|join(',') }})"
+        [% END %]

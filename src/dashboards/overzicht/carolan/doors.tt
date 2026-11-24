@@ -13,64 +13,65 @@
            "leftrearseat" => "Links achter"
            "rightrearseat" => "Rechts achter" } %]
 [% FOREACH seat IN [ "driverseat", "passengerseat", "rightrearseat", "leftrearseat" ]; item = "lock" %]
-      - type: custom:mushroom-template-card
-        primary: [% map.$seat  %]
-        entity: binary_sensor.carolan_[% seat %]_[% item %]
-        icon: mdi:car-door-lock
+      - [% WRAPPER mt_card.tt
+                   entity  = "binary_sensor.carolan_" _ seat _ "_" _ item
+                   name    = map.$seat
+                   icon    = "mdi:car-door-lock"
+                   visible = "available"
+                   %]
         color: >-
           {{ "green" if is_state(entity,'off') else "red" }}
-        visibility:
-          - entity: binary_sensor.carolan_[% seat %]_[% item %]
-            <<: *v_available
+        [% END %]
+
       - type: horizontal-stack
         cards:
 [% FOREACH item IN [ "door", "window" ] %]
-        - type: custom:mushroom-template-card
-          primary: null
-          entity: binary_sensor.carolan_[% seat %]_[% item %]
+        - [% WRAPPER mt_card.tt
+                     entity  = "binary_sensor.carolan_" _ seat _ "_" _ item
+                     visible = "available"
+                     %]
 [%- IF item == 'door' %]
           icon: mdi:car-door
 [%- ELSIF item == 'window' %]
           icon: mdi:window-closed[% END %]
           color: >-
             {{ "green" if is_state(entity,'off') else "red" }}
-          visibility:
-            - entity: binary_sensor.carolan_[% seat %]_[% item %]
-              <<: *v_available
+          [% END %]
 [% END %]
 [% END %]
 [% FOREACH seat IN [ "trunk"] %]
-      - type: custom:mushroom-template-card
-        primary: Kofferbak
-        icon: mdi:car-door-lock
-        entity: binary_sensor.carolan_[% seat %]_lock
+      - [% WRAPPER mt_card.tt
+                   entity  = "binary_sensor.carolan_" _ seat _ "_lock"
+                   name    = "Kofferbak"
+                   icon    = "mdi:car-door-lock"
+                   visible = "available"
+                   %]
         color: >-
           {{ "green" if is_state(entity,'off') else "red" }}
-        visibility:
-          - entity: binary_sensor.carolan_[% seat %]_lock
-            <<: *v_available
+        [% END %]
+
       - type: horizontal-stack
         cards:
-        - type: custom:mushroom-template-card
-          primary: null
-          icon: mdi:car-door
-          entity: binary_sensor.carolan_[% seat %]
+        - [% WRAPPER mt_card.tt
+                     entity  = "binary_sensor.carolan_" _ seat
+                     icon    = "mdi:car-door"
+                   visible = "available"
+                   %]
           color: >-
             {{ "green" if is_state(entity,'off') else "red" }}
-          visibility:
-            - entity: binary_sensor.carolan_[% seat %]
-              <<: *v_available
+          [% END %]
+
         - type: heading
 [% END %]
 
 [% FOREACH seat IN [ "hood" ] %]
-      - type: custom:mushroom-template-card
-        primary: Motorkap
-        icon: mdi:car-door
-        entity: binary_sensor.carolan_[% seat %]
+      - [% WRAPPER mt_card.tt
+                   entity  = "binary_sensor.carolan_" _ seat
+                   name    = "Motorkap"
+                   icon    = "mdi:car-door"
+                   visible = "available"
+                   %]
         color: >-
           {{ "green" if is_state(entity,'off') else "red" }}
-        visibility:
-          - entity: binary_sensor.carolan_[% seat %]
-            <<: *v_available
+        [% END %]
 [% END %]

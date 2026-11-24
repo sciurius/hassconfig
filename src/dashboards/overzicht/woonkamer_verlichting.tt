@@ -8,24 +8,31 @@
    badges = []
    %]
 
-      - type: tile
-        entity: light.woonkamer_tafel
-        name: Tafel
-        icon: mdi:ceiling-light
+      - [% WRAPPER tile_card.tt
+                   entity = "light.woonkamer_tafel"
+                   name   = "Tafel"
+                   icon   = "mdi:ceiling-light"
+                   %]
+        [% END %]
 
-      - type: tile
-        entity: light.woonkamer_tafeltje
-        name: Tafeltje
-        icon: mdi:lamp
+      - [% WRAPPER tile_card.tt
+                   entity = "light.woonkamer_tafeltje"
+                   name   = "Tafeltje"
+                   icon   = "mdi:lamp"
+                   %]
+        [% END %]
 
-      - type: tile
-        entity: light.woonkamer_hoek
-        name: Hoek
+      - [% WRAPPER tile_card.tt
+                   entity = "light.woonkamer_hoek"
+                   name   = "Hoek"
+                   %]
+        [% END %]
 
-      - type: tile
-        entity: light.woonkamer_heks
-        icon: mdi:light-flood-down
-        name: Heks
+      - [% WRAPPER tile_card.tt
+                   entity = "light.woonkamer_heks"
+                   name   = "Heks"
+                   icon   = "mdi:light-flood-down"
+                   %]
         icon_hold_action:
           action: call-service
           service: light.toggle
@@ -33,30 +40,38 @@
             entity_id: light.woonkamer_heks
             brightness_pct: 100
             rgb_color: [191,0,255]
+        [% END %]
 
-      - type: tile
-        entity: light.woonkamer_totem
-        icon: mdi:light-flood-down
-        name: Totem
+      - [% WRAPPER tile_card.tt
+                   entity = "light.woonkamer_totem"
+                   name   = "Totem"
+                   icon   = "mdi:light-flood-down"
+                   %]
         icon_hold_action:
           action: call-service
           service: script.start_woonkamer_totem_timer
+        [% END %]
 
-      - [% INCLUDE switchoff_timer_tile.tt name = "Timer",
-           timer = "woonkamer_totem" %]
+      - [% INCLUDE switchoff_timer_tile.tt
+                   name  = "Timer"
+                   timer = "woonkamer_totem" %]
 
-      - type: tile
-        entity: light.woonkamer_wand_l
-        name: Links
+      - [% WRAPPER tile_card.tt
+                   entity = "light.woonkamer_wand_l"
+                   name   = "Links"
+                   %]
+        [% END %]
 
-      - type: tile
-        entity: light.woonkamer_wand_r
-        name: Rechts
+      - [% WRAPPER tile_card.tt
+                   entity = "light.woonkamer_wand_r"
+                   name   = "Rechts"
+                   %]
+        [% END %]
 
-      - type: tile
-        entity: light.binnenkerstverlichting1
-        name: Kerstverlichting
-        visibility:
-          - entity: light.binnenkerstverlichting1
-            <<: *v_available
+      - [% WRAPPER tile_card.tt
+                   entity  = "light.binnenkerstverlichting1"
+                   name    = "Kerstverlichting"
+                   visible = "available"
+                   %]
+        [% END %]
 

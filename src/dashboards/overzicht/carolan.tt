@@ -9,56 +9,63 @@
        fuel_entity = "sensor.carolan_fuel_level"
        %]
 
-[%# Sensor controlled -%]
-
-      - type: custom:mushroom-template-card
-        entity: sensor.carolan_fuel_level
-        primary: Carolan
+      - [% WRAPPER mt_card.tt
+                   entity  = "sensor.carolan_fuel_level"
+                   name    = "Carolan"
+                   icon    = "mdi:gas-station"
+                   visible = "available"
+                   %]
         color: >-
           {% if   states(entity)|int >= 30 %} [% dash.col.green %]
           {% elif states(entity)|int >= 15 %} orange
           {% else                          %} red
           {% endif %}
-        icon: mdi:gas-station
         secondary: >-
           {{ states(entity)|int }}%
           ({{ states('sensor.carolan_fuel_range')|int }} km)
-        visibility:
-          - entity: sensor.carolan_fuel_level
-            <<: *v_available
+        [% END %]
 
-      - type: custom:mushroom-template-card
-        entity: binary_sensor.carolan_all_locks
-        primary: Portieren
-        icon: >-
-          {% if is_state(entity, 'on') %}
-          mdi:car-door-lock
-          {% else %}
-          mdi:car-door
-          {% endif %}
-        color: >-
-          {% if is_state(entity, 'on') %}
-          [% dash.col.green %]
-          {% else %}
-          [% dash.col.red %]
-          {% endif %}
-        secondary: >-
-          {% if is_state(entity, 'on') %}
-          Gesloten
-          {% else %}
-          Open
-          {% endif %}
-        visibility:
-          - entity: binary_sensor.carolan_all_locks
-            <<: *v_available
-          - entity: binary_sensor.carolan_driverseat_lock
-            condition: state
+      - type: conditional
+        conditions:
+          - condition: state
+            entity: binary_sensor.carolan_all_locks
+            state_not:
+              - unavailable
+              - unknown
+          - condition: state
+            entity: binary_sensor.carolan_driverseat_lock
             state_not:
               - unknown
+        card:
+          [% WRAPPER mt_card.tt
+                      entity  = "binary_sensor.carolan_all_locks"
+                      name    = "Portieren"
+                      %]
+          icon: >-
+            {% if is_state(entity, 'on') %}
+            mdi:car-door-lock
+            {% else %}
+            mdi:car-door
+            {% endif %}
+          color: >-
+            {% if is_state(entity, 'on') %}
+            [% dash.col.green %]
+            {% else %}
+            [% dash.col.red %]
+            {% endif %}
+          secondary: >-
+            {% if is_state(entity, 'on') %}
+            Gesloten
+            {% else %}
+            Open
+            {% endif %}
+          [% END %]
 
-      - type: custom:mushroom-template-card
-        entity: device_tracker.carolan_parking_location
-        primary: Locatie
+      - [% WRAPPER mt_card.tt
+                   entity  = "device_tracker.carolan_parking_location"
+                   name    = "Locatie"
+                   visible = "available"
+                   %]
         icon: >-
           {% if is_state(entity,'home') %}
           mdi:home
@@ -80,39 +87,37 @@
         tap_action:
           action: navigate
           navigation_path: /lovelace-trackers/trackercarolan
-        visibility:
-          - entity: device_tracker.carolan_parking_location
-            <<: *v_available
+        [% END %]
 
-      - type: tile
-        name: Dag
-        icon: mdi:map-marker-distance
-        entity: sensor.carolan_current_day_statistics
-        visibility:
-          - entity: sensor.carolan_current_day_statistics
-            <<: *v_available
+      - [% WRAPPER tile_card.tt
+                   entity  = "sensor.carolan_current_day_statistics"
+                   name    = "Dag"
+                   icon    = "mdi:map-marker-distance"
+                   visible = "available"
+                   %]
+        [% END %]
 
-      - type: tile
-        name: Week
-        icon: mdi:map-marker-distance
-        entity: sensor.carolan_current_week_statistics
-        visibility:
-          - entity: sensor.carolan_current_week_statistics
-            <<: *v_available
+      - [% WRAPPER tile_card.tt
+                   entity  = "sensor.carolan_current_week_statistics"
+                   name    = "Week"
+                   icon    = "mdi:map-marker-distance"
+                   visible = "available"
+                   %]
+        [% END %]
 
-      - type: tile
-        name: Maand
-        icon: mdi:map-marker-distance
-        entity: sensor.carolan_current_month_statistics
-        visibility:
-          - entity: sensor.carolan_current_month_statistics
-            <<: *v_available
+      - [% WRAPPER tile_card.tt
+                   entity  = "sensor.carolan_current_month_statistics"
+                   name    = "Maand"
+                   icon    = "mdi:map-marker-distance"
+                   visible = "available"
+                   %]
+        [% END %]
 
-      - type: tile
-        name: Jaar
-        icon: mdi:map-marker-distance
-        entity: sensor.carolan_current_year_statistics
-        visibility:
-          - entity: sensor.carolan_current_year_statistics
-            <<: *v_available
+      - [% WRAPPER tile_card.tt
+                   entity  = "sensor.carolan_current_year_statistics"
+                   name    = "Jaar"
+                   icon    = "mdi:map-marker-distance"
+                   visible = "available"
+                   %]
+        [% END %]
 

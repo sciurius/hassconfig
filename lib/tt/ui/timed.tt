@@ -5,39 +5,40 @@ DEFAULT icon = "battery";
 DEFAULT timer = switch;
 
 -%]
-type: tile
-        entity: timer.[% timer %]
-        name: [% name %]
-        icon: mdi:[% icon %]
-        vertical: false
-        visibility:
+type: conditional
+        conditions:
           - entity: timer.[% switch %]
             condition: state
             state: active
           - entity: switch.[% switch %]
-            <<: *v_available
-        icon_tap_action:
-          action: perform-action
-          perform_action: switch.toggle
-          target:
-            entity_id: switch.[% switch %]
-        tap_action:
-          action: perform-action
-          perform_action: switch.toggle
-          target:
-            entity_id: switch.[% switch %]
-
-      - type: tile
-        entity: switch.[% switch %]
-        name: [% name %]
-        icon: mdi:[% icon %]
-        vertical: false
-        visibility:
-          - entity: timer.[% switch %]
             condition: state
-            state_not: active
-          - entity: switch.[% switch %]
-            <<: *v_available
+            state_not:
+              - unavailable
+              - unknown
+        card:
+          [% WRAPPER tile_card.tt
+                     entity  = "timer." _ timer
+                     name    = name
+                     icon    = "mdi:" _ icon
+                     %]
+          icon_tap_action:
+            action: perform-action
+            perform_action: switch.toggle
+            target:
+              entity_id: switch.[% switch %]
+          tap_action:
+            action: perform-action
+            perform_action: switch.toggle
+            target:
+              entity_id: switch.[% switch %]
+          [% END %]
+
+      - [% WRAPPER tile_card.tt
+             entity  = "switch." _ switch
+             name    = name
+             icon    = "mdi:" _ icon
+             visible = "available not active"
+             %]
         icon_tap_action:
           action: perform-action
           perform_action: switch.toggle
@@ -48,3 +49,4 @@ type: tile
           perform_action: switch.toggle
           target:
             entity_id: switch.[% switch %]
+        [% END %]

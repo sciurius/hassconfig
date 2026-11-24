@@ -4,19 +4,19 @@
 [%# System with two (CPU/GPU) sensors. -%]
 [% BLOCK sys2 -%]
 [% DEFAULT second = "${sensor}_gpu" limit = 50 -%]
-type: custom:mushroom-template-card
-        entity: sensor.[% sensor %]_temperature
-        icon: mdi:thermometer
+[% WRAPPER mt_card.tt
+           entity  = "sensor." _ sensor _ "_temperature"
+           icon    = "mdi:thermometer"
+           name    = name
+           visible = "available"
+           %]
         color: >
           {{ "[% dash.col.default %]" if states(entity)|int < [% limit %] else "red" }}
-        primary: [% name %]
         secondary: >
           {{ states(entity) }}
           [% IF second != "none" %] / {{ states('sensor.[% second %]_temperature') }} [% END %]
           °C
-        visibility:
-          - entity: sensor.[% sensor %]_temperature
-            <<: *v_available
+        [% END %]
 [% END -%]
 
 [%# System with a single temp sensor. -%]
@@ -43,9 +43,11 @@ type: custom:mushroom-template-card
       # Only shown on the hAXX system.
       - [% INCLUDE sys1 name = "HAXX"    sensor = "rpi_cpu" %]
 
-      - type: custom:mushroom-template-card
-        entity: sensor.ups_pico_battery_level
-        primary: UPS Srv1
+      - [% WRAPPER mt_card.tt
+                   entity  = "sensor.ups_pico_battery_level"
+                   name    = "UPS Srv1"
+                   visible = "available"
+                   %]
         color: >-
           {% if   states(entity)|int >= 4 %} [% dash.col.green %]
           {% elif states(entity)|int >= 3 %} orange
@@ -59,16 +61,27 @@ type: custom:mushroom-template-card
           {% else                         %} mdi:battery{{ charging }}-outline
           {% endif %}
         secondary: "{{ states(entity) }} V"
-        vertical: false
-        visibility:
-          - entity: sensor.ups_pico_battery_level
-            <<: *v_available
+        [% END %]
 
-      - [% INCLUDE sys2 name = "Kodi"   sensor = "systems_osmc"  limit = 60 %]
-          - entity: switch.slaapkamer_media_center
+      - type: conditional
+        conditions:
+          - condition: state
+            entity: switch.slaapkamer_media_center
             state: "on"
+        card:
+        [% INCLUDE sys2
+                   name = "Kodi"
+                   sensor = "systems_osmc"
+                   limit = 60 | indent(2) %]
 
-      - [% INCLUDE sys2 name = "MC621"  sensor = "systems_mc621" limit = 56 %]
-          - entity: switch.slaapkamer_media_center
+      - type: conditional
+        conditions:
+          - condition: state
+            entity: switch.slaapkamer_media_center
             state: "on"
+        card:
+        [% INCLUDE sys2
+                   name = "MC621"
+                   sensor = "systems_mc621"
+                   limit = 56 | indent(2) %]
 

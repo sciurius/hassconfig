@@ -10,9 +10,10 @@
       # Media center tile.
       # Switches on/off the media center.
       # The icon changes with the media function selected.
-      - type: custom:mushroom-template-card
-        entity: switch.slaapkamer_media_center
-        primary: Media Center
+      - [% WRAPPER mt_card.tt
+                   entity  = "switch.slaapkamer_media_center"
+                   name    = "Media Center"
+                   %]
         secondary: >-
           {{ states("sensor.mc_state") }}
         color: |-
@@ -29,6 +30,7 @@
           {% elif is_state('switch.slaapkamer_media_center','on') %} mdi:television-off
           {% else %} mdi:television
           {% endif %}
+        [% END %]
 
       # Avondlichtje.
       - [% WRAPPER tile_card.tt
@@ -37,29 +39,30 @@
                    %]
         [% END %]
 
-      - type: shortcut
-        label: Media Center
-        tap_action:
-          action: navigate
-          navigation_path: /lovelace-slaapkamerremote/0
-        vertical: false
-        icon: mdi:remote-tv
-        visibility:
+      - type: conditional
+        conditions:
           - entity: switch.slaapkamer_media_center
             condition: state
             state: "on"
+        card:
+          type: shortcut
+          label: Media Center
+          tap_action:
+            action: navigate
+            navigation_path: /lovelace-slaapkamerremote/0
+          icon: mdi:remote-tv
 
-      - type: shortcut
-        tap_action:
-          action: navigate
-          navigation_path: /lovelace-chromecast-slaapkamer/0
-        vertical: false
-        icon: mdi:remote-tv
-        visibility:
+      - type: conditional
+        conditions:
           - entity: switch.slaapkamer_media_center
             condition: state
             state: "on"
-
+        card:
+          type: shortcut
+          tap_action:
+            action: navigate
+            navigation_path: /lovelace-chromecast-slaapkamer/0
+          icon: mdi:remote-tv
            
       # Fan on/off switch.
       # Only visible if the fan exists.

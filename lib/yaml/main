@@ -1,6 +1,5 @@
 [%-
 
 PROCESS colours.tt;
-PROCESS v_anchors.tt;
 
 -%]

@@ -9,26 +9,31 @@
        current_entity     = "sensor.boiler_current_flow_temperature"
        navigate   = "/lovelace-overzicht/cv" %]
 
-      - type: custom:mushroom-template-card
-        entity: binary_sensor.boiler_heating_active
-        primary: Status
-        icon: mdi:text-box-outline
+      - [% WRAPPER mt_card.tt
+                   entity  = "binary_sensor.boiler_heating_active"
+                   name    = "Status"
+                   icon    = "mdi:text-box-outline"
+                   %]
         color: >-
           var(--state-icon-color)
         secondary: '{{ states("sensor.boiler_status_text") }}'
+        [% END %]
 
-      - type: custom:mushroom-template-card
-        entity: climate.thermostat_hc1
-        primary: Thermostaat
+      - [% WRAPPER mt_card.tt
+                   entity  = "climate.thermostat_hc1"
+                   name    = "Thermostaat"
+                   icon    = "mdi:thermostat"
+                   %]
         secondary: >-
           {{ states("sensor.thermostat_setting") }} °C ({{ states('select.thermostat_hc1_mode')|capitalize }})
-        icon: mdi:thermostat
         color: >-
           var(--state-icon-color)
+        [% END %]
 
-      - type: custom:mushroom-template-card
-        entity: sensor.boiler_system_pressure
-        primary: Waterdruk
+      - [% WRAPPER mt_card.tt
+                   entity  = "sensor.boiler_system_pressure"
+                   name    = "Waterdruk"
+                   %]
         secondary: "{{ states(entity)|float(0)|round(1) }} bar"
         icon: >-
           {% if   (states(entity)|float) < 0.8 %} mdi:gauge-empty
@@ -38,21 +43,21 @@
         color: >-
           {% if (states(entity)|float) < 1.0 %} red
           {% else %} var(--state-icon-color) {% endif %}
+        [% END %]
 
-      - type: custom:mushroom-template-card
-        entity: input_boolean.emsgw_return_temp_high
-        primary: Return Temperature
+      - [% WRAPPER mt_card.tt
+                   entity  = "input_boolean.emsgw_return_temp_high"
+                   name    = "Return Temperature"
+                   visible = "on"
+                   %]
         secondary: "{{ states('sensor.boiler_return_temperature') }} °C"
         color: red
-        visibility:
-          - entity: entity
-            condition: state
-            state: true
+        [% END %]
 
-      - type: tile
-        entity: sensor.thermostat_party_time
-        name: Suspend
-        vertical: false
+      - [% WRAPPER tile_card.tt
+                   entity  = "sensor.thermostat_party_time"
+                   name    = "Suspend"
+                   %]
         tap_action:
           action: perform-action
           perform_action: number.decrement
@@ -63,49 +68,45 @@
           perform_action: number.increment
           target:
             entity_id: number.thermostat_hc1_party
-            
+        [% END %]
+
 [% FOREACH i IN [ "party" "pause" ] %]
-      - type: custom:mushroom-template-card
-        entity: sensor.thermostat_[% i %]_time
-        primary: [% i.ucfirst %]
+      - [% WRAPPER mt_card.tt
+                   entity  = "sensor.thermostat_" _ i _ "_time"
+                   name    = i.ucfirst
+                   visible = "available not 0"
+                   %]
         icon: "{{ state_attr(entity,'icon') }}"
         color: var(--state-icon-color)
         secondary: >-
           {{ states(entity) }} h {{ states('sensor.thermostat_setting') }} °C
-        visibility:
-          - entity: sensor.thermostat_[% i %]_time
-            condition: state
-            state_not: "0"
-          - entity: sensor.thermostat_[% i %]_time
-            <<: *v_available
+        [% END %]
 [% END %]
 
 [% FOREACH i IN [ 1 2 3 4 5 6 7 ] %]
-      - type: tile
-        entity: sensor.thermostat_vacation_[% i %]
-        name: Vakantie[% IF i>1; " $i"; END %]
-        visibility:
-          - entity: sensor.thermostat_vacation_[% i %]
-            condition: state
-            state_not: "01.01.2000-01.01.2000"
-          - entity: sensor.thermostat_vacation_[% i %]
-            <<: *v_available
+      - [% ii = "Vakantie $i";
+           WRAPPER tile_card.tt
+                   entity  = "sensor.thermostat_vacation_$i"
+                   name    = ii.replace(" 1","")
+                   visible = "available not 01.01.2000-01.01.2000"
+                   %]
+        [% END %]
 [% END %]
 
-[% IF 1 %]
-      - type: tile
-        entity: timer.radiatorfans
-        name: Fans
-        icon: mdi:radiator
-        visibility:
-          - entity: timer.radiatorfans
-            <<: *v_active
-[% END %]
+      - [% WRAPPER tile_card.tt
+                   entity  = "timer.radiatorfans"
+                   name    = "Fans"
+                   icon    = "mdi:radiator"
+                   visible = "active"
+                   %]
+        [% END %]
 
-      - type: tile
-        entity: sensor.uit
-        name: Grafieken
-        icon: mdi:link
+      - [% WRAPPER tile_card.tt
+                   entity  = "sensor.uit"
+                   name    = "Grafieken"
+                   icon    = "mdi:link"
+                   %]
         hide_state: true
         tap_action: url
         url_path : http://phoenix.squirrel.nl:3000/d/cQ46XxeD4y/verwarming-overzicht?orgId=1
+        [% END %]
