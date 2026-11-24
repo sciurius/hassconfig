@@ -15,14 +15,16 @@ TTREE     := ttree  -f ${ETC}/ttree.cfg --define sections=${SECTIONS} ${TPOPTS}
 PERL      := perl -Mlib=${PLLIB}
 INSTALL   := install -D -m 0644
 
-default :: publish
+default :: build publish
 
 # For testing/debugging.
 test :
 	@echo PL:   ${CFGS_PL}
 
-publish :: $(addprefix ${DST}/,$(addsuffix .yaml,${CFGS_PL}))
+build :: $(addprefix ${DST}/,$(addsuffix .yaml,${CFGS_PL}))
 	${TTREE}
+
+publish :: build
 	rsync -rvHOJci --modify-window=2 ${DST}/ /mnt/ha/config/
 
 # Rule for programmatically generated configs.
