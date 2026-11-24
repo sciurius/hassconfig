@@ -9,18 +9,7 @@ DEFAULT indent  = 0;
 DEFAULT condition = "state";
 DEFAULT cstate    = "";
 
-# Try to infer indentation from content, use indent arg otherwise.
-IF indent;
-  # Use indent parameter. Overrides content checking.
-  Ind = " ";
-  Ind = Ind.repeat(indent);
-ELSIF content.defined && content.length > 0;
-  # Note that content (may) start with newline(s).
-  Ind = content.match("^\n*( *)").0;
-ELSE;
-  # Just a default.
-  Ind = "            ";
-END;
+Ind = PROCESS get_indent.tt indent = indent;
 
 message = message.replace( '\bentity\b', "'" _ entity _ "'" );
 
@@ -39,28 +28,32 @@ IF condition == "state"
    cstate = "state: 'on'";
 END;
 
-"type: conditional\n";
-Ind; "conditions:\n";
-Ind; "- condition: or\n";
-Ind; "  conditions:\n";
-Ind; "  - condition: "; condition; "\n";
-Ind; "    entity: "; entity; "\n";
-Ind; "    "; cstate; "\n";
-Ind; "  - condition: state\n";
-Ind; "    entity: input_boolean.testing_alerts\n";
-Ind; "    state: \"on\"\n";
-Ind; "card:\n";
-Ind; "  type: custom:alert-ticker-card\n";
-Ind; "  alerts:\n";
-Ind; "  - entity: "; entity; "\n";
-Ind; "    message: \""; message; "\"\n";
-Ind; "    theme: warning\n";
-Ind; "    use_ha_icon: true\n";
-Ind; "    icon: \""; icon; "\"\n";
-Ind; "    icon_color: \""; icon_color; "\"\n";
-Ind; "    disable_animation: true\n";
+-%]
+type: conditional
+[% FILTER indent( Ind.length ) -%]
+conditions:
+- condition: or
+  conditions:
+  - condition: [% condition %]
+    entity: [% entity %]
+    [% cstate %]
+  - condition: state
+    entity: input_boolean.testing_alerts
+    state: "on"
+card:
+  type: custom:alert-ticker-card
+  alerts:
+  - entity: [% entity %]
+    message: "[% message %]"
+    theme: warning
+    use_ha_icon: true
+    icon: "[% icon %]"
+    icon_color: "[% icon_color %]"
+    disable_animation: true
+[% END;
 
-# Finally, the rest of the card content.
-content | indent(2);
+# Finally, the rest of the card content, with additional indent.
+
+content.remove('^\n+') | indent(2);
 
 -%]

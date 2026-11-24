@@ -11,18 +11,7 @@ DEFAULT indent  = 0;
 DEFAULT visible = "";
 DEFAULT color   = "";
 
-# If indent is not set, try to infer indentation from content.
-IF indent;
-  # Use indent parameter. Overrides content checking.
-  ind = " ";
-  ind = ind.repeat(indent);
-ELSIF content.defined && content.length > 0;
-  # Note that content (may) start with newline(s).
-  ind = content.match("^\n*( *)").0;
-ELSE;
-  # Just a default.
-  ind = "            ";
-END;
+ind = PROCESS get_indent.tt indent = indent;
 
 # Use a wrapping conditional card for visibility.
 IF visible;

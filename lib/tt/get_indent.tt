@@ -1,0 +1,24 @@
+[% # get_indent.tt				-*- tt -*-
+
+# Returns an indentation string.
+
+DEFAULT indent = 0;
+
+IF indent;
+  # Use indent parameter. Overrides content checking.
+  ind = " ";
+  ind.repeat(indent);
+
+# If indent is not set, try to infer indentation from content.
+ELSIF content.defined && content.length > 0;
+
+  # Note that content (may) start with newline(s).
+  content.match("^\n*( *)").0;
+
+ELSE;
+  # Just a default.
+  "            ";
+
+END;
+
+-%]
