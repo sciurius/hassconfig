@@ -65,7 +65,7 @@ alerts:
     conditions:
       - entity: binary_sensor.carolan_vehicle_health
         operator: "="
-        state: "on"
+        state: "xon"
       - entity: input_boolean.testing_alerts
         state: "on"
 
