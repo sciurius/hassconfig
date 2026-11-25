@@ -97,6 +97,22 @@
                    %]
         [% END %]
 
+      - [% WRAPPER mt_card.tt
+                   entity  = "binary_sensor.carolan_vehicle_health"
+                   name    = "Problemen"
+                   icon    = "mdi:car-wrench"
+                   visible = "available on"
+                   %]
+        primary: >-
+          {{ "Probleem" if state_attr('binary_sensor.carolan_vehicle_health','warnings')|length == 1 else "Problemen" }}
+        secondary: >-
+          {{ state_attr('binary_sensor.carolan_vehicle_health','warnings')[0]['wngdesc'] }}
+        icon: >-
+          mdi:car-{{ "tire-alert" if state_attr('binary_sensor.carolan_vehicle_health','warnings')[0]['wngcode'] == 'TILW' else "wrench" }}
+        color: >-
+          {{ "orange" if state_attr('binary_sensor.carolan_vehicle_health','warnings')[0]['severity']|int <= 4 else "red" }}
+        [% END %]
+
       - [% WRAPPER tile_card.tt
                    entity  = "sensor.carolan_current_week_statistics"
                    name    = "Week"
