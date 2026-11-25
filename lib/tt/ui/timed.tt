@@ -33,20 +33,30 @@ type: conditional
               entity_id: switch.[% switch %]
           [% END %]
 
-      - [% WRAPPER tile_card.tt
-             entity  = "switch." _ switch
-             name    = name
-             icon    = "mdi:" _ icon
-             visible = "available not active"
-             %]
-        icon_tap_action:
-          action: perform-action
-          perform_action: switch.toggle
-          target:
-            entity_id: switch.[% switch %]
-        tap_action:
-          action: perform-action
-          perform_action: switch.toggle
-          target:
-            entity_id: switch.[% switch %]
+      - type: conditional
+        conditions:
+          - entity: timer.[% switch %]
+            condition: state
+            state_not: active
+          - entity: switch.[% switch %]
+            condition: state
+            state_not:
+              - unavailable
+              - unknown
+        card:
+          [% WRAPPER tile_card.tt
+                     entity  = "switch." _ switch
+                     name    = name
+                     icon    =   "mdi:" _ icon
+                     %]
+          icon_tap_action:
+            action: perform-action
+            perform_action: switch.toggle
+            target:
+              entity_id: switch.[% switch %]
+          tap_action:
+            action: perform-action
+            perform_action: switch.toggle
+            target:
+              entity_id: switch.[% switch %]
         [% END %]
