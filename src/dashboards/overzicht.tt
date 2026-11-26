@@ -2,7 +2,7 @@
 # Dashboard: Overzicht                 -*- hass -*-
 
 [%-
-# We can use real sections, or sections emulated with grids.
+# We can use real sections, or sections emulated with grids and cards.
 # The real sections support grid_options, the emulated ones
 # flow.
 
