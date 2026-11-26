@@ -25,7 +25,7 @@ build :: $(addprefix ${DST}/,$(addsuffix .yaml,${CFGS_PL}))
 	${TTREE}
 
 publish :: build
-	rsync -rvHOJci --modify-window=2 ${DST}/ /mnt/ha/config/
+	rsync -rvHOJci --exclude '*~' --modify-window=2 ${DST}/ /mnt/ha/config/
 
 # Rule for programmatically generated configs.
 ${DST}/%.yaml :: %.pl
