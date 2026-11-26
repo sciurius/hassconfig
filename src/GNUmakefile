@@ -15,7 +15,7 @@ TTREE     := ttree  -f ${ETC}/ttree.cfg --define sections=${SECTIONS} ${TPOPTS}
 PERL      := perl -Mlib=${PLLIB}
 INSTALL   := install -D -m 0644
 
-default :: build
+default :: publish
 
 # For testing/debugging.
 test :
