@@ -42,8 +42,9 @@
         content: |-
           {% set m = state_attr('sensor.carolan_notifications','latest')  |list %}
           {% for msg in m  %}
-          {{  msg.date.strftime("%Y-%m-%d %T") }} {{ msg.message }}
-          {%  endfor  %}
+          {{  msg.date.strftime("%Y-%m-%d %T") }} {{
+              msg.message.replace("************71566: ","") }}
+          {% endfor  %}
         grid_options:
           rows: 1
         card_mod:
