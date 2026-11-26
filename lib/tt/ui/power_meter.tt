@@ -15,4 +15,4 @@ WRAPPER mt_card.tt
           action: more-info
         icon_hold_action:
           action: more-info
-[% END %]
+        [% END %]
