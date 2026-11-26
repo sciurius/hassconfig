@@ -1,8 +1,6 @@
 # Dashboard: Overzicht -- Media Player: osmc       -*- hass -*-
 # WARNING: This is a generated file -- DO NOT EDIT
 
-[%- IF sections == "cards"; sections = "grids"; END -%]
-
 [% INCLUDE section.tt
        name = "Woonkamer"
        icon = "sofa"
@@ -35,7 +33,7 @@
       - [% WRAPPER tile_card.tt
                    name    = "Tafel"
                    entity  = "light.woonkamer_tafel"
-                   span    = 1 %]
+                   %]
         [% END %]
 
       - [% WRAPPER tile_card.tt

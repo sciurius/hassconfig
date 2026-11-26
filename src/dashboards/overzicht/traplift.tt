@@ -1,17 +1,15 @@
-# Dashboard: Overzicht -- Hal       -*- hass -*-
+# Dashboard: Overzicht -- Hal -- Traplift       -*- hass -*-
 # WARNING: This is a generated file -- DO NOT EDIT
-
-[%- IF sections == "cards"; sections = "grids"; END -%]
 
 [% INCLUDE section.tt
        name     = "Traplift"
        icon     = "elevator-passenger-outline"
        badges   = []
+       columns  = 1
        navigate = "/lovelace-overzicht/traplift" %]
 
       - [% WRAPPER mt_card.tt
                    entity = "cover.otolift"
-                   span   = 2
                    %]
         icon: >-
           {% if is_state('sensor.otolift_on','Up') %}
