@@ -8,28 +8,34 @@
        color    = "lavender"
        navigate = "/lovelace-overzicht/media" %]
 
-      - type: custom:mushroom-template-card
-        entity: sensor.mass_total_albums
+      - [% WRAPPER mt_card.tt
+                   entity  = "sensor.mass_total_albums"
+                   icon    = "mdi:folder-play-outline"
+                   %]
         primary: "{{ states(entity) }} albums"
         secondary: "{{ states('sensor.mass_total_artists') }} artists"
-        icon: mdi:folder-play-outline
         color: var(--state-icon-color)
         icon_tap_action:
           action: url
           url_path: https://mass.squirrel.nl/#/albums
-        
-      - type: custom:mushroom-template-card
-        entity: sensor.allmusic_total_albums
+        [% END %]
+
+      - [% WRAPPER mt_card.tt
+                   entity  = "sensor.allmusic_total_albums"
+                   icon    = "mdi:play-network-outline"
+                   %]
         primary: "{{ states(entity) }} albums"
         secondary: "{{ states('sensor.allmusic_total_artists') }} artists"
-        icon: mdi:play-network-outline
         color: var(--state-icon-color)
         icon_tap_action:
           action: url
           url_path: https://lms.squirrel.nl/default
-        
-      - type: custom:mushroom-template-card
-        entity: sensor.kpn_itv_recordings_used
+        [% END %]
+
+      - [% WRAPPER mt_card.tt
+                   entity  = "sensor.kpn_itv_recordings_used"
+                   icon    = "mdi:file-video-outline"
+                   %]
         primary: >-
           Video
           {% set h = (( states(entity)|int ) / 60 ) | int %}
@@ -40,8 +46,8 @@
           {{ ( ( states('sensor.kpn_itv_recordings_used')|int * 100 )
                / states('sensor.kpn_itv_recordings_total')|int )|int
           }}% (KPN)
-        icon: mdi:file-video-outline
         color: var(--state-icon-color)
         icon_tap_action:
           action: url
           url_path: https://tv.kpn.com/opgeslagen
+        [% END %]

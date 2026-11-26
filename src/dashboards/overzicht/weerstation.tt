@@ -14,8 +14,9 @@
        entity   = device
        navigate = "/lovelace-" _ device %]
 
-      - type: custom:mushroom-template-card
-        entity: sensor.compass
+      - [% WRAPPER mt_card.tt
+                   entity  = "sensor.compass"
+                   %]
         primary: >-
           {% if states('[% wind_beaufort %]')|int > 0 %}
           {{ states('[% wind_direction_name %]') | replace('S','Z') | replace('E','O') }}
@@ -29,13 +30,18 @@
           {{ states('[% wind_beaufort %]') }} Bft,
           {{ states('[% wind_speed %]') }} m/s
           {% else %} Calm {% endif %}
+        [% END %]
 
-      - type: tile
-        entity: sensor.knmi_pressure
-        name: Luchtdruk
+      - [% WRAPPER tile_card.tt
+                   entity  = "sensor.knmi_pressure"
+                   name    = "Luchtdruk"
+                   %]
+        [% END %]
 
-      - type: custom:mushroom-template-card
-        primary: Voelt als
+      - [% WRAPPER mt_card.tt
+                   entity  = "sensor.bresser51_wind_chill"
+                   name    = "Voelt als"
+                   %]
         icon: >-
           {% if states('sensor.bresser51_wind_chill')|float < 0 %}
           mdi:thermometer-low
@@ -44,18 +50,19 @@
           {% endif %}
         color: var(--state-icon-color)
         secondary: "{{ states('sensor.bresser51_wind_chill') }} °C"
+        [% END %]
 
 [% FOR i IN [ 168, 24, 1 ] %]
-      - type: custom:mushroom-template-card
-        primary: [% i %] uur
-        icon: mdi:weather-rainy
+      - [% WRAPPER mt_card.tt
+                   entity  = "sensor.bresser51_rain_" _ i _ "h"
+                   name    = i _ " uur"
+                   icon    = "mdi:weather-rainy"
+                   visible = ">0"
+                   %]
         color: var(--state-icon-color)
         secondary: "{{ states('sensor.bresser51_rain_[% i %]h') }} mm"
         tap_action:
           action: more-info
           entity: sensor.bresser51_rain_[% i %]h
-        visibility:
-          - entity: sensor.bresser51_rain_[% i %]h
-            condition: numeric_state
-            above: 0
+        [% END %]
 [% END %]

@@ -18,13 +18,11 @@
            icon = "fan"
            alwayson = 2 %]
             
-      - type: custom:mushroom-template-card
-        entity: sensor.[% device %]_speed_status
-        primary: Afzuiging
-        visibility:
-          - entity: sensor.[% device %]_speed_status
-            condition: numeric_state
-            above: -1
+      - [% WRAPPER mt_card.tt
+                   entity  = "sensor." _ device _ "_speed_status"
+                   name    = "Afzuiging"
+                   visible = ">-1"
+                   %]
         icon: >-
           {% if   is_state('sensor.[% device %]_fan_info','auto') %}
           mdi:fan-auto
@@ -50,6 +48,7 @@
           {{ states('sensor.[% device %]_fan_speed') }} rpm
           {% if (states('sensor.[% device %]_ventilation_setpoint')|int) > 0 %}({{ states('sensor.[% device %]_ventilation_setpoint') }}%){% endif %}
           {% endif %}
+        [% END %]
 
       - [% WRAPPER tile_card.tt
                    entity = "sensor." _ device _ "_remaining_time"

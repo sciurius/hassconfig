@@ -7,29 +7,26 @@
        navigate = "/lovelace-overzicht/computers"
        badges   = []
        color    = "lavender"
-       columns  = 1 %]
+       %]
 
-      - type: custom:auto-entities
-        show_empty: false
-        card:
-          type: grid
-          columns: 2
-          square: false
-        filter:
-          include:
-            - entity_id: "sensor.*_databases_size"
-              options:
-                type: custom:mushroom-template-card
-                primary: >-
-                  {{ entity_name(entity).split(' ')[0] }}
-                secondary: "{{ (states(entity)|int /1024 /1024) |int }} MiB"
-                icon: mdi:database-outline
-                color: var(--state-icon-color)
-            - entity_id: "sensor.cloud_squirrel_nl_datab*se_size"
-              options:
-                type: custom:mushroom-template-card
-                primary: Cloud
-                secondary: "{{ states(entity)|int }} MiB"
-                icon: mdi:database-outline
-                color: var(--state-icon-color)
-        card_param: cards
+[% FOR db IN [ 'Phoenix', 'MAss', 'Srv4', 'Srv5' ] %]
+      - [% WRAPPER mt_card.tt
+                   entity  = "sensor." _ db.lower _ "_databases_size"
+                   name    = db
+                   %]
+        secondary: "{{ (states(entity)|int /1024 /1024) |int }} MiB"
+        icon: mdi:database-outline
+        color: var(--state-icon-color)
+        [% END %]
+[% END %]
+
+[% FOR db IN [ 'Cloud' ] %]
+      - [% WRAPPER mt_card.tt
+                   entity  = "sensor." _ db.lower _ "_squirrel_nl_databse_size"
+                   name    = db
+                   %]
+        secondary: "{{ states(entity)|int }} MiB"
+        icon: mdi:database-outline
+        color: var(--state-icon-color)
+        [% END %]
+[% END %]

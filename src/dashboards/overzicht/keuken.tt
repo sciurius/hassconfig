@@ -6,27 +6,31 @@
        icon     = "countertop"
        navigate = "/lovelace-overzicht/keuken" %]
 
-      - type: tile
-        entity: light.keuken_aanrecht_verlichting
-        name: Aanrecht
-        icon: mdi:ceiling-light-multiple-outline
+      - [% WRAPPER tile_card.tt
+                   entity  = "light.keuken_aanrecht_verlichting"
+                   name    = "Aanrecht"
+                   icon    = "mdi:ceiling-light-multiple-outline"
+                   %]
         icon_tap_action:
           action: call-service
           service: mqtt.publish
           data:
             topic: cmnd/tasm19/add1
             payload: 1
+        [% END %]
 
-      - type: tile
-        entity: light.keuken_kook_verlichting
-        name: Kookplaat
-        icon: mdi:wall-sconce-flat-outline
+      - [% WRAPPER tile_card.tt
+                   entity  = "light.keuken_kook_verlichting"
+                   name    = "Kookplaat"
+                   icon    = "mdi:wall-sconce-flat-outline"
+                   %]
         icon_tap_action:
           action: call-service
           service: mqtt.publish
           data:
             topic: cmnd/tasm22/add1
             payload: 1
+        [% END %]
 
       - [% INCLUDE switching_meter.tt
            name = "Boiler" sensor = "keukenboiler"
