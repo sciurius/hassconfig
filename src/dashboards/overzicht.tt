@@ -38,6 +38,52 @@ views:
 
       - type: vertical-stack
         cards:
+        - !include overzicht/alert_ticker.yaml
+        - !include overzicht/buiten.yaml
+        - !include overzicht/carolan.yaml
+        - !include overzicht/laders.yaml
+        - !include overzicht/overig.yaml
+
+      - type: vertical-stack
+        cards:
+        - !include overzicht/weerstation.yaml
+        - !include overzicht/woonkamer.yaml
+        - !include overzicht/hal.yaml
+        - !include overzicht/keuken.yaml
+        - !include overzicht/bijkeuken.yaml
+        - !include overzicht/slaapkamer.yaml
+        - !include overzicht/badkamer.yaml
+        - !include overzicht/logeerkamer.yaml
+        - !include overzicht/picky_ma.yaml
+        - !include overzicht/picky_lms.yaml
+        - !include overzicht/osmc.yaml
+
+      - type: vertical-stack
+        cards:
+        - !include overzicht/energie.yaml
+        - !include overzicht/energie_balans.yaml
+        - !include overzicht/kantoor.yaml
+        - !include overzicht/media.yaml
+        - !include overzicht/databases.yaml
+        - !include overzicht/computers.yaml
+
+  - title: Home2
+    path: home
+    type: custom:masonry-layout
+#    type: custom:grid-layout
+    layout:
+      max_cols: 3
+      grid-template-columns: 34% 33% 33%
+#      mediaquery:
+#        [% media_small %]:
+#          grid-template-columns: 100%
+#        [% media_medium %]:
+#          grid-template-columns: 50% 50%
+
+    [% sectioncards %]:
+
+      - type: vertical-stack
+        cards:
           - !include overzicht/alert_ticker.yaml
           - !include overzicht/buiten.yaml
 
