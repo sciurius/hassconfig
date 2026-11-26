@@ -124,7 +124,8 @@
                    name   = "Batterij"
                    entity = "sensor.ecoflow_stream_ac_5000_battery_soc" %]
         color: >-
-          {% if   states(entity)|int >= 40 %} [% dash.col.green %]
+          {% if is_state('number.ecoflow_stream_ac_5000_max_grid_input_power','0') %} [% dash.col.inactive %]
+          {% elif states(entity)|int >= 40 %} [% dash.col.green %]
           {% elif states(entity)|int >= 30 %} orange
           {% else                         %} red
           {% endif %}
@@ -141,6 +142,17 @@
         secondary: >-
           {{ states(entity) }}%
           {{ "SelfPowered" if is_state('sensor.ecoflow_stream_ac_5000_work_mode','self_powered') else "Custom" }}
+        hold_action:
+          action: perform-action
+          perform_action: script.turn_on
+          target:
+            entity_id: script.ecoflow_switch_toggle
+        icon_hold_action:
+          action: perform-action
+          perform_action: script.turn_on
+          target:
+            entity_id: script.ecoflow_switch_toggle
+          
         [% END %]
 
       # ECOFlow BLE (local) integration.

@@ -1,0 +1,113 @@
+# EcoFlow STREAM AC 5000                      -*- hass -*-
+# WARNING: This is a generated file -- DO NOT EDIT
+
+[%-
+
+tariff   = "sensor.dsmr_meter_stats_electricity_tariff";
+ecoflow  = "ecoflow_stream_ac_5000";
+workmode = "select." _ ecoflow _ "_work_mode";;
+state    = "sensor." _ ecoflow _ "_work_mode";;
+
+-%]
+
+# We run the battery in one of two modes:
+# * Self-Powered (prioritize solar over grid, charge with excess), and
+# * Custom (same, but unconditionally charges between 20:30-23:00).
+
+# This automation is to enable/disable Custom mode depending on the
+# actual energy tariff, since tarrifs are different in weekends and
+# special holidays.
+
+automation:
+
+  - id: Automation__EcoFlow_Work_Mode
+    alias: EcoFlow Work Mode
+    description: "Schakel EcoFlow work mode bij tariefwijziging"
+    mode: single
+
+    triggers:
+
+      - trigger: state
+        entity_id: [% tariff %]
+        to: low
+        id: to-low
+
+      - trigger: state
+        entity_id: [% tariff %]
+        to: high
+        id: to-high
+
+    actions:
+
+      - choose:
+          - conditions:
+              - condition: trigger
+                id: to-low
+            sequence:
+              - action: select.select_option
+                target:
+                  entity_id: [% workmode %]
+                data:
+                  option: self_powered
+          - conditions:
+              - condition: trigger
+                id: to-high
+            sequence:
+              - action: select.select_option
+                target:
+                  entity_id: [% workmode %]
+                data:
+                  option: custom
+
+      - action: notify.info
+        data:
+          message: "EcoStream switched to {{ states('[% state %]') }} ."
+
+script:
+
+  ecoflow_switch_off:
+
+    alias: script_ecoflow_switch_off
+    description: 'Switch off the battery'
+    sequence:
+      - action: number.set_value
+        target:
+          entity_id: number.[% ecoflow %]_max_grid_input_power
+        data:
+          value: '0'
+      - action: number.set_value
+        target:
+          entity_id: number.[% ecoflow %]_max_grid_tied_output_power
+        data:
+          value: '0'
+
+
+  ecoflow_switch_on:
+
+    alias: script_ecoflow_switch_on
+    description: 'Switch on the battery'
+    sequence:
+      - action: number.set_value
+        target:
+          entity_id: number.[% ecoflow %]_max_grid_input_power
+        data:
+          value: '2500'
+      - action: number.set_value
+        target:
+          entity_id: number.[% ecoflow %]_max_grid_tied_output_power
+        data:
+          value: '800'
+
+  ecoflow_switch_toggle:
+
+    alias: script_ecoflow_switch_toggle
+    description: 'Toggle the battery'
+    sequence:
+      - if:
+          - condition: numeric_state
+            entity_id: number.[% ecoflow %]_max_grid_tied_output_power
+            above: 0
+        then:
+          - action: script.ecoflow_switch_off
+        else:
+          - action: script.ecoflow_switch_on
