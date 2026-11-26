@@ -2,8 +2,13 @@
 
 # For tile and tile-based cards cards.
 # Special treatment in custom:grid-layout.
+# Note that due to bugs in grid-layout, conditional cards that are
+# suppressed still yield some vertical space.
 
 DEFAULT type    = "tile";
+                # "mt"     custom:mushroom-template-card
+                # "hg"     custom:horizontal-gauge-card
+
 DEFAULT name    = "";
 DEFAULT icon    = "";
 DEFAULT span    = 1;
@@ -11,74 +16,78 @@ DEFAULT indent  = 0;
 DEFAULT visible = "";
 DEFAULT color   = "";
 
+# GLOBAL sections = "sections";		# lovelace sections
+# GLOBAL sections = "grids";		# custom_layout_card grids
+# GLOBAL sections = "cards";		# grids + cards
+
 ind = PROCESS get_indent.tt indent = indent;
 
 # Use a wrapping conditional card for visibility.
 IF visible;
-"type: conditional\n";
-ind; "conditions:\n";
+  "type: conditional\n";
+  ind; "conditions:\n";
 
-reverse = 0;
-a = visible.split(' +');
+  reverse = 0;
+  a = visible.split(' +');
 
-FOREACH v IN a;
-  IF v == "not"; reverse = !reverse;
+  FOREACH v IN a;
+    IF v == "not"; reverse = !reverse;
 
-  ELSIF v == "active";
-    ind; "- condition: state\n";
-    ind; "  entity: "; entity; "\n";
-    ind; "  state"; IF reverse; "_not"; END; ": active\n";
-    reverse = 0;
-
-  ELSIF v == "available";
-    ind; "- condition: state\n";
-    ind; "  entity: "; entity; "\n";
-    ind; "  state"; IF !reverse; "_not"; END; ":\n";
-    ind; "    - unavailable\n";
-    ind; "    - unknown\n";
-    reverse = 0;
-
-  # < and > indicate "below" and "above". Note that "not" is ignored.
-  ELSIF ( m = v.match('^([<>])(.*)') );
-    ind; "- condition: numeric_state\n";
-    ind; "  entity: "; entity; "\n";
-    IF m.0 == '<'; 
-      ind; "  below; "; m.1; "\n";
-    ELSE;
-      ind; "  above: "; m.1; "\n";
-    END;
-    reverse = 0;
-
-  # Assume state match.
-  ELSE;
-    IF ( v_or = v.split("\\\|") ) && v_or.size > 1;
-      ind; "- condition: "; IF reverse; "and"; ELSE; "or"; END; "\n";
-      ind; "  conditions:\n";
-      FOREACH vv IN v_or;
-          ind; "  - condition: state\n";
-          ind; "    entity: "; entity; "\n";
-          ind; "    state"; IF reverse; "_not"; END; ": \""; vv; "\"\n";
-      END;
-    ELSIF ( v_and = v.split("&") ) && v_and.size > 1;
+    ELSIF v == "active";
       ind; "- condition: state\n";
       ind; "  entity: "; entity; "\n";
-      ind; "  state"; IF reverse; "_not"; END; ":\n";
-      FOREACH vv IN v_and;
-          ind; "    - \""; vv; "\"\n";
-      END;
-    ELSE;
+      ind; "  state"; IF reverse; "_not"; END; ": active\n";
+      reverse = 0;
+
+    ELSIF v == "available";
       ind; "- condition: state\n";
       ind; "  entity: "; entity; "\n";
-      ind; "  state"; IF reverse; "_not"; END; ": \""; v; "\"\n";
+      ind; "  state"; IF !reverse; "_not"; END; ":\n";
+      ind; "    - unavailable\n";
+      ind; "    - unknown\n";
+      reverse = 0;
+
+    # < and > indicate "below" and "above". Note that "not" is ignored.
+    ELSIF ( m = v.match('^([<>])(.*)') );
+      ind; "- condition: numeric_state\n";
+      ind; "  entity: "; entity; "\n";
+      IF m.0 == '<'; 
+	ind; "  below; "; m.1; "\n";
+      ELSE;
+	ind; "  above: "; m.1; "\n";
+      END;
+      reverse = 0;
+
+    # Assume state match.
+    ELSE;
+      IF ( v_or = v.split("\\\|") ) && v_or.size > 1;
+	ind; "- condition: "; IF reverse; "and"; ELSE; "or"; END; "\n";
+	ind; "  conditions:\n";
+	FOREACH vv IN v_or;
+	    ind; "  - condition: state\n";
+	    ind; "    entity: "; entity; "\n";
+	    ind; "    state"; IF reverse; "_not"; END; ": \""; vv; "\"\n";
+	END;
+      ELSIF ( v_and = v.split("&") ) && v_and.size > 1;
+	ind; "- condition: state\n";
+	ind; "  entity: "; entity; "\n";
+	ind; "  state"; IF reverse; "_not"; END; ":\n";
+	FOREACH vv IN v_and;
+	    ind; "    - \""; vv; "\"\n";
+	END;
+      ELSE;
+	ind; "- condition: state\n";
+	ind; "  entity: "; entity; "\n";
+	ind; "  state"; IF reverse; "_not"; END; ": \""; v; "\"\n";
+      END;
+      reverse = 0;
     END;
-    reverse = 0;
+
   END;
 
-END;
-
-ind; "card:\n";
-ind = "  " _ ind;
-ind;
+  ind; "card:\n";
+  ind = "  " _ ind;
+  ind;
 END;
 
 # Card type.
@@ -89,8 +98,8 @@ ELSE;               cardtype = "tile"; END;
 
 # grids (custom:grid-layout-card) need some card mods.
 IF sections == 'grids';
-ind; "card_mod:\n";
-ind; "  style: ':host { --masonry-view-card-margin: 3px; }'\n";
+  ind; "card_mod:\n";
+  ind; "  style: ':host { --masonry-view-card-margin: 3px; }'\n";
 END;
 
 # Parameters, if any.
