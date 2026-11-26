@@ -101,9 +101,20 @@
         [% END %]
 
       - [% WRAPPER mt_card.tt
-                   name   = "Zon {{ states('sensor.power_generated')|int }} W"
                    icon   = "mdi:solar-power"
                    entity = "sensor.energy_generated" %]
+        primary: >-
+          {% if states('sensor.power_generated')|int > 0 %}
+          Zon {{ states('sensor.power_generated')|int }} W
+          {% else %}
+          Zon
+          {% endif %}
+        color: >-
+          {% if states('sensor.power_generated')|int > 10 %}
+          [% dash.col.active %]
+          {% else %}
+          [% dash.col.default %]
+          {% endif %}
         secondary: >-
           {{ (states('sensor.energy_generated'))|int / 1000 }} kWh
         [% END %]
